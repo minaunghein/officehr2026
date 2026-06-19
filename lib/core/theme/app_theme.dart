@@ -39,8 +39,8 @@ extension OfficeHrThemeExt on OfficeHrTheme {
 class AppTheme {
   AppTheme._();
 
-  static ThemeData getTheme(OfficeHrTheme fobMatchTheme) {
-    switch (fobMatchTheme) {
+  static ThemeData getTheme(OfficeHrTheme officeHrTheme) {
+    switch (officeHrTheme) {
       case OfficeHrTheme.light:
         return _lightTheme();
       case OfficeHrTheme.dark:
@@ -58,7 +58,7 @@ class AppTheme {
       surfaceVariant: const Color(0xFFE8EDFF),
       onPrimary: const Color(0xFFFFFFFF),
       onBackground: const Color(0xFF041B3C),
-      outline: const Color(0xFFDFE1E6),
+      outline: const Color.fromARGB(255, 155, 157, 164),
       error: const Color(0xFFBA1A1A),
       gradient: const LinearGradient(
         colors: [Color(0xFF0052CC), Color(0xFF003D9B)],
@@ -76,7 +76,7 @@ class AppTheme {
       surfaceVariant: const Color(0xFF2E3F5C),
       onPrimary: const Color(0xFF001848),
       onBackground: const Color(0xFFEDF0FF),
-      outline: const Color(0xFF434654),
+      outline: const Color.fromARGB(255, 117, 122, 145),
       error: const Color(0xFFBA1A1A),
       gradient: const LinearGradient(
         colors: [Color(0xFFB2C5FF), Color(0xFF8BA4F5)],
@@ -98,7 +98,6 @@ class AppTheme {
     required LinearGradient gradient,
   }) {
     final textTheme = TextTheme(
-      // Design: headline-lg (28px, 700, 34px height, -0.02em spacing)
       displayLarge: GoogleFonts.inter(
         color: onBackground,
         fontSize: 28,
@@ -106,7 +105,6 @@ class AppTheme {
         height: 34 / 28,
         letterSpacing: -0.02 * 28,
       ),
-      // Design: headline-lg-mobile (24px, 700, 30px height, -0.02em spacing)
       displayMedium: GoogleFonts.inter(
         color: onBackground,
         fontSize: 24,
@@ -114,7 +112,6 @@ class AppTheme {
         height: 30 / 24,
         letterSpacing: -0.02 * 24,
       ),
-      // Design: headline-md (20px, 600, 26px height, -0.01em spacing)
       displaySmall: GoogleFonts.inter(
         color: onBackground,
         fontSize: 20,
@@ -122,7 +119,6 @@ class AppTheme {
         height: 26 / 20,
         letterSpacing: -0.01 * 20,
       ),
-      // Design: headline-lg (28px, 700, 34px height)
       headlineLarge: GoogleFonts.inter(
         color: onBackground,
         fontSize: 28,
@@ -130,7 +126,6 @@ class AppTheme {
         height: 34 / 28,
         letterSpacing: -0.02 * 28,
       ),
-      // Design: headline-md (20px, 600, 26px height)
       headlineMedium: GoogleFonts.inter(
         color: onBackground,
         fontSize: 20,
@@ -138,28 +133,24 @@ class AppTheme {
         height: 26 / 20,
         letterSpacing: -0.01 * 20,
       ),
-      // Design: body-lg (16px, 400, 24px height)
       headlineSmall: GoogleFonts.inter(
         color: onBackground,
         fontSize: 16,
         fontWeight: FontWeight.w400,
         height: 24 / 16,
       ),
-      // Design: body-lg (16px, 400, 24px height)
       titleLarge: GoogleFonts.inter(
         color: onBackground,
         fontSize: 16,
         fontWeight: FontWeight.w400,
         height: 24 / 16,
       ),
-      // Design: body-md (14px, 400, 20px height)
       titleMedium: GoogleFonts.inter(
         color: onBackground,
         fontSize: 14,
         fontWeight: FontWeight.w400,
         height: 20 / 14,
       ),
-      // Design: label-md (12px, 600, 16px height, 0.02em spacing)
       titleSmall: GoogleFonts.inter(
         color: onBackground,
         fontSize: 12,
@@ -167,28 +158,24 @@ class AppTheme {
         height: 16 / 12,
         letterSpacing: 0.02 * 12,
       ),
-      // Design: body-lg (16px, 400, 24px height)
       bodyLarge: GoogleFonts.inter(
         color: onBackground,
         fontSize: 16,
         fontWeight: FontWeight.w400,
         height: 24 / 16,
       ),
-      // Design: body-md (14px, 400, 20px height)
       bodyMedium: GoogleFonts.inter(
         color: onBackground,
         fontSize: 14,
         fontWeight: FontWeight.w400,
         height: 20 / 14,
       ),
-      // Design: label-sm (11px, 500, 14px height)
       bodySmall: GoogleFonts.inter(
         color: onBackground.withValues(alpha: 0.6),
         fontSize: 11,
         fontWeight: FontWeight.w500,
         height: 14 / 11,
       ),
-      // Design: label-md (12px, 600, 16px height, 0.02em spacing)
       labelLarge: GoogleFonts.inter(
         color: onBackground,
         fontSize: 12,
@@ -196,14 +183,12 @@ class AppTheme {
         height: 16 / 12,
         letterSpacing: 0.02 * 12,
       ),
-      // Design: label-sm (11px, 500, 14px height)
       labelMedium: GoogleFonts.inter(
         color: onBackground,
         fontSize: 11,
         fontWeight: FontWeight.w500,
         height: 14 / 11,
       ),
-      // Design: label-sm (11px, 500, 14px height)
       labelSmall: GoogleFonts.inter(
         color: onBackground,
         fontSize: 11,

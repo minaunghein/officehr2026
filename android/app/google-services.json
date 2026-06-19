@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "989554449574",
+    "project_id": "office-hr-804b2",
+    "storage_bucket": "office-hr-804b2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:989554449574:android:ae43e9e8a2080c1d9a2867",
+        "android_client_info": {
+          "package_name": "com.tps.officehr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxCXm8HRosX6TZbXOYLvCrsWfC-VXGA7g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

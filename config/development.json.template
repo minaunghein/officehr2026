@@ -10,6 +10,7 @@
   },
   "features": {
     "enableLogging": true,
-    "enableAnalytics": false
+    "enableAnalytics": false,
+    "enableCrashlytics": false
   }
 }
