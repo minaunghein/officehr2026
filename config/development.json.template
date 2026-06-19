@@ -1,0 +1,15 @@
+{
+  "environment": "development",
+  "firebase": {
+    "apiKey": "YOUR_DEVELOPMENT_FIREBASE_API_KEY",
+    "appId": "YOUR_DEVELOPMENT_FIREBASE_APP_ID",
+    "messagingSenderId": "YOUR_DEVELOPMENT_FIREBASE_MESSAGING_SENDER_ID",
+    "projectId": "YOUR_DEVELOPMENT_FIREBASE_PROJECT_ID",
+    "storageBucket": "YOUR_DEVELOPMENT_FIREBASE_PROJECT_ID.appspot.com",
+    "iosBundleId": "com.example.officeHr"
+  },
+  "features": {
+    "enableLogging": true,
+    "enableAnalytics": false
+  }
+}
