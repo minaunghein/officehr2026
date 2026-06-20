@@ -128,7 +128,7 @@ final class AuthTokenProvider extends $NotifierProvider<AuthToken, String?> {
   }
 }
 
-String _$authTokenHash() => r'93697531269c2120d371eef7a06d39fe31ff1b42';
+String _$authTokenHash() => r'c6c333f1220e3b404c3a7f07d9002f4baf147eeb';
 
 abstract class _$AuthToken extends $Notifier<String?> {
   String? build();

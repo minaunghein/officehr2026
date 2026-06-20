@@ -1,6 +1,6 @@
 class ApiConfig {
   const ApiConfig({
-    this.baseUrl = 'https://dummy-api.example.com/api/v1',
+    this.baseUrl = 'http://193.180.208.196:5002',
     this.connectTimeout = const Duration(seconds: 30),
     this.receiveTimeout = const Duration(seconds: 30),
     this.sendTimeout = const Duration(seconds: 30),

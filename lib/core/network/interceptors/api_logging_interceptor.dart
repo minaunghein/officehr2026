@@ -1,17 +1,17 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'package:office_hr/core/services/app_logger.dart';
 
 class ApiLoggingInterceptor extends Interceptor {
   const ApiLoggingInterceptor();
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    debugPrint('--> ${options.method} ${options.uri}');
+    AppLogger.d('--> ${options.method} ${options.uri}');
     if (options.headers.isNotEmpty) {
-      debugPrint('Headers: ${options.headers}');
+      AppLogger.d('Headers: ${options.headers}');
     }
     if (options.data != null) {
-      debugPrint('Body: ${options.data}');
+      AppLogger.d('Body: ${options.data}');
     }
     handler.next(options);
   }
@@ -21,19 +21,19 @@ class ApiLoggingInterceptor extends Interceptor {
     Response<dynamic> response,
     ResponseInterceptorHandler handler,
   ) {
-    debugPrint('<-- ${response.statusCode} ${response.requestOptions.uri}');
-    debugPrint('Response: ${response.data}');
+    AppLogger.d('<-- ${response.statusCode} ${response.requestOptions.uri}');
+    AppLogger.d('Response: ${response.data}');
     handler.next(response);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    debugPrint(
+    AppLogger.d(
       '<-- ERROR ${err.requestOptions.method} ${err.requestOptions.uri}',
     );
-    debugPrint('Message: ${err.message}');
+    AppLogger.d('Message: ${err.message}');
     if (err.response?.data != null) {
-      debugPrint('Error body: ${err.response?.data}');
+      AppLogger.d('Error body: ${err.response?.data}');
     }
     handler.next(err);
   }

@@ -5,133 +5,123 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:office_hr/features/splash/presentation/providers/splash_ui_provider.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'package:office_hr/core/router/app_router.dart';
+import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 
 class SplashScreen extends HookConsumerWidget {
-  final String nextRoute;
-
-  const SplashScreen({super.key, required this.nextRoute});
+  const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final splash = ref.watch(splashUiDataProvider);
-    final packageInfo = useState<PackageInfo?>(null);
+    final fadeController = useAnimationController(
+      duration: const Duration(milliseconds: 1000),
+    );
+    final scaleController = useAnimationController(
+      duration: const Duration(milliseconds: 1200),
+    );
+
+    final fadeAnimation = CurvedAnimation(
+      parent: fadeController,
+      curve: Curves.easeIn,
+    );
+
+    final scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
+      CurvedAnimation(parent: scaleController, curve: Curves.easeOutBack),
+    );
 
     useEffect(() {
-      Future.microtask(() async {
-        final info = await PackageInfo.fromPlatform();
-        packageInfo.value = info;
+      fadeController.forward();
+      scaleController.forward();
+
+      var cancelled = false;
+      final timer = Timer(const Duration(milliseconds: 2500), () async {
+        await ref.read(currentUserProvider.future);
+        if (cancelled || !context.mounted) return;
+
+        final isAuthenticated = ref.read(isAuthenticatedProvider);
+        context.go(
+          isAuthenticated ? AppRoutes.dashboard : AppRoutes.companySetup,
+        );
       });
-      return null;
+
+      return () {
+        cancelled = true;
+        timer.cancel();
+      };
     }, []);
 
-    useEffect(() {
-      final timer = Timer(splash.navigationDelay, () {
-        if (context.mounted) {
-          context.go(nextRoute);
-        }
-      });
-      return timer.cancel;
-    }, [context.mounted, nextRoute, splash.navigationDelay]);
-
     return Scaffold(
-      backgroundColor: const Color(0xFF071422),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Spacer(),
-            Column(
+        child: FadeTransition(
+          opacity: fadeAnimation,
+          child: ScaleTransition(
+            scale: scaleAnimation,
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  width: 120,
-                  height: 120,
+                  width: 100,
+                  height: 100,
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
+                    borderRadius: BorderRadius.circular(30),
+                    gradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: splash.isProduction
-                          ? const [Color(0xFF34D399), Color(0xFF10B981)]
-                          : const [Color(0xFF7DD3FC), Color(0xFF38BDF8)],
+                      colors: [Color(0xFF3B82F6), Color(0xFF2563EB)],
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: splash.isProduction
-                            ? const Color(0xFF10B981).withValues(alpha: 0.35)
-                            : const Color(0xFF38BDF8).withValues(alpha: 0.35),
-                        blurRadius: 28,
-                        spreadRadius: 2,
+                        color: const Color(0xFF3B82F6).withValues(alpha: 0.3),
+                        blurRadius: 24,
+                        offset: const Offset(0, 12),
+                      ),
+                      BoxShadow(
+                        color: Colors.white.withValues(alpha: 0.1),
+                        blurRadius: 0,
+                        spreadRadius: 1,
+                        offset: const Offset(0, 1),
                       ),
                     ],
                   ),
                   child: const Icon(
                     Icons.apartment_rounded,
                     color: Colors.white,
-                    size: 56,
+                    size: 48,
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 32),
+                const Text(
+                  'Office HR',
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.5,
+                  ),
+                ),
+                const SizedBox(height: 8),
                 Text(
-                  splash.title,
-                  style: const TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                  'Empowering your workspace',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 0.2,
+                  ),
+                ),
+                const SizedBox(height: 48),
+                SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.5,
+                    // valueColor: AlwaysStoppedAnimation<Color>(
+                    //   Colors.white.withValues(alpha: 0.3),
+                    // ),
                   ),
                 ),
               ],
             ),
-            const Spacer(),
-            SafeArea(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 6,
-                    ),
-                    margin: const EdgeInsets.only(bottom: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: splash.isProduction
-                          ? const Color(0xFF34D399).withValues(alpha: 0.2)
-                          : const Color(0xFF7DD3FC).withValues(alpha: 0.2),
-                      border: Border.all(
-                        color: splash.isProduction
-                            ? const Color(0xFF34D399).withValues(alpha: 0.4)
-                            : const Color(0xFF7DD3FC).withValues(alpha: 0.4),
-                        width: 1.5,
-                      ),
-                    ),
-                    child: Text(
-                      splash.badge.toUpperCase(),
-                      style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                        letterSpacing: 1.0,
-                      ),
-                    ),
-                  ),
-                  if (packageInfo.value != null)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: Text(
-                        'v${packageInfo.value!.version}',
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.white.withValues(alpha: 0.6),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

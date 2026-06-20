@@ -38,13 +38,17 @@ class AuthToken extends _$AuthToken {
     }
   }
 
-  Future<void> setToken(String? token) async {
+  Future<void> setToken(String? token, {bool persist = true}) async {
     final storage = ref.read(secureStorageProvider);
     if (token == null || token.isEmpty) {
       await storage.delete(key: _tokenKey);
       state = null;
     } else {
-      await storage.write(key: _tokenKey, value: token);
+      if (persist) {
+        await storage.write(key: _tokenKey, value: token);
+      } else {
+        await storage.delete(key: _tokenKey);
+      }
       state = token;
     }
   }
