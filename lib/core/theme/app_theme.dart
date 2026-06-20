@@ -377,6 +377,26 @@ class AppTheme {
         ),
         dividerThickness: 1,
       ),
+      listTileTheme: ListTileThemeData(
+        tileColor: surface,
+        selectedTileColor: primary.withValues(alpha: 0.1),
+        iconColor: onBackground.withValues(alpha: 0.7),
+        textColor: onBackground,
+        titleTextStyle: GoogleFonts.inter(
+          color: onBackground,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          height: 24 / 16,
+        ),
+        subtitleTextStyle: GoogleFonts.inter(
+          color: onBackground.withValues(alpha: 0.7),
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          height: 20 / 14,
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+      ),
       extensions: [
         OfficeHrThemeExtension(
           gradient: gradient,

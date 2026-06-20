@@ -156,199 +156,214 @@ class LoginScreenContent extends HookConsumerWidget {
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(24.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        Text(
-                                          'Username',
-                                          style: textTheme.labelLarge?.copyWith(
-                                            color: colorScheme.onSurface
-                                                .withValues(alpha: 0.8),
+                                    child: Form(
+                                      key: formKey,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: [
+                                          Text(
+                                            'Username',
+                                            style: textTheme.labelLarge
+                                                ?.copyWith(
+                                                  color: colorScheme.onSurface
+                                                      .withValues(alpha: 0.8),
+                                                ),
                                           ),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        TextFormField(
-                                          controller: usernameController,
-                                          enabled: !isLoading,
-                                          decoration: const InputDecoration(
-                                            hintText: 'Enter your corporate ID',
-                                            prefixIcon: Icon(
-                                              Icons.person_outline,
-                                            ),
-                                            filled: false,
-                                          ),
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.trim().isEmpty) {
-                                              return 'Please enter your username';
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                        const SizedBox(height: 16),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              'Password',
-                                              style: textTheme.labelLarge
-                                                  ?.copyWith(
-                                                    color: colorScheme.onSurface
-                                                        .withValues(alpha: 0.8),
-                                                  ),
-                                            ),
-                                            TextButton(
-                                              onPressed: isLoading
-                                                  ? null
-                                                  : () {},
-                                              style: TextButton.styleFrom(
-                                                padding: EdgeInsets.zero,
-                                                minimumSize: Size.zero,
-                                                tapTargetSize:
-                                                    MaterialTapTargetSize
-                                                        .shrinkWrap,
+                                          const SizedBox(height: 8),
+                                          TextFormField(
+                                            controller: usernameController,
+                                            enabled: !isLoading,
+                                            decoration: const InputDecoration(
+                                              hintText:
+                                                  'Enter your corporate ID',
+                                              prefixIcon: Icon(
+                                                Icons.person_outline,
                                               ),
-                                              child: Text(
-                                                'Forgot Password?',
+                                              filled: false,
+                                            ),
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.trim().isEmpty) {
+                                                return 'Please enter your username';
+                                              }
+                                              return null;
+                                            },
+                                          ),
+                                          const SizedBox(height: 16),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Password',
                                                 style: textTheme.labelLarge
                                                     ?.copyWith(
-                                                      color:
-                                                          colorScheme.primary,
+                                                      color: colorScheme
+                                                          .onSurface
+                                                          .withValues(
+                                                            alpha: 0.8,
+                                                          ),
                                                     ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 8),
-                                        TextFormField(
-                                          controller: passwordController,
-                                          enabled: !isLoading,
-                                          obscureText: !showPassword.value,
-                                          decoration: InputDecoration(
-                                            hintText: '••••••••',
-                                            prefixIcon: const Icon(
-                                              Icons.lock_outline,
-                                            ),
-                                            suffixIcon: IconButton(
-                                              icon: Icon(
-                                                showPassword.value
-                                                    ? Icons.visibility_outlined
-                                                    : Icons
-                                                          .visibility_off_outlined,
-                                              ),
-                                              onPressed: () {
-                                                showPassword.value =
-                                                    !showPassword.value;
-                                              },
-                                            ),
-                                            filled: false,
-                                          ),
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty) {
-                                              return 'Please enter your password';
-                                            }
-                                            return null;
-                                          },
-                                          onFieldSubmitted: (value) {
-                                            ref
-                                                .read(loginProvider.notifier)
-                                                .login(
-                                                  username:
-                                                      usernameController.text,
-                                                  password:
-                                                      passwordController.text,
-                                                  rememberDevice:
-                                                      rememberDevice.value,
-                                                );
-                                          },
-                                        ),
-                                        const SizedBox(height: 16),
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                              width: 24,
-                                              height: 24,
-                                              child: Checkbox(
-                                                value: rememberDevice.value,
-                                                onChanged: isLoading
+                                              TextButton(
+                                                onPressed: isLoading
                                                     ? null
-                                                    : (value) {
-                                                        rememberDevice.value =
-                                                            value ?? false;
-                                                      },
-                                                side: BorderSide(
-                                                  color: colorScheme.outline,
+                                                    : () {},
+                                                style: TextButton.styleFrom(
+                                                  padding: EdgeInsets.zero,
+                                                  minimumSize: Size.zero,
+                                                  tapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                ),
+                                                child: Text(
+                                                  'Forgot Password?',
+                                                  style: textTheme.labelLarge
+                                                      ?.copyWith(
+                                                        color:
+                                                            colorScheme.primary,
+                                                      ),
                                                 ),
                                               ),
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Text(
-                                              'Remember this device',
-                                              style: textTheme.bodyMedium
-                                                  ?.copyWith(
-                                                    color: colorScheme.onSurface
-                                                        .withValues(alpha: 0.7),
-                                                  ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 24),
-                                        ElevatedButton(
-                                          onPressed: isLoading
-                                              ? null
-                                              : () async {
-                                                  if (formKey.currentState!
-                                                      .validate()) {
-                                                    await ref
-                                                        .read(
-                                                          loginProvider
-                                                              .notifier,
-                                                        )
-                                                        .login(
-                                                          username:
-                                                              usernameController
-                                                                  .text,
-                                                          password:
-                                                              passwordController
-                                                                  .text,
-                                                          rememberDevice:
-                                                              rememberDevice
-                                                                  .value,
-                                                        );
-                                                  }
-                                                },
-                                          style: ElevatedButton.styleFrom(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 16,
-                                            ),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              if (isLoading)
-                                                SizedBox(
-                                                  width: 18,
-                                                  height: 18,
-                                                  child: CircularProgressIndicator(
-                                                    strokeWidth: 2,
-                                                    valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                          Color
-                                                        >(
-                                                          colorScheme.onPrimary,
-                                                        ),
-                                                  ),
-                                                )
-                                              else
-                                                const Text('LOGIN'),
                                             ],
                                           ),
-                                        ),
-                                      ],
+                                          const SizedBox(height: 8),
+                                          TextFormField(
+                                            controller: passwordController,
+                                            enabled: !isLoading,
+                                            obscureText: !showPassword.value,
+                                            decoration: InputDecoration(
+                                              hintText: '••••••••',
+                                              prefixIcon: const Icon(
+                                                Icons.lock_outline,
+                                              ),
+                                              suffixIcon: IconButton(
+                                                icon: Icon(
+                                                  showPassword.value
+                                                      ? Icons
+                                                            .visibility_outlined
+                                                      : Icons
+                                                            .visibility_off_outlined,
+                                                ),
+                                                onPressed: () {
+                                                  showPassword.value =
+                                                      !showPassword.value;
+                                                },
+                                              ),
+                                              filled: false,
+                                            ),
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Please enter your password';
+                                              }
+                                              return null;
+                                            },
+                                            onFieldSubmitted: (value) {
+                                              ref
+                                                  .read(loginProvider.notifier)
+                                                  .login(
+                                                    username:
+                                                        usernameController.text,
+                                                    password:
+                                                        passwordController.text,
+                                                    rememberDevice:
+                                                        rememberDevice.value,
+                                                  );
+                                            },
+                                          ),
+                                          const SizedBox(height: 16),
+                                          Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 24,
+                                                height: 24,
+                                                child: Checkbox(
+                                                  value: rememberDevice.value,
+                                                  onChanged: isLoading
+                                                      ? null
+                                                      : (value) {
+                                                          rememberDevice.value =
+                                                              value ?? false;
+                                                        },
+                                                  side: BorderSide(
+                                                    color: colorScheme.outline,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Text(
+                                                'Remember this device',
+                                                style: textTheme.bodyMedium
+                                                    ?.copyWith(
+                                                      color: colorScheme
+                                                          .onSurface
+                                                          .withValues(
+                                                            alpha: 0.7,
+                                                          ),
+                                                    ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 24),
+                                          ElevatedButton(
+                                            onPressed: isLoading
+                                                ? null
+                                                : () async {
+                                                    if (formKey.currentState
+                                                            ?.validate() ??
+                                                        false) {
+                                                      await ref
+                                                          .read(
+                                                            loginProvider
+                                                                .notifier,
+                                                          )
+                                                          .login(
+                                                            username:
+                                                                usernameController
+                                                                    .text,
+                                                            password:
+                                                                passwordController
+                                                                    .text,
+                                                            rememberDevice:
+                                                                rememberDevice
+                                                                    .value,
+                                                          );
+                                                    }
+                                                  },
+                                            style: ElevatedButton.styleFrom(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    vertical: 16,
+                                                  ),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                if (isLoading)
+                                                  SizedBox(
+                                                    width: 18,
+                                                    height: 18,
+                                                    child: CircularProgressIndicator(
+                                                      strokeWidth: 2,
+                                                      valueColor:
+                                                          AlwaysStoppedAnimation<
+                                                            Color
+                                                          >(
+                                                            colorScheme
+                                                                .onPrimary,
+                                                          ),
+                                                    ),
+                                                  )
+                                                else
+                                                  const Text('LOGIN'),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
