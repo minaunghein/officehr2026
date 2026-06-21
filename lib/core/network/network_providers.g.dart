@@ -100,7 +100,8 @@ String _$secureStorageHash() => r'a4f75721472cf77465bf47f759c90de5ca30856e';
 @ProviderFor(AuthToken)
 final authTokenProvider = AuthTokenProvider._();
 
-final class AuthTokenProvider extends $NotifierProvider<AuthToken, String?> {
+final class AuthTokenProvider
+    extends $AsyncNotifierProvider<AuthToken, String?> {
   AuthTokenProvider._()
     : super(
         from: null,
@@ -118,29 +119,21 @@ final class AuthTokenProvider extends $NotifierProvider<AuthToken, String?> {
   @$internal
   @override
   AuthToken create() => AuthToken();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(String? value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<String?>(value),
-    );
-  }
 }
 
-String _$authTokenHash() => r'c6c333f1220e3b404c3a7f07d9002f4baf147eeb';
+String _$authTokenHash() => r'aae09af1376fe9aed713de6658509cff0c7a049c';
 
-abstract class _$AuthToken extends $Notifier<String?> {
-  String? build();
+abstract class _$AuthToken extends $AsyncNotifier<String?> {
+  FutureOr<String?> build();
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
-    final ref = this.ref as $Ref<String?, String?>;
+    final ref = this.ref as $Ref<AsyncValue<String?>, String?>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<String?, String?>,
-              String?,
+              AnyNotifier<AsyncValue<String?>, String?>,
+              AsyncValue<String?>,
               Object?,
               Object?
             >;
@@ -186,7 +179,7 @@ final class DioProvider extends $FunctionalProvider<Dio, Dio, Dio>
   }
 }
 
-String _$dioHash() => r'49ce5ad0bf08b3e7af71b4580e06f85aafd68ee4';
+String _$dioHash() => r'24d2daeb758f1ac1edaae6f1a676b559112ae89c';
 
 @ProviderFor(apiService)
 final apiServiceProvider = ApiServiceProvider._();

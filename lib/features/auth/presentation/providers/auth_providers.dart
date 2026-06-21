@@ -86,8 +86,8 @@ class LoginNotifier extends _$LoginNotifier {
 
     state = await AsyncValue.guard(() async {
       final user = await loginUsecase(username: username, password: password);
-      await ref.read(currentUserProvider.notifier).setUser(user, persist: rememberDevice);
-      await ref.read(authTokenProvider.notifier).setToken(user.accessToken, persist: rememberDevice);
+      await ref.read(currentUserProvider.notifier).setUser(user, persist: true);
+      await ref.read(authTokenProvider.notifier).setToken(user.accessToken, persist: true);
     });
   }
 
@@ -95,6 +95,24 @@ class LoginNotifier extends _$LoginNotifier {
     await ref.read(currentUserProvider.notifier).clear();
     await ref.read(authTokenProvider.notifier).setToken(null);
     state = const AsyncValue.data(null);
+  }
+}
+
+@Riverpod(keepAlive: true)
+class CompanySetupNotifier extends _$CompanySetupNotifier {
+  static const _key = 'company_setup_completed';
+
+  @override
+  Future<bool> build() async {
+    final storage = ref.read(secureStorageProvider);
+    final val = await storage.read(key: _key);
+    return val == 'true';
+  }
+
+  Future<void> completeSetup() async {
+    final storage = ref.read(secureStorageProvider);
+    await storage.write(key: _key, value: 'true');
+    state = const AsyncData(true);
   }
 }
 

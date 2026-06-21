@@ -128,27 +128,48 @@ class LoginScreenContent extends HookConsumerWidget {
                                   textAlign: TextAlign.center,
                                 ),
                                 const SizedBox(height: 8),
-                                RichText(
-                                  textAlign: TextAlign.center,
-                                  text: TextSpan(
-                                    style: textTheme.bodyMedium?.copyWith(
-                                      color: colorScheme.onSurface.withValues(
-                                        alpha: 0.7,
+                                Column(
+                                  children: [
+                                    RichText(
+                                      textAlign: TextAlign.center,
+                                      text: TextSpan(
+                                        style: textTheme.bodyMedium?.copyWith(
+                                          color: colorScheme.onSurface.withValues(
+                                            alpha: 0.7,
+                                          ),
+                                        ),
+                                        children: [
+                                          const TextSpan(text: 'for '),
+                                          TextSpan(
+                                            text: 'Acme Global Corp',
+                                            style: TextStyle(
+                                              color: colorScheme.onSurface,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    children: [
-                                      const TextSpan(text: 'for '),
-                                      TextSpan(
-                                        text: 'Acme Global Corp',
-                                        style: TextStyle(
-                                          color: colorScheme.onSurface,
+                                    TextButton(
+                                      onPressed: () {
+                                        context.push(AppRoutes.companySetup);
+                                      },
+                                      style: TextButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                                        minimumSize: Size.zero,
+                                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      ),
+                                      child: Text(
+                                        'Change Company',
+                                        style: textTheme.bodySmall?.copyWith(
+                                          color: colorScheme.primary,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(height: 32),
+                                const SizedBox(height: 16),
                                 Card(
                                   elevation: 0,
                                   shape: RoundedRectangleBorder(

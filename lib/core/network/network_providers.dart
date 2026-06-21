@@ -25,31 +25,27 @@ class AuthToken extends _$AuthToken {
   static const String _tokenKey = 'auth_token';
 
   @override
-  String? build() {
-    _init();
-    return null;
-  }
-
-  Future<void> _init() async {
+  FutureOr<String?> build() async {
     final storage = ref.read(secureStorageProvider);
     final token = await storage.read(key: _tokenKey);
     if (token != null && token.isNotEmpty) {
-      state = token;
+      return token;
     }
+    return null;
   }
 
   Future<void> setToken(String? token, {bool persist = true}) async {
     final storage = ref.read(secureStorageProvider);
     if (token == null || token.isEmpty) {
       await storage.delete(key: _tokenKey);
-      state = null;
+      state = const AsyncData(null);
     } else {
       if (persist) {
         await storage.write(key: _tokenKey, value: token);
       } else {
         await storage.delete(key: _tokenKey);
       }
-      state = token;
+      state = AsyncData(token);
     }
   }
 }
@@ -57,7 +53,8 @@ class AuthToken extends _$AuthToken {
 @riverpod
 Dio dio(Ref ref) {
   final config = ref.watch(apiConfigProvider);
-  final token = ref.watch(authTokenProvider);
+  final tokenAsync = ref.watch(authTokenProvider);
+  final token = tokenAsync.value;
 
   final client = Dio(
     BaseOptions(

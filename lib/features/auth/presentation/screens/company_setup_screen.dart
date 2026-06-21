@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/router/app_router.dart';
+import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 
 class CompanySetupScreen extends HookConsumerWidget {
   const CompanySetupScreen({super.key});
@@ -111,8 +112,13 @@ class CompanySetupScreen extends HookConsumerWidget {
                           ),
                           const SizedBox(height: 24),
                           ElevatedButton(
-                            onPressed: () {
-                              context.push(AppRoutes.login);
+                            onPressed: () async {
+                              await ref
+                                  .read(companySetupProvider.notifier)
+                                  .completeSetup();
+                              if (context.mounted) {
+                                context.go(AppRoutes.login);
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 16),

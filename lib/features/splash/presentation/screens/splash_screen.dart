@@ -1,12 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import 'package:office_hr/core/router/app_router.dart';
-import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
+import 'package:office_hr/features/splash/presentation/providers/splash_providers.dart';
 
 class SplashScreen extends HookConsumerWidget {
   const SplashScreen({super.key});
@@ -32,23 +29,24 @@ class SplashScreen extends HookConsumerWidget {
     useEffect(() {
       fadeController.forward();
       scaleController.forward();
-
-      var cancelled = false;
-      final timer = Timer(const Duration(milliseconds: 2500), () async {
-        await ref.read(currentUserProvider.future);
-        if (cancelled || !context.mounted) return;
-
-        final isAuthenticated = ref.read(isAuthenticatedProvider);
-        context.go(
-          isAuthenticated ? AppRoutes.dashboard : AppRoutes.companySetup,
-        );
-      });
-
-      return () {
-        cancelled = true;
-        timer.cancel();
-      };
+      return null;
     }, []);
+
+    ref.listen(splashInitializationProvider, (previous, next) {
+      next.whenData((state) {
+        switch (state) {
+          case SplashState.needsCompanySetup:
+            context.go(AppRoutes.companySetup);
+            break;
+          case SplashState.unauthenticated:
+            context.go(AppRoutes.login);
+            break;
+          case SplashState.authenticated:
+            context.go(AppRoutes.dashboard);
+            break;
+        }
+      });
+    });
 
     return Scaffold(
       body: Center(

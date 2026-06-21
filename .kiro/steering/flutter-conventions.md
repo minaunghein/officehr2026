@@ -9,6 +9,7 @@ These conventions are mandatory for all code in this project.
 
 ## Models & Entities
 - ALWAYS use **Freezed** + **json_serializable** for data models and domain entities.
+- Each model/entity class MUST be declared as `abstract class` (Freezed requirement).
 - Each model file must declare `part 'file_name.freezed.dart';` and (when JSON is needed) `part 'file_name.g.dart';`.
 - Map non-Dart-friendly API keys with `@JsonKey(name: '...')`.
 

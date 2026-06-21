@@ -207,7 +207,7 @@ final class LoginNotifierProvider
   LoginNotifier create() => LoginNotifier();
 }
 
-String _$loginNotifierHash() => r'820093e7c27b39d4c02aab74245c643a31f3e5fc';
+String _$loginNotifierHash() => r'f23dc2b1ec844057ddb8b0647fe1e39fc1c81e0b';
 
 abstract class _$LoginNotifier extends $AsyncNotifier<void> {
   FutureOr<void> build();
@@ -220,6 +220,51 @@ abstract class _$LoginNotifier extends $AsyncNotifier<void> {
             as $ClassProviderElement<
               AnyNotifier<AsyncValue<void>, void>,
               AsyncValue<void>,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
+
+@ProviderFor(CompanySetupNotifier)
+final companySetupProvider = CompanySetupNotifierProvider._();
+
+final class CompanySetupNotifierProvider
+    extends $AsyncNotifierProvider<CompanySetupNotifier, bool> {
+  CompanySetupNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'companySetupProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$companySetupNotifierHash();
+
+  @$internal
+  @override
+  CompanySetupNotifier create() => CompanySetupNotifier();
+}
+
+String _$companySetupNotifierHash() =>
+    r'05022de4931178c45b3facbeefd9f7d219e74d60';
+
+abstract class _$CompanySetupNotifier extends $AsyncNotifier<bool> {
+  FutureOr<bool> build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<AsyncValue<bool>, bool>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<bool>, bool>,
+              AsyncValue<bool>,
               Object?,
               Object?
             >;

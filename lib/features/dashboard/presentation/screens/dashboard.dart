@@ -5,6 +5,7 @@ import 'package:office_hr/core/theme/app_theme.dart';
 import 'package:office_hr/core/theme/theme_notifier.dart';
 import 'package:office_hr/features/dashboard/presentation/providers/dashboard_provider.dart';
 import 'package:office_hr/features/home/presentation/screens/home.dart';
+import 'package:office_hr/features/user/presentation/providers/user_providers.dart';
 
 class Dashboard extends ConsumerWidget {
   const Dashboard({super.key});
@@ -84,6 +85,7 @@ class _DashboardAppBar extends HookConsumerWidget
   Widget build(BuildContext context, WidgetRef ref) {
     final themeStyle = ref.watch(themeProvider);
     final theme = Theme.of(context);
+    final userDetails = ref.watch(userDetailsProvider);
 
     return AppBar(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -91,13 +93,22 @@ class _DashboardAppBar extends HookConsumerWidget
       scrolledUnderElevation: 0,
       title: Row(
         children: [
-          CircleAvatar(
-            radius: 20,
-            backgroundColor: theme.colorScheme.primaryContainer,
-            backgroundImage: const CachedNetworkImageProvider(
-              'https://i.pravatar.cc/150?img=11',
-            ),
-          ),
+          !userDetails.hasError && userDetails.value!.profileUrl.isNotEmpty
+              ? CircleAvatar(
+                  radius: 20,
+                  backgroundColor: theme.colorScheme.primaryContainer,
+                  backgroundImage: CachedNetworkImageProvider(
+                    userDetails.value!.profileUrl,
+                  ),
+                )
+              : Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    border: Border.all(),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: Icon(Icons.person),
+                ),
           const SizedBox(width: 12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,14 +122,20 @@ class _DashboardAppBar extends HookConsumerWidget
                   letterSpacing: 0.5,
                 ),
               ),
-              Text(
-                'AUNG KO OO', // Hardcoded as requested
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: theme.colorScheme.onSurface,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 0.5,
+              if (userDetails.hasError)
+                Text(
+                  'Error: ${userDetails.error}',
+                  style: theme.textTheme.bodySmall?.copyWith(color: Colors.red),
+                )
+              else
+                Text(
+                  userDetails.value?.username ?? 'Loading...',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.5,
+                  ),
                 ),
-              ),
             ],
           ),
         ],
