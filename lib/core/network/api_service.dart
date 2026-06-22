@@ -5,6 +5,7 @@ typedef JsonParser<T> = T Function(dynamic data);
 abstract class ApiService {
   Future<T> get<T>(
     String path, {
+    Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
     CancelToken? cancelToken,

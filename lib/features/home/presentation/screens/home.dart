@@ -3,10 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:office_hr/core/constants/app_sizes.dart';
+import 'package:office_hr/features/user/domain/entities/branch.dart';
+import 'package:office_hr/features/user/domain/entities/shift.dart';
 import 'package:office_hr/features/home/presentation/providers/location_provider.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:office_hr/features/home/domain/entities/attendance.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_provider.dart';
+import 'package:office_hr/features/user/presentation/providers/user_providers.dart';
 import 'package:office_hr/shared/date_formatter.dart';
+import 'package:office_hr/features/home/presentation/widgets/clock_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -27,7 +33,7 @@ class HomeScreen extends StatelessWidget {
                 _RecentActivity(),
                 SizedBox(height: 24),
                 _MonthlyStatistics(),
-                SizedBox(height: 1000),
+                SizedBox(height: 24),
               ]),
             ),
           ),
@@ -48,36 +54,77 @@ class _MapSliverAppBarState extends ConsumerState<_MapSliverAppBar>
     with TickerProviderStateMixin {
   final MapController _mapController = MapController();
   LatLng _currentCenter = const LatLng(21.9588, 96.0891);
-  bool _isFirstLocationUpdate = true;
+  late final ProviderSubscription<AsyncValue<Branch?>> _branchSubscription;
+  bool _isMapReady = false;
+  bool _hasMovedToBranch = false;
   AnimationController? _animationController;
 
   @override
   void initState() {
     super.initState();
+    _branchSubscription = ref.listenManual<AsyncValue<Branch?>>(
+      branchProvider,
+      (previous, next) => next.whenData(_handleBranchChanged),
+    );
     _loadCachedLocation();
   }
 
   @override
   void dispose() {
+    _branchSubscription.close();
     _animationController?.dispose();
     super.dispose();
   }
 
   Future<void> _loadCachedLocation() async {
     final prefs = await SharedPreferences.getInstance();
-    final lat = prefs.getDouble('last_lat');
-    final lng = prefs.getDouble('last_lng');
+    final lat = prefs.getDouble('last_branch_lat');
+    final lng = prefs.getDouble('last_branch_lng');
     if (lat != null && lng != null && mounted) {
+      final cachedCenter = LatLng(lat, lng);
       setState(() {
-        _currentCenter = LatLng(lat, lng);
+        _currentCenter = cachedCenter;
       });
-      if (_isFirstLocationUpdate) {
-        _mapController.move(_currentCenter, 15.0);
+      if (_isMapReady) {
+        _mapController.move(cachedCenter, 15.0);
       }
     }
   }
 
+  Future<void> _handleBranchChanged(Branch? branch) async {
+    if (branch == null) return;
+
+    final newLatLng = LatLng(branch.latitude, branch.longitude);
+    if (mounted) {
+      if (_hasMovedToBranch) {
+        _animatedMapMove(newLatLng, 15.0);
+      } else {
+        _moveMap(newLatLng, 15.0);
+        _hasMovedToBranch = true;
+      }
+    }
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('last_branch_lat', branch.latitude);
+    await prefs.setDouble('last_branch_lng', branch.longitude);
+  }
+
+  void _moveMap(LatLng location, double zoom) {
+    _animationController?.dispose();
+    setState(() {
+      _currentCenter = location;
+    });
+    if (_isMapReady) {
+      _mapController.move(location, zoom);
+    }
+  }
+
   void _animatedMapMove(LatLng destLocation, double destZoom) {
+    if (!_isMapReady) {
+      _moveMap(destLocation, destZoom);
+      return;
+    }
+
     _animationController?.dispose();
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 1500),
@@ -104,9 +151,14 @@ class _MapSliverAppBarState extends ConsumerState<_MapSliverAppBar>
       final newPosition = LatLng(newLat, newLng);
 
       _mapController.move(newPosition, destZoom);
-      setState(() {
-        _currentCenter = newPosition;
-      });
+    });
+
+    _animationController!.addStatusListener((status) {
+      if (status == AnimationStatus.completed && mounted) {
+        setState(() {
+          _currentCenter = destLocation;
+        });
+      }
     });
 
     _animationController!.forward();
@@ -116,26 +168,15 @@ class _MapSliverAppBarState extends ConsumerState<_MapSliverAppBar>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final locationAsync = ref.watch(currentLocationProvider);
-
-    ref.listen<AsyncValue<Position>>(currentLocationProvider, (previous, next) {
-      next.whenData((position) async {
-        final newLatLng = LatLng(position.latitude, position.longitude);
-        if (mounted) {
-          _isFirstLocationUpdate = false;
-          _animatedMapMove(newLatLng, 15.0);
-        }
-
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setDouble('last_lat', position.latitude);
-        await prefs.setDouble('last_lng', position.longitude);
-      });
-    });
+    final shiftAsync = ref.watch(shiftProvider);
+    final branchAsync = ref.watch(branchProvider);
+    final branch = branchAsync.hasValue ? branchAsync.value : null;
+    final location = locationAsync.hasValue ? locationAsync.value : null;
 
     return SliverAppBar(
       expandedHeight: 280.0,
       floating: false,
       pinned: true,
-      // backgroundColor: theme.colorScheme.surface,
       surfaceTintColor: Colors.transparent,
       centerTitle: true,
       title: Container(
@@ -160,8 +201,9 @@ class _MapSliverAppBarState extends ConsumerState<_MapSliverAppBar>
               color: theme.colorScheme.primary,
             ),
             const SizedBox(width: 8),
+
             Text(
-              '09:00 AM - 06:00 PM',
+              formatShiftWorkHours(shiftAsync.value),
               style: theme.textTheme.labelMedium?.copyWith(
                 fontWeight: FontWeight.w700,
                 color: theme.colorScheme.onSurface,
@@ -175,7 +217,7 @@ class _MapSliverAppBarState extends ConsumerState<_MapSliverAppBar>
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                'Shift A',
+                shiftAsync.value?.shiftId ?? "Shift",
                 style: theme.textTheme.labelSmall?.copyWith(
                   fontWeight: FontWeight.w800,
                   color: theme.colorScheme.primary,
@@ -193,6 +235,10 @@ class _MapSliverAppBarState extends ConsumerState<_MapSliverAppBar>
               options: MapOptions(
                 initialCenter: _currentCenter,
                 initialZoom: 15.0,
+                onMapReady: () {
+                  _isMapReady = true;
+                  _mapController.move(_currentCenter, 15.0);
+                },
                 interactionOptions: const InteractionOptions(
                   flags: InteractiveFlag.none,
                 ),
@@ -202,13 +248,26 @@ class _MapSliverAppBarState extends ConsumerState<_MapSliverAppBar>
                   urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                   userAgentPackageName: 'com.tps.officehr',
                 ),
-                if (locationAsync.hasValue &&
-                    !locationAsync.isLoading &&
-                    !_isFirstLocationUpdate)
+                if (branch != null)
+                  CircleLayer(
+                    circles: [
+                      CircleMarker(
+                        point: LatLng(branch.latitude, branch.longitude),
+                        radius: 200,
+                        useRadiusInMeter: true,
+                        color: const Color(0xFF0052CC).withValues(alpha: 0.2),
+                        borderColor: const Color(
+                          0xFF0052CC,
+                        ).withValues(alpha: 0.4),
+                        borderStrokeWidth: 2,
+                      ),
+                    ],
+                  ),
+                if (location != null && !locationAsync.isLoading)
                   MarkerLayer(
                     markers: [
                       Marker(
-                        point: _currentCenter,
+                        point: LatLng(location.latitude, location.longitude),
                         width: 24,
                         height: 24,
                         child: _buildMapPin(),
@@ -367,13 +426,62 @@ class _MapSliverAppBarState extends ConsumerState<_MapSliverAppBar>
 class _CurrentStatusCard extends ConsumerWidget {
   const _CurrentStatusCard();
 
+  bool _isWithinRange(Position? currentLocation, Branch? branch) {
+    if (currentLocation == null || branch == null) return false;
+    final distance = Geolocator.distanceBetween(
+      currentLocation.latitude,
+      currentLocation.longitude,
+      branch.latitude,
+      branch.longitude,
+    );
+    return distance <= 200;
+  }
+
+  String _getDistance(Position? currentLocation, Branch? branch) {
+    if (currentLocation == null || branch == null) return 'N/A';
+    final distance = Geolocator.distanceBetween(
+      currentLocation.latitude,
+      currentLocation.longitude,
+      branch.latitude,
+      branch.longitude,
+    );
+    return distance.toStringAsFixed(1);
+  }
+
+  bool _isLate(DateTime? clockTime, Shift? shift) {
+    if (clockTime == null || shift == null || shift.workingDays.isEmpty) {
+      return false;
+    }
+
+    final todayDayId = (clockTime.weekday % 7) + 1;
+    final todayWorkingDay = shift.workingDays.firstWhere(
+      (workingDay) => workingDay.dayId == todayDayId,
+      orElse: () => shift.workingDays.first,
+    );
+    if (todayWorkingDay.isOffDay) return false;
+
+    final clockMinutes = clockTime.hour * 60 + clockTime.minute;
+    final startMinutes =
+        (todayWorkingDay.workStart ~/ 100) * 60 +
+        (todayWorkingDay.workStart % 100);
+    return clockMinutes > startMinutes;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final attendanceState = ref.watch(attendanceProvider);
+    final locationAsync = ref.watch(currentLocationProvider);
+    final branchAsync = ref.watch(branchProvider);
+    final shiftAsync = ref.watch(shiftProvider);
+
     final isClockedIn = attendanceState.isClockedIn;
     final clockTime = attendanceState.clockTime;
-    final isLoading = attendanceState.isLoading;
+    final location = locationAsync.hasValue ? locationAsync.value : null;
+    final branch = branchAsync.hasValue ? branchAsync.value : null;
+    final shift = shiftAsync.hasValue ? shiftAsync.value : null;
+    final inRange = _isWithinRange(location, branch);
+    final hasDistance = location != null && branch != null;
 
     return Container(
       decoration: BoxDecoration(
@@ -397,7 +505,6 @@ class _CurrentStatusCard extends ConsumerWidget {
             'Current Status',
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.w700,
-              color: const Color(0xFF0D1B2A),
             ),
           ),
           const SizedBox(height: 12),
@@ -424,6 +531,14 @@ class _CurrentStatusCard extends ConsumerWidget {
               ),
             ],
           ),
+          const SizedBox(height: 8),
+          Text(
+            '${branch?.name ?? 'Not Loaded'}${hasDistance && !inRange ? ' | ${_getDistance(location, branch)}m away' : ''}',
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: hasDistance && inRange ? Colors.green : Colors.red,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           const SizedBox(height: 16),
           Text(
             isClockedIn
@@ -431,11 +546,10 @@ class _CurrentStatusCard extends ConsumerWidget {
                 : 'Not clocked in yet',
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w700,
-              color: const Color(0xFF0D1B2A),
             ),
           ),
           const SizedBox(height: 4),
-          if (isClockedIn && clockTime != null && clockTime.hour > 9)
+          if (isClockedIn && _isLate(clockTime, shift))
             Text(
               'Late',
               style: theme.textTheme.bodyMedium?.copyWith(
@@ -444,64 +558,7 @@ class _CurrentStatusCard extends ConsumerWidget {
               ),
             ),
           const SizedBox(height: 24),
-          SizedBox(
-            width: double.infinity,
-            height: 48,
-            child: ElevatedButton.icon(
-              onPressed: isLoading
-                  ? null
-                  : () async {
-                      final location = ref.read(currentLocationProvider).value;
-                      if (location != null) {
-                        await ref
-                            .read(attendanceProvider.notifier)
-                            .toggleClockIn(
-                              lat: location.latitude,
-                              long: location.longitude,
-                            );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Please wait for location to be available',
-                            ),
-                          ),
-                        );
-                      }
-                    },
-              icon: isLoading
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2,
-                      ),
-                    )
-                  : Icon(
-                      isClockedIn
-                          ? Icons.exit_to_app_rounded
-                          : Icons.login_rounded,
-                      color: Colors.white,
-                    ),
-              label: Text(
-                isClockedIn ? 'Clock Out Now' : 'Clock In Now',
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: isClockedIn
-                    ? const Color(0xFFC62828)
-                    : const Color(0xFF2E7D32),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                elevation: 0,
-              ),
-            ),
-          ),
+          const ClockButton(),
           if (attendanceState.error != null) ...[
             const SizedBox(height: 12),
             Text(
@@ -561,78 +618,231 @@ class _LiveClockTextState extends State<_LiveClockText> {
   }
 }
 
-class _RecentActivity extends StatelessWidget {
+class _RecentActivity extends ConsumerWidget {
   const _RecentActivity();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final attendanceState = ref.watch(attendanceProvider);
+    final attendances = attendanceState.todayAttendances;
+    final isLoading = attendanceState.isLoading;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          'RECENT ACTIVITY',
-          style: theme.textTheme.labelMedium?.copyWith(
-            fontWeight: FontWeight.w800,
-            letterSpacing: 0.5,
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'TODAY\'S ACTIVITY',
+              style: theme.textTheme.labelMedium?.copyWith(
+                fontWeight: FontWeight.w800,
+                letterSpacing: 0.5,
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+              ),
+            ),
+            if (attendances.isNotEmpty)
+              Text(
+                '${attendances.length} record${attendances.length > 1 ? 's' : ''}',
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+          ],
         ),
         const SizedBox(height: 12),
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: theme.colorScheme.outline.withValues(alpha: 0.2),
+        if (isLoading && attendances.isEmpty)
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppSizes.borderRadiusLg),
+              side: BorderSide(
+                color: theme.colorScheme.outline.withValues(alpha: 0.15),
+              ),
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.02),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
+            child: const Padding(
+              padding: EdgeInsets.all(24),
+              child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+            ),
+          )
+        else if (attendances.isEmpty)
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppSizes.borderRadiusLg),
+              side: BorderSide(
+                color: theme.colorScheme.outline.withValues(alpha: 0.15),
               ),
-            ],
-          ),
-          child: Material(
-            color: theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(8),
-            child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
-              leading: const Icon(
-                Icons.login_rounded,
-                color: Color(0xFF1565C0),
-                size: 28,
-              ),
-              title: Text(
-                'Clock In: 09:06 AM',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF0D1B2A),
-                ),
-              ),
-              subtitle: Padding(
-                padding: const EdgeInsets.only(top: 4.0),
-                child: Text(
-                  '84 Street, Mandalay, Myanmar',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                    fontWeight: FontWeight.w500,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.history_rounded,
+                    size: 40,
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.25),
                   ),
-                ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'No activity today',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurface.withValues(
+                        alpha: 0.45,
+                      ),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ),
-              trailing: Icon(
-                Icons.chevron_right_rounded,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
+            ),
+          )
+        else
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppSizes.borderRadiusLg),
+              side: BorderSide(
+                color: theme.colorScheme.outline.withValues(alpha: 0.15),
               ),
-              onTap: () {},
+            ),
+            clipBehavior: Clip.hardEdge,
+            child: Column(
+              children: [
+                for (int i = 0; i < attendances.length; i++) ...[
+                  _AttendanceActivityTile(
+                    attendance: attendances[i],
+                    isFirst: i == 0,
+                  ),
+                  if (i < attendances.length - 1)
+                    Divider(
+                      height: 1,
+                      indent: 60,
+                      endIndent: 0,
+                      color: theme.colorScheme.outline.withValues(alpha: 0.12),
+                    ),
+                ],
+              ],
             ),
           ),
-        ),
       ],
+    );
+  }
+}
+
+class _AttendanceActivityTile extends StatelessWidget {
+  const _AttendanceActivityTile({
+    required this.attendance,
+    required this.isFirst,
+  });
+
+  final Attendance attendance;
+  final bool isFirst;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isSod = attendance.isSod;
+    final clockTime = attendance.clockIn.toLocal();
+
+    final Color iconBgColor = isSod
+        ? const Color(0xFF1565C0).withValues(alpha: 0.1)
+        : const Color(0xFFC62828).withValues(alpha: 0.1);
+    final Color iconColor = isSod
+        ? const Color(0xFF1565C0)
+        : const Color(0xFFC62828);
+    final IconData icon = isSod ? Icons.login_rounded : Icons.logout_rounded;
+    final String label = isSod ? 'Clock In' : 'Clock Out';
+    final String statusBadge = attendance.status?.titles.firstOrNull ?? '';
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: iconBgColor,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: iconColor, size: 22),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      '$label  ${formatTime(clockTime)}',
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    // if (isFirst) ...[
+                    //   const SizedBox(width: 8),
+                    //   Container(
+                    //     padding: const EdgeInsets.symmetric(
+                    //       horizontal: 7,
+                    //       vertical: 2,
+                    //     ),
+                    //     decoration: BoxDecoration(
+                    //       color: theme.colorScheme.primary.withValues(
+                    //         alpha: 0.1,
+                    //       ),
+                    //       borderRadius: BorderRadius.circular(20),
+                    //     ),
+                    //     child: Text(
+                    //       'Latest',
+                    //       style: theme.textTheme.labelSmall?.copyWith(
+                    //         color: theme.colorScheme.primary,
+                    //         fontWeight: FontWeight.w700,
+                    //         fontSize: 10,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ],
+                  ],
+                ),
+                const SizedBox(height: 3),
+                Row(
+                  children: [
+                    Text(
+                      'Via ${attendance.clockInBy}',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.5,
+                        ),
+                      ),
+                    ),
+                    if (statusBadge.isNotEmpty) ...[
+                      Text(
+                        '  ·  ',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurface.withValues(
+                            alpha: 0.3,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        statusBadge,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurface.withValues(
+                            alpha: 0.5,
+                          ),
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -655,7 +865,6 @@ class _MonthlyStatistics extends StatelessWidget {
               'Monthly Statistics',
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
-                color: const Color(0xFF0D1B2A),
               ),
             ),
             Text(
@@ -670,11 +879,11 @@ class _MonthlyStatistics extends StatelessWidget {
         const SizedBox(height: 16),
         Container(
           decoration: BoxDecoration(
-            color: const Color(0xFFF8F9FA),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
               color: theme.colorScheme.outline.withValues(alpha: 0.15),
             ),
+            color: theme.colorScheme.surface,
           ),
           child: IntrinsicHeight(
             child: Row(
@@ -737,7 +946,7 @@ class _MonthlyStatistics extends StatelessWidget {
               value,
               style: theme.textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.w800,
-                color: valueColor ?? const Color(0xFF0D1B2A),
+                color: valueColor,
               ),
               textAlign: TextAlign.center,
               maxLines: 1,

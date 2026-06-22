@@ -1,18 +1,13 @@
 import 'package:office_hr/core/network/api_service.dart';
 import 'package:office_hr/features/auth/data/models/login_response_model.dart';
 
-/// Abstract datasource for remote authentication operations
 abstract class AuthRemoteDataSource {
-  /// Login user with username and password
-  ///
-  /// Throws [Exception] if login fails
   Future<LoginResponseModel> login({
     required String username,
     required String password,
   });
 }
 
-/// Implementation of [AuthRemoteDataSource]
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final ApiService _apiService;
 

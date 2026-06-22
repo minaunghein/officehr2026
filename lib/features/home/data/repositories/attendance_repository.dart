@@ -1,26 +1,34 @@
-import 'package:office_hr/core/network/api_service.dart';
+import 'package:office_hr/features/home/data/datasources/attendance_datasource.dart';
+import 'package:office_hr/features/home/data/mappers/attendance_mapper.dart';
+import 'package:office_hr/features/home/domain/entities/attendance.dart';
+import 'package:office_hr/features/home/domain/repositories/attendance_repository.dart';
 
-class AttendanceRepository {
-  final ApiService _apiService;
+class AttendanceRepositoryImpl implements AttendanceRepository {
+  AttendanceRepositoryImpl({required this.datasource});
 
-  AttendanceRepository(this._apiService);
+  final AttendanceDatasource datasource;
 
-  Future<Map<String, dynamic>> clockIn({
+  @override
+  Future<Attendance> clockIn({
     required double lat,
     required double long,
     bool needApproval = true,
-    String desc = "Test",
+    String? desc,
   }) async {
-    final response = await _apiService.post(
-      '/api/v1/users/clockin',
-      data: {
-        "clockinby": "Mobile",
-        "needapproval": needApproval,
-        "lat": lat,
-        "long": long,
-        "desc": desc,
-      },
+    final response = await datasource.clockIn(
+      lat: lat,
+      long: long,
+      needApproval: needApproval,
+      desc: desc ?? '',
     );
-    return response as Map<String, dynamic>;
+    return response.toEntity();
+  }
+
+  @override
+  Future<List<Attendance>> getTodayClockIn({
+    required String date,
+  }) async {
+    final response = await datasource.getTodayClockIn(date: date);
+    return response.map((model) => model.toEntity()).toList();
   }
 }

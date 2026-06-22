@@ -6,6 +6,7 @@ import 'package:office_hr/features/auth/data/repositories/auth_repository_impl.d
 import 'package:office_hr/features/auth/domain/entities/auth_user.dart';
 import 'package:office_hr/features/auth/domain/repositories/auth_repository.dart';
 import 'package:office_hr/features/auth/domain/usecases/login_usecase.dart';
+import 'package:office_hr/features/user/presentation/providers/user_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_providers.g.dart';
@@ -83,12 +84,25 @@ class LoginNotifier extends _$LoginNotifier {
   }) async {
     state = const AsyncValue.loading();
     final loginUsecase = ref.read(loginUsecaseProvider);
+    final currentUserNotifier = ref.read(currentUserProvider.notifier);
+    final authTokenNotifier = ref.read(authTokenProvider.notifier);
+    final userDetailsNotifier = ref.read(userDetailsProvider.notifier);
+    final shiftNotifier = ref.read(shiftProvider.notifier);
+    final branchNotifier = ref.read(branchProvider.notifier);
 
-    state = await AsyncValue.guard(() async {
+    final newState = await AsyncValue.guard(() async {
       final user = await loginUsecase(username: username, password: password);
-      await ref.read(currentUserProvider.notifier).setUser(user, persist: true);
-      await ref.read(authTokenProvider.notifier).setToken(user.accessToken, persist: true);
+      await currentUserNotifier.setUser(user, persist: true);
+      await authTokenNotifier.setToken(user.accessToken, persist: true);
+
+      await userDetailsNotifier.fetch();
+      await shiftNotifier.fetch();
+      await branchNotifier.fetch();
     });
+
+    if (ref.mounted) {
+      state = newState;
+    }
   }
 
   Future<void> logout() async {

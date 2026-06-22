@@ -5,16 +5,17 @@ import 'package:office_hr/core/theme/app_theme.dart';
 import 'package:office_hr/core/theme/theme_notifier.dart';
 import 'package:office_hr/features/dashboard/presentation/providers/dashboard_provider.dart';
 import 'package:office_hr/features/home/presentation/screens/home.dart';
+import 'package:office_hr/features/profile/presentation/screens/profile_screen.dart';
 import 'package:office_hr/features/user/presentation/providers/user_providers.dart';
 
 class Dashboard extends ConsumerWidget {
-  const Dashboard({super.key});
+  Dashboard({super.key});
 
-  static const _pages = <Widget>[
+  final _pages = <Widget>[
     HomeScreen(),
     SizedBox(child: Center(child: Text('Attendance'))),
     SizedBox(child: Center(child: Text('Team'))),
-    SizedBox(child: Center(child: Text('Profile'))),
+    ProfileScreen(),
   ];
 
   @override
@@ -66,7 +67,7 @@ class _DashboardAppBar extends HookConsumerWidget
   final WidgetRef ref;
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 8); // Slightly taller for avatar
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 8);
 
   String _getGreeting() {
     final hour = DateTime.now().hour;
@@ -93,7 +94,9 @@ class _DashboardAppBar extends HookConsumerWidget
       scrolledUnderElevation: 0,
       title: Row(
         children: [
-          !userDetails.hasError && userDetails.value!.profileUrl.isNotEmpty
+          !userDetails.hasError &&
+                  userDetails.value != null &&
+                  userDetails.value!.profileUrl.isNotEmpty
               ? CircleAvatar(
                   radius: 20,
                   backgroundColor: theme.colorScheme.primaryContainer,
@@ -104,7 +107,7 @@ class _DashboardAppBar extends HookConsumerWidget
               : Container(
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    border: Border.all(),
+                    border: Border.all(color: theme.primaryColor),
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: Icon(Icons.person),

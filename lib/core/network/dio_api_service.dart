@@ -10,6 +10,7 @@ class DioApiService implements ApiService {
   @override
   Future<T> get<T>(
     String path, {
+    Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
     CancelToken? cancelToken,
@@ -18,6 +19,7 @@ class DioApiService implements ApiService {
     return _request<T>(
       'GET',
       path,
+      data: data,
       queryParameters: queryParameters,
       options: options,
       cancelToken: cancelToken,

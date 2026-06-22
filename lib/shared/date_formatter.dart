@@ -1,3 +1,5 @@
+import 'package:office_hr/features/user/domain/entities/shift.dart';
+
 String formatDateTime(DateTime dt) {
   final months = [
     'Jan',
@@ -54,3 +56,28 @@ String formatDateTimeWithSeconds(DateTime dt) {
   return '$weekday, $month ${dt.day} | $hour:$minute:$second $amPm';
 }
 
+String formatShiftWorkHours(Shift? shift) {
+  if (shift == null) return '--:--';
+  final todayWeekday = DateTime.now().weekday;
+  final todayDayId = (todayWeekday % 7) + 1;
+  final todayWorkingDay = shift.workingDays.firstWhere(
+    (wd) => wd.dayId == todayDayId,
+    orElse: () => shift.workingDays.first,
+  );
+
+  if (todayWorkingDay.isOffDay) {
+    return 'Off Day';
+  }
+
+  String formatIntTime(int timeInt) {
+    final hour = timeInt ~/ 100;
+    final minute = timeInt % 100;
+    final hour12 = hour == 0 ? 12 : (hour > 12 ? hour - 12 : hour);
+    final amPm = hour < 12 ? 'AM' : 'PM';
+    final mm = minute.toString().padLeft(2, '0');
+    final hh = hour12.toString().padLeft(2, '0');
+    return '$hh:$mm $amPm';
+  }
+
+  return '${formatIntTime(todayWorkingDay.workStart)} - ${formatIntTime(todayWorkingDay.workEnd)}${todayWorkingDay.isHalfDay ? ' (Half Day)' : ''}';
+}
