@@ -1,11 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:office_hr/core/theme/app_theme.dart';
-import 'package:office_hr/core/theme/theme_notifier.dart';
 import 'package:office_hr/features/dashboard/presentation/providers/dashboard_provider.dart';
 import 'package:office_hr/features/home/presentation/screens/home.dart';
-import 'package:office_hr/features/profile/presentation/screens/profile_screen.dart';
+import 'package:office_hr/features/settings/presentation/screens/settings.dart';
 import 'package:office_hr/features/user/presentation/providers/user_providers.dart';
 
 class Dashboard extends ConsumerWidget {
@@ -15,7 +13,7 @@ class Dashboard extends ConsumerWidget {
     HomeScreen(),
     // SizedBox(child: Center(child: Text('Attendance'))),
     SizedBox(child: Center(child: Text('Team'))),
-    ProfileScreen(),
+    SettingsScreen(),
   ];
 
   @override
@@ -84,7 +82,7 @@ class _DashboardAppBar extends HookConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeStyle = ref.watch(themeProvider);
+    // final themeStyle = ref.watch(themeProvider);
     final theme = Theme.of(context);
     final userDetails = ref.watch(userDetailsProvider);
 
@@ -132,7 +130,7 @@ class _DashboardAppBar extends HookConsumerWidget
                 )
               else
                 Text(
-                  userDetails.value?.username ?? 'Loading...',
+                  "${userDetails.value?.userBio?.basicInfo.firstNames[0]} ${userDetails.value?.userBio?.basicInfo.lastNames[0]}",
                   style: theme.textTheme.titleMedium?.copyWith(
                     color: theme.colorScheme.onSurface,
                     fontWeight: FontWeight.w800,
@@ -151,23 +149,23 @@ class _DashboardAppBar extends HookConsumerWidget
           ),
           onPressed: () {},
         ),
-        IconButton(
-          icon: Icon(
-            themeStyle == OfficeHrTheme.dark
-                ? Icons.dark_mode_outlined
-                : Icons.light_mode_outlined,
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-          ),
-          onPressed: () {
-            ref
-                .read(themeProvider.notifier)
-                .setTheme(
-                  themeStyle == OfficeHrTheme.dark
-                      ? OfficeHrTheme.light
-                      : OfficeHrTheme.dark,
-                );
-          },
-        ),
+        // IconButton(
+        //   icon: Icon(
+        //     themeStyle == OfficeHrTheme.dark
+        //         ? Icons.dark_mode_outlined
+        //         : Icons.light_mode_outlined,
+        //     color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+        //   ),
+        //   onPressed: () {
+        //     ref
+        //         .read(themeProvider.notifier)
+        //         .setTheme(
+        //           themeStyle == OfficeHrTheme.dark
+        //               ? OfficeHrTheme.light
+        //               : OfficeHrTheme.dark,
+        //         );
+        //   },
+        // ),
       ],
     );
   }

@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:office_hr/features/user/data/models/company_model.dart';
+import 'package:office_hr/features/user/data/models/user_bio_model.dart';
 import 'package:office_hr/features/user/data/models/user_leave_model.dart';
 
 part 'user_details_model.freezed.dart';
@@ -25,7 +26,7 @@ abstract class UserDetailsModel with _$UserDetailsModel {
     DateTime? createdAt,
     DateTime? updatedAt,
     @JsonKey(name: '__v') int? version,
-    String? userbio,
+    UserBioModel? userbio,
     @Default(false) bool isbiocomplete,
   }) = _UserDetailsModel;
 

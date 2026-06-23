@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserDetails {
 
- String get id; Company get company; List<String> get companiesPermitted; String get username; String get email; String? get phone; String get profileUrl; String get role; List<String> get tags; List<dynamic> get promotions; List<dynamic> get tasks; bool get deleted; DateTime? get deletedAt; List<UserLeave> get userLeaves; DateTime? get createdAt; DateTime? get updatedAt; String? get userBio; bool get isBioComplete;
+ String get id; Company get company; List<String> get companiesPermitted; String get username; String get email; String? get phone; String get profileUrl; String get role; List<String> get tags; List<dynamic> get promotions; List<dynamic> get tasks; bool get deleted; DateTime? get deletedAt; List<UserLeave> get userLeaves; DateTime? get createdAt; DateTime? get updatedAt; UserBio? get userBio; bool get isBioComplete;
 /// Create a copy of UserDetails
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,11 +45,11 @@ abstract mixin class $UserDetailsCopyWith<$Res>  {
   factory $UserDetailsCopyWith(UserDetails value, $Res Function(UserDetails) _then) = _$UserDetailsCopyWithImpl;
 @useResult
 $Res call({
- String id, Company company, List<String> companiesPermitted, String username, String email, String? phone, String profileUrl, String role, List<String> tags, List<dynamic> promotions, List<dynamic> tasks, bool deleted, DateTime? deletedAt, List<UserLeave> userLeaves, DateTime? createdAt, DateTime? updatedAt, String? userBio, bool isBioComplete
+ String id, Company company, List<String> companiesPermitted, String username, String email, String? phone, String profileUrl, String role, List<String> tags, List<dynamic> promotions, List<dynamic> tasks, bool deleted, DateTime? deletedAt, List<UserLeave> userLeaves, DateTime? createdAt, DateTime? updatedAt, UserBio? userBio, bool isBioComplete
 });
 
 
-$CompanyCopyWith<$Res> get company;
+$CompanyCopyWith<$Res> get company;$UserBioCopyWith<$Res>? get userBio;
 
 }
 /// @nodoc
@@ -81,7 +81,7 @@ as DateTime?,userLeaves: null == userLeaves ? _self.userLeaves : userLeaves // i
 as List<UserLeave>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,userBio: freezed == userBio ? _self.userBio : userBio // ignore: cast_nullable_to_non_nullable
-as String?,isBioComplete: null == isBioComplete ? _self.isBioComplete : isBioComplete // ignore: cast_nullable_to_non_nullable
+as UserBio?,isBioComplete: null == isBioComplete ? _self.isBioComplete : isBioComplete // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -93,6 +93,18 @@ $CompanyCopyWith<$Res> get company {
   
   return $CompanyCopyWith<$Res>(_self.company, (value) {
     return _then(_self.copyWith(company: value));
+  });
+}/// Create a copy of UserDetails
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserBioCopyWith<$Res>? get userBio {
+    if (_self.userBio == null) {
+    return null;
+  }
+
+  return $UserBioCopyWith<$Res>(_self.userBio!, (value) {
+    return _then(_self.copyWith(userBio: value));
   });
 }
 }
@@ -176,7 +188,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  Company company,  List<String> companiesPermitted,  String username,  String email,  String? phone,  String profileUrl,  String role,  List<String> tags,  List<dynamic> promotions,  List<dynamic> tasks,  bool deleted,  DateTime? deletedAt,  List<UserLeave> userLeaves,  DateTime? createdAt,  DateTime? updatedAt,  String? userBio,  bool isBioComplete)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  Company company,  List<String> companiesPermitted,  String username,  String email,  String? phone,  String profileUrl,  String role,  List<String> tags,  List<dynamic> promotions,  List<dynamic> tasks,  bool deleted,  DateTime? deletedAt,  List<UserLeave> userLeaves,  DateTime? createdAt,  DateTime? updatedAt,  UserBio? userBio,  bool isBioComplete)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserDetails() when $default != null:
 return $default(_that.id,_that.company,_that.companiesPermitted,_that.username,_that.email,_that.phone,_that.profileUrl,_that.role,_that.tags,_that.promotions,_that.tasks,_that.deleted,_that.deletedAt,_that.userLeaves,_that.createdAt,_that.updatedAt,_that.userBio,_that.isBioComplete);case _:
@@ -197,7 +209,7 @@ return $default(_that.id,_that.company,_that.companiesPermitted,_that.username,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  Company company,  List<String> companiesPermitted,  String username,  String email,  String? phone,  String profileUrl,  String role,  List<String> tags,  List<dynamic> promotions,  List<dynamic> tasks,  bool deleted,  DateTime? deletedAt,  List<UserLeave> userLeaves,  DateTime? createdAt,  DateTime? updatedAt,  String? userBio,  bool isBioComplete)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  Company company,  List<String> companiesPermitted,  String username,  String email,  String? phone,  String profileUrl,  String role,  List<String> tags,  List<dynamic> promotions,  List<dynamic> tasks,  bool deleted,  DateTime? deletedAt,  List<UserLeave> userLeaves,  DateTime? createdAt,  DateTime? updatedAt,  UserBio? userBio,  bool isBioComplete)  $default,) {final _that = this;
 switch (_that) {
 case _UserDetails():
 return $default(_that.id,_that.company,_that.companiesPermitted,_that.username,_that.email,_that.phone,_that.profileUrl,_that.role,_that.tags,_that.promotions,_that.tasks,_that.deleted,_that.deletedAt,_that.userLeaves,_that.createdAt,_that.updatedAt,_that.userBio,_that.isBioComplete);case _:
@@ -217,7 +229,7 @@ return $default(_that.id,_that.company,_that.companiesPermitted,_that.username,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  Company company,  List<String> companiesPermitted,  String username,  String email,  String? phone,  String profileUrl,  String role,  List<String> tags,  List<dynamic> promotions,  List<dynamic> tasks,  bool deleted,  DateTime? deletedAt,  List<UserLeave> userLeaves,  DateTime? createdAt,  DateTime? updatedAt,  String? userBio,  bool isBioComplete)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  Company company,  List<String> companiesPermitted,  String username,  String email,  String? phone,  String profileUrl,  String role,  List<String> tags,  List<dynamic> promotions,  List<dynamic> tasks,  bool deleted,  DateTime? deletedAt,  List<UserLeave> userLeaves,  DateTime? createdAt,  DateTime? updatedAt,  UserBio? userBio,  bool isBioComplete)?  $default,) {final _that = this;
 switch (_that) {
 case _UserDetails() when $default != null:
 return $default(_that.id,_that.company,_that.companiesPermitted,_that.username,_that.email,_that.phone,_that.profileUrl,_that.role,_that.tags,_that.promotions,_that.tasks,_that.deleted,_that.deletedAt,_that.userLeaves,_that.createdAt,_that.updatedAt,_that.userBio,_that.isBioComplete);case _:
@@ -281,7 +293,7 @@ class _UserDetails implements UserDetails {
 
 @override final  DateTime? createdAt;
 @override final  DateTime? updatedAt;
-@override final  String? userBio;
+@override final  UserBio? userBio;
 @override final  bool isBioComplete;
 
 /// Create a copy of UserDetails
@@ -314,11 +326,11 @@ abstract mixin class _$UserDetailsCopyWith<$Res> implements $UserDetailsCopyWith
   factory _$UserDetailsCopyWith(_UserDetails value, $Res Function(_UserDetails) _then) = __$UserDetailsCopyWithImpl;
 @override @useResult
 $Res call({
- String id, Company company, List<String> companiesPermitted, String username, String email, String? phone, String profileUrl, String role, List<String> tags, List<dynamic> promotions, List<dynamic> tasks, bool deleted, DateTime? deletedAt, List<UserLeave> userLeaves, DateTime? createdAt, DateTime? updatedAt, String? userBio, bool isBioComplete
+ String id, Company company, List<String> companiesPermitted, String username, String email, String? phone, String profileUrl, String role, List<String> tags, List<dynamic> promotions, List<dynamic> tasks, bool deleted, DateTime? deletedAt, List<UserLeave> userLeaves, DateTime? createdAt, DateTime? updatedAt, UserBio? userBio, bool isBioComplete
 });
 
 
-@override $CompanyCopyWith<$Res> get company;
+@override $CompanyCopyWith<$Res> get company;@override $UserBioCopyWith<$Res>? get userBio;
 
 }
 /// @nodoc
@@ -350,7 +362,7 @@ as DateTime?,userLeaves: null == userLeaves ? _self._userLeaves : userLeaves // 
 as List<UserLeave>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,userBio: freezed == userBio ? _self.userBio : userBio // ignore: cast_nullable_to_non_nullable
-as String?,isBioComplete: null == isBioComplete ? _self.isBioComplete : isBioComplete // ignore: cast_nullable_to_non_nullable
+as UserBio?,isBioComplete: null == isBioComplete ? _self.isBioComplete : isBioComplete // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -363,6 +375,18 @@ $CompanyCopyWith<$Res> get company {
   
   return $CompanyCopyWith<$Res>(_self.company, (value) {
     return _then(_self.copyWith(company: value));
+  });
+}/// Create a copy of UserDetails
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserBioCopyWith<$Res>? get userBio {
+    if (_self.userBio == null) {
+    return null;
+  }
+
+  return $UserBioCopyWith<$Res>(_self.userBio!, (value) {
+    return _then(_self.copyWith(userBio: value));
   });
 }
 }

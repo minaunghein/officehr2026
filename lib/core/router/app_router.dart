@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/features/dashboard/presentation/screens/dashboard.dart';
+import 'package:office_hr/features/settings/presentation/screens/profile_screen.dart';
 import 'package:office_hr/features/splash/presentation/screens/splash_screen.dart';
 import 'package:office_hr/features/auth/presentation/screens/company_setup_screen.dart';
 import 'package:office_hr/features/auth/presentation/screens/login_screen.dart';
@@ -12,6 +13,7 @@ abstract final class AppRoutes {
   static const home = '/home';
   static const companySetup = '/company-setup';
   static const login = '/login';
+  static const profile = '/profile';
 }
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -41,6 +43,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: AppRoutes.login, builder: (_, _) => const LoginScreen()),
       GoRoute(path: AppRoutes.dashboard, builder: (_, _) => Dashboard()),
+      GoRoute(
+        path: AppRoutes.profile,
+        builder: (_, _) => const ProfileScreen(),
+      ),
     ],
   );
 

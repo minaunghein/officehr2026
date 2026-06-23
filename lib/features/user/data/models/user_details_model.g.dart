@@ -41,7 +41,9 @@ _UserDetailsModel _$UserDetailsModelFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['updatedAt'] as String),
       version: (json['__v'] as num?)?.toInt(),
-      userbio: json['userbio'] as String?,
+      userbio: json['userbio'] == null
+          ? null
+          : UserBioModel.fromJson(json['userbio'] as Map<String, dynamic>),
       isbiocomplete: json['isbiocomplete'] as bool? ?? false,
     );
 

@@ -1,5 +1,6 @@
 import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
+import 'package:office_hr/features/general_data/presentation/providers/general_data_providers.dart';
 import 'package:office_hr/features/user/presentation/providers/user_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,6 +14,8 @@ class SplashInitialization extends _$SplashInitialization {
   Future<SplashState> build() async {
     await ref.read(authTokenProvider.future);
     await ref.read(currentUserProvider.future);
+
+    await ref.watch(generalDataProvider.future);
 
     final hasCompletedSetup = await ref.read(companySetupProvider.future);
     if (!hasCompletedSetup) {

@@ -34,7 +34,7 @@ final class SplashInitializationProvider
 }
 
 String _$splashInitializationHash() =>
-    r'dd596137e3ea4c162da864af00ef3e121ef86421';
+    r'e7c537d7423b317636c498911c2b32660b454f32';
 
 abstract class _$SplashInitialization extends $AsyncNotifier<SplashState> {
   FutureOr<SplashState> build();

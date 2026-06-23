@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:office_hr/features/user/domain/entities/company.dart';
+import 'package:office_hr/features/user/domain/entities/user_bio.dart';
 import 'package:office_hr/features/user/domain/entities/user_leave.dart';
 
 part 'user_details.freezed.dart';
@@ -23,7 +24,7 @@ abstract class UserDetails with _$UserDetails {
     required List<UserLeave> userLeaves,
     DateTime? createdAt,
     DateTime? updatedAt,
-    String? userBio,
+    UserBio? userBio,
     required bool isBioComplete,
   }) = _UserDetails;
 }
