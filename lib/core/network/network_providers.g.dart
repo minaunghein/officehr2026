@@ -121,9 +121,53 @@ final class AuthTokenProvider
   AuthToken create() => AuthToken();
 }
 
-String _$authTokenHash() => r'aae09af1376fe9aed713de6658509cff0c7a049c';
+String _$authTokenHash() => r'8770c2dfad2254edadf5e21d8c3b94680a03ad5d';
 
 abstract class _$AuthToken extends $AsyncNotifier<String?> {
+  FutureOr<String?> build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<AsyncValue<String?>, String?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<String?>, String?>,
+              AsyncValue<String?>,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
+
+@ProviderFor(AuthRefreshToken)
+final authRefreshTokenProvider = AuthRefreshTokenProvider._();
+
+final class AuthRefreshTokenProvider
+    extends $AsyncNotifierProvider<AuthRefreshToken, String?> {
+  AuthRefreshTokenProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'authRefreshTokenProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$authRefreshTokenHash();
+
+  @$internal
+  @override
+  AuthRefreshToken create() => AuthRefreshToken();
+}
+
+String _$authRefreshTokenHash() => r'b7effe88aee74c9e54a963f3406e4518abec08a6';
+
+abstract class _$AuthRefreshToken extends $AsyncNotifier<String?> {
   FutureOr<String?> build();
   @$mustCallSuper
   @override
@@ -179,7 +223,7 @@ final class DioProvider extends $FunctionalProvider<Dio, Dio, Dio>
   }
 }
 
-String _$dioHash() => r'24d2daeb758f1ac1edaae6f1a676b559112ae89c';
+String _$dioHash() => r'2c607d04d5a0b02347c86baec9dcbeec65c56e96';
 
 @ProviderFor(apiService)
 final apiServiceProvider = ApiServiceProvider._();

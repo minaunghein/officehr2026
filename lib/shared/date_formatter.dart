@@ -24,6 +24,25 @@ String formatDateTime(DateTime dt) {
   return '$weekday, $month ${dt.day} | $hour:$minute $amPm';
 }
 
+String formatMonthYear(DateTime dt) {
+  final months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  final month = months[dt.month - 1];
+  return '$month ${dt.year}';
+}
+
 String formatTime(DateTime dt) {
   final hour = dt.hour > 12 ? dt.hour - 12 : (dt.hour == 0 ? 12 : dt.hour);
   final amPm = dt.hour >= 12 ? 'PM' : 'AM';

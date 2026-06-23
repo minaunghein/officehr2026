@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CompanyModel {
 
-@JsonKey(name: '_id') String get id;@JsonKey(name: 'sc') String? get shortCode; String? get logo; String get name; String? get generalinfo; String? get socialmedia; int? get sequence; bool get active; String? get serial; bool get deleted; DateTime? get createdAt; DateTime? get updatedAt;@JsonKey(name: '__v') int? get version;
+@JsonKey(name: '_id') String get id;@JsonKey(name: 'sc') String? get shortCode; String? get logo; String get name; GeneralInfoModel? get generalinfo; SocialMediaModel? get socialmedia; int? get sequence; bool get active; String? get serial; bool get deleted; DateTime? get createdAt; DateTime? get updatedAt;@JsonKey(name: '__v') int? get version;
 /// Create a copy of CompanyModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,11 +48,11 @@ abstract mixin class $CompanyModelCopyWith<$Res>  {
   factory $CompanyModelCopyWith(CompanyModel value, $Res Function(CompanyModel) _then) = _$CompanyModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: '_id') String id,@JsonKey(name: 'sc') String? shortCode, String? logo, String name, String? generalinfo, String? socialmedia, int? sequence, bool active, String? serial, bool deleted, DateTime? createdAt, DateTime? updatedAt,@JsonKey(name: '__v') int? version
+@JsonKey(name: '_id') String id,@JsonKey(name: 'sc') String? shortCode, String? logo, String name, GeneralInfoModel? generalinfo, SocialMediaModel? socialmedia, int? sequence, bool active, String? serial, bool deleted, DateTime? createdAt, DateTime? updatedAt,@JsonKey(name: '__v') int? version
 });
 
 
-
+$GeneralInfoModelCopyWith<$Res>? get generalinfo;$SocialMediaModelCopyWith<$Res>? get socialmedia;
 
 }
 /// @nodoc
@@ -72,8 +72,8 @@ as String,shortCode: freezed == shortCode ? _self.shortCode : shortCode // ignor
 as String?,logo: freezed == logo ? _self.logo : logo // ignore: cast_nullable_to_non_nullable
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,generalinfo: freezed == generalinfo ? _self.generalinfo : generalinfo // ignore: cast_nullable_to_non_nullable
-as String?,socialmedia: freezed == socialmedia ? _self.socialmedia : socialmedia // ignore: cast_nullable_to_non_nullable
-as String?,sequence: freezed == sequence ? _self.sequence : sequence // ignore: cast_nullable_to_non_nullable
+as GeneralInfoModel?,socialmedia: freezed == socialmedia ? _self.socialmedia : socialmedia // ignore: cast_nullable_to_non_nullable
+as SocialMediaModel?,sequence: freezed == sequence ? _self.sequence : sequence // ignore: cast_nullable_to_non_nullable
 as int?,active: null == active ? _self.active : active // ignore: cast_nullable_to_non_nullable
 as bool,serial: freezed == serial ? _self.serial : serial // ignore: cast_nullable_to_non_nullable
 as String?,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
@@ -83,7 +83,31 @@ as DateTime?,version: freezed == version ? _self.version : version // ignore: ca
 as int?,
   ));
 }
+/// Create a copy of CompanyModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$GeneralInfoModelCopyWith<$Res>? get generalinfo {
+    if (_self.generalinfo == null) {
+    return null;
+  }
 
+  return $GeneralInfoModelCopyWith<$Res>(_self.generalinfo!, (value) {
+    return _then(_self.copyWith(generalinfo: value));
+  });
+}/// Create a copy of CompanyModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SocialMediaModelCopyWith<$Res>? get socialmedia {
+    if (_self.socialmedia == null) {
+    return null;
+  }
+
+  return $SocialMediaModelCopyWith<$Res>(_self.socialmedia!, (value) {
+    return _then(_self.copyWith(socialmedia: value));
+  });
+}
 }
 
 
@@ -165,7 +189,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id, @JsonKey(name: 'sc')  String? shortCode,  String? logo,  String name,  String? generalinfo,  String? socialmedia,  int? sequence,  bool active,  String? serial,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id, @JsonKey(name: 'sc')  String? shortCode,  String? logo,  String name,  GeneralInfoModel? generalinfo,  SocialMediaModel? socialmedia,  int? sequence,  bool active,  String? serial,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CompanyModel() when $default != null:
 return $default(_that.id,_that.shortCode,_that.logo,_that.name,_that.generalinfo,_that.socialmedia,_that.sequence,_that.active,_that.serial,_that.deleted,_that.createdAt,_that.updatedAt,_that.version);case _:
@@ -186,7 +210,7 @@ return $default(_that.id,_that.shortCode,_that.logo,_that.name,_that.generalinfo
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id, @JsonKey(name: 'sc')  String? shortCode,  String? logo,  String name,  String? generalinfo,  String? socialmedia,  int? sequence,  bool active,  String? serial,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: '__v')  int? version)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id, @JsonKey(name: 'sc')  String? shortCode,  String? logo,  String name,  GeneralInfoModel? generalinfo,  SocialMediaModel? socialmedia,  int? sequence,  bool active,  String? serial,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: '__v')  int? version)  $default,) {final _that = this;
 switch (_that) {
 case _CompanyModel():
 return $default(_that.id,_that.shortCode,_that.logo,_that.name,_that.generalinfo,_that.socialmedia,_that.sequence,_that.active,_that.serial,_that.deleted,_that.createdAt,_that.updatedAt,_that.version);case _:
@@ -206,7 +230,7 @@ return $default(_that.id,_that.shortCode,_that.logo,_that.name,_that.generalinfo
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String id, @JsonKey(name: 'sc')  String? shortCode,  String? logo,  String name,  String? generalinfo,  String? socialmedia,  int? sequence,  bool active,  String? serial,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String id, @JsonKey(name: 'sc')  String? shortCode,  String? logo,  String name,  GeneralInfoModel? generalinfo,  SocialMediaModel? socialmedia,  int? sequence,  bool active,  String? serial,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,) {final _that = this;
 switch (_that) {
 case _CompanyModel() when $default != null:
 return $default(_that.id,_that.shortCode,_that.logo,_that.name,_that.generalinfo,_that.socialmedia,_that.sequence,_that.active,_that.serial,_that.deleted,_that.createdAt,_that.updatedAt,_that.version);case _:
@@ -228,8 +252,8 @@ class _CompanyModel implements CompanyModel {
 @override@JsonKey(name: 'sc') final  String? shortCode;
 @override final  String? logo;
 @override final  String name;
-@override final  String? generalinfo;
-@override final  String? socialmedia;
+@override final  GeneralInfoModel? generalinfo;
+@override final  SocialMediaModel? socialmedia;
 @override final  int? sequence;
 @override@JsonKey() final  bool active;
 @override final  String? serial;
@@ -271,11 +295,11 @@ abstract mixin class _$CompanyModelCopyWith<$Res> implements $CompanyModelCopyWi
   factory _$CompanyModelCopyWith(_CompanyModel value, $Res Function(_CompanyModel) _then) = __$CompanyModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: '_id') String id,@JsonKey(name: 'sc') String? shortCode, String? logo, String name, String? generalinfo, String? socialmedia, int? sequence, bool active, String? serial, bool deleted, DateTime? createdAt, DateTime? updatedAt,@JsonKey(name: '__v') int? version
+@JsonKey(name: '_id') String id,@JsonKey(name: 'sc') String? shortCode, String? logo, String name, GeneralInfoModel? generalinfo, SocialMediaModel? socialmedia, int? sequence, bool active, String? serial, bool deleted, DateTime? createdAt, DateTime? updatedAt,@JsonKey(name: '__v') int? version
 });
 
 
-
+@override $GeneralInfoModelCopyWith<$Res>? get generalinfo;@override $SocialMediaModelCopyWith<$Res>? get socialmedia;
 
 }
 /// @nodoc
@@ -295,8 +319,8 @@ as String,shortCode: freezed == shortCode ? _self.shortCode : shortCode // ignor
 as String?,logo: freezed == logo ? _self.logo : logo // ignore: cast_nullable_to_non_nullable
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,generalinfo: freezed == generalinfo ? _self.generalinfo : generalinfo // ignore: cast_nullable_to_non_nullable
-as String?,socialmedia: freezed == socialmedia ? _self.socialmedia : socialmedia // ignore: cast_nullable_to_non_nullable
-as String?,sequence: freezed == sequence ? _self.sequence : sequence // ignore: cast_nullable_to_non_nullable
+as GeneralInfoModel?,socialmedia: freezed == socialmedia ? _self.socialmedia : socialmedia // ignore: cast_nullable_to_non_nullable
+as SocialMediaModel?,sequence: freezed == sequence ? _self.sequence : sequence // ignore: cast_nullable_to_non_nullable
 as int?,active: null == active ? _self.active : active // ignore: cast_nullable_to_non_nullable
 as bool,serial: freezed == serial ? _self.serial : serial // ignore: cast_nullable_to_non_nullable
 as String?,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
@@ -307,7 +331,31 @@ as int?,
   ));
 }
 
+/// Create a copy of CompanyModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$GeneralInfoModelCopyWith<$Res>? get generalinfo {
+    if (_self.generalinfo == null) {
+    return null;
+  }
 
+  return $GeneralInfoModelCopyWith<$Res>(_self.generalinfo!, (value) {
+    return _then(_self.copyWith(generalinfo: value));
+  });
+}/// Create a copy of CompanyModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SocialMediaModelCopyWith<$Res>? get socialmedia {
+    if (_self.socialmedia == null) {
+    return null;
+  }
+
+  return $SocialMediaModelCopyWith<$Res>(_self.socialmedia!, (value) {
+    return _then(_self.copyWith(socialmedia: value));
+  });
+}
 }
 
 // dart format on

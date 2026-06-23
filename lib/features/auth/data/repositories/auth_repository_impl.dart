@@ -22,6 +22,7 @@ class AuthRepositoryImpl implements AuthRepository {
     return AuthUser(
       userId: response.userid,
       accessToken: response.accessToken,
+      refreshToken: response.refreshToken,
       tokenType: response.tokenType,
       expiresAt: DateTime.now().add(Duration(seconds: response.expiresIn)),
     );

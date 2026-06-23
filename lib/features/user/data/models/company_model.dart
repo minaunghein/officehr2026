@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:office_hr/features/user/data/models/general_info_model.dart';
+import 'package:office_hr/features/user/data/models/social_media_model.dart';
 
 part 'company_model.freezed.dart';
 part 'company_model.g.dart';
@@ -10,8 +12,8 @@ abstract class CompanyModel with _$CompanyModel {
     @JsonKey(name: 'sc') String? shortCode,
     String? logo,
     required String name,
-    String? generalinfo,
-    String? socialmedia,
+    GeneralInfoModel? generalinfo,
+    SocialMediaModel? socialmedia,
     int? sequence,
     @Default(true) bool active,
     String? serial,

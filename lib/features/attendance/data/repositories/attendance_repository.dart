@@ -1,7 +1,7 @@
-import 'package:office_hr/features/home/data/datasources/attendance_datasource.dart';
-import 'package:office_hr/features/home/data/mappers/attendance_mapper.dart';
-import 'package:office_hr/features/home/domain/entities/attendance.dart';
-import 'package:office_hr/features/home/domain/repositories/attendance_repository.dart';
+import 'package:office_hr/features/attendance/data/datasources/attendance_datasource.dart';
+import 'package:office_hr/features/attendance/data/mappers/attendance_mapper.dart';
+import 'package:office_hr/features/attendance/domain/entities/attendance.dart';
+import 'package:office_hr/features/attendance/domain/repositories/attendance_repository.dart';
 
 class AttendanceRepositoryImpl implements AttendanceRepository {
   AttendanceRepositoryImpl({required this.datasource});

@@ -163,7 +163,7 @@ final class CurrentUserProvider
   CurrentUser create() => CurrentUser();
 }
 
-String _$currentUserHash() => r'a36135dcc6eb1ea4ed4431e654ef4b2149c36f17';
+String _$currentUserHash() => r'4bcf9142664e41667f6b42dc9daeaad0d11eca9b';
 
 abstract class _$CurrentUser extends $AsyncNotifier<AuthUser?> {
   FutureOr<AuthUser?> build();
@@ -207,7 +207,7 @@ final class LoginNotifierProvider
   LoginNotifier create() => LoginNotifier();
 }
 
-String _$loginNotifierHash() => r'ba32bcbbafd34e79d6add1a9ef97ff649426346b';
+String _$loginNotifierHash() => r'2ff8a0998e6e6592e62869be7adf6660fff1d539';
 
 abstract class _$LoginNotifier extends $AsyncNotifier<void> {
   FutureOr<void> build();
@@ -311,4 +311,4 @@ final class IsAuthenticatedProvider
   }
 }
 
-String _$isAuthenticatedHash() => r'4e7e819f15e0065c6d8daeaab422b8b14ebaa53e';
+String _$isAuthenticatedHash() => r'382e0bd45cbdf6c1cc8b0333fbf27c8698696204';

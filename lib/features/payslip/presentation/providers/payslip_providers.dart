@@ -33,20 +33,21 @@ GetPayslipUsecase getPayslipUsecase(Ref ref) {
 @riverpod
 class PayslipNotifier extends _$PayslipNotifier {
   @override
-  FutureOr<Payslip?> build() {
-    return null;
+  FutureOr<List<Payslip>> build() async {
+    return await fetch();
   }
 
-  /// Fetch the payslip for an optional date range.
-  Future<void> fetch({String? startDate, String? endDate}) async {
+  Future<List<Payslip>> fetch() async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
+    final result = await AsyncValue.guard(() async {
       final usecase = ref.read(getPayslipUsecaseProvider);
-      return await usecase(startDate: startDate, endDate: endDate);
+      return await usecase();
     });
+    state = result;
+    return result.value ?? [];
   }
 
   void clear() {
-    state = const AsyncData(null);
+    state = const AsyncData([]);
   }
 }

@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/features/dashboard/presentation/providers/dashboard_provider.dart';
-import 'package:office_hr/features/home/presentation/screens/home.dart';
+import 'package:office_hr/features/attendance/presentation/screens/home.dart';
 import 'package:office_hr/features/settings/presentation/screens/settings.dart';
 import 'package:office_hr/features/user/presentation/providers/user_providers.dart';
 
@@ -95,20 +95,37 @@ class _DashboardAppBar extends HookConsumerWidget
           !userDetails.hasError &&
                   userDetails.value != null &&
                   userDetails.value!.profileUrl.isNotEmpty
-              ? CircleAvatar(
-                  radius: 20,
-                  backgroundColor: theme.colorScheme.primaryContainer,
-                  backgroundImage: CachedNetworkImageProvider(
-                    userDetails.value!.profileUrl,
+              ? ClipOval(
+                  child: SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: CachedNetworkImage(
+                      imageUrl: userDetails.value!.profileUrl,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: theme.colorScheme.primary,
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Container(
+                        color: theme.colorScheme.primaryContainer,
+                        alignment: Alignment.center,
+                        child: Icon(
+                          Icons.person,
+                          color: theme.colorScheme.onPrimaryContainer,
+                        ),
+                      ),
+                    ),
                   ),
                 )
               : Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     border: Border.all(color: theme.primaryColor),
                     borderRadius: BorderRadius.circular(50),
                   ),
-                  child: Icon(Icons.person),
+                  child: const Icon(Icons.person),
                 ),
           const SizedBox(width: 12),
           Column(
@@ -125,12 +142,14 @@ class _DashboardAppBar extends HookConsumerWidget
               ),
               if (userDetails.hasError)
                 Text(
-                  'Error: ${userDetails.error}',
+                  'Error Getting User Info',
                   style: theme.textTheme.bodySmall?.copyWith(color: Colors.red),
                 )
               else
                 Text(
-                  "${userDetails.value?.userBio?.basicInfo.firstNames[0]} ${userDetails.value?.userBio?.basicInfo.lastNames[0]}",
+                  userDetails.value?.userBio != null
+                      ? "${userDetails.value?.userBio?.basicInfo.firstNames[0]} ${userDetails.value?.userBio?.basicInfo.lastNames[0]}"
+                      : userDetails.value?.username ?? 'Loading...',
                   style: theme.textTheme.titleMedium?.copyWith(
                     color: theme.colorScheme.onSurface,
                     fontWeight: FontWeight.w800,

@@ -155,7 +155,7 @@ String _$getPayslipUsecaseHash() => r'c687a6d178b27f90319ad53768008823ef9f9892';
 final payslipProvider = PayslipNotifierProvider._();
 
 final class PayslipNotifierProvider
-    extends $AsyncNotifierProvider<PayslipNotifier, Payslip?> {
+    extends $AsyncNotifierProvider<PayslipNotifier, List<Payslip>> {
   PayslipNotifierProvider._()
     : super(
         from: null,
@@ -175,19 +175,19 @@ final class PayslipNotifierProvider
   PayslipNotifier create() => PayslipNotifier();
 }
 
-String _$payslipNotifierHash() => r'42a3db3409bab18be61b2ab0f862f7b4a9b6c891';
+String _$payslipNotifierHash() => r'9494d4009f32719d56a759f72104964fb410cc82';
 
-abstract class _$PayslipNotifier extends $AsyncNotifier<Payslip?> {
-  FutureOr<Payslip?> build();
+abstract class _$PayslipNotifier extends $AsyncNotifier<List<Payslip>> {
+  FutureOr<List<Payslip>> build();
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
-    final ref = this.ref as $Ref<AsyncValue<Payslip?>, Payslip?>;
+    final ref = this.ref as $Ref<AsyncValue<List<Payslip>>, List<Payslip>>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<Payslip?>, Payslip?>,
-              AsyncValue<Payslip?>,
+              AnyNotifier<AsyncValue<List<Payslip>>, List<Payslip>>,
+              AsyncValue<List<Payslip>>,
               Object?,
               Object?
             >;

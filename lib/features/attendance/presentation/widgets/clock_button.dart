@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:office_hr/features/home/presentation/providers/attendance_provider.dart';
-import 'package:office_hr/features/home/presentation/providers/location_provider.dart';
+import 'package:office_hr/features/attendance/presentation/providers/attendance_provider.dart';
+import 'package:office_hr/features/attendance/presentation/providers/location_provider.dart';
 import 'package:office_hr/features/user/presentation/providers/user_providers.dart';
 
 class ClockButton extends ConsumerWidget {

@@ -2,7 +2,10 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/features/dashboard/presentation/screens/dashboard.dart';
-import 'package:office_hr/features/settings/presentation/screens/profile_screen.dart';
+import 'package:office_hr/features/payslip/presentation/screens/payslip_screen.dart';
+import 'package:office_hr/features/user/presentation/screens/company_screen.dart';
+import 'package:office_hr/features/user/presentation/screens/leave_screen.dart';
+import 'package:office_hr/features/user/presentation/screens/profile_screen.dart';
 import 'package:office_hr/features/splash/presentation/screens/splash_screen.dart';
 import 'package:office_hr/features/auth/presentation/screens/company_setup_screen.dart';
 import 'package:office_hr/features/auth/presentation/screens/login_screen.dart';
@@ -14,6 +17,9 @@ abstract final class AppRoutes {
   static const companySetup = '/company-setup';
   static const login = '/login';
   static const profile = '/profile';
+  static const payslip = '/payslip';
+  static const leave = '/leave';
+  static const company = '/company';
 }
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -46,6 +52,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.profile,
         builder: (_, _) => const ProfileScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.payslip,
+        builder: (_, _) => const PayslipScreen(),
+      ),
+      GoRoute(path: AppRoutes.leave, builder: (_, _) => const LeaveScreen()),
+      GoRoute(
+        path: AppRoutes.company,
+        builder: (_, _) => const CompanyScreen(),
       ),
     ],
   );

@@ -1,5 +1,5 @@
-import 'package:office_hr/features/home/domain/entities/attendance.dart';
-import 'package:office_hr/features/home/domain/repositories/attendance_repository.dart';
+import 'package:office_hr/features/attendance/domain/entities/attendance.dart';
+import 'package:office_hr/features/attendance/domain/repositories/attendance_repository.dart';
 
 class GetTodayClockInUsecase {
   GetTodayClockInUsecase({required this.repository});

@@ -10,7 +10,7 @@ part 'user_details_model.g.dart';
 abstract class UserDetailsModel with _$UserDetailsModel {
   const factory UserDetailsModel({
     @JsonKey(name: '_id') required String id,
-    required CompanyModel company,
+    @JsonKey(fromJson: _parseCompany) required CompanyModel company,
     @Default([]) List<String> compspermitted,
     required String username,
     required String email,
@@ -32,4 +32,13 @@ abstract class UserDetailsModel with _$UserDetailsModel {
 
   factory UserDetailsModel.fromJson(Map<String, dynamic> json) =>
       _$UserDetailsModelFromJson(json);
+}
+
+CompanyModel _parseCompany(dynamic json) {
+  if (json is String) {
+    return CompanyModel(id: json, name: '');
+  } else if (json is Map) {
+    return CompanyModel.fromJson(Map<String, dynamic>.from(json));
+  }
+  return const CompanyModel(id: '', name: '');
 }

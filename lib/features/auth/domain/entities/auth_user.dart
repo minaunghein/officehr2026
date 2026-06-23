@@ -10,6 +10,7 @@ abstract class AuthUser with _$AuthUser {
   const factory AuthUser({
     required String userId,
     required String accessToken,
+    @Default('') String refreshToken,
     required String tokenType,
     required DateTime expiresAt,
   }) = _AuthUser;
@@ -20,4 +21,6 @@ abstract class AuthUser with _$AuthUser {
   bool get isTokenExpired => DateTime.now().isAfter(expiresAt);
 
   bool get isTokenValid => !isTokenExpired;
+
+  bool get hasRefreshToken => refreshToken.isNotEmpty;
 }

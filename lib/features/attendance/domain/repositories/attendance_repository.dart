@@ -1,4 +1,4 @@
-import 'package:office_hr/features/home/domain/entities/attendance.dart';
+import 'package:office_hr/features/attendance/domain/entities/attendance.dart';
 
 abstract class AttendanceRepository {
   Future<Attendance> clockIn({

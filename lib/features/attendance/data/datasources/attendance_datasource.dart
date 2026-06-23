@@ -1,5 +1,5 @@
 import 'package:office_hr/core/network/api_service.dart';
-import 'package:office_hr/features/home/data/models/attendance_model.dart';
+import 'package:office_hr/features/attendance/data/models/attendance_model.dart';
 
 abstract class AttendanceDatasource {
   Future<AttendanceModel> clockIn({

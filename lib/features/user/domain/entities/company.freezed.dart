@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Company {
 
- String get id; String? get shortCode; String? get logo; String get name; String? get generalInfo; String? get socialMedia; int? get sequence; bool get active; String? get serial; bool get deleted; DateTime? get createdAt; DateTime? get updatedAt;
+ String get id; String? get shortCode; String? get logo; String get name; GeneralInfo? get generalInfo; SocialMedia? get socialMedia; int? get sequence; bool get active; String? get serial; bool get deleted; DateTime? get createdAt; DateTime? get updatedAt;
 /// Create a copy of Company
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,11 +45,11 @@ abstract mixin class $CompanyCopyWith<$Res>  {
   factory $CompanyCopyWith(Company value, $Res Function(Company) _then) = _$CompanyCopyWithImpl;
 @useResult
 $Res call({
- String id, String? shortCode, String? logo, String name, String? generalInfo, String? socialMedia, int? sequence, bool active, String? serial, bool deleted, DateTime? createdAt, DateTime? updatedAt
+ String id, String? shortCode, String? logo, String name, GeneralInfo? generalInfo, SocialMedia? socialMedia, int? sequence, bool active, String? serial, bool deleted, DateTime? createdAt, DateTime? updatedAt
 });
 
 
-
+$GeneralInfoCopyWith<$Res>? get generalInfo;$SocialMediaCopyWith<$Res>? get socialMedia;
 
 }
 /// @nodoc
@@ -69,8 +69,8 @@ as String,shortCode: freezed == shortCode ? _self.shortCode : shortCode // ignor
 as String?,logo: freezed == logo ? _self.logo : logo // ignore: cast_nullable_to_non_nullable
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,generalInfo: freezed == generalInfo ? _self.generalInfo : generalInfo // ignore: cast_nullable_to_non_nullable
-as String?,socialMedia: freezed == socialMedia ? _self.socialMedia : socialMedia // ignore: cast_nullable_to_non_nullable
-as String?,sequence: freezed == sequence ? _self.sequence : sequence // ignore: cast_nullable_to_non_nullable
+as GeneralInfo?,socialMedia: freezed == socialMedia ? _self.socialMedia : socialMedia // ignore: cast_nullable_to_non_nullable
+as SocialMedia?,sequence: freezed == sequence ? _self.sequence : sequence // ignore: cast_nullable_to_non_nullable
 as int?,active: null == active ? _self.active : active // ignore: cast_nullable_to_non_nullable
 as bool,serial: freezed == serial ? _self.serial : serial // ignore: cast_nullable_to_non_nullable
 as String?,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
@@ -79,7 +79,31 @@ as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ig
 as DateTime?,
   ));
 }
+/// Create a copy of Company
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$GeneralInfoCopyWith<$Res>? get generalInfo {
+    if (_self.generalInfo == null) {
+    return null;
+  }
 
+  return $GeneralInfoCopyWith<$Res>(_self.generalInfo!, (value) {
+    return _then(_self.copyWith(generalInfo: value));
+  });
+}/// Create a copy of Company
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SocialMediaCopyWith<$Res>? get socialMedia {
+    if (_self.socialMedia == null) {
+    return null;
+  }
+
+  return $SocialMediaCopyWith<$Res>(_self.socialMedia!, (value) {
+    return _then(_self.copyWith(socialMedia: value));
+  });
+}
 }
 
 
@@ -161,7 +185,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? shortCode,  String? logo,  String name,  String? generalInfo,  String? socialMedia,  int? sequence,  bool active,  String? serial,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? shortCode,  String? logo,  String name,  GeneralInfo? generalInfo,  SocialMedia? socialMedia,  int? sequence,  bool active,  String? serial,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Company() when $default != null:
 return $default(_that.id,_that.shortCode,_that.logo,_that.name,_that.generalInfo,_that.socialMedia,_that.sequence,_that.active,_that.serial,_that.deleted,_that.createdAt,_that.updatedAt);case _:
@@ -182,7 +206,7 @@ return $default(_that.id,_that.shortCode,_that.logo,_that.name,_that.generalInfo
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? shortCode,  String? logo,  String name,  String? generalInfo,  String? socialMedia,  int? sequence,  bool active,  String? serial,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? shortCode,  String? logo,  String name,  GeneralInfo? generalInfo,  SocialMedia? socialMedia,  int? sequence,  bool active,  String? serial,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _Company():
 return $default(_that.id,_that.shortCode,_that.logo,_that.name,_that.generalInfo,_that.socialMedia,_that.sequence,_that.active,_that.serial,_that.deleted,_that.createdAt,_that.updatedAt);case _:
@@ -202,7 +226,7 @@ return $default(_that.id,_that.shortCode,_that.logo,_that.name,_that.generalInfo
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? shortCode,  String? logo,  String name,  String? generalInfo,  String? socialMedia,  int? sequence,  bool active,  String? serial,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? shortCode,  String? logo,  String name,  GeneralInfo? generalInfo,  SocialMedia? socialMedia,  int? sequence,  bool active,  String? serial,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Company() when $default != null:
 return $default(_that.id,_that.shortCode,_that.logo,_that.name,_that.generalInfo,_that.socialMedia,_that.sequence,_that.active,_that.serial,_that.deleted,_that.createdAt,_that.updatedAt);case _:
@@ -224,8 +248,8 @@ class _Company implements Company {
 @override final  String? shortCode;
 @override final  String? logo;
 @override final  String name;
-@override final  String? generalInfo;
-@override final  String? socialMedia;
+@override final  GeneralInfo? generalInfo;
+@override final  SocialMedia? socialMedia;
 @override final  int? sequence;
 @override final  bool active;
 @override final  String? serial;
@@ -263,11 +287,11 @@ abstract mixin class _$CompanyCopyWith<$Res> implements $CompanyCopyWith<$Res> {
   factory _$CompanyCopyWith(_Company value, $Res Function(_Company) _then) = __$CompanyCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String? shortCode, String? logo, String name, String? generalInfo, String? socialMedia, int? sequence, bool active, String? serial, bool deleted, DateTime? createdAt, DateTime? updatedAt
+ String id, String? shortCode, String? logo, String name, GeneralInfo? generalInfo, SocialMedia? socialMedia, int? sequence, bool active, String? serial, bool deleted, DateTime? createdAt, DateTime? updatedAt
 });
 
 
-
+@override $GeneralInfoCopyWith<$Res>? get generalInfo;@override $SocialMediaCopyWith<$Res>? get socialMedia;
 
 }
 /// @nodoc
@@ -287,8 +311,8 @@ as String,shortCode: freezed == shortCode ? _self.shortCode : shortCode // ignor
 as String?,logo: freezed == logo ? _self.logo : logo // ignore: cast_nullable_to_non_nullable
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,generalInfo: freezed == generalInfo ? _self.generalInfo : generalInfo // ignore: cast_nullable_to_non_nullable
-as String?,socialMedia: freezed == socialMedia ? _self.socialMedia : socialMedia // ignore: cast_nullable_to_non_nullable
-as String?,sequence: freezed == sequence ? _self.sequence : sequence // ignore: cast_nullable_to_non_nullable
+as GeneralInfo?,socialMedia: freezed == socialMedia ? _self.socialMedia : socialMedia // ignore: cast_nullable_to_non_nullable
+as SocialMedia?,sequence: freezed == sequence ? _self.sequence : sequence // ignore: cast_nullable_to_non_nullable
 as int?,active: null == active ? _self.active : active // ignore: cast_nullable_to_non_nullable
 as bool,serial: freezed == serial ? _self.serial : serial // ignore: cast_nullable_to_non_nullable
 as String?,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
@@ -298,7 +322,31 @@ as DateTime?,
   ));
 }
 
+/// Create a copy of Company
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$GeneralInfoCopyWith<$Res>? get generalInfo {
+    if (_self.generalInfo == null) {
+    return null;
+  }
 
+  return $GeneralInfoCopyWith<$Res>(_self.generalInfo!, (value) {
+    return _then(_self.copyWith(generalInfo: value));
+  });
+}/// Create a copy of Company
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SocialMediaCopyWith<$Res>? get socialMedia {
+    if (_self.socialMedia == null) {
+    return null;
+  }
+
+  return $SocialMediaCopyWith<$Res>(_self.socialMedia!, (value) {
+    return _then(_self.copyWith(socialMedia: value));
+  });
+}
 }
 
 // dart format on

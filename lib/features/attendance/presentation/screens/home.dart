@@ -6,13 +6,13 @@ import 'package:latlong2/latlong.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/features/user/domain/entities/branch.dart';
 import 'package:office_hr/features/user/domain/entities/shift.dart';
-import 'package:office_hr/features/home/presentation/providers/location_provider.dart';
+import 'package:office_hr/features/attendance/presentation/providers/location_provider.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:office_hr/features/home/domain/entities/attendance.dart';
-import 'package:office_hr/features/home/presentation/providers/attendance_provider.dart';
+import 'package:office_hr/features/attendance/domain/entities/attendance.dart';
+import 'package:office_hr/features/attendance/presentation/providers/attendance_provider.dart';
 import 'package:office_hr/features/user/presentation/providers/user_providers.dart';
 import 'package:office_hr/shared/date_formatter.dart';
-import 'package:office_hr/features/home/presentation/widgets/clock_button.dart';
+import 'package:office_hr/features/attendance/presentation/widgets/clock_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -305,7 +305,7 @@ class _MapSliverAppBarState extends ConsumerState<_MapSliverAppBar>
                           height: 14,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: theme.colorScheme.primary,
+                            color: Color(0xFF0052CC),
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -313,7 +313,7 @@ class _MapSliverAppBarState extends ConsumerState<_MapSliverAppBar>
                           'Getting location...',
                           style: theme.textTheme.labelMedium?.copyWith(
                             fontWeight: FontWeight.w700,
-                            color: theme.colorScheme.primary,
+                            color: Color(0xFF0052CC),
                           ),
                         ),
                       ],
@@ -390,7 +390,7 @@ class _MapSliverAppBarState extends ConsumerState<_MapSliverAppBar>
                     ),
                     child: Icon(
                       Icons.my_location_rounded,
-                      color: theme.colorScheme.primary,
+                      color: Color(0xFF0052CC),
                       size: 24,
                     ),
                   ),
@@ -573,8 +573,8 @@ class _CurrentStatusCard extends ConsumerWidget {
           const SizedBox(height: 16),
           Text(
             isClockedIn
-                ? 'Clocked in at ${clockTime != null ? formatTime(clockTime) : "--:--"}'
-                : 'Clocked out at ${clockTime != null ? formatTime(clockTime) : "--:--"}',
+                ? 'Clocked in at ${clockTime != null ? formatTime(clockTime.toLocal()) : "--:--"}'
+                : 'Clocked out at ${clockTime != null ? formatTime(clockTime.toLocal()) : "--:--"}',
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w700,
             ),
@@ -899,7 +899,7 @@ class _MonthlyStatistics extends StatelessWidget {
               ),
             ),
             Text(
-              'January 2026',
+              formatMonthYear(DateTime.now()),
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.5),

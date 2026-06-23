@@ -1,11 +1,11 @@
 import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/core/services/app_logger.dart';
-import 'package:office_hr/features/home/data/datasources/attendance_datasource.dart';
-import 'package:office_hr/features/home/data/repositories/attendance_repository.dart';
-import 'package:office_hr/features/home/domain/entities/attendance.dart';
-import 'package:office_hr/features/home/domain/repositories/attendance_repository.dart';
-import 'package:office_hr/features/home/domain/usecases/clock_in_usecase.dart';
-import 'package:office_hr/features/home/domain/usecases/get_today_clock_in_usecase.dart';
+import 'package:office_hr/features/attendance/data/datasources/attendance_datasource.dart';
+import 'package:office_hr/features/attendance/data/repositories/attendance_repository.dart';
+import 'package:office_hr/features/attendance/domain/entities/attendance.dart';
+import 'package:office_hr/features/attendance/domain/repositories/attendance_repository.dart';
+import 'package:office_hr/features/attendance/domain/usecases/clock_in_usecase.dart';
+import 'package:office_hr/features/attendance/domain/usecases/get_today_clock_in_usecase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'attendance_provider.g.dart';
@@ -152,8 +152,8 @@ class AttendanceNotifier extends _$AttendanceNotifier {
 
       final newClockedInState = attendance.isSod;
 
-      final updated = state.todayAttendances.isEmpty
-          ? [attendance]
+      final updated = state.todayAttendances.length < 2
+          ? [attendance, ...state.todayAttendances]
           : [attendance, ...state.todayAttendances.sublist(1)];
 
       state = state.copyWith(

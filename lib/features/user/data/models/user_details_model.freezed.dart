@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserDetailsModel {
 
-@JsonKey(name: '_id') String get id; CompanyModel get company; List<String> get compspermitted; String get username; String get email; String? get phone; String get profileurl; String get role; List<String> get tags; List<dynamic> get promotion; List<dynamic> get tasks; bool get deleted; DateTime? get deletedAt; List<UserLeaveModel> get userLeaves; DateTime? get createdAt; DateTime? get updatedAt;@JsonKey(name: '__v') int? get version; UserBioModel? get userbio; bool get isbiocomplete;
+@JsonKey(name: '_id') String get id;@JsonKey(fromJson: _parseCompany) CompanyModel get company; List<String> get compspermitted; String get username; String get email; String? get phone; String get profileurl; String get role; List<String> get tags; List<dynamic> get promotion; List<dynamic> get tasks; bool get deleted; DateTime? get deletedAt; List<UserLeaveModel> get userLeaves; DateTime? get createdAt; DateTime? get updatedAt;@JsonKey(name: '__v') int? get version; UserBioModel? get userbio; bool get isbiocomplete;
 /// Create a copy of UserDetailsModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $UserDetailsModelCopyWith<$Res>  {
   factory $UserDetailsModelCopyWith(UserDetailsModel value, $Res Function(UserDetailsModel) _then) = _$UserDetailsModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: '_id') String id, CompanyModel company, List<String> compspermitted, String username, String email, String? phone, String profileurl, String role, List<String> tags, List<dynamic> promotion, List<dynamic> tasks, bool deleted, DateTime? deletedAt, List<UserLeaveModel> userLeaves, DateTime? createdAt, DateTime? updatedAt,@JsonKey(name: '__v') int? version, UserBioModel? userbio, bool isbiocomplete
+@JsonKey(name: '_id') String id,@JsonKey(fromJson: _parseCompany) CompanyModel company, List<String> compspermitted, String username, String email, String? phone, String profileurl, String role, List<String> tags, List<dynamic> promotion, List<dynamic> tasks, bool deleted, DateTime? deletedAt, List<UserLeaveModel> userLeaves, DateTime? createdAt, DateTime? updatedAt,@JsonKey(name: '__v') int? version, UserBioModel? userbio, bool isbiocomplete
 });
 
 
@@ -192,7 +192,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  CompanyModel company,  List<String> compspermitted,  String username,  String email,  String? phone,  String profileurl,  String role,  List<String> tags,  List<dynamic> promotion,  List<dynamic> tasks,  bool deleted,  DateTime? deletedAt,  List<UserLeaveModel> userLeaves,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: '__v')  int? version,  UserBioModel? userbio,  bool isbiocomplete)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id, @JsonKey(fromJson: _parseCompany)  CompanyModel company,  List<String> compspermitted,  String username,  String email,  String? phone,  String profileurl,  String role,  List<String> tags,  List<dynamic> promotion,  List<dynamic> tasks,  bool deleted,  DateTime? deletedAt,  List<UserLeaveModel> userLeaves,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: '__v')  int? version,  UserBioModel? userbio,  bool isbiocomplete)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserDetailsModel() when $default != null:
 return $default(_that.id,_that.company,_that.compspermitted,_that.username,_that.email,_that.phone,_that.profileurl,_that.role,_that.tags,_that.promotion,_that.tasks,_that.deleted,_that.deletedAt,_that.userLeaves,_that.createdAt,_that.updatedAt,_that.version,_that.userbio,_that.isbiocomplete);case _:
@@ -213,7 +213,7 @@ return $default(_that.id,_that.company,_that.compspermitted,_that.username,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  CompanyModel company,  List<String> compspermitted,  String username,  String email,  String? phone,  String profileurl,  String role,  List<String> tags,  List<dynamic> promotion,  List<dynamic> tasks,  bool deleted,  DateTime? deletedAt,  List<UserLeaveModel> userLeaves,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: '__v')  int? version,  UserBioModel? userbio,  bool isbiocomplete)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id, @JsonKey(fromJson: _parseCompany)  CompanyModel company,  List<String> compspermitted,  String username,  String email,  String? phone,  String profileurl,  String role,  List<String> tags,  List<dynamic> promotion,  List<dynamic> tasks,  bool deleted,  DateTime? deletedAt,  List<UserLeaveModel> userLeaves,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: '__v')  int? version,  UserBioModel? userbio,  bool isbiocomplete)  $default,) {final _that = this;
 switch (_that) {
 case _UserDetailsModel():
 return $default(_that.id,_that.company,_that.compspermitted,_that.username,_that.email,_that.phone,_that.profileurl,_that.role,_that.tags,_that.promotion,_that.tasks,_that.deleted,_that.deletedAt,_that.userLeaves,_that.createdAt,_that.updatedAt,_that.version,_that.userbio,_that.isbiocomplete);case _:
@@ -233,7 +233,7 @@ return $default(_that.id,_that.company,_that.compspermitted,_that.username,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String id,  CompanyModel company,  List<String> compspermitted,  String username,  String email,  String? phone,  String profileurl,  String role,  List<String> tags,  List<dynamic> promotion,  List<dynamic> tasks,  bool deleted,  DateTime? deletedAt,  List<UserLeaveModel> userLeaves,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: '__v')  int? version,  UserBioModel? userbio,  bool isbiocomplete)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String id, @JsonKey(fromJson: _parseCompany)  CompanyModel company,  List<String> compspermitted,  String username,  String email,  String? phone,  String profileurl,  String role,  List<String> tags,  List<dynamic> promotion,  List<dynamic> tasks,  bool deleted,  DateTime? deletedAt,  List<UserLeaveModel> userLeaves,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: '__v')  int? version,  UserBioModel? userbio,  bool isbiocomplete)?  $default,) {final _that = this;
 switch (_that) {
 case _UserDetailsModel() when $default != null:
 return $default(_that.id,_that.company,_that.compspermitted,_that.username,_that.email,_that.phone,_that.profileurl,_that.role,_that.tags,_that.promotion,_that.tasks,_that.deleted,_that.deletedAt,_that.userLeaves,_that.createdAt,_that.updatedAt,_that.version,_that.userbio,_that.isbiocomplete);case _:
@@ -248,11 +248,11 @@ return $default(_that.id,_that.company,_that.compspermitted,_that.username,_that
 @JsonSerializable()
 
 class _UserDetailsModel implements UserDetailsModel {
-  const _UserDetailsModel({@JsonKey(name: '_id') required this.id, required this.company, final  List<String> compspermitted = const [], required this.username, required this.email, this.phone, this.profileurl = '', required this.role, final  List<String> tags = const [], final  List<dynamic> promotion = const [], final  List<dynamic> tasks = const [], this.deleted = false, this.deletedAt, final  List<UserLeaveModel> userLeaves = const [], this.createdAt, this.updatedAt, @JsonKey(name: '__v') this.version, this.userbio, this.isbiocomplete = false}): _compspermitted = compspermitted,_tags = tags,_promotion = promotion,_tasks = tasks,_userLeaves = userLeaves;
+  const _UserDetailsModel({@JsonKey(name: '_id') required this.id, @JsonKey(fromJson: _parseCompany) required this.company, final  List<String> compspermitted = const [], required this.username, required this.email, this.phone, this.profileurl = '', required this.role, final  List<String> tags = const [], final  List<dynamic> promotion = const [], final  List<dynamic> tasks = const [], this.deleted = false, this.deletedAt, final  List<UserLeaveModel> userLeaves = const [], this.createdAt, this.updatedAt, @JsonKey(name: '__v') this.version, this.userbio, this.isbiocomplete = false}): _compspermitted = compspermitted,_tags = tags,_promotion = promotion,_tasks = tasks,_userLeaves = userLeaves;
   factory _UserDetailsModel.fromJson(Map<String, dynamic> json) => _$UserDetailsModelFromJson(json);
 
 @override@JsonKey(name: '_id') final  String id;
-@override final  CompanyModel company;
+@override@JsonKey(fromJson: _parseCompany) final  CompanyModel company;
  final  List<String> _compspermitted;
 @override@JsonKey() List<String> get compspermitted {
   if (_compspermitted is EqualUnmodifiableListView) return _compspermitted;
@@ -334,7 +334,7 @@ abstract mixin class _$UserDetailsModelCopyWith<$Res> implements $UserDetailsMod
   factory _$UserDetailsModelCopyWith(_UserDetailsModel value, $Res Function(_UserDetailsModel) _then) = __$UserDetailsModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: '_id') String id, CompanyModel company, List<String> compspermitted, String username, String email, String? phone, String profileurl, String role, List<String> tags, List<dynamic> promotion, List<dynamic> tasks, bool deleted, DateTime? deletedAt, List<UserLeaveModel> userLeaves, DateTime? createdAt, DateTime? updatedAt,@JsonKey(name: '__v') int? version, UserBioModel? userbio, bool isbiocomplete
+@JsonKey(name: '_id') String id,@JsonKey(fromJson: _parseCompany) CompanyModel company, List<String> compspermitted, String username, String email, String? phone, String profileurl, String role, List<String> tags, List<dynamic> promotion, List<dynamic> tasks, bool deleted, DateTime? deletedAt, List<UserLeaveModel> userLeaves, DateTime? createdAt, DateTime? updatedAt,@JsonKey(name: '__v') int? version, UserBioModel? userbio, bool isbiocomplete
 });
 
 

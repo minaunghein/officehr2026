@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:office_hr/features/user/domain/entities/general_info.dart';
+import 'package:office_hr/features/user/domain/entities/social_media.dart';
 
 part 'company.freezed.dart';
 
@@ -9,8 +11,8 @@ abstract class Company with _$Company {
     String? shortCode,
     String? logo,
     required String name,
-    String? generalInfo,
-    String? socialMedia,
+    GeneralInfo? generalInfo,
+    SocialMedia? socialMedia,
     int? sequence,
     required bool active,
     String? serial,

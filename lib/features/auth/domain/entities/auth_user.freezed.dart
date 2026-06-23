@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AuthUser {
 
- String get userId; String get accessToken; String get tokenType; DateTime get expiresAt;
+ String get userId; String get accessToken; String get refreshToken; String get tokenType; DateTime get expiresAt;
 /// Create a copy of AuthUser
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $AuthUserCopyWith<AuthUser> get copyWith => _$AuthUserCopyWithImpl<AuthUser>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthUser&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.tokenType, tokenType) || other.tokenType == tokenType)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthUser&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.tokenType, tokenType) || other.tokenType == tokenType)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,userId,accessToken,tokenType,expiresAt);
+int get hashCode => Object.hash(runtimeType,userId,accessToken,refreshToken,tokenType,expiresAt);
 
 @override
 String toString() {
-  return 'AuthUser(userId: $userId, accessToken: $accessToken, tokenType: $tokenType, expiresAt: $expiresAt)';
+  return 'AuthUser(userId: $userId, accessToken: $accessToken, refreshToken: $refreshToken, tokenType: $tokenType, expiresAt: $expiresAt)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $AuthUserCopyWith<$Res>  {
   factory $AuthUserCopyWith(AuthUser value, $Res Function(AuthUser) _then) = _$AuthUserCopyWithImpl;
 @useResult
 $Res call({
- String userId, String accessToken, String tokenType, DateTime expiresAt
+ String userId, String accessToken, String refreshToken, String tokenType, DateTime expiresAt
 });
 
 
@@ -65,10 +65,11 @@ class _$AuthUserCopyWithImpl<$Res>
 
 /// Create a copy of AuthUser
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? accessToken = null,Object? tokenType = null,Object? expiresAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? accessToken = null,Object? refreshToken = null,Object? tokenType = null,Object? expiresAt = null,}) {
   return _then(_self.copyWith(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,accessToken: null == accessToken ? _self.accessToken : accessToken // ignore: cast_nullable_to_non_nullable
+as String,refreshToken: null == refreshToken ? _self.refreshToken : refreshToken // ignore: cast_nullable_to_non_nullable
 as String,tokenType: null == tokenType ? _self.tokenType : tokenType // ignore: cast_nullable_to_non_nullable
 as String,expiresAt: null == expiresAt ? _self.expiresAt : expiresAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
@@ -156,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String userId,  String accessToken,  String tokenType,  DateTime expiresAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String userId,  String accessToken,  String refreshToken,  String tokenType,  DateTime expiresAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthUser() when $default != null:
-return $default(_that.userId,_that.accessToken,_that.tokenType,_that.expiresAt);case _:
+return $default(_that.userId,_that.accessToken,_that.refreshToken,_that.tokenType,_that.expiresAt);case _:
   return orElse();
 
 }
@@ -177,10 +178,10 @@ return $default(_that.userId,_that.accessToken,_that.tokenType,_that.expiresAt);
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String userId,  String accessToken,  String tokenType,  DateTime expiresAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String userId,  String accessToken,  String refreshToken,  String tokenType,  DateTime expiresAt)  $default,) {final _that = this;
 switch (_that) {
 case _AuthUser():
-return $default(_that.userId,_that.accessToken,_that.tokenType,_that.expiresAt);case _:
+return $default(_that.userId,_that.accessToken,_that.refreshToken,_that.tokenType,_that.expiresAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +198,10 @@ return $default(_that.userId,_that.accessToken,_that.tokenType,_that.expiresAt);
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String userId,  String accessToken,  String tokenType,  DateTime expiresAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String userId,  String accessToken,  String refreshToken,  String tokenType,  DateTime expiresAt)?  $default,) {final _that = this;
 switch (_that) {
 case _AuthUser() when $default != null:
-return $default(_that.userId,_that.accessToken,_that.tokenType,_that.expiresAt);case _:
+return $default(_that.userId,_that.accessToken,_that.refreshToken,_that.tokenType,_that.expiresAt);case _:
   return null;
 
 }
@@ -212,11 +213,12 @@ return $default(_that.userId,_that.accessToken,_that.tokenType,_that.expiresAt);
 @JsonSerializable()
 
 class _AuthUser extends AuthUser {
-  const _AuthUser({required this.userId, required this.accessToken, required this.tokenType, required this.expiresAt}): super._();
+  const _AuthUser({required this.userId, required this.accessToken, this.refreshToken = '', required this.tokenType, required this.expiresAt}): super._();
   factory _AuthUser.fromJson(Map<String, dynamic> json) => _$AuthUserFromJson(json);
 
 @override final  String userId;
 @override final  String accessToken;
+@override@JsonKey() final  String refreshToken;
 @override final  String tokenType;
 @override final  DateTime expiresAt;
 
@@ -233,16 +235,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthUser&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.tokenType, tokenType) || other.tokenType == tokenType)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthUser&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.tokenType, tokenType) || other.tokenType == tokenType)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,userId,accessToken,tokenType,expiresAt);
+int get hashCode => Object.hash(runtimeType,userId,accessToken,refreshToken,tokenType,expiresAt);
 
 @override
 String toString() {
-  return 'AuthUser(userId: $userId, accessToken: $accessToken, tokenType: $tokenType, expiresAt: $expiresAt)';
+  return 'AuthUser(userId: $userId, accessToken: $accessToken, refreshToken: $refreshToken, tokenType: $tokenType, expiresAt: $expiresAt)';
 }
 
 
@@ -253,7 +255,7 @@ abstract mixin class _$AuthUserCopyWith<$Res> implements $AuthUserCopyWith<$Res>
   factory _$AuthUserCopyWith(_AuthUser value, $Res Function(_AuthUser) _then) = __$AuthUserCopyWithImpl;
 @override @useResult
 $Res call({
- String userId, String accessToken, String tokenType, DateTime expiresAt
+ String userId, String accessToken, String refreshToken, String tokenType, DateTime expiresAt
 });
 
 
@@ -270,10 +272,11 @@ class __$AuthUserCopyWithImpl<$Res>
 
 /// Create a copy of AuthUser
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? accessToken = null,Object? tokenType = null,Object? expiresAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? accessToken = null,Object? refreshToken = null,Object? tokenType = null,Object? expiresAt = null,}) {
   return _then(_AuthUser(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,accessToken: null == accessToken ? _self.accessToken : accessToken // ignore: cast_nullable_to_non_nullable
+as String,refreshToken: null == refreshToken ? _self.refreshToken : refreshToken // ignore: cast_nullable_to_non_nullable
 as String,tokenType: null == tokenType ? _self.tokenType : tokenType // ignore: cast_nullable_to_non_nullable
 as String,expiresAt: null == expiresAt ? _self.expiresAt : expiresAt // ignore: cast_nullable_to_non_nullable
 as DateTime,

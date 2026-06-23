@@ -6,26 +6,31 @@ part of 'company_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_CompanyModel _$CompanyModelFromJson(Map<String, dynamic> json) =>
-    _CompanyModel(
-      id: json['_id'] as String,
-      shortCode: json['sc'] as String?,
-      logo: json['logo'] as String?,
-      name: json['name'] as String,
-      generalinfo: json['generalinfo'] as String?,
-      socialmedia: json['socialmedia'] as String?,
-      sequence: (json['sequence'] as num?)?.toInt(),
-      active: json['active'] as bool? ?? true,
-      serial: json['serial'] as String?,
-      deleted: json['deleted'] as bool? ?? false,
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
-      updatedAt: json['updatedAt'] == null
-          ? null
-          : DateTime.parse(json['updatedAt'] as String),
-      version: (json['__v'] as num?)?.toInt(),
-    );
+_CompanyModel _$CompanyModelFromJson(
+  Map<String, dynamic> json,
+) => _CompanyModel(
+  id: json['_id'] as String,
+  shortCode: json['sc'] as String?,
+  logo: json['logo'] as String?,
+  name: json['name'] as String,
+  generalinfo: json['generalinfo'] == null
+      ? null
+      : GeneralInfoModel.fromJson(json['generalinfo'] as Map<String, dynamic>),
+  socialmedia: json['socialmedia'] == null
+      ? null
+      : SocialMediaModel.fromJson(json['socialmedia'] as Map<String, dynamic>),
+  sequence: (json['sequence'] as num?)?.toInt(),
+  active: json['active'] as bool? ?? true,
+  serial: json['serial'] as String?,
+  deleted: json['deleted'] as bool? ?? false,
+  createdAt: json['createdAt'] == null
+      ? null
+      : DateTime.parse(json['createdAt'] as String),
+  updatedAt: json['updatedAt'] == null
+      ? null
+      : DateTime.parse(json['updatedAt'] as String),
+  version: (json['__v'] as num?)?.toInt(),
+);
 
 Map<String, dynamic> _$CompanyModelToJson(_CompanyModel instance) =>
     <String, dynamic>{

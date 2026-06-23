@@ -4,7 +4,6 @@ import 'package:office_hr/features/user/data/models/user_details_model.dart';
 part 'payslip_model.freezed.dart';
 part 'payslip_model.g.dart';
 
-/// Model for salary payslip
 @freezed
 abstract class PayslipModel with _$PayslipModel {
   const factory PayslipModel({

@@ -1,7 +1,7 @@
-import 'package:office_hr/features/home/data/models/attendance_model.dart';
-import 'package:office_hr/features/home/data/models/attendance_status_model.dart';
-import 'package:office_hr/features/home/domain/entities/attendance.dart';
-import 'package:office_hr/features/home/domain/entities/attendance_status.dart';
+import 'package:office_hr/features/attendance/data/models/attendance_model.dart';
+import 'package:office_hr/features/attendance/data/models/attendance_status_model.dart';
+import 'package:office_hr/features/attendance/domain/entities/attendance.dart';
+import 'package:office_hr/features/attendance/domain/entities/attendance_status.dart';
 
 extension AttendanceStatusMapper on AttendanceStatusModel {
   AttendanceStatus toEntity() {

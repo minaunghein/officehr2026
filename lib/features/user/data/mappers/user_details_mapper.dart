@@ -1,4 +1,6 @@
 import 'package:office_hr/features/user/data/models/company_model.dart';
+import 'package:office_hr/features/user/data/models/general_info_model.dart';
+import 'package:office_hr/features/user/data/models/social_media_model.dart';
 import 'package:office_hr/features/user/data/models/user_details_model.dart';
 import 'package:office_hr/features/user/data/models/user_leave_model.dart';
 import 'package:office_hr/features/user/data/models/branch_model.dart';
@@ -13,6 +15,8 @@ import 'package:office_hr/features/user/data/models/supervisor_model.dart';
 import 'package:office_hr/features/user/data/models/work_info_model.dart';
 import 'package:office_hr/features/user/data/models/user_bio_model.dart';
 import 'package:office_hr/features/user/domain/entities/company.dart';
+import 'package:office_hr/features/user/domain/entities/general_info.dart';
+import 'package:office_hr/features/user/domain/entities/social_media.dart';
 import 'package:office_hr/features/user/domain/entities/user_details.dart';
 import 'package:office_hr/features/user/domain/entities/user_leave.dart';
 import 'package:office_hr/features/user/domain/entities/branch.dart';
@@ -34,14 +38,47 @@ extension CompanyMapper on CompanyModel {
       shortCode: shortCode,
       logo: logo,
       name: name,
-      generalInfo: generalinfo,
-      socialMedia: socialmedia,
+      generalInfo: generalinfo?.toEntity(),
+      socialMedia: socialmedia?.toEntity(),
       sequence: sequence,
       active: active,
       serial: serial,
       deleted: deleted,
       createdAt: createdAt,
       updatedAt: updatedAt,
+    );
+  }
+}
+
+extension GeneralInfoMapper on GeneralInfoModel {
+  GeneralInfo toEntity() {
+    return GeneralInfo(
+      id: id,
+      street: street,
+      street1: street1,
+      city: city,
+      state: state,
+      country: country,
+      zip: zip,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      email: email,
+      phone: phone,
+      registerId: registerid,
+      website: website,
+    );
+  }
+}
+
+extension SocialMediaMapper on SocialMediaModel {
+  SocialMedia toEntity() {
+    return SocialMedia(
+      id: id,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      facebookLink: fblk,
+      linkedInLink: linkedinlk,
+      twitterLink: twlk,
     );
   }
 }

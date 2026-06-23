@@ -46,7 +46,7 @@ class CurrentUser extends _$CurrentUser {
 
     try {
       final user = AuthUser.fromJson(jsonDecode(raw) as Map<String, dynamic>);
-      if (user.isTokenValid) return user;
+      if (user.isTokenValid || user.hasRefreshToken) return user;
       await storage.delete(key: _userKey);
       return null;
     } catch (_) {
@@ -86,6 +86,9 @@ class LoginNotifier extends _$LoginNotifier {
     final loginUsecase = ref.read(loginUsecaseProvider);
     final currentUserNotifier = ref.read(currentUserProvider.notifier);
     final authTokenNotifier = ref.read(authTokenProvider.notifier);
+    final authRefreshTokenNotifier = ref.read(
+      authRefreshTokenProvider.notifier,
+    );
     final userDetailsNotifier = ref.read(userDetailsProvider.notifier);
     final shiftNotifier = ref.read(shiftProvider.notifier);
     final branchNotifier = ref.read(branchProvider.notifier);
@@ -94,6 +97,7 @@ class LoginNotifier extends _$LoginNotifier {
       final user = await loginUsecase(username: username, password: password);
       await currentUserNotifier.setUser(user, persist: true);
       await authTokenNotifier.setToken(user.accessToken, persist: true);
+      await authRefreshTokenNotifier.setToken(user.refreshToken, persist: true);
 
       await userDetailsNotifier.fetch();
       await shiftNotifier.fetch();
@@ -108,6 +112,7 @@ class LoginNotifier extends _$LoginNotifier {
   Future<void> logout() async {
     await ref.read(currentUserProvider.notifier).clear();
     await ref.read(authTokenProvider.notifier).setToken(null);
+    await ref.read(authRefreshTokenProvider.notifier).setToken(null);
     state = const AsyncValue.data(null);
   }
 }
@@ -133,5 +138,5 @@ class CompanySetupNotifier extends _$CompanySetupNotifier {
 @riverpod
 bool isAuthenticated(Ref ref) {
   final user = ref.watch(currentUserProvider).value;
-  return user != null && user.isTokenValid;
+  return user != null && (user.isTokenValid || user.hasRefreshToken);
 }

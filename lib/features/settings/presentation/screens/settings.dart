@@ -24,18 +24,6 @@ class SettingsScreen extends ConsumerWidget {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            // SliverToBoxAdapter(
-            //   child: Padding(
-            //     padding: const EdgeInsets.fromLTRB(20, 24, 20, 8),
-            //     child: Text(
-            //       'Settings',
-            //       style: theme.textTheme.displaySmall?.copyWith(
-            //         fontWeight: FontWeight.w800,
-            //         letterSpacing: -0.5,
-            //       ),
-            //     ),
-            //   ),
-            // ),
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -63,16 +51,16 @@ class SettingsScreen extends ConsumerWidget {
                     iconBg: const Color(0xFFF5F3FF),
                     title: 'Payslips',
                     subtitle: 'View your salary slips',
-                    onTap: () => _comingSoon(context, 'Payslips'),
+                    onTap: () => context.push(AppRoutes.payslip),
                   ),
                   const _Divider(),
                   _NavTile(
                     icon: Icons.beach_access_rounded,
                     iconColor: const Color(0xFF0891B2),
                     iconBg: const Color(0xFFECFEFF),
-                    title: 'Leave Requests',
+                    title: 'Leave',
                     subtitle: 'Manage your leave balance',
-                    onTap: () => _comingSoon(context, 'Leave Requests'),
+                    onTap: () => context.push(AppRoutes.leave),
                   ),
                   const _Divider(),
                   _NavTile(
@@ -81,7 +69,7 @@ class SettingsScreen extends ConsumerWidget {
                     iconBg: const Color(0xFFFFFBEB),
                     title: 'Public Holidays',
                     subtitle: 'National & company holidays',
-                    onTap: () => _comingSoon(context, 'Public Holidays'),
+                    onTap: () {},
                   ),
                   const _Divider(),
                   _NavTile(
@@ -90,7 +78,7 @@ class SettingsScreen extends ConsumerWidget {
                     iconBg: const Color(0xFFECFDF5),
                     title: 'Company Information',
                     subtitle: 'About your organisation',
-                    onTap: () => _comingSoon(context, 'Company Information'),
+                    onTap: () => context.push(AppRoutes.company),
                   ),
                 ],
               ),
@@ -105,7 +93,7 @@ class SettingsScreen extends ConsumerWidget {
                     iconColor: const Color(0xFF64748B),
                     iconBg: const Color(0xFFF1F5F9),
                     title: 'Change Password',
-                    onTap: () => _comingSoon(context, 'Change Password'),
+                    onTap: () {},
                   ),
                   const _Divider(),
                   _NavTile(
@@ -126,12 +114,6 @@ class SettingsScreen extends ConsumerWidget {
         ),
       ),
     );
-  }
-
-  static void _comingSoon(BuildContext context, String feature) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('$feature — coming soon!')));
   }
 
   static Future<void> _confirmLogout(
@@ -223,22 +205,50 @@ class _UserCard extends ConsumerWidget {
                     CircleAvatar(
                       radius: 32,
                       backgroundColor: Colors.white.withValues(alpha: 0.25),
-                      child: CircleAvatar(
-                        radius: 29,
-                        backgroundColor:
-                            theme.colorScheme.surfaceContainerHighest,
-                        backgroundImage: user.profileUrl.isNotEmpty
-                            ? CachedNetworkImageProvider(user.profileUrl)
-                            : null,
-                        child: user.profileUrl.isEmpty
-                            ? Text(
-                                initials(fullName) ?? '',
-                                style: theme.textTheme.titleLarge?.copyWith(
-                                  color: theme.colorScheme.primary,
-                                  fontWeight: FontWeight.bold,
+                      child: ClipOval(
+                        child: SizedBox(
+                          width: 58,
+                          height: 58,
+                          child: user.profileUrl.isNotEmpty
+                              ? CachedNetworkImage(
+                                  imageUrl: user.profileUrl,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => Center(
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: theme.colorScheme.primary,
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Container(
+                                        color: theme
+                                            .colorScheme
+                                            .surfaceContainerHighest,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          initials(fullName) ?? '',
+                                          style: theme.textTheme.titleLarge
+                                              ?.copyWith(
+                                                color:
+                                                    theme.colorScheme.primary,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                      ),
+                                )
+                              : Container(
+                                  color:
+                                      theme.colorScheme.surfaceContainerHighest,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    initials(fullName) ?? '',
+                                    style: theme.textTheme.titleLarge?.copyWith(
+                                      color: theme.colorScheme.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
-                              )
-                            : null,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 16),

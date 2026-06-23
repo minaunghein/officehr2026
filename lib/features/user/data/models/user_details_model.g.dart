@@ -9,7 +9,7 @@ part of 'user_details_model.dart';
 _UserDetailsModel _$UserDetailsModelFromJson(Map<String, dynamic> json) =>
     _UserDetailsModel(
       id: json['_id'] as String,
-      company: CompanyModel.fromJson(json['company'] as Map<String, dynamic>),
+      company: _parseCompany(json['company']),
       compspermitted:
           (json['compspermitted'] as List<dynamic>?)
               ?.map((e) => e as String)

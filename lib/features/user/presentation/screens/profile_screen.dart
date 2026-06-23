@@ -18,10 +18,18 @@ class ProfileScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsync = ref.watch(userDetailsProvider);
     final generalData = ref.watch(generalDataProvider).value;
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Details'),
+        backgroundColor: theme.colorScheme.primary,
+        title: Text(
+          'User Details',
+          style: theme.textTheme.titleLarge?.copyWith(
+            color: theme.colorScheme.onPrimary,
+          ),
+        ),
+        leading: BackButton(color: theme.colorScheme.onPrimary),
         centerTitle: true,
         // actions: [
         //   IconButton(
@@ -136,8 +144,8 @@ class _ProfileHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
           colors: [
             theme.colorScheme.primary,
             theme.colorScheme.primary.withValues(alpha: 0.7),
@@ -149,21 +157,44 @@ class _ProfileHeader extends StatelessWidget {
           CircleAvatar(
             radius: 52,
             backgroundColor: Colors.white,
-            child: CircleAvatar(
-              radius: 48,
-              backgroundColor: theme.colorScheme.surfaceContainerHighest,
-              backgroundImage: user.profileUrl.isNotEmpty
-                  ? CachedNetworkImageProvider(user.profileUrl)
-                  : null,
-              child: user.profileUrl.isEmpty
-                  ? Text(
-                      _initials(fullName),
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                        fontWeight: FontWeight.bold,
+            child: ClipOval(
+              child: SizedBox(
+                width: 96,
+                height: 96,
+                child: user.profileUrl.isNotEmpty
+                    ? CachedNetworkImage(
+                        imageUrl: user.profileUrl,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Center(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: theme.colorScheme.primary,
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          color: theme.colorScheme.surfaceContainerHighest,
+                          alignment: Alignment.center,
+                          child: Text(
+                            _initials(fullName),
+                            style: theme.textTheme.headlineMedium?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        color: theme.colorScheme.surfaceContainerHighest,
+                        alignment: Alignment.center,
+                        child: Text(
+                          _initials(fullName),
+                          style: theme.textTheme.headlineMedium?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                    )
-                  : null,
+              ),
             ),
           ),
           const SizedBox(height: 16),
