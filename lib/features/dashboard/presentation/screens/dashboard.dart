@@ -13,7 +13,7 @@ class Dashboard extends ConsumerWidget {
 
   final _pages = <Widget>[
     HomeScreen(),
-    SizedBox(child: Center(child: Text('Attendance'))),
+    // SizedBox(child: Center(child: Text('Attendance'))),
     SizedBox(child: Center(child: Text('Team'))),
     ProfileScreen(),
   ];
@@ -40,11 +40,11 @@ class Dashboard extends ConsumerWidget {
             activeIcon: Icon(Icons.dashboard_rounded),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined),
-            activeIcon: Icon(Icons.calendar_month),
-            label: 'Attendance',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.calendar_month_outlined),
+          //   activeIcon: Icon(Icons.calendar_month),
+          //   label: 'Attendance',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.groups_2_outlined),
             activeIcon: Icon(Icons.groups_2_rounded),

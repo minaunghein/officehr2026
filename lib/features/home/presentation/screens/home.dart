@@ -54,32 +54,32 @@ class _MapSliverAppBarState extends ConsumerState<_MapSliverAppBar>
     with TickerProviderStateMixin {
   final MapController _mapController = MapController();
   LatLng _currentCenter = const LatLng(21.9588, 96.0891);
-  late final ProviderSubscription<AsyncValue<Branch?>> _branchSubscription;
+  late final ProviderSubscription<AsyncValue<Position>> _locationSubscription;
   bool _isMapReady = false;
-  bool _hasMovedToBranch = false;
+  bool _hasMovedToLocation = false;
   AnimationController? _animationController;
 
   @override
   void initState() {
     super.initState();
-    _branchSubscription = ref.listenManual<AsyncValue<Branch?>>(
-      branchProvider,
-      (previous, next) => next.whenData(_handleBranchChanged),
+    _locationSubscription = ref.listenManual<AsyncValue<Position>>(
+      currentLocationProvider,
+      (previous, next) => next.whenData(_handleLocationChanged),
     );
     _loadCachedLocation();
   }
 
   @override
   void dispose() {
-    _branchSubscription.close();
+    _locationSubscription.close();
     _animationController?.dispose();
     super.dispose();
   }
 
   Future<void> _loadCachedLocation() async {
     final prefs = await SharedPreferences.getInstance();
-    final lat = prefs.getDouble('last_branch_lat');
-    final lng = prefs.getDouble('last_branch_lng');
+    final lat = prefs.getDouble('last_location_lat');
+    final lng = prefs.getDouble('last_location_lng');
     if (lat != null && lng != null && mounted) {
       final cachedCenter = LatLng(lat, lng);
       setState(() {
@@ -91,22 +91,20 @@ class _MapSliverAppBarState extends ConsumerState<_MapSliverAppBar>
     }
   }
 
-  Future<void> _handleBranchChanged(Branch? branch) async {
-    if (branch == null) return;
-
-    final newLatLng = LatLng(branch.latitude, branch.longitude);
+  Future<void> _handleLocationChanged(Position location) async {
+    final newLatLng = LatLng(location.latitude, location.longitude);
     if (mounted) {
-      if (_hasMovedToBranch) {
+      if (_hasMovedToLocation) {
         _animatedMapMove(newLatLng, 15.0);
       } else {
         _moveMap(newLatLng, 15.0);
-        _hasMovedToBranch = true;
+        _hasMovedToLocation = true;
       }
     }
 
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setDouble('last_branch_lat', branch.latitude);
-    await prefs.setDouble('last_branch_lng', branch.longitude);
+    await prefs.setDouble('last_location_lat', location.latitude);
+    await prefs.setDouble('last_location_lng', location.longitude);
   }
 
   void _moveMap(LatLng location, double zoom) {
@@ -467,6 +465,39 @@ class _CurrentStatusCard extends ConsumerWidget {
     return clockMinutes > startMinutes;
   }
 
+  String _getLateDurationText(DateTime? clockTime, Shift? shift) {
+    if (clockTime == null || shift == null || shift.workingDays.isEmpty) {
+      return '';
+    }
+
+    final todayDayId = (clockTime.weekday % 7) + 1;
+    final todayWorkingDay = shift.workingDays.firstWhere(
+      (workingDay) => workingDay.dayId == todayDayId,
+      orElse: () => shift.workingDays.first,
+    );
+    if (todayWorkingDay.isOffDay) return '';
+
+    final clockMinutes = clockTime.hour * 60 + clockTime.minute;
+    final startMinutes =
+        (todayWorkingDay.workStart ~/ 100) * 60 +
+        (todayWorkingDay.workStart % 100);
+    final diffMinutes = clockMinutes - startMinutes;
+    if (diffMinutes <= 0) return '';
+
+    final hours = diffMinutes ~/ 60;
+    final minutes = diffMinutes % 60;
+
+    if (hours > 0) {
+      if (minutes > 0) {
+        return '$hours hr $minutes min';
+      } else {
+        return '$hours hr';
+      }
+    } else {
+      return '$minutes min';
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
@@ -517,7 +548,7 @@ class _CurrentStatusCard extends ConsumerWidget {
                 decoration: BoxDecoration(
                   color: isClockedIn
                       ? const Color(0xFF4CAF50)
-                      : const Color(0xFF9E9E9E),
+                      : const Color.fromARGB(255, 255, 0, 0),
                   shape: BoxShape.circle,
                 ),
               ),
@@ -543,7 +574,7 @@ class _CurrentStatusCard extends ConsumerWidget {
           Text(
             isClockedIn
                 ? 'Clocked in at ${clockTime != null ? formatTime(clockTime) : "--:--"}'
-                : 'Not clocked in yet',
+                : 'Clocked out at ${clockTime != null ? formatTime(clockTime) : "--:--"}',
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w700,
             ),
@@ -551,7 +582,7 @@ class _CurrentStatusCard extends ConsumerWidget {
           const SizedBox(height: 4),
           if (isClockedIn && _isLate(clockTime, shift))
             Text(
-              'Late',
+              'Late (${_getLateDurationText(clockTime, shift)})',
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w700,
                 color: const Color(0xFFD32F2F),
