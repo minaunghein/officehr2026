@@ -1,7 +1,10 @@
 import 'package:office_hr/features/attendance/data/models/attendance_model.dart';
 import 'package:office_hr/features/attendance/data/models/attendance_status_model.dart';
+import 'package:office_hr/features/attendance/data/models/department_attendances.dart';
 import 'package:office_hr/features/attendance/domain/entities/attendance.dart';
 import 'package:office_hr/features/attendance/domain/entities/attendance_status.dart';
+import 'package:office_hr/features/attendance/domain/entities/department_attendances.dart';
+import 'package:office_hr/features/user/data/mappers/user_details_mapper.dart';
 
 extension AttendanceStatusMapper on AttendanceStatusModel {
   AttendanceStatus toEntity() {
@@ -41,6 +44,17 @@ extension AttendanceMapper on AttendanceModel {
       deleted: deleted,
       createdAt: createdAt,
       updatedAt: updatedAt,
+    );
+  }
+}
+
+extension DepartmentAttendanceMapper on DepartmentAttendanceModel {
+  DepartmentAttendances toEntity() {
+    return DepartmentAttendances(
+      user: user.toEntity(),
+      clockins: clockins.map((model) => model.toEntity()).toList(),
+      sod: sod?.toEntity(),
+      eod: eod?.toEntity(),
     );
   }
 }

@@ -8,18 +8,22 @@ part of 'department_model.dart';
 
 _DepartmentModel _$DepartmentModelFromJson(Map<String, dynamic> json) =>
     _DepartmentModel(
-      id: json['_id'] as String,
-      company: json['company'] as String,
-      titles: (json['titles'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      sc: json['sc'] as String,
-      so: (json['so'] as num).toInt(),
-      remarks: json['remarks'] as String,
-      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
-      createdAt: json['createdAt'] as String,
-      updatedAt: json['updatedAt'] as String,
-      version: (json['__v'] as num).toInt(),
+      id: json['_id'] as String? ?? '',
+      company: json['company'] as String? ?? '',
+      titles:
+          (json['titles'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      sc: json['sc'] as String? ?? '',
+      so: (json['so'] as num?)?.toInt() ?? 0,
+      remarks: json['remarks'] == null ? '' : _parseRemarks(json['remarks']),
+      tags:
+          (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+          const [],
+      createdAt: json['createdAt'] as String?,
+      updatedAt: json['updatedAt'] as String?,
+      version: (json['__v'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$DepartmentModelToJson(_DepartmentModel instance) =>

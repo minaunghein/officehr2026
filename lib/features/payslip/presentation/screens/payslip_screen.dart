@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/features/payslip/domain/entities/payslip.dart';
 import 'package:office_hr/features/payslip/presentation/providers/payslip_providers.dart';
 
@@ -110,7 +111,7 @@ class _PayslipCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppSizes.borderRadiusSm),
         side: BorderSide(
           color: theme.colorScheme.outline.withValues(alpha: 0.15),
         ),
@@ -226,7 +227,9 @@ class _PayslipCard extends StatelessWidget {
                     ),
                     shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(
+                          AppSizes.borderRadiusSm,
+                        ),
                       ),
                     ),
                   ),

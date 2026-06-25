@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BasicInfoModel {
 
-@JsonKey(name: '_id') String get id; List<String?> get firstnames; List<String?> get lastnames; int get nrcregioncodeid; String get nrctype; String get nrctownship; List<String> get nrcnumbers; int get genderid; int get bloodtypeid; int get maritalstatusid; String get dob; List<String> get pobs; List<String> get nmarks; String get height; int get weight; String get hc; String get ec; int get nationalityid; String get religionid; String get ethnicid;
+@JsonKey(name: '_id') String? get id; List<String?>? get firstnames; List<String?>? get lastnames; int? get nrcregioncodeid; String? get nrctype; String? get nrctownship; List<String>? get nrcnumbers; int? get genderid; int? get bloodtypeid; int? get maritalstatusid; String? get dob; List<String>? get pobs; List<String>? get nmarks; String? get height; int? get weight; String? get hc; String? get ec; int? get nationalityid; String? get religionid; String? get ethnicid;
 /// Create a copy of BasicInfoModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $BasicInfoModelCopyWith<$Res>  {
   factory $BasicInfoModelCopyWith(BasicInfoModel value, $Res Function(BasicInfoModel) _then) = _$BasicInfoModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: '_id') String id, List<String?> firstnames, List<String?> lastnames, int nrcregioncodeid, String nrctype, String nrctownship, List<String> nrcnumbers, int genderid, int bloodtypeid, int maritalstatusid, String dob, List<String> pobs, List<String> nmarks, String height, int weight, String hc, String ec, int nationalityid, String religionid, String ethnicid
+@JsonKey(name: '_id') String? id, List<String?>? firstnames, List<String?>? lastnames, int? nrcregioncodeid, String? nrctype, String? nrctownship, List<String>? nrcnumbers, int? genderid, int? bloodtypeid, int? maritalstatusid, String? dob, List<String>? pobs, List<String>? nmarks, String? height, int? weight, String? hc, String? ec, int? nationalityid, String? religionid, String? ethnicid
 });
 
 
@@ -65,29 +65,29 @@ class _$BasicInfoModelCopyWithImpl<$Res>
 
 /// Create a copy of BasicInfoModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? firstnames = null,Object? lastnames = null,Object? nrcregioncodeid = null,Object? nrctype = null,Object? nrctownship = null,Object? nrcnumbers = null,Object? genderid = null,Object? bloodtypeid = null,Object? maritalstatusid = null,Object? dob = null,Object? pobs = null,Object? nmarks = null,Object? height = null,Object? weight = null,Object? hc = null,Object? ec = null,Object? nationalityid = null,Object? religionid = null,Object? ethnicid = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? firstnames = freezed,Object? lastnames = freezed,Object? nrcregioncodeid = freezed,Object? nrctype = freezed,Object? nrctownship = freezed,Object? nrcnumbers = freezed,Object? genderid = freezed,Object? bloodtypeid = freezed,Object? maritalstatusid = freezed,Object? dob = freezed,Object? pobs = freezed,Object? nmarks = freezed,Object? height = freezed,Object? weight = freezed,Object? hc = freezed,Object? ec = freezed,Object? nationalityid = freezed,Object? religionid = freezed,Object? ethnicid = freezed,}) {
   return _then(_self.copyWith(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,firstnames: null == firstnames ? _self.firstnames : firstnames // ignore: cast_nullable_to_non_nullable
-as List<String?>,lastnames: null == lastnames ? _self.lastnames : lastnames // ignore: cast_nullable_to_non_nullable
-as List<String?>,nrcregioncodeid: null == nrcregioncodeid ? _self.nrcregioncodeid : nrcregioncodeid // ignore: cast_nullable_to_non_nullable
-as int,nrctype: null == nrctype ? _self.nrctype : nrctype // ignore: cast_nullable_to_non_nullable
-as String,nrctownship: null == nrctownship ? _self.nrctownship : nrctownship // ignore: cast_nullable_to_non_nullable
-as String,nrcnumbers: null == nrcnumbers ? _self.nrcnumbers : nrcnumbers // ignore: cast_nullable_to_non_nullable
-as List<String>,genderid: null == genderid ? _self.genderid : genderid // ignore: cast_nullable_to_non_nullable
-as int,bloodtypeid: null == bloodtypeid ? _self.bloodtypeid : bloodtypeid // ignore: cast_nullable_to_non_nullable
-as int,maritalstatusid: null == maritalstatusid ? _self.maritalstatusid : maritalstatusid // ignore: cast_nullable_to_non_nullable
-as int,dob: null == dob ? _self.dob : dob // ignore: cast_nullable_to_non_nullable
-as String,pobs: null == pobs ? _self.pobs : pobs // ignore: cast_nullable_to_non_nullable
-as List<String>,nmarks: null == nmarks ? _self.nmarks : nmarks // ignore: cast_nullable_to_non_nullable
-as List<String>,height: null == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
-as String,weight: null == weight ? _self.weight : weight // ignore: cast_nullable_to_non_nullable
-as int,hc: null == hc ? _self.hc : hc // ignore: cast_nullable_to_non_nullable
-as String,ec: null == ec ? _self.ec : ec // ignore: cast_nullable_to_non_nullable
-as String,nationalityid: null == nationalityid ? _self.nationalityid : nationalityid // ignore: cast_nullable_to_non_nullable
-as int,religionid: null == religionid ? _self.religionid : religionid // ignore: cast_nullable_to_non_nullable
-as String,ethnicid: null == ethnicid ? _self.ethnicid : ethnicid // ignore: cast_nullable_to_non_nullable
-as String,
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,firstnames: freezed == firstnames ? _self.firstnames : firstnames // ignore: cast_nullable_to_non_nullable
+as List<String?>?,lastnames: freezed == lastnames ? _self.lastnames : lastnames // ignore: cast_nullable_to_non_nullable
+as List<String?>?,nrcregioncodeid: freezed == nrcregioncodeid ? _self.nrcregioncodeid : nrcregioncodeid // ignore: cast_nullable_to_non_nullable
+as int?,nrctype: freezed == nrctype ? _self.nrctype : nrctype // ignore: cast_nullable_to_non_nullable
+as String?,nrctownship: freezed == nrctownship ? _self.nrctownship : nrctownship // ignore: cast_nullable_to_non_nullable
+as String?,nrcnumbers: freezed == nrcnumbers ? _self.nrcnumbers : nrcnumbers // ignore: cast_nullable_to_non_nullable
+as List<String>?,genderid: freezed == genderid ? _self.genderid : genderid // ignore: cast_nullable_to_non_nullable
+as int?,bloodtypeid: freezed == bloodtypeid ? _self.bloodtypeid : bloodtypeid // ignore: cast_nullable_to_non_nullable
+as int?,maritalstatusid: freezed == maritalstatusid ? _self.maritalstatusid : maritalstatusid // ignore: cast_nullable_to_non_nullable
+as int?,dob: freezed == dob ? _self.dob : dob // ignore: cast_nullable_to_non_nullable
+as String?,pobs: freezed == pobs ? _self.pobs : pobs // ignore: cast_nullable_to_non_nullable
+as List<String>?,nmarks: freezed == nmarks ? _self.nmarks : nmarks // ignore: cast_nullable_to_non_nullable
+as List<String>?,height: freezed == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
+as String?,weight: freezed == weight ? _self.weight : weight // ignore: cast_nullable_to_non_nullable
+as int?,hc: freezed == hc ? _self.hc : hc // ignore: cast_nullable_to_non_nullable
+as String?,ec: freezed == ec ? _self.ec : ec // ignore: cast_nullable_to_non_nullable
+as String?,nationalityid: freezed == nationalityid ? _self.nationalityid : nationalityid // ignore: cast_nullable_to_non_nullable
+as int?,religionid: freezed == religionid ? _self.religionid : religionid // ignore: cast_nullable_to_non_nullable
+as String?,ethnicid: freezed == ethnicid ? _self.ethnicid : ethnicid // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -172,7 +172,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  List<String?> firstnames,  List<String?> lastnames,  int nrcregioncodeid,  String nrctype,  String nrctownship,  List<String> nrcnumbers,  int genderid,  int bloodtypeid,  int maritalstatusid,  String dob,  List<String> pobs,  List<String> nmarks,  String height,  int weight,  String hc,  String ec,  int nationalityid,  String religionid,  String ethnicid)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String? id,  List<String?>? firstnames,  List<String?>? lastnames,  int? nrcregioncodeid,  String? nrctype,  String? nrctownship,  List<String>? nrcnumbers,  int? genderid,  int? bloodtypeid,  int? maritalstatusid,  String? dob,  List<String>? pobs,  List<String>? nmarks,  String? height,  int? weight,  String? hc,  String? ec,  int? nationalityid,  String? religionid,  String? ethnicid)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BasicInfoModel() when $default != null:
 return $default(_that.id,_that.firstnames,_that.lastnames,_that.nrcregioncodeid,_that.nrctype,_that.nrctownship,_that.nrcnumbers,_that.genderid,_that.bloodtypeid,_that.maritalstatusid,_that.dob,_that.pobs,_that.nmarks,_that.height,_that.weight,_that.hc,_that.ec,_that.nationalityid,_that.religionid,_that.ethnicid);case _:
@@ -193,7 +193,7 @@ return $default(_that.id,_that.firstnames,_that.lastnames,_that.nrcregioncodeid,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  List<String?> firstnames,  List<String?> lastnames,  int nrcregioncodeid,  String nrctype,  String nrctownship,  List<String> nrcnumbers,  int genderid,  int bloodtypeid,  int maritalstatusid,  String dob,  List<String> pobs,  List<String> nmarks,  String height,  int weight,  String hc,  String ec,  int nationalityid,  String religionid,  String ethnicid)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String? id,  List<String?>? firstnames,  List<String?>? lastnames,  int? nrcregioncodeid,  String? nrctype,  String? nrctownship,  List<String>? nrcnumbers,  int? genderid,  int? bloodtypeid,  int? maritalstatusid,  String? dob,  List<String>? pobs,  List<String>? nmarks,  String? height,  int? weight,  String? hc,  String? ec,  int? nationalityid,  String? religionid,  String? ethnicid)  $default,) {final _that = this;
 switch (_that) {
 case _BasicInfoModel():
 return $default(_that.id,_that.firstnames,_that.lastnames,_that.nrcregioncodeid,_that.nrctype,_that.nrctownship,_that.nrcnumbers,_that.genderid,_that.bloodtypeid,_that.maritalstatusid,_that.dob,_that.pobs,_that.nmarks,_that.height,_that.weight,_that.hc,_that.ec,_that.nationalityid,_that.religionid,_that.ethnicid);case _:
@@ -213,7 +213,7 @@ return $default(_that.id,_that.firstnames,_that.lastnames,_that.nrcregioncodeid,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String id,  List<String?> firstnames,  List<String?> lastnames,  int nrcregioncodeid,  String nrctype,  String nrctownship,  List<String> nrcnumbers,  int genderid,  int bloodtypeid,  int maritalstatusid,  String dob,  List<String> pobs,  List<String> nmarks,  String height,  int weight,  String hc,  String ec,  int nationalityid,  String religionid,  String ethnicid)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String? id,  List<String?>? firstnames,  List<String?>? lastnames,  int? nrcregioncodeid,  String? nrctype,  String? nrctownship,  List<String>? nrcnumbers,  int? genderid,  int? bloodtypeid,  int? maritalstatusid,  String? dob,  List<String>? pobs,  List<String>? nmarks,  String? height,  int? weight,  String? hc,  String? ec,  int? nationalityid,  String? religionid,  String? ethnicid)?  $default,) {final _that = this;
 switch (_that) {
 case _BasicInfoModel() when $default != null:
 return $default(_that.id,_that.firstnames,_that.lastnames,_that.nrcregioncodeid,_that.nrctype,_that.nrctownship,_that.nrcnumbers,_that.genderid,_that.bloodtypeid,_that.maritalstatusid,_that.dob,_that.pobs,_that.nmarks,_that.height,_that.weight,_that.hc,_that.ec,_that.nationalityid,_that.religionid,_that.ethnicid);case _:
@@ -228,59 +228,69 @@ return $default(_that.id,_that.firstnames,_that.lastnames,_that.nrcregioncodeid,
 @JsonSerializable()
 
 class _BasicInfoModel implements BasicInfoModel {
-  const _BasicInfoModel({@JsonKey(name: '_id') required this.id, required final  List<String?> firstnames, required final  List<String?> lastnames, required this.nrcregioncodeid, required this.nrctype, required this.nrctownship, required final  List<String> nrcnumbers, required this.genderid, required this.bloodtypeid, required this.maritalstatusid, required this.dob, required final  List<String> pobs, required final  List<String> nmarks, required this.height, required this.weight, required this.hc, required this.ec, required this.nationalityid, required this.religionid, required this.ethnicid}): _firstnames = firstnames,_lastnames = lastnames,_nrcnumbers = nrcnumbers,_pobs = pobs,_nmarks = nmarks;
+  const _BasicInfoModel({@JsonKey(name: '_id') this.id, final  List<String?>? firstnames, final  List<String?>? lastnames, this.nrcregioncodeid, this.nrctype, this.nrctownship, final  List<String>? nrcnumbers, this.genderid, this.bloodtypeid, this.maritalstatusid, this.dob, final  List<String>? pobs, final  List<String>? nmarks, this.height, this.weight, this.hc, this.ec, this.nationalityid, this.religionid, this.ethnicid}): _firstnames = firstnames,_lastnames = lastnames,_nrcnumbers = nrcnumbers,_pobs = pobs,_nmarks = nmarks;
   factory _BasicInfoModel.fromJson(Map<String, dynamic> json) => _$BasicInfoModelFromJson(json);
 
-@override@JsonKey(name: '_id') final  String id;
- final  List<String?> _firstnames;
-@override List<String?> get firstnames {
+@override@JsonKey(name: '_id') final  String? id;
+ final  List<String?>? _firstnames;
+@override List<String?>? get firstnames {
+  final value = _firstnames;
+  if (value == null) return null;
   if (_firstnames is EqualUnmodifiableListView) return _firstnames;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_firstnames);
+  return EqualUnmodifiableListView(value);
 }
 
- final  List<String?> _lastnames;
-@override List<String?> get lastnames {
+ final  List<String?>? _lastnames;
+@override List<String?>? get lastnames {
+  final value = _lastnames;
+  if (value == null) return null;
   if (_lastnames is EqualUnmodifiableListView) return _lastnames;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_lastnames);
+  return EqualUnmodifiableListView(value);
 }
 
-@override final  int nrcregioncodeid;
-@override final  String nrctype;
-@override final  String nrctownship;
- final  List<String> _nrcnumbers;
-@override List<String> get nrcnumbers {
+@override final  int? nrcregioncodeid;
+@override final  String? nrctype;
+@override final  String? nrctownship;
+ final  List<String>? _nrcnumbers;
+@override List<String>? get nrcnumbers {
+  final value = _nrcnumbers;
+  if (value == null) return null;
   if (_nrcnumbers is EqualUnmodifiableListView) return _nrcnumbers;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_nrcnumbers);
+  return EqualUnmodifiableListView(value);
 }
 
-@override final  int genderid;
-@override final  int bloodtypeid;
-@override final  int maritalstatusid;
-@override final  String dob;
- final  List<String> _pobs;
-@override List<String> get pobs {
+@override final  int? genderid;
+@override final  int? bloodtypeid;
+@override final  int? maritalstatusid;
+@override final  String? dob;
+ final  List<String>? _pobs;
+@override List<String>? get pobs {
+  final value = _pobs;
+  if (value == null) return null;
   if (_pobs is EqualUnmodifiableListView) return _pobs;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_pobs);
+  return EqualUnmodifiableListView(value);
 }
 
- final  List<String> _nmarks;
-@override List<String> get nmarks {
+ final  List<String>? _nmarks;
+@override List<String>? get nmarks {
+  final value = _nmarks;
+  if (value == null) return null;
   if (_nmarks is EqualUnmodifiableListView) return _nmarks;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_nmarks);
+  return EqualUnmodifiableListView(value);
 }
 
-@override final  String height;
-@override final  int weight;
-@override final  String hc;
-@override final  String ec;
-@override final  int nationalityid;
-@override final  String religionid;
-@override final  String ethnicid;
+@override final  String? height;
+@override final  int? weight;
+@override final  String? hc;
+@override final  String? ec;
+@override final  int? nationalityid;
+@override final  String? religionid;
+@override final  String? ethnicid;
 
 /// Create a copy of BasicInfoModel
 /// with the given fields replaced by the non-null parameter values.
@@ -315,7 +325,7 @@ abstract mixin class _$BasicInfoModelCopyWith<$Res> implements $BasicInfoModelCo
   factory _$BasicInfoModelCopyWith(_BasicInfoModel value, $Res Function(_BasicInfoModel) _then) = __$BasicInfoModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: '_id') String id, List<String?> firstnames, List<String?> lastnames, int nrcregioncodeid, String nrctype, String nrctownship, List<String> nrcnumbers, int genderid, int bloodtypeid, int maritalstatusid, String dob, List<String> pobs, List<String> nmarks, String height, int weight, String hc, String ec, int nationalityid, String religionid, String ethnicid
+@JsonKey(name: '_id') String? id, List<String?>? firstnames, List<String?>? lastnames, int? nrcregioncodeid, String? nrctype, String? nrctownship, List<String>? nrcnumbers, int? genderid, int? bloodtypeid, int? maritalstatusid, String? dob, List<String>? pobs, List<String>? nmarks, String? height, int? weight, String? hc, String? ec, int? nationalityid, String? religionid, String? ethnicid
 });
 
 
@@ -332,29 +342,29 @@ class __$BasicInfoModelCopyWithImpl<$Res>
 
 /// Create a copy of BasicInfoModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? firstnames = null,Object? lastnames = null,Object? nrcregioncodeid = null,Object? nrctype = null,Object? nrctownship = null,Object? nrcnumbers = null,Object? genderid = null,Object? bloodtypeid = null,Object? maritalstatusid = null,Object? dob = null,Object? pobs = null,Object? nmarks = null,Object? height = null,Object? weight = null,Object? hc = null,Object? ec = null,Object? nationalityid = null,Object? religionid = null,Object? ethnicid = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? firstnames = freezed,Object? lastnames = freezed,Object? nrcregioncodeid = freezed,Object? nrctype = freezed,Object? nrctownship = freezed,Object? nrcnumbers = freezed,Object? genderid = freezed,Object? bloodtypeid = freezed,Object? maritalstatusid = freezed,Object? dob = freezed,Object? pobs = freezed,Object? nmarks = freezed,Object? height = freezed,Object? weight = freezed,Object? hc = freezed,Object? ec = freezed,Object? nationalityid = freezed,Object? religionid = freezed,Object? ethnicid = freezed,}) {
   return _then(_BasicInfoModel(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,firstnames: null == firstnames ? _self._firstnames : firstnames // ignore: cast_nullable_to_non_nullable
-as List<String?>,lastnames: null == lastnames ? _self._lastnames : lastnames // ignore: cast_nullable_to_non_nullable
-as List<String?>,nrcregioncodeid: null == nrcregioncodeid ? _self.nrcregioncodeid : nrcregioncodeid // ignore: cast_nullable_to_non_nullable
-as int,nrctype: null == nrctype ? _self.nrctype : nrctype // ignore: cast_nullable_to_non_nullable
-as String,nrctownship: null == nrctownship ? _self.nrctownship : nrctownship // ignore: cast_nullable_to_non_nullable
-as String,nrcnumbers: null == nrcnumbers ? _self._nrcnumbers : nrcnumbers // ignore: cast_nullable_to_non_nullable
-as List<String>,genderid: null == genderid ? _self.genderid : genderid // ignore: cast_nullable_to_non_nullable
-as int,bloodtypeid: null == bloodtypeid ? _self.bloodtypeid : bloodtypeid // ignore: cast_nullable_to_non_nullable
-as int,maritalstatusid: null == maritalstatusid ? _self.maritalstatusid : maritalstatusid // ignore: cast_nullable_to_non_nullable
-as int,dob: null == dob ? _self.dob : dob // ignore: cast_nullable_to_non_nullable
-as String,pobs: null == pobs ? _self._pobs : pobs // ignore: cast_nullable_to_non_nullable
-as List<String>,nmarks: null == nmarks ? _self._nmarks : nmarks // ignore: cast_nullable_to_non_nullable
-as List<String>,height: null == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
-as String,weight: null == weight ? _self.weight : weight // ignore: cast_nullable_to_non_nullable
-as int,hc: null == hc ? _self.hc : hc // ignore: cast_nullable_to_non_nullable
-as String,ec: null == ec ? _self.ec : ec // ignore: cast_nullable_to_non_nullable
-as String,nationalityid: null == nationalityid ? _self.nationalityid : nationalityid // ignore: cast_nullable_to_non_nullable
-as int,religionid: null == religionid ? _self.religionid : religionid // ignore: cast_nullable_to_non_nullable
-as String,ethnicid: null == ethnicid ? _self.ethnicid : ethnicid // ignore: cast_nullable_to_non_nullable
-as String,
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,firstnames: freezed == firstnames ? _self._firstnames : firstnames // ignore: cast_nullable_to_non_nullable
+as List<String?>?,lastnames: freezed == lastnames ? _self._lastnames : lastnames // ignore: cast_nullable_to_non_nullable
+as List<String?>?,nrcregioncodeid: freezed == nrcregioncodeid ? _self.nrcregioncodeid : nrcregioncodeid // ignore: cast_nullable_to_non_nullable
+as int?,nrctype: freezed == nrctype ? _self.nrctype : nrctype // ignore: cast_nullable_to_non_nullable
+as String?,nrctownship: freezed == nrctownship ? _self.nrctownship : nrctownship // ignore: cast_nullable_to_non_nullable
+as String?,nrcnumbers: freezed == nrcnumbers ? _self._nrcnumbers : nrcnumbers // ignore: cast_nullable_to_non_nullable
+as List<String>?,genderid: freezed == genderid ? _self.genderid : genderid // ignore: cast_nullable_to_non_nullable
+as int?,bloodtypeid: freezed == bloodtypeid ? _self.bloodtypeid : bloodtypeid // ignore: cast_nullable_to_non_nullable
+as int?,maritalstatusid: freezed == maritalstatusid ? _self.maritalstatusid : maritalstatusid // ignore: cast_nullable_to_non_nullable
+as int?,dob: freezed == dob ? _self.dob : dob // ignore: cast_nullable_to_non_nullable
+as String?,pobs: freezed == pobs ? _self._pobs : pobs // ignore: cast_nullable_to_non_nullable
+as List<String>?,nmarks: freezed == nmarks ? _self._nmarks : nmarks // ignore: cast_nullable_to_non_nullable
+as List<String>?,height: freezed == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
+as String?,weight: freezed == weight ? _self.weight : weight // ignore: cast_nullable_to_non_nullable
+as int?,hc: freezed == hc ? _self.hc : hc // ignore: cast_nullable_to_non_nullable
+as String?,ec: freezed == ec ? _self.ec : ec // ignore: cast_nullable_to_non_nullable
+as String?,nationalityid: freezed == nationalityid ? _self.nationalityid : nationalityid // ignore: cast_nullable_to_non_nullable
+as int?,religionid: freezed == religionid ? _self.religionid : religionid // ignore: cast_nullable_to_non_nullable
+as String?,ethnicid: freezed == ethnicid ? _self.ethnicid : ethnicid // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

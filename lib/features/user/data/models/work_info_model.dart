@@ -48,22 +48,22 @@ class ShiftConverter implements JsonConverter<ShiftModel?, Object?> {
 @freezed
 abstract class WorkInfoModel with _$WorkInfoModel {
   const factory WorkInfoModel({
-    @JsonKey(name: '_id') required String id,
-    required String empcodeprefix,
-    required int empcode,
-    required int cardid,
-    required int grade,
-    required String employmentdate,
-    required String probationenddate,
-    required int empstatus,
-    required bool resigned,
-    required String resigneddate,
-    required PositionModel position,
-    required DepartmentModel department,
-    required bool status,
+    @JsonKey(name: '_id') String? id,
+    String? empcodeprefix,
+    int? empcode,
+    int? cardid,
+    int? grade,
+    String? employmentdate,
+    String? probationenddate,
+    int? empstatus,
+    bool? resigned,
+    String? resigneddate,
+    PositionModel? position,
+    DepartmentModel? department,
+    bool? status,
     @SupervisorConverter() SupervisorModel? supervisorid,
     @ShiftConverter() ShiftModel? shift,
-    required BranchModel branch,
+    BranchModel? branch,
   }) = _WorkInfoModel;
 
   factory WorkInfoModel.fromJson(Map<String, dynamic> json) =>

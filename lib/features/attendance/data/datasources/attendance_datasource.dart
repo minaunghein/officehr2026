@@ -1,5 +1,6 @@
 import 'package:office_hr/core/network/api_service.dart';
 import 'package:office_hr/features/attendance/data/models/attendance_model.dart';
+import 'package:office_hr/features/attendance/data/models/department_attendances.dart';
 
 abstract class AttendanceDatasource {
   Future<AttendanceModel> clockIn({
@@ -9,7 +10,8 @@ abstract class AttendanceDatasource {
     String desc = "",
   });
 
-  Future<List<AttendanceModel>> getTodayClockIn({required String date});
+  Future<List<AttendanceModel>> getTodayClockIn();
+  Future<List<DepartmentAttendanceModel>> getDepartmentAttendances();
 }
 
 class AttendanceDatasourceImpl implements AttendanceDatasource {
@@ -43,10 +45,9 @@ class AttendanceDatasourceImpl implements AttendanceDatasource {
   }
 
   @override
-  Future<List<AttendanceModel>> getTodayClockIn({required String date}) async {
+  Future<List<AttendanceModel>> getTodayClockIn() async {
     final response = await _apiService.get<List<AttendanceModel>>(
       '/api/v1/users/todayclockin',
-      data: {"date": date},
       parser: (data) {
         if (data == null) return [];
         final dynamic listData = data is List
@@ -61,17 +62,60 @@ class AttendanceDatasourceImpl implements AttendanceDatasource {
     );
     return response;
   }
+
+  @override
+  Future<List<DepartmentAttendanceModel>> getDepartmentAttendances() async {
+    final response = await _apiService.get<List<DepartmentAttendanceModel>>(
+      '/api/v1/users/departmenttempclockin',
+      parser: (data) {
+        if (data == null) return [];
+        final dynamic listData = data is List
+            ? data
+            : (data is Map ? data['data'] : null);
+        if (listData == null || listData is! List) return [];
+
+        final result = <DepartmentAttendanceModel>[];
+        for (final e in listData.whereType<Map<String, dynamic>>()) {
+          try {
+            result.add(
+              DepartmentAttendanceModel.fromJson(_sanitizeAttendance(e)),
+            );
+          } catch (err) {
+            print('Skipping malformed record: $err');
+            print('JSON: $e');
+          }
+        }
+        return result;
+      },
+    );
+    return response;
+  }
 }
 
-/// Sanitizes a raw attendance JSON map before passing it to [AttendanceModel.fromJson].
-/// Some API responses return reference fields (e.g. `status`) as a plain String
-/// ObjectId instead of a fully populated object. This guard nulls them out so
-/// the Freezed-generated parser doesn't throw a cast error.
 Map<String, dynamic> _sanitizeAttendance(Map<String, dynamic> json) {
   final copy = Map<String, dynamic>.from(json);
-  // If status is not a full object Map, treat it as absent
-  if (copy['status'] is! Map) {
-    copy['status'] = null;
+
+  void sanitizeSingle(Map<String, dynamic>? attendance) {
+    if (attendance != null &&
+        attendance['status'] != null &&
+        attendance['status'] is! Map) {
+      attendance['status'] = null;
+    }
   }
+
+  sanitizeSingle(copy);
+
+  if (copy['sod'] is Map<String, dynamic>) sanitizeSingle(copy['sod']);
+  if (copy['eod'] is Map<String, dynamic>) sanitizeSingle(copy['eod']);
+
+  if (copy['clockins'] is List) {
+    final list = copy['clockins'] as List;
+    for (var i = 0; i < list.length; i++) {
+      if (list[i] is Map<String, dynamic>) {
+        sanitizeSingle(list[i]);
+      }
+    }
+  }
+
   return copy;
 }

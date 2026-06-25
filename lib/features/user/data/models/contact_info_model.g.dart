@@ -8,20 +8,20 @@ part of 'contact_info_model.dart';
 
 _ContactInfoModel _$ContactInfoModelFromJson(Map<String, dynamic> json) =>
     _ContactInfoModel(
-      id: json['_id'] as String,
-      phone: json['phone'] as String,
-      officephone: json['officephone'] as String,
-      perstate: json['perstate'] as String,
-      pertownship: json['pertownship'] as String,
-      percity: json['percity'] as String,
-      perstreetaddrs: (json['perstreetaddrs'] as List<dynamic>)
-          .map((e) => e as String)
+      id: json['_id'] as String?,
+      phone: json['phone'] as String?,
+      officephone: json['officephone'] as String?,
+      perstate: json['perstate'] as String?,
+      pertownship: json['pertownship'] as String?,
+      percity: json['percity'] as String?,
+      perstreetaddrs: (json['perstreetaddrs'] as List<dynamic>?)
+          ?.map((e) => e as String)
           .toList(),
-      currstate: json['currstate'] as String,
-      currtownship: json['currtownship'] as String,
-      currcity: json['currcity'] as String,
-      currstreetaddrs: (json['currstreetaddrs'] as List<dynamic>)
-          .map((e) => e as String)
+      currstate: json['currstate'] as String?,
+      currtownship: json['currtownship'] as String?,
+      currcity: json['currcity'] as String?,
+      currstreetaddrs: (json['currstreetaddrs'] as List<dynamic>?)
+          ?.map((e) => e as String)
           .toList(),
     );
 

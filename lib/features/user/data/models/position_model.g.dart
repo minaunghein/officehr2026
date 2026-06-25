@@ -8,19 +8,25 @@ part of 'position_model.dart';
 
 _PositionModel _$PositionModelFromJson(Map<String, dynamic> json) =>
     _PositionModel(
-      id: json['_id'] as String,
-      company: json['company'] as String,
-      titles: (json['titles'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      sc: json['sc'] as String,
-      so: (json['so'] as num).toInt(),
-      rank: (json['rank'] as num).toInt(),
-      remarks: json['remarks'] as String,
-      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
-      createdAt: json['createdAt'] as String,
-      updatedAt: json['updatedAt'] as String,
-      version: (json['__v'] as num).toInt(),
+      id: json['_id'] as String? ?? '',
+      company: json['company'] as String? ?? '',
+      titles:
+          (json['titles'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      sc: json['sc'] as String? ?? '',
+      so: (json['so'] as num?)?.toInt() ?? 0,
+      rank: (json['rank'] as num?)?.toInt() ?? 0,
+      remarks: json['remarks'] == null
+          ? ''
+          : _parsePositionRemarks(json['remarks']),
+      tags:
+          (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+          const [],
+      createdAt: json['createdAt'] as String?,
+      updatedAt: json['updatedAt'] as String?,
+      version: (json['__v'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$PositionModelToJson(_PositionModel instance) =>

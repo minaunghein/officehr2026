@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PositionModel {
 
-@JsonKey(name: '_id') String get id; String get company; List<String> get titles; String get sc; int get so; int get rank; String get remarks; List<String> get tags; String get createdAt; String get updatedAt;@JsonKey(name: '__v') int get version;
+@JsonKey(name: '_id') String get id; String get company; List<String> get titles; String get sc; int get so; int get rank;@JsonKey(fromJson: _parsePositionRemarks) String get remarks; List<String> get tags; String? get createdAt; String? get updatedAt;@JsonKey(name: '__v') int? get version;
 /// Create a copy of PositionModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $PositionModelCopyWith<$Res>  {
   factory $PositionModelCopyWith(PositionModel value, $Res Function(PositionModel) _then) = _$PositionModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: '_id') String id, String company, List<String> titles, String sc, int so, int rank, String remarks, List<String> tags, String createdAt, String updatedAt,@JsonKey(name: '__v') int version
+@JsonKey(name: '_id') String id, String company, List<String> titles, String sc, int so, int rank,@JsonKey(fromJson: _parsePositionRemarks) String remarks, List<String> tags, String? createdAt, String? updatedAt,@JsonKey(name: '__v') int? version
 });
 
 
@@ -65,7 +65,7 @@ class _$PositionModelCopyWithImpl<$Res>
 
 /// Create a copy of PositionModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? company = null,Object? titles = null,Object? sc = null,Object? so = null,Object? rank = null,Object? remarks = null,Object? tags = null,Object? createdAt = null,Object? updatedAt = null,Object? version = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? company = null,Object? titles = null,Object? sc = null,Object? so = null,Object? rank = null,Object? remarks = null,Object? tags = null,Object? createdAt = freezed,Object? updatedAt = freezed,Object? version = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,company: null == company ? _self.company : company // ignore: cast_nullable_to_non_nullable
@@ -75,10 +75,10 @@ as String,so: null == so ? _self.so : so // ignore: cast_nullable_to_non_nullabl
 as int,rank: null == rank ? _self.rank : rank // ignore: cast_nullable_to_non_nullable
 as int,remarks: null == remarks ? _self.remarks : remarks // ignore: cast_nullable_to_non_nullable
 as String,tags: null == tags ? _self.tags : tags // ignore: cast_nullable_to_non_nullable
-as List<String>,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as String,version: null == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
-as int,
+as List<String>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as String?,version: freezed == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -163,7 +163,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  String company,  List<String> titles,  String sc,  int so,  int rank,  String remarks,  List<String> tags,  String createdAt,  String updatedAt, @JsonKey(name: '__v')  int version)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  String company,  List<String> titles,  String sc,  int so,  int rank, @JsonKey(fromJson: _parsePositionRemarks)  String remarks,  List<String> tags,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PositionModel() when $default != null:
 return $default(_that.id,_that.company,_that.titles,_that.sc,_that.so,_that.rank,_that.remarks,_that.tags,_that.createdAt,_that.updatedAt,_that.version);case _:
@@ -184,7 +184,7 @@ return $default(_that.id,_that.company,_that.titles,_that.sc,_that.so,_that.rank
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  String company,  List<String> titles,  String sc,  int so,  int rank,  String remarks,  List<String> tags,  String createdAt,  String updatedAt, @JsonKey(name: '__v')  int version)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  String company,  List<String> titles,  String sc,  int so,  int rank, @JsonKey(fromJson: _parsePositionRemarks)  String remarks,  List<String> tags,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)  $default,) {final _that = this;
 switch (_that) {
 case _PositionModel():
 return $default(_that.id,_that.company,_that.titles,_that.sc,_that.so,_that.rank,_that.remarks,_that.tags,_that.createdAt,_that.updatedAt,_that.version);case _:
@@ -204,7 +204,7 @@ return $default(_that.id,_that.company,_that.titles,_that.sc,_that.so,_that.rank
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String id,  String company,  List<String> titles,  String sc,  int so,  int rank,  String remarks,  List<String> tags,  String createdAt,  String updatedAt, @JsonKey(name: '__v')  int version)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String id,  String company,  List<String> titles,  String sc,  int so,  int rank, @JsonKey(fromJson: _parsePositionRemarks)  String remarks,  List<String> tags,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,) {final _that = this;
 switch (_that) {
 case _PositionModel() when $default != null:
 return $default(_that.id,_that.company,_that.titles,_that.sc,_that.so,_that.rank,_that.remarks,_that.tags,_that.createdAt,_that.updatedAt,_that.version);case _:
@@ -219,32 +219,32 @@ return $default(_that.id,_that.company,_that.titles,_that.sc,_that.so,_that.rank
 @JsonSerializable()
 
 class _PositionModel implements PositionModel {
-  const _PositionModel({@JsonKey(name: '_id') required this.id, required this.company, required final  List<String> titles, required this.sc, required this.so, required this.rank, required this.remarks, required final  List<String> tags, required this.createdAt, required this.updatedAt, @JsonKey(name: '__v') required this.version}): _titles = titles,_tags = tags;
+  const _PositionModel({@JsonKey(name: '_id') this.id = '', this.company = '', final  List<String> titles = const [], this.sc = '', this.so = 0, this.rank = 0, @JsonKey(fromJson: _parsePositionRemarks) this.remarks = '', final  List<String> tags = const [], this.createdAt, this.updatedAt, @JsonKey(name: '__v') this.version}): _titles = titles,_tags = tags;
   factory _PositionModel.fromJson(Map<String, dynamic> json) => _$PositionModelFromJson(json);
 
 @override@JsonKey(name: '_id') final  String id;
-@override final  String company;
+@override@JsonKey() final  String company;
  final  List<String> _titles;
-@override List<String> get titles {
+@override@JsonKey() List<String> get titles {
   if (_titles is EqualUnmodifiableListView) return _titles;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_titles);
 }
 
-@override final  String sc;
-@override final  int so;
-@override final  int rank;
-@override final  String remarks;
+@override@JsonKey() final  String sc;
+@override@JsonKey() final  int so;
+@override@JsonKey() final  int rank;
+@override@JsonKey(fromJson: _parsePositionRemarks) final  String remarks;
  final  List<String> _tags;
-@override List<String> get tags {
+@override@JsonKey() List<String> get tags {
   if (_tags is EqualUnmodifiableListView) return _tags;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_tags);
 }
 
-@override final  String createdAt;
-@override final  String updatedAt;
-@override@JsonKey(name: '__v') final  int version;
+@override final  String? createdAt;
+@override final  String? updatedAt;
+@override@JsonKey(name: '__v') final  int? version;
 
 /// Create a copy of PositionModel
 /// with the given fields replaced by the non-null parameter values.
@@ -279,7 +279,7 @@ abstract mixin class _$PositionModelCopyWith<$Res> implements $PositionModelCopy
   factory _$PositionModelCopyWith(_PositionModel value, $Res Function(_PositionModel) _then) = __$PositionModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: '_id') String id, String company, List<String> titles, String sc, int so, int rank, String remarks, List<String> tags, String createdAt, String updatedAt,@JsonKey(name: '__v') int version
+@JsonKey(name: '_id') String id, String company, List<String> titles, String sc, int so, int rank,@JsonKey(fromJson: _parsePositionRemarks) String remarks, List<String> tags, String? createdAt, String? updatedAt,@JsonKey(name: '__v') int? version
 });
 
 
@@ -296,7 +296,7 @@ class __$PositionModelCopyWithImpl<$Res>
 
 /// Create a copy of PositionModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? company = null,Object? titles = null,Object? sc = null,Object? so = null,Object? rank = null,Object? remarks = null,Object? tags = null,Object? createdAt = null,Object? updatedAt = null,Object? version = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? company = null,Object? titles = null,Object? sc = null,Object? so = null,Object? rank = null,Object? remarks = null,Object? tags = null,Object? createdAt = freezed,Object? updatedAt = freezed,Object? version = freezed,}) {
   return _then(_PositionModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,company: null == company ? _self.company : company // ignore: cast_nullable_to_non_nullable
@@ -306,10 +306,10 @@ as String,so: null == so ? _self.so : so // ignore: cast_nullable_to_non_nullabl
 as int,rank: null == rank ? _self.rank : rank // ignore: cast_nullable_to_non_nullable
 as int,remarks: null == remarks ? _self.remarks : remarks // ignore: cast_nullable_to_non_nullable
 as String,tags: null == tags ? _self._tags : tags // ignore: cast_nullable_to_non_nullable
-as List<String>,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as String,version: null == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
-as int,
+as List<String>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as String?,version: freezed == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 

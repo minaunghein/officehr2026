@@ -9,32 +9,38 @@ part of 'user_bio_model.dart';
 _UserBioModel _$UserBioModelFromJson(
   Map<String, dynamic> json,
 ) => _UserBioModel(
-  id: json['_id'] as String,
-  company: json['company'] as String,
-  userid: json['userid'] as String,
-  basicinfo: BasicInfoModel.fromJson(json['basicinfo'] as Map<String, dynamic>),
-  contactinfo: ContactInfoModel.fromJson(
-    json['contactinfo'] as Map<String, dynamic>,
-  ),
-  familyinfo: FamilyInfoModel.fromJson(
-    json['familyinfo'] as Map<String, dynamic>,
-  ),
-  workinfo: WorkInfoModel.fromJson(json['workinfo'] as Map<String, dynamic>),
-  isotenable: json['isotenable'] as bool,
-  isot1enable: json['isot1enable'] as bool,
-  isot2enable: json['isot2enable'] as bool,
-  isot3enable: json['isot3enable'] as bool,
-  isautoammendenable: json['isautoammendenable'] as bool,
-  isdeductionenable: json['isdeductionenable'] as bool,
-  isunderenable: json['isunderenable'] as bool,
-  tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
-  deleted: json['deleted'] as bool,
+  id: json['_id'] as String? ?? '',
+  company: json['company'] == null ? '' : _parseCompanyId(json['company']),
+  userid: json['userid'] as String? ?? '',
+  basicinfo: json['basicinfo'] == null
+      ? null
+      : BasicInfoModel.fromJson(json['basicinfo'] as Map<String, dynamic>),
+  contactinfo: json['contactinfo'] == null
+      ? null
+      : ContactInfoModel.fromJson(json['contactinfo'] as Map<String, dynamic>),
+  familyinfo: json['familyinfo'] == null
+      ? null
+      : FamilyInfoModel.fromJson(json['familyinfo'] as Map<String, dynamic>),
+  workinfo: json['workinfo'] == null
+      ? null
+      : WorkInfoModel.fromJson(json['workinfo'] as Map<String, dynamic>),
+  isotenable: json['isotenable'] as bool? ?? false,
+  isot1enable: json['isot1enable'] as bool? ?? false,
+  isot2enable: json['isot2enable'] as bool? ?? false,
+  isot3enable: json['isot3enable'] as bool? ?? false,
+  isautoammendenable: json['isautoammendenable'] as bool? ?? false,
+  isdeductionenable: json['isdeductionenable'] as bool? ?? false,
+  isunderenable: json['isunderenable'] as bool? ?? false,
+  tags:
+      (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+      const [],
+  deleted: json['deleted'] as bool? ?? false,
   deletedAt: json['deletedAt'],
-  workexperience: json['workexperience'] as List<dynamic>,
-  education: json['education'] as List<dynamic>,
-  createdAt: json['createdAt'] as String,
-  updatedAt: json['updatedAt'] as String,
-  version: (json['__v'] as num).toInt(),
+  workexperience: json['workexperience'] as List<dynamic>? ?? const [],
+  education: json['education'] as List<dynamic>? ?? const [],
+  createdAt: json['createdAt'] as String?,
+  updatedAt: json['updatedAt'] as String?,
+  version: (json['__v'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$UserBioModelToJson(_UserBioModel instance) =>

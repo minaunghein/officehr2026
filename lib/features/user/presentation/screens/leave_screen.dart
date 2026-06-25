@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/features/user/domain/entities/user_leave.dart';
 import 'package:office_hr/features/user/presentation/providers/user_providers.dart';
 
@@ -114,57 +115,41 @@ class LeaveItem extends HookConsumerWidget {
     final theme = Theme.of(context);
     final isExpanded = useState(false);
 
-    IconData getLeaveIcon(String title) {
-      final t = title.toLowerCase();
-      if (t.contains('sick') || t.contains('medical')) {
-        return Icons.medical_services_rounded;
-      } else if (t.contains('vacation') ||
-          t.contains('annual') ||
-          t.contains('casual')) {
-        return Icons.beach_access_rounded;
-      } else if (t.contains('maternity') || t.contains('paternity')) {
-        return Icons.child_care_rounded;
-      } else if (t.contains('absent')) {
-        return Icons.cancel_presentation_rounded;
-      }
-      return Icons.calendar_today_rounded;
-    }
+    // IconData getLeaveIcon(String title) {
+    //   final t = title.toLowerCase();
+    //   if (t.contains('sick') || t.contains('medical')) {
+    //     return Icons.medical_services_rounded;
+    //   } else if (t.contains('vacation') ||
+    //       t.contains('annual') ||
+    //       t.contains('casual')) {
+    //     return Icons.beach_access_rounded;
+    //   } else if (t.contains('maternity') || t.contains('paternity')) {
+    //     return Icons.child_care_rounded;
+    //   } else if (t.contains('absent')) {
+    //     return Icons.cancel_presentation_rounded;
+    //   }
+    //   return Icons.calendar_today_rounded;
+    // }
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppSizes.borderRadiusSm),
         side: BorderSide(
           color: theme.colorScheme.outlineVariant.withValues(alpha: 0.4),
         ),
       ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppSizes.borderRadiusSm),
         onTap: () => isExpanded.value = !isExpanded.value,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header Row
               Row(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.primaryContainer.withValues(
-                        alpha: 0.2,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Icon(
-                      getLeaveIcon(leave.leaveTitle),
-                      color: theme.colorScheme.primary,
-                      size: 24,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,7 +172,6 @@ class LeaveItem extends HookConsumerWidget {
                       ],
                     ),
                   ),
-                  // Paid/Unpaid Badge
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
@@ -217,7 +201,6 @@ class LeaveItem extends HookConsumerWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              // Main Stats Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -234,7 +217,6 @@ class LeaveItem extends HookConsumerWidget {
                   ),
                 ],
               ),
-              // Expanded Section
               if (isExpanded.value) ...[
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 12),

@@ -1,28 +1,31 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:office_hr/features/attendance/presentation/screens/team.dart';
 import 'package:office_hr/features/dashboard/presentation/providers/dashboard_provider.dart';
 import 'package:office_hr/features/attendance/presentation/screens/home.dart';
-import 'package:office_hr/features/settings/presentation/screens/settings.dart';
 import 'package:office_hr/features/user/presentation/providers/user_providers.dart';
+import 'package:office_hr/features/dashboard/presentation/widgets/dashboard_drawer.dart';
+import 'package:office_hr/shared/global.dart';
 
 class Dashboard extends ConsumerWidget {
   Dashboard({super.key});
 
   final _pages = <Widget>[
     HomeScreen(),
-    // SizedBox(child: Center(child: Text('Attendance'))),
-    SizedBox(child: Center(child: Text('Team'))),
-    SettingsScreen(),
+    SizedBox(child: Center(child: Text('Attendance'))),
+    TeamScreen(),
   ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(dashboardIndexProvider);
+    final safeIndex = currentIndex >= _pages.length ? 0 : currentIndex;
 
     return Scaffold(
       appBar: _DashboardAppBar(ref: ref),
-      body: IndexedStack(index: currentIndex, children: _pages),
+      drawer: const DashboardDrawer(),
+      body: IndexedStack(index: safeIndex, children: _pages),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -30,7 +33,7 @@ class Dashboard extends ConsumerWidget {
         selectedFontSize: 11,
         unselectedFontSize: 11,
         iconSize: 22,
-        currentIndex: currentIndex,
+        currentIndex: safeIndex,
         onTap: (i) => ref.read(dashboardIndexProvider.notifier).select(i),
         items: const [
           BottomNavigationBarItem(
@@ -38,20 +41,15 @@ class Dashboard extends ConsumerWidget {
             activeIcon: Icon(Icons.dashboard_rounded),
             label: 'Home',
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.calendar_month_outlined),
-          //   activeIcon: Icon(Icons.calendar_month),
-          //   label: 'Attendance',
-          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_outlined),
+            activeIcon: Icon(Icons.calendar_month),
+            label: 'Attendance',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.groups_2_outlined),
             activeIcon: Icon(Icons.groups_2_rounded),
             label: 'Team',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person_rounded),
-            label: 'Profile',
           ),
         ],
       ),
@@ -85,6 +83,9 @@ class _DashboardAppBar extends HookConsumerWidget
     // final themeStyle = ref.watch(themeProvider);
     final theme = Theme.of(context);
     final userDetails = ref.watch(userDetailsProvider);
+    final bio = userDetails.value?.userBio;
+    final fullName =
+        buildFullName(bio?.basicInfo) ?? userDetails.value?.username;
 
     return AppBar(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -147,9 +148,7 @@ class _DashboardAppBar extends HookConsumerWidget
                 )
               else
                 Text(
-                  userDetails.value?.userBio != null
-                      ? "${userDetails.value?.userBio?.basicInfo.firstNames[0]} ${userDetails.value?.userBio?.basicInfo.lastNames[0]}"
-                      : userDetails.value?.username ?? 'Loading...',
+                  fullName ?? 'UNKNOWN',
                   style: theme.textTheme.titleMedium?.copyWith(
                     color: theme.colorScheme.onSurface,
                     fontWeight: FontWeight.w800,

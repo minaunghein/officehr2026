@@ -11,30 +11,37 @@ part 'user_bio_model.g.dart';
 @freezed
 abstract class UserBioModel with _$UserBioModel {
   const factory UserBioModel({
-    @JsonKey(name: '_id') required String id,
-    required String company,
-    required String userid,
-    required BasicInfoModel basicinfo,
-    required ContactInfoModel contactinfo,
-    required FamilyInfoModel familyinfo,
-    required WorkInfoModel workinfo,
-    required bool isotenable,
-    required bool isot1enable,
-    required bool isot2enable,
-    required bool isot3enable,
-    required bool isautoammendenable,
-    required bool isdeductionenable,
-    required bool isunderenable,
-    required List<String> tags,
-    required bool deleted,
-    required dynamic deletedAt,
-    required List<dynamic> workexperience,
-    required List<dynamic> education,
-    required String createdAt,
-    required String updatedAt,
-    @JsonKey(name: '__v') required int version,
+    @JsonKey(name: '_id') @Default('') String id,
+    @JsonKey(fromJson: _parseCompanyId) @Default('') String company,
+    @Default('') String userid,
+    BasicInfoModel? basicinfo,
+    ContactInfoModel? contactinfo,
+    FamilyInfoModel? familyinfo,
+    WorkInfoModel? workinfo,
+    @Default(false) bool isotenable,
+    @Default(false) bool isot1enable,
+    @Default(false) bool isot2enable,
+    @Default(false) bool isot3enable,
+    @Default(false) bool isautoammendenable,
+    @Default(false) bool isdeductionenable,
+    @Default(false) bool isunderenable,
+    @Default([]) List<String> tags,
+    @Default(false) bool deleted,
+    dynamic deletedAt,
+    @Default([]) List<dynamic> workexperience,
+    @Default([]) List<dynamic> education,
+    String? createdAt,
+    String? updatedAt,
+    @JsonKey(name: '__v') int? version,
   }) = _UserBioModel;
 
   factory UserBioModel.fromJson(Map<String, dynamic> json) =>
       _$UserBioModelFromJson(json);
+}
+
+String _parseCompanyId(dynamic json) {
+  if (json == null) return '';
+  if (json is String) return json;
+  if (json is Map) return (json['_id'] ?? json['id'] ?? '').toString();
+  return '';
 }

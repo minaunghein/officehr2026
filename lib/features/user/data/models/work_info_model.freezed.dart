@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$WorkInfoModel {
 
-@JsonKey(name: '_id') String get id; String get empcodeprefix; int get empcode; int get cardid; int get grade; String get employmentdate; String get probationenddate; int get empstatus; bool get resigned; String get resigneddate; PositionModel get position; DepartmentModel get department; bool get status;@SupervisorConverter() SupervisorModel? get supervisorid;@ShiftConverter() ShiftModel? get shift; BranchModel get branch;
+@JsonKey(name: '_id') String? get id; String? get empcodeprefix; int? get empcode; int? get cardid; int? get grade; String? get employmentdate; String? get probationenddate; int? get empstatus; bool? get resigned; String? get resigneddate; PositionModel? get position; DepartmentModel? get department; bool? get status;@SupervisorConverter() SupervisorModel? get supervisorid;@ShiftConverter() ShiftModel? get shift; BranchModel? get branch;
 /// Create a copy of WorkInfoModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,11 +48,11 @@ abstract mixin class $WorkInfoModelCopyWith<$Res>  {
   factory $WorkInfoModelCopyWith(WorkInfoModel value, $Res Function(WorkInfoModel) _then) = _$WorkInfoModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: '_id') String id, String empcodeprefix, int empcode, int cardid, int grade, String employmentdate, String probationenddate, int empstatus, bool resigned, String resigneddate, PositionModel position, DepartmentModel department, bool status,@SupervisorConverter() SupervisorModel? supervisorid,@ShiftConverter() ShiftModel? shift, BranchModel branch
+@JsonKey(name: '_id') String? id, String? empcodeprefix, int? empcode, int? cardid, int? grade, String? employmentdate, String? probationenddate, int? empstatus, bool? resigned, String? resigneddate, PositionModel? position, DepartmentModel? department, bool? status,@SupervisorConverter() SupervisorModel? supervisorid,@ShiftConverter() ShiftModel? shift, BranchModel? branch
 });
 
 
-$PositionModelCopyWith<$Res> get position;$DepartmentModelCopyWith<$Res> get department;$SupervisorModelCopyWith<$Res>? get supervisorid;$ShiftModelCopyWith<$Res>? get shift;$BranchModelCopyWith<$Res> get branch;
+$PositionModelCopyWith<$Res>? get position;$DepartmentModelCopyWith<$Res>? get department;$SupervisorModelCopyWith<$Res>? get supervisorid;$ShiftModelCopyWith<$Res>? get shift;$BranchModelCopyWith<$Res>? get branch;
 
 }
 /// @nodoc
@@ -65,43 +65,49 @@ class _$WorkInfoModelCopyWithImpl<$Res>
 
 /// Create a copy of WorkInfoModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? empcodeprefix = null,Object? empcode = null,Object? cardid = null,Object? grade = null,Object? employmentdate = null,Object? probationenddate = null,Object? empstatus = null,Object? resigned = null,Object? resigneddate = null,Object? position = null,Object? department = null,Object? status = null,Object? supervisorid = freezed,Object? shift = freezed,Object? branch = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? empcodeprefix = freezed,Object? empcode = freezed,Object? cardid = freezed,Object? grade = freezed,Object? employmentdate = freezed,Object? probationenddate = freezed,Object? empstatus = freezed,Object? resigned = freezed,Object? resigneddate = freezed,Object? position = freezed,Object? department = freezed,Object? status = freezed,Object? supervisorid = freezed,Object? shift = freezed,Object? branch = freezed,}) {
   return _then(_self.copyWith(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,empcodeprefix: null == empcodeprefix ? _self.empcodeprefix : empcodeprefix // ignore: cast_nullable_to_non_nullable
-as String,empcode: null == empcode ? _self.empcode : empcode // ignore: cast_nullable_to_non_nullable
-as int,cardid: null == cardid ? _self.cardid : cardid // ignore: cast_nullable_to_non_nullable
-as int,grade: null == grade ? _self.grade : grade // ignore: cast_nullable_to_non_nullable
-as int,employmentdate: null == employmentdate ? _self.employmentdate : employmentdate // ignore: cast_nullable_to_non_nullable
-as String,probationenddate: null == probationenddate ? _self.probationenddate : probationenddate // ignore: cast_nullable_to_non_nullable
-as String,empstatus: null == empstatus ? _self.empstatus : empstatus // ignore: cast_nullable_to_non_nullable
-as int,resigned: null == resigned ? _self.resigned : resigned // ignore: cast_nullable_to_non_nullable
-as bool,resigneddate: null == resigneddate ? _self.resigneddate : resigneddate // ignore: cast_nullable_to_non_nullable
-as String,position: null == position ? _self.position : position // ignore: cast_nullable_to_non_nullable
-as PositionModel,department: null == department ? _self.department : department // ignore: cast_nullable_to_non_nullable
-as DepartmentModel,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as bool,supervisorid: freezed == supervisorid ? _self.supervisorid : supervisorid // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,empcodeprefix: freezed == empcodeprefix ? _self.empcodeprefix : empcodeprefix // ignore: cast_nullable_to_non_nullable
+as String?,empcode: freezed == empcode ? _self.empcode : empcode // ignore: cast_nullable_to_non_nullable
+as int?,cardid: freezed == cardid ? _self.cardid : cardid // ignore: cast_nullable_to_non_nullable
+as int?,grade: freezed == grade ? _self.grade : grade // ignore: cast_nullable_to_non_nullable
+as int?,employmentdate: freezed == employmentdate ? _self.employmentdate : employmentdate // ignore: cast_nullable_to_non_nullable
+as String?,probationenddate: freezed == probationenddate ? _self.probationenddate : probationenddate // ignore: cast_nullable_to_non_nullable
+as String?,empstatus: freezed == empstatus ? _self.empstatus : empstatus // ignore: cast_nullable_to_non_nullable
+as int?,resigned: freezed == resigned ? _self.resigned : resigned // ignore: cast_nullable_to_non_nullable
+as bool?,resigneddate: freezed == resigneddate ? _self.resigneddate : resigneddate // ignore: cast_nullable_to_non_nullable
+as String?,position: freezed == position ? _self.position : position // ignore: cast_nullable_to_non_nullable
+as PositionModel?,department: freezed == department ? _self.department : department // ignore: cast_nullable_to_non_nullable
+as DepartmentModel?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as bool?,supervisorid: freezed == supervisorid ? _self.supervisorid : supervisorid // ignore: cast_nullable_to_non_nullable
 as SupervisorModel?,shift: freezed == shift ? _self.shift : shift // ignore: cast_nullable_to_non_nullable
-as ShiftModel?,branch: null == branch ? _self.branch : branch // ignore: cast_nullable_to_non_nullable
-as BranchModel,
+as ShiftModel?,branch: freezed == branch ? _self.branch : branch // ignore: cast_nullable_to_non_nullable
+as BranchModel?,
   ));
 }
 /// Create a copy of WorkInfoModel
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$PositionModelCopyWith<$Res> get position {
-  
-  return $PositionModelCopyWith<$Res>(_self.position, (value) {
+$PositionModelCopyWith<$Res>? get position {
+    if (_self.position == null) {
+    return null;
+  }
+
+  return $PositionModelCopyWith<$Res>(_self.position!, (value) {
     return _then(_self.copyWith(position: value));
   });
 }/// Create a copy of WorkInfoModel
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$DepartmentModelCopyWith<$Res> get department {
-  
-  return $DepartmentModelCopyWith<$Res>(_self.department, (value) {
+$DepartmentModelCopyWith<$Res>? get department {
+    if (_self.department == null) {
+    return null;
+  }
+
+  return $DepartmentModelCopyWith<$Res>(_self.department!, (value) {
     return _then(_self.copyWith(department: value));
   });
 }/// Create a copy of WorkInfoModel
@@ -132,9 +138,12 @@ $ShiftModelCopyWith<$Res>? get shift {
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$BranchModelCopyWith<$Res> get branch {
-  
-  return $BranchModelCopyWith<$Res>(_self.branch, (value) {
+$BranchModelCopyWith<$Res>? get branch {
+    if (_self.branch == null) {
+    return null;
+  }
+
+  return $BranchModelCopyWith<$Res>(_self.branch!, (value) {
     return _then(_self.copyWith(branch: value));
   });
 }
@@ -219,7 +228,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  String empcodeprefix,  int empcode,  int cardid,  int grade,  String employmentdate,  String probationenddate,  int empstatus,  bool resigned,  String resigneddate,  PositionModel position,  DepartmentModel department,  bool status, @SupervisorConverter()  SupervisorModel? supervisorid, @ShiftConverter()  ShiftModel? shift,  BranchModel branch)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String? id,  String? empcodeprefix,  int? empcode,  int? cardid,  int? grade,  String? employmentdate,  String? probationenddate,  int? empstatus,  bool? resigned,  String? resigneddate,  PositionModel? position,  DepartmentModel? department,  bool? status, @SupervisorConverter()  SupervisorModel? supervisorid, @ShiftConverter()  ShiftModel? shift,  BranchModel? branch)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _WorkInfoModel() when $default != null:
 return $default(_that.id,_that.empcodeprefix,_that.empcode,_that.cardid,_that.grade,_that.employmentdate,_that.probationenddate,_that.empstatus,_that.resigned,_that.resigneddate,_that.position,_that.department,_that.status,_that.supervisorid,_that.shift,_that.branch);case _:
@@ -240,7 +249,7 @@ return $default(_that.id,_that.empcodeprefix,_that.empcode,_that.cardid,_that.gr
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  String empcodeprefix,  int empcode,  int cardid,  int grade,  String employmentdate,  String probationenddate,  int empstatus,  bool resigned,  String resigneddate,  PositionModel position,  DepartmentModel department,  bool status, @SupervisorConverter()  SupervisorModel? supervisorid, @ShiftConverter()  ShiftModel? shift,  BranchModel branch)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String? id,  String? empcodeprefix,  int? empcode,  int? cardid,  int? grade,  String? employmentdate,  String? probationenddate,  int? empstatus,  bool? resigned,  String? resigneddate,  PositionModel? position,  DepartmentModel? department,  bool? status, @SupervisorConverter()  SupervisorModel? supervisorid, @ShiftConverter()  ShiftModel? shift,  BranchModel? branch)  $default,) {final _that = this;
 switch (_that) {
 case _WorkInfoModel():
 return $default(_that.id,_that.empcodeprefix,_that.empcode,_that.cardid,_that.grade,_that.employmentdate,_that.probationenddate,_that.empstatus,_that.resigned,_that.resigneddate,_that.position,_that.department,_that.status,_that.supervisorid,_that.shift,_that.branch);case _:
@@ -260,7 +269,7 @@ return $default(_that.id,_that.empcodeprefix,_that.empcode,_that.cardid,_that.gr
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String id,  String empcodeprefix,  int empcode,  int cardid,  int grade,  String employmentdate,  String probationenddate,  int empstatus,  bool resigned,  String resigneddate,  PositionModel position,  DepartmentModel department,  bool status, @SupervisorConverter()  SupervisorModel? supervisorid, @ShiftConverter()  ShiftModel? shift,  BranchModel branch)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String? id,  String? empcodeprefix,  int? empcode,  int? cardid,  int? grade,  String? employmentdate,  String? probationenddate,  int? empstatus,  bool? resigned,  String? resigneddate,  PositionModel? position,  DepartmentModel? department,  bool? status, @SupervisorConverter()  SupervisorModel? supervisorid, @ShiftConverter()  ShiftModel? shift,  BranchModel? branch)?  $default,) {final _that = this;
 switch (_that) {
 case _WorkInfoModel() when $default != null:
 return $default(_that.id,_that.empcodeprefix,_that.empcode,_that.cardid,_that.grade,_that.employmentdate,_that.probationenddate,_that.empstatus,_that.resigned,_that.resigneddate,_that.position,_that.department,_that.status,_that.supervisorid,_that.shift,_that.branch);case _:
@@ -275,25 +284,25 @@ return $default(_that.id,_that.empcodeprefix,_that.empcode,_that.cardid,_that.gr
 @JsonSerializable()
 
 class _WorkInfoModel implements WorkInfoModel {
-  const _WorkInfoModel({@JsonKey(name: '_id') required this.id, required this.empcodeprefix, required this.empcode, required this.cardid, required this.grade, required this.employmentdate, required this.probationenddate, required this.empstatus, required this.resigned, required this.resigneddate, required this.position, required this.department, required this.status, @SupervisorConverter() this.supervisorid, @ShiftConverter() this.shift, required this.branch});
+  const _WorkInfoModel({@JsonKey(name: '_id') this.id, this.empcodeprefix, this.empcode, this.cardid, this.grade, this.employmentdate, this.probationenddate, this.empstatus, this.resigned, this.resigneddate, this.position, this.department, this.status, @SupervisorConverter() this.supervisorid, @ShiftConverter() this.shift, this.branch});
   factory _WorkInfoModel.fromJson(Map<String, dynamic> json) => _$WorkInfoModelFromJson(json);
 
-@override@JsonKey(name: '_id') final  String id;
-@override final  String empcodeprefix;
-@override final  int empcode;
-@override final  int cardid;
-@override final  int grade;
-@override final  String employmentdate;
-@override final  String probationenddate;
-@override final  int empstatus;
-@override final  bool resigned;
-@override final  String resigneddate;
-@override final  PositionModel position;
-@override final  DepartmentModel department;
-@override final  bool status;
+@override@JsonKey(name: '_id') final  String? id;
+@override final  String? empcodeprefix;
+@override final  int? empcode;
+@override final  int? cardid;
+@override final  int? grade;
+@override final  String? employmentdate;
+@override final  String? probationenddate;
+@override final  int? empstatus;
+@override final  bool? resigned;
+@override final  String? resigneddate;
+@override final  PositionModel? position;
+@override final  DepartmentModel? department;
+@override final  bool? status;
 @override@SupervisorConverter() final  SupervisorModel? supervisorid;
 @override@ShiftConverter() final  ShiftModel? shift;
-@override final  BranchModel branch;
+@override final  BranchModel? branch;
 
 /// Create a copy of WorkInfoModel
 /// with the given fields replaced by the non-null parameter values.
@@ -328,11 +337,11 @@ abstract mixin class _$WorkInfoModelCopyWith<$Res> implements $WorkInfoModelCopy
   factory _$WorkInfoModelCopyWith(_WorkInfoModel value, $Res Function(_WorkInfoModel) _then) = __$WorkInfoModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: '_id') String id, String empcodeprefix, int empcode, int cardid, int grade, String employmentdate, String probationenddate, int empstatus, bool resigned, String resigneddate, PositionModel position, DepartmentModel department, bool status,@SupervisorConverter() SupervisorModel? supervisorid,@ShiftConverter() ShiftModel? shift, BranchModel branch
+@JsonKey(name: '_id') String? id, String? empcodeprefix, int? empcode, int? cardid, int? grade, String? employmentdate, String? probationenddate, int? empstatus, bool? resigned, String? resigneddate, PositionModel? position, DepartmentModel? department, bool? status,@SupervisorConverter() SupervisorModel? supervisorid,@ShiftConverter() ShiftModel? shift, BranchModel? branch
 });
 
 
-@override $PositionModelCopyWith<$Res> get position;@override $DepartmentModelCopyWith<$Res> get department;@override $SupervisorModelCopyWith<$Res>? get supervisorid;@override $ShiftModelCopyWith<$Res>? get shift;@override $BranchModelCopyWith<$Res> get branch;
+@override $PositionModelCopyWith<$Res>? get position;@override $DepartmentModelCopyWith<$Res>? get department;@override $SupervisorModelCopyWith<$Res>? get supervisorid;@override $ShiftModelCopyWith<$Res>? get shift;@override $BranchModelCopyWith<$Res>? get branch;
 
 }
 /// @nodoc
@@ -345,25 +354,25 @@ class __$WorkInfoModelCopyWithImpl<$Res>
 
 /// Create a copy of WorkInfoModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? empcodeprefix = null,Object? empcode = null,Object? cardid = null,Object? grade = null,Object? employmentdate = null,Object? probationenddate = null,Object? empstatus = null,Object? resigned = null,Object? resigneddate = null,Object? position = null,Object? department = null,Object? status = null,Object? supervisorid = freezed,Object? shift = freezed,Object? branch = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? empcodeprefix = freezed,Object? empcode = freezed,Object? cardid = freezed,Object? grade = freezed,Object? employmentdate = freezed,Object? probationenddate = freezed,Object? empstatus = freezed,Object? resigned = freezed,Object? resigneddate = freezed,Object? position = freezed,Object? department = freezed,Object? status = freezed,Object? supervisorid = freezed,Object? shift = freezed,Object? branch = freezed,}) {
   return _then(_WorkInfoModel(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,empcodeprefix: null == empcodeprefix ? _self.empcodeprefix : empcodeprefix // ignore: cast_nullable_to_non_nullable
-as String,empcode: null == empcode ? _self.empcode : empcode // ignore: cast_nullable_to_non_nullable
-as int,cardid: null == cardid ? _self.cardid : cardid // ignore: cast_nullable_to_non_nullable
-as int,grade: null == grade ? _self.grade : grade // ignore: cast_nullable_to_non_nullable
-as int,employmentdate: null == employmentdate ? _self.employmentdate : employmentdate // ignore: cast_nullable_to_non_nullable
-as String,probationenddate: null == probationenddate ? _self.probationenddate : probationenddate // ignore: cast_nullable_to_non_nullable
-as String,empstatus: null == empstatus ? _self.empstatus : empstatus // ignore: cast_nullable_to_non_nullable
-as int,resigned: null == resigned ? _self.resigned : resigned // ignore: cast_nullable_to_non_nullable
-as bool,resigneddate: null == resigneddate ? _self.resigneddate : resigneddate // ignore: cast_nullable_to_non_nullable
-as String,position: null == position ? _self.position : position // ignore: cast_nullable_to_non_nullable
-as PositionModel,department: null == department ? _self.department : department // ignore: cast_nullable_to_non_nullable
-as DepartmentModel,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as bool,supervisorid: freezed == supervisorid ? _self.supervisorid : supervisorid // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,empcodeprefix: freezed == empcodeprefix ? _self.empcodeprefix : empcodeprefix // ignore: cast_nullable_to_non_nullable
+as String?,empcode: freezed == empcode ? _self.empcode : empcode // ignore: cast_nullable_to_non_nullable
+as int?,cardid: freezed == cardid ? _self.cardid : cardid // ignore: cast_nullable_to_non_nullable
+as int?,grade: freezed == grade ? _self.grade : grade // ignore: cast_nullable_to_non_nullable
+as int?,employmentdate: freezed == employmentdate ? _self.employmentdate : employmentdate // ignore: cast_nullable_to_non_nullable
+as String?,probationenddate: freezed == probationenddate ? _self.probationenddate : probationenddate // ignore: cast_nullable_to_non_nullable
+as String?,empstatus: freezed == empstatus ? _self.empstatus : empstatus // ignore: cast_nullable_to_non_nullable
+as int?,resigned: freezed == resigned ? _self.resigned : resigned // ignore: cast_nullable_to_non_nullable
+as bool?,resigneddate: freezed == resigneddate ? _self.resigneddate : resigneddate // ignore: cast_nullable_to_non_nullable
+as String?,position: freezed == position ? _self.position : position // ignore: cast_nullable_to_non_nullable
+as PositionModel?,department: freezed == department ? _self.department : department // ignore: cast_nullable_to_non_nullable
+as DepartmentModel?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as bool?,supervisorid: freezed == supervisorid ? _self.supervisorid : supervisorid // ignore: cast_nullable_to_non_nullable
 as SupervisorModel?,shift: freezed == shift ? _self.shift : shift // ignore: cast_nullable_to_non_nullable
-as ShiftModel?,branch: null == branch ? _self.branch : branch // ignore: cast_nullable_to_non_nullable
-as BranchModel,
+as ShiftModel?,branch: freezed == branch ? _self.branch : branch // ignore: cast_nullable_to_non_nullable
+as BranchModel?,
   ));
 }
 
@@ -371,18 +380,24 @@ as BranchModel,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$PositionModelCopyWith<$Res> get position {
-  
-  return $PositionModelCopyWith<$Res>(_self.position, (value) {
+$PositionModelCopyWith<$Res>? get position {
+    if (_self.position == null) {
+    return null;
+  }
+
+  return $PositionModelCopyWith<$Res>(_self.position!, (value) {
     return _then(_self.copyWith(position: value));
   });
 }/// Create a copy of WorkInfoModel
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$DepartmentModelCopyWith<$Res> get department {
-  
-  return $DepartmentModelCopyWith<$Res>(_self.department, (value) {
+$DepartmentModelCopyWith<$Res>? get department {
+    if (_self.department == null) {
+    return null;
+  }
+
+  return $DepartmentModelCopyWith<$Res>(_self.department!, (value) {
     return _then(_self.copyWith(department: value));
   });
 }/// Create a copy of WorkInfoModel
@@ -413,9 +428,12 @@ $ShiftModelCopyWith<$Res>? get shift {
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$BranchModelCopyWith<$Res> get branch {
-  
-  return $BranchModelCopyWith<$Res>(_self.branch, (value) {
+$BranchModelCopyWith<$Res>? get branch {
+    if (_self.branch == null) {
+    return null;
+  }
+
+  return $BranchModelCopyWith<$Res>(_self.branch!, (value) {
     return _then(_self.copyWith(branch: value));
   });
 }

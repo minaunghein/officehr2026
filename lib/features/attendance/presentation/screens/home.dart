@@ -32,8 +32,8 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(height: 24),
                 _RecentActivity(),
                 SizedBox(height: 24),
-                _MonthlyStatistics(),
-                SizedBox(height: 24),
+                // _MonthlyStatistics(),
+                // SizedBox(height: 24),
               ]),
             ),
           ),
@@ -878,114 +878,114 @@ class _AttendanceActivityTile extends StatelessWidget {
   }
 }
 
-class _MonthlyStatistics extends StatelessWidget {
-  const _MonthlyStatistics();
+// class _MonthlyStatistics extends StatelessWidget {
+//   const _MonthlyStatistics();
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+//   @override
+//   Widget build(BuildContext context) {
+//     final theme = Theme.of(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              'Monthly Statistics',
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            Text(
-              formatMonthYear(DateTime.now()),
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: theme.colorScheme.outline.withValues(alpha: 0.15),
-            ),
-            color: theme.colorScheme.surface,
-          ),
-          child: IntrinsicHeight(
-            child: Row(
-              children: [
-                _buildStatItem(theme, 'ATTENDANCE', '20 Days', null),
-                VerticalDivider(
-                  width: 1,
-                  color: theme.colorScheme.outline.withValues(alpha: 0.15),
-                ),
-                _buildStatItem(
-                  theme,
-                  'LATE',
-                  '1h 12m',
-                  const Color(0xFFD32F2F),
-                ),
-                VerticalDivider(
-                  width: 1,
-                  color: theme.colorScheme.outline.withValues(alpha: 0.15),
-                ),
-                _buildStatItem(theme, 'OVERTIME', '4h 30m', null),
-                VerticalDivider(
-                  width: 1,
-                  color: theme.colorScheme.outline.withValues(alpha: 0.15),
-                ),
-                _buildStatItem(theme, 'LEAVE', '1.5 Days', null),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.stretch,
+//       children: [
+//         Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           crossAxisAlignment: CrossAxisAlignment.end,
+//           children: [
+//             Text(
+//               'Monthly Statistics',
+//               style: theme.textTheme.titleLarge?.copyWith(
+//                 fontWeight: FontWeight.w700,
+//               ),
+//             ),
+//             Text(
+//               formatMonthYear(DateTime.now()),
+//               style: theme.textTheme.bodyMedium?.copyWith(
+//                 fontWeight: FontWeight.w600,
+//                 color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+//               ),
+//             ),
+//           ],
+//         ),
+//         const SizedBox(height: 16),
+//         Container(
+//           decoration: BoxDecoration(
+//             borderRadius: BorderRadius.circular(8),
+//             border: Border.all(
+//               color: theme.colorScheme.outline.withValues(alpha: 0.15),
+//             ),
+//             color: theme.colorScheme.surface,
+//           ),
+//           child: IntrinsicHeight(
+//             child: Row(
+//               children: [
+//                 _buildStatItem(theme, 'ATTENDANCE', '20 Days', null),
+//                 VerticalDivider(
+//                   width: 1,
+//                   color: theme.colorScheme.outline.withValues(alpha: 0.15),
+//                 ),
+//                 _buildStatItem(
+//                   theme,
+//                   'LATE',
+//                   '1h 12m',
+//                   const Color(0xFFD32F2F),
+//                 ),
+//                 VerticalDivider(
+//                   width: 1,
+//                   color: theme.colorScheme.outline.withValues(alpha: 0.15),
+//                 ),
+//                 _buildStatItem(theme, 'OVERTIME', '4h 30m', null),
+//                 VerticalDivider(
+//                   width: 1,
+//                   color: theme.colorScheme.outline.withValues(alpha: 0.15),
+//                 ),
+//                 _buildStatItem(theme, 'LEAVE', '1.5 Days', null),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
 
-  Widget _buildStatItem(
-    ThemeData theme,
-    String title,
-    String value,
-    Color? valueColor,
-  ) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 4.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              title,
-              style: theme.textTheme.labelSmall?.copyWith(
-                fontSize: 9,
-                fontWeight: FontWeight.w800,
-                letterSpacing: 0.2,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-              ),
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 6),
-            Text(
-              value,
-              style: theme.textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w800,
-                color: valueColor,
-              ),
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+//   Widget _buildStatItem(
+//     ThemeData theme,
+//     String title,
+//     String value,
+//     Color? valueColor,
+//   ) {
+//     return Expanded(
+//       child: Padding(
+//         padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 4.0),
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Text(
+//               title,
+//               style: theme.textTheme.labelSmall?.copyWith(
+//                 fontSize: 9,
+//                 fontWeight: FontWeight.w800,
+//                 letterSpacing: 0.2,
+//                 color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+//               ),
+//               textAlign: TextAlign.center,
+//               maxLines: 1,
+//               overflow: TextOverflow.ellipsis,
+//             ),
+//             const SizedBox(height: 6),
+//             Text(
+//               value,
+//               style: theme.textTheme.titleSmall?.copyWith(
+//                 fontWeight: FontWeight.w800,
+//                 color: valueColor,
+//               ),
+//               textAlign: TextAlign.center,
+//               maxLines: 1,
+//               overflow: TextOverflow.ellipsis,
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

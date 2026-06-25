@@ -194,6 +194,56 @@ final class GetTodayClockInUsecaseProvider
 String _$getTodayClockInUsecaseHash() =>
     r'8672e1b2dba8da51c663eaecf2f521d8720579df';
 
+@ProviderFor(getDepartmentAttendance)
+final getDepartmentAttendanceProvider = GetDepartmentAttendanceProvider._();
+
+final class GetDepartmentAttendanceProvider
+    extends
+        $FunctionalProvider<
+          GetDepartmentAttendanceUsecase,
+          GetDepartmentAttendanceUsecase,
+          GetDepartmentAttendanceUsecase
+        >
+    with $Provider<GetDepartmentAttendanceUsecase> {
+  GetDepartmentAttendanceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getDepartmentAttendanceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getDepartmentAttendanceHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetDepartmentAttendanceUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetDepartmentAttendanceUsecase create(Ref ref) {
+    return getDepartmentAttendance(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetDepartmentAttendanceUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetDepartmentAttendanceUsecase>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$getDepartmentAttendanceHash() =>
+    r'bc5da763472e4a27a28f2182dcd0a7abc6c22b50';
+
 @ProviderFor(AttendanceNotifier)
 final attendanceProvider = AttendanceNotifierProvider._();
 
@@ -227,7 +277,7 @@ final class AttendanceNotifierProvider
 }
 
 String _$attendanceNotifierHash() =>
-    r'378d7f6261a7aca9813a6141607758ad2aa7de21';
+    r'dac7d5b0fd9558b61e4a2a0ce51b44d56a58e8d3';
 
 abstract class _$AttendanceNotifier extends $Notifier<AttendanceState> {
   AttendanceState build();

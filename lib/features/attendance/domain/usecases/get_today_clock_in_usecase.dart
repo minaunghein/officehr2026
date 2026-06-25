@@ -6,9 +6,7 @@ class GetTodayClockInUsecase {
 
   final AttendanceRepository repository;
 
-  Future<List<Attendance>> call({
-    required String date,
-  }) {
-    return repository.getTodayClockIn(date: date);
+  Future<List<Attendance>> call() {
+    return repository.getTodayClockIn();
   }
 }

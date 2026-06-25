@@ -1,10 +1,11 @@
 import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/core/services/app_logger.dart';
 import 'package:office_hr/features/attendance/data/datasources/attendance_datasource.dart';
-import 'package:office_hr/features/attendance/data/repositories/attendance_repository.dart';
+import 'package:office_hr/features/attendance/data/repositories/attendance_repository_impl.dart';
 import 'package:office_hr/features/attendance/domain/entities/attendance.dart';
 import 'package:office_hr/features/attendance/domain/repositories/attendance_repository.dart';
 import 'package:office_hr/features/attendance/domain/usecases/clock_in_usecase.dart';
+import 'package:office_hr/features/attendance/domain/usecases/get_department_attendance.dart';
 import 'package:office_hr/features/attendance/domain/usecases/get_today_clock_in_usecase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -77,6 +78,12 @@ GetTodayClockInUsecase getTodayClockInUsecase(Ref ref) {
   return GetTodayClockInUsecase(repository: repository);
 }
 
+@riverpod
+GetDepartmentAttendanceUsecase getDepartmentAttendance(Ref ref) {
+  final repository = ref.watch(attendanceRepositoryProvider);
+  return GetDepartmentAttendanceUsecase(repository: repository);
+}
+
 // ==================== State Management ====================
 @riverpod
 class AttendanceNotifier extends _$AttendanceNotifier {
@@ -90,10 +97,7 @@ class AttendanceNotifier extends _$AttendanceNotifier {
     state = state.copyWith(isLoading: true, error: null);
     try {
       final usecase = ref.read(getTodayClockInUsecaseProvider);
-      final now = DateTime.now();
-      final dateStr = now.toUtc().toIso8601String();
-
-      final List<Attendance> fetched = await usecase(date: dateStr);
+      final List<Attendance> fetched = await usecase();
       final List<Attendance> attendances = fetched
           .where((a) => a.isSod || a.isEod)
           .toList();

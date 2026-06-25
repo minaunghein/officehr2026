@@ -1,4 +1,5 @@
 import 'package:office_hr/features/attendance/domain/entities/attendance.dart';
+import 'package:office_hr/features/attendance/domain/entities/department_attendances.dart';
 
 abstract class AttendanceRepository {
   Future<Attendance> clockIn({
@@ -8,7 +9,7 @@ abstract class AttendanceRepository {
     String? desc,
   });
 
-  Future<List<Attendance>> getTodayClockIn({
-    required String date,
-  });
+  Future<List<Attendance>> getTodayClockIn();
+
+  Future<List<DepartmentAttendances>> getDepartmentAttendances();
 }

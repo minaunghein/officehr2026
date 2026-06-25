@@ -9,17 +9,19 @@ part of 'user_details_model.dart';
 _UserDetailsModel _$UserDetailsModelFromJson(Map<String, dynamic> json) =>
     _UserDetailsModel(
       id: json['_id'] as String,
-      company: _parseCompany(json['company']),
+      company: json['company'] == null
+          ? const CompanyModel(id: '', name: '')
+          : _parseCompany(json['company']),
       compspermitted:
           (json['compspermitted'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
       username: json['username'] as String,
-      email: json['email'] as String,
+      email: json['email'] as String?,
       phone: json['phone'] as String?,
       profileurl: json['profileurl'] as String? ?? '',
-      role: json['role'] as String,
+      role: json['role'] as String? ?? '',
       tags:
           (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
           const [],

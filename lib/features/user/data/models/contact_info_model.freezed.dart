@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ContactInfoModel {
 
-@JsonKey(name: '_id') String get id; String get phone; String get officephone; String get perstate; String get pertownship; String get percity; List<String> get perstreetaddrs; String get currstate; String get currtownship; String get currcity; List<String> get currstreetaddrs;
+@JsonKey(name: '_id') String? get id; String? get phone; String? get officephone; String? get perstate; String? get pertownship; String? get percity; List<String>? get perstreetaddrs; String? get currstate; String? get currtownship; String? get currcity; List<String>? get currstreetaddrs;
 /// Create a copy of ContactInfoModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $ContactInfoModelCopyWith<$Res>  {
   factory $ContactInfoModelCopyWith(ContactInfoModel value, $Res Function(ContactInfoModel) _then) = _$ContactInfoModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: '_id') String id, String phone, String officephone, String perstate, String pertownship, String percity, List<String> perstreetaddrs, String currstate, String currtownship, String currcity, List<String> currstreetaddrs
+@JsonKey(name: '_id') String? id, String? phone, String? officephone, String? perstate, String? pertownship, String? percity, List<String>? perstreetaddrs, String? currstate, String? currtownship, String? currcity, List<String>? currstreetaddrs
 });
 
 
@@ -65,20 +65,20 @@ class _$ContactInfoModelCopyWithImpl<$Res>
 
 /// Create a copy of ContactInfoModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? phone = null,Object? officephone = null,Object? perstate = null,Object? pertownship = null,Object? percity = null,Object? perstreetaddrs = null,Object? currstate = null,Object? currtownship = null,Object? currcity = null,Object? currstreetaddrs = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? phone = freezed,Object? officephone = freezed,Object? perstate = freezed,Object? pertownship = freezed,Object? percity = freezed,Object? perstreetaddrs = freezed,Object? currstate = freezed,Object? currtownship = freezed,Object? currcity = freezed,Object? currstreetaddrs = freezed,}) {
   return _then(_self.copyWith(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
-as String,officephone: null == officephone ? _self.officephone : officephone // ignore: cast_nullable_to_non_nullable
-as String,perstate: null == perstate ? _self.perstate : perstate // ignore: cast_nullable_to_non_nullable
-as String,pertownship: null == pertownship ? _self.pertownship : pertownship // ignore: cast_nullable_to_non_nullable
-as String,percity: null == percity ? _self.percity : percity // ignore: cast_nullable_to_non_nullable
-as String,perstreetaddrs: null == perstreetaddrs ? _self.perstreetaddrs : perstreetaddrs // ignore: cast_nullable_to_non_nullable
-as List<String>,currstate: null == currstate ? _self.currstate : currstate // ignore: cast_nullable_to_non_nullable
-as String,currtownship: null == currtownship ? _self.currtownship : currtownship // ignore: cast_nullable_to_non_nullable
-as String,currcity: null == currcity ? _self.currcity : currcity // ignore: cast_nullable_to_non_nullable
-as String,currstreetaddrs: null == currstreetaddrs ? _self.currstreetaddrs : currstreetaddrs // ignore: cast_nullable_to_non_nullable
-as List<String>,
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String?,officephone: freezed == officephone ? _self.officephone : officephone // ignore: cast_nullable_to_non_nullable
+as String?,perstate: freezed == perstate ? _self.perstate : perstate // ignore: cast_nullable_to_non_nullable
+as String?,pertownship: freezed == pertownship ? _self.pertownship : pertownship // ignore: cast_nullable_to_non_nullable
+as String?,percity: freezed == percity ? _self.percity : percity // ignore: cast_nullable_to_non_nullable
+as String?,perstreetaddrs: freezed == perstreetaddrs ? _self.perstreetaddrs : perstreetaddrs // ignore: cast_nullable_to_non_nullable
+as List<String>?,currstate: freezed == currstate ? _self.currstate : currstate // ignore: cast_nullable_to_non_nullable
+as String?,currtownship: freezed == currtownship ? _self.currtownship : currtownship // ignore: cast_nullable_to_non_nullable
+as String?,currcity: freezed == currcity ? _self.currcity : currcity // ignore: cast_nullable_to_non_nullable
+as String?,currstreetaddrs: freezed == currstreetaddrs ? _self.currstreetaddrs : currstreetaddrs // ignore: cast_nullable_to_non_nullable
+as List<String>?,
   ));
 }
 
@@ -163,7 +163,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  String phone,  String officephone,  String perstate,  String pertownship,  String percity,  List<String> perstreetaddrs,  String currstate,  String currtownship,  String currcity,  List<String> currstreetaddrs)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String? id,  String? phone,  String? officephone,  String? perstate,  String? pertownship,  String? percity,  List<String>? perstreetaddrs,  String? currstate,  String? currtownship,  String? currcity,  List<String>? currstreetaddrs)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ContactInfoModel() when $default != null:
 return $default(_that.id,_that.phone,_that.officephone,_that.perstate,_that.pertownship,_that.percity,_that.perstreetaddrs,_that.currstate,_that.currtownship,_that.currcity,_that.currstreetaddrs);case _:
@@ -184,7 +184,7 @@ return $default(_that.id,_that.phone,_that.officephone,_that.perstate,_that.pert
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  String phone,  String officephone,  String perstate,  String pertownship,  String percity,  List<String> perstreetaddrs,  String currstate,  String currtownship,  String currcity,  List<String> currstreetaddrs)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String? id,  String? phone,  String? officephone,  String? perstate,  String? pertownship,  String? percity,  List<String>? perstreetaddrs,  String? currstate,  String? currtownship,  String? currcity,  List<String>? currstreetaddrs)  $default,) {final _that = this;
 switch (_that) {
 case _ContactInfoModel():
 return $default(_that.id,_that.phone,_that.officephone,_that.perstate,_that.pertownship,_that.percity,_that.perstreetaddrs,_that.currstate,_that.currtownship,_that.currcity,_that.currstreetaddrs);case _:
@@ -204,7 +204,7 @@ return $default(_that.id,_that.phone,_that.officephone,_that.perstate,_that.pert
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String id,  String phone,  String officephone,  String perstate,  String pertownship,  String percity,  List<String> perstreetaddrs,  String currstate,  String currtownship,  String currcity,  List<String> currstreetaddrs)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String? id,  String? phone,  String? officephone,  String? perstate,  String? pertownship,  String? percity,  List<String>? perstreetaddrs,  String? currstate,  String? currtownship,  String? currcity,  List<String>? currstreetaddrs)?  $default,) {final _that = this;
 switch (_that) {
 case _ContactInfoModel() when $default != null:
 return $default(_that.id,_that.phone,_that.officephone,_that.perstate,_that.pertownship,_that.percity,_that.perstreetaddrs,_that.currstate,_that.currtownship,_that.currcity,_that.currstreetaddrs);case _:
@@ -219,30 +219,34 @@ return $default(_that.id,_that.phone,_that.officephone,_that.perstate,_that.pert
 @JsonSerializable()
 
 class _ContactInfoModel implements ContactInfoModel {
-  const _ContactInfoModel({@JsonKey(name: '_id') required this.id, required this.phone, required this.officephone, required this.perstate, required this.pertownship, required this.percity, required final  List<String> perstreetaddrs, required this.currstate, required this.currtownship, required this.currcity, required final  List<String> currstreetaddrs}): _perstreetaddrs = perstreetaddrs,_currstreetaddrs = currstreetaddrs;
+  const _ContactInfoModel({@JsonKey(name: '_id') this.id, this.phone, this.officephone, this.perstate, this.pertownship, this.percity, final  List<String>? perstreetaddrs, this.currstate, this.currtownship, this.currcity, final  List<String>? currstreetaddrs}): _perstreetaddrs = perstreetaddrs,_currstreetaddrs = currstreetaddrs;
   factory _ContactInfoModel.fromJson(Map<String, dynamic> json) => _$ContactInfoModelFromJson(json);
 
-@override@JsonKey(name: '_id') final  String id;
-@override final  String phone;
-@override final  String officephone;
-@override final  String perstate;
-@override final  String pertownship;
-@override final  String percity;
- final  List<String> _perstreetaddrs;
-@override List<String> get perstreetaddrs {
+@override@JsonKey(name: '_id') final  String? id;
+@override final  String? phone;
+@override final  String? officephone;
+@override final  String? perstate;
+@override final  String? pertownship;
+@override final  String? percity;
+ final  List<String>? _perstreetaddrs;
+@override List<String>? get perstreetaddrs {
+  final value = _perstreetaddrs;
+  if (value == null) return null;
   if (_perstreetaddrs is EqualUnmodifiableListView) return _perstreetaddrs;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_perstreetaddrs);
+  return EqualUnmodifiableListView(value);
 }
 
-@override final  String currstate;
-@override final  String currtownship;
-@override final  String currcity;
- final  List<String> _currstreetaddrs;
-@override List<String> get currstreetaddrs {
+@override final  String? currstate;
+@override final  String? currtownship;
+@override final  String? currcity;
+ final  List<String>? _currstreetaddrs;
+@override List<String>? get currstreetaddrs {
+  final value = _currstreetaddrs;
+  if (value == null) return null;
   if (_currstreetaddrs is EqualUnmodifiableListView) return _currstreetaddrs;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_currstreetaddrs);
+  return EqualUnmodifiableListView(value);
 }
 
 
@@ -279,7 +283,7 @@ abstract mixin class _$ContactInfoModelCopyWith<$Res> implements $ContactInfoMod
   factory _$ContactInfoModelCopyWith(_ContactInfoModel value, $Res Function(_ContactInfoModel) _then) = __$ContactInfoModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: '_id') String id, String phone, String officephone, String perstate, String pertownship, String percity, List<String> perstreetaddrs, String currstate, String currtownship, String currcity, List<String> currstreetaddrs
+@JsonKey(name: '_id') String? id, String? phone, String? officephone, String? perstate, String? pertownship, String? percity, List<String>? perstreetaddrs, String? currstate, String? currtownship, String? currcity, List<String>? currstreetaddrs
 });
 
 
@@ -296,20 +300,20 @@ class __$ContactInfoModelCopyWithImpl<$Res>
 
 /// Create a copy of ContactInfoModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? phone = null,Object? officephone = null,Object? perstate = null,Object? pertownship = null,Object? percity = null,Object? perstreetaddrs = null,Object? currstate = null,Object? currtownship = null,Object? currcity = null,Object? currstreetaddrs = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? phone = freezed,Object? officephone = freezed,Object? perstate = freezed,Object? pertownship = freezed,Object? percity = freezed,Object? perstreetaddrs = freezed,Object? currstate = freezed,Object? currtownship = freezed,Object? currcity = freezed,Object? currstreetaddrs = freezed,}) {
   return _then(_ContactInfoModel(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
-as String,officephone: null == officephone ? _self.officephone : officephone // ignore: cast_nullable_to_non_nullable
-as String,perstate: null == perstate ? _self.perstate : perstate // ignore: cast_nullable_to_non_nullable
-as String,pertownship: null == pertownship ? _self.pertownship : pertownship // ignore: cast_nullable_to_non_nullable
-as String,percity: null == percity ? _self.percity : percity // ignore: cast_nullable_to_non_nullable
-as String,perstreetaddrs: null == perstreetaddrs ? _self._perstreetaddrs : perstreetaddrs // ignore: cast_nullable_to_non_nullable
-as List<String>,currstate: null == currstate ? _self.currstate : currstate // ignore: cast_nullable_to_non_nullable
-as String,currtownship: null == currtownship ? _self.currtownship : currtownship // ignore: cast_nullable_to_non_nullable
-as String,currcity: null == currcity ? _self.currcity : currcity // ignore: cast_nullable_to_non_nullable
-as String,currstreetaddrs: null == currstreetaddrs ? _self._currstreetaddrs : currstreetaddrs // ignore: cast_nullable_to_non_nullable
-as List<String>,
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String?,officephone: freezed == officephone ? _self.officephone : officephone // ignore: cast_nullable_to_non_nullable
+as String?,perstate: freezed == perstate ? _self.perstate : perstate // ignore: cast_nullable_to_non_nullable
+as String?,pertownship: freezed == pertownship ? _self.pertownship : pertownship // ignore: cast_nullable_to_non_nullable
+as String?,percity: freezed == percity ? _self.percity : percity // ignore: cast_nullable_to_non_nullable
+as String?,perstreetaddrs: freezed == perstreetaddrs ? _self._perstreetaddrs : perstreetaddrs // ignore: cast_nullable_to_non_nullable
+as List<String>?,currstate: freezed == currstate ? _self.currstate : currstate // ignore: cast_nullable_to_non_nullable
+as String?,currtownship: freezed == currtownship ? _self.currtownship : currtownship // ignore: cast_nullable_to_non_nullable
+as String?,currcity: freezed == currcity ? _self.currcity : currcity // ignore: cast_nullable_to_non_nullable
+as String?,currstreetaddrs: freezed == currstreetaddrs ? _self._currstreetaddrs : currstreetaddrs // ignore: cast_nullable_to_non_nullable
+as List<String>?,
   ));
 }
 

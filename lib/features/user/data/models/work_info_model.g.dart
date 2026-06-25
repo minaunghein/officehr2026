@@ -8,26 +8,30 @@ part of 'work_info_model.dart';
 
 _WorkInfoModel _$WorkInfoModelFromJson(Map<String, dynamic> json) =>
     _WorkInfoModel(
-      id: json['_id'] as String,
-      empcodeprefix: json['empcodeprefix'] as String,
-      empcode: (json['empcode'] as num).toInt(),
-      cardid: (json['cardid'] as num).toInt(),
-      grade: (json['grade'] as num).toInt(),
-      employmentdate: json['employmentdate'] as String,
-      probationenddate: json['probationenddate'] as String,
-      empstatus: (json['empstatus'] as num).toInt(),
-      resigned: json['resigned'] as bool,
-      resigneddate: json['resigneddate'] as String,
-      position: PositionModel.fromJson(
-        json['position'] as Map<String, dynamic>,
-      ),
-      department: DepartmentModel.fromJson(
-        json['department'] as Map<String, dynamic>,
-      ),
-      status: json['status'] as bool,
+      id: json['_id'] as String?,
+      empcodeprefix: json['empcodeprefix'] as String?,
+      empcode: (json['empcode'] as num?)?.toInt(),
+      cardid: (json['cardid'] as num?)?.toInt(),
+      grade: (json['grade'] as num?)?.toInt(),
+      employmentdate: json['employmentdate'] as String?,
+      probationenddate: json['probationenddate'] as String?,
+      empstatus: (json['empstatus'] as num?)?.toInt(),
+      resigned: json['resigned'] as bool?,
+      resigneddate: json['resigneddate'] as String?,
+      position: json['position'] == null
+          ? null
+          : PositionModel.fromJson(json['position'] as Map<String, dynamic>),
+      department: json['department'] == null
+          ? null
+          : DepartmentModel.fromJson(
+              json['department'] as Map<String, dynamic>,
+            ),
+      status: json['status'] as bool?,
       supervisorid: const SupervisorConverter().fromJson(json['supervisorid']),
       shift: const ShiftConverter().fromJson(json['shift']),
-      branch: BranchModel.fromJson(json['branch'] as Map<String, dynamic>),
+      branch: json['branch'] == null
+          ? null
+          : BranchModel.fromJson(json['branch'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$WorkInfoModelToJson(_WorkInfoModel instance) =>

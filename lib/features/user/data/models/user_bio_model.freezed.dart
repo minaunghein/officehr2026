@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserBioModel {
 
-@JsonKey(name: '_id') String get id; String get company; String get userid; BasicInfoModel get basicinfo; ContactInfoModel get contactinfo; FamilyInfoModel get familyinfo; WorkInfoModel get workinfo; bool get isotenable; bool get isot1enable; bool get isot2enable; bool get isot3enable; bool get isautoammendenable; bool get isdeductionenable; bool get isunderenable; List<String> get tags; bool get deleted; dynamic get deletedAt; List<dynamic> get workexperience; List<dynamic> get education; String get createdAt; String get updatedAt;@JsonKey(name: '__v') int get version;
+@JsonKey(name: '_id') String get id;@JsonKey(fromJson: _parseCompanyId) String get company; String get userid; BasicInfoModel? get basicinfo; ContactInfoModel? get contactinfo; FamilyInfoModel? get familyinfo; WorkInfoModel? get workinfo; bool get isotenable; bool get isot1enable; bool get isot2enable; bool get isot3enable; bool get isautoammendenable; bool get isdeductionenable; bool get isunderenable; List<String> get tags; bool get deleted; dynamic get deletedAt; List<dynamic> get workexperience; List<dynamic> get education; String? get createdAt; String? get updatedAt;@JsonKey(name: '__v') int? get version;
 /// Create a copy of UserBioModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,11 +48,11 @@ abstract mixin class $UserBioModelCopyWith<$Res>  {
   factory $UserBioModelCopyWith(UserBioModel value, $Res Function(UserBioModel) _then) = _$UserBioModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: '_id') String id, String company, String userid, BasicInfoModel basicinfo, ContactInfoModel contactinfo, FamilyInfoModel familyinfo, WorkInfoModel workinfo, bool isotenable, bool isot1enable, bool isot2enable, bool isot3enable, bool isautoammendenable, bool isdeductionenable, bool isunderenable, List<String> tags, bool deleted, dynamic deletedAt, List<dynamic> workexperience, List<dynamic> education, String createdAt, String updatedAt,@JsonKey(name: '__v') int version
+@JsonKey(name: '_id') String id,@JsonKey(fromJson: _parseCompanyId) String company, String userid, BasicInfoModel? basicinfo, ContactInfoModel? contactinfo, FamilyInfoModel? familyinfo, WorkInfoModel? workinfo, bool isotenable, bool isot1enable, bool isot2enable, bool isot3enable, bool isautoammendenable, bool isdeductionenable, bool isunderenable, List<String> tags, bool deleted, dynamic deletedAt, List<dynamic> workexperience, List<dynamic> education, String? createdAt, String? updatedAt,@JsonKey(name: '__v') int? version
 });
 
 
-$BasicInfoModelCopyWith<$Res> get basicinfo;$ContactInfoModelCopyWith<$Res> get contactinfo;$FamilyInfoModelCopyWith<$Res> get familyinfo;$WorkInfoModelCopyWith<$Res> get workinfo;
+$BasicInfoModelCopyWith<$Res>? get basicinfo;$ContactInfoModelCopyWith<$Res>? get contactinfo;$FamilyInfoModelCopyWith<$Res>? get familyinfo;$WorkInfoModelCopyWith<$Res>? get workinfo;
 
 }
 /// @nodoc
@@ -65,16 +65,16 @@ class _$UserBioModelCopyWithImpl<$Res>
 
 /// Create a copy of UserBioModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? company = null,Object? userid = null,Object? basicinfo = null,Object? contactinfo = null,Object? familyinfo = null,Object? workinfo = null,Object? isotenable = null,Object? isot1enable = null,Object? isot2enable = null,Object? isot3enable = null,Object? isautoammendenable = null,Object? isdeductionenable = null,Object? isunderenable = null,Object? tags = null,Object? deleted = null,Object? deletedAt = freezed,Object? workexperience = null,Object? education = null,Object? createdAt = null,Object? updatedAt = null,Object? version = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? company = null,Object? userid = null,Object? basicinfo = freezed,Object? contactinfo = freezed,Object? familyinfo = freezed,Object? workinfo = freezed,Object? isotenable = null,Object? isot1enable = null,Object? isot2enable = null,Object? isot3enable = null,Object? isautoammendenable = null,Object? isdeductionenable = null,Object? isunderenable = null,Object? tags = null,Object? deleted = null,Object? deletedAt = freezed,Object? workexperience = null,Object? education = null,Object? createdAt = freezed,Object? updatedAt = freezed,Object? version = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,company: null == company ? _self.company : company // ignore: cast_nullable_to_non_nullable
 as String,userid: null == userid ? _self.userid : userid // ignore: cast_nullable_to_non_nullable
-as String,basicinfo: null == basicinfo ? _self.basicinfo : basicinfo // ignore: cast_nullable_to_non_nullable
-as BasicInfoModel,contactinfo: null == contactinfo ? _self.contactinfo : contactinfo // ignore: cast_nullable_to_non_nullable
-as ContactInfoModel,familyinfo: null == familyinfo ? _self.familyinfo : familyinfo // ignore: cast_nullable_to_non_nullable
-as FamilyInfoModel,workinfo: null == workinfo ? _self.workinfo : workinfo // ignore: cast_nullable_to_non_nullable
-as WorkInfoModel,isotenable: null == isotenable ? _self.isotenable : isotenable // ignore: cast_nullable_to_non_nullable
+as String,basicinfo: freezed == basicinfo ? _self.basicinfo : basicinfo // ignore: cast_nullable_to_non_nullable
+as BasicInfoModel?,contactinfo: freezed == contactinfo ? _self.contactinfo : contactinfo // ignore: cast_nullable_to_non_nullable
+as ContactInfoModel?,familyinfo: freezed == familyinfo ? _self.familyinfo : familyinfo // ignore: cast_nullable_to_non_nullable
+as FamilyInfoModel?,workinfo: freezed == workinfo ? _self.workinfo : workinfo // ignore: cast_nullable_to_non_nullable
+as WorkInfoModel?,isotenable: null == isotenable ? _self.isotenable : isotenable // ignore: cast_nullable_to_non_nullable
 as bool,isot1enable: null == isot1enable ? _self.isot1enable : isot1enable // ignore: cast_nullable_to_non_nullable
 as bool,isot2enable: null == isot2enable ? _self.isot2enable : isot2enable // ignore: cast_nullable_to_non_nullable
 as bool,isot3enable: null == isot3enable ? _self.isot3enable : isot3enable // ignore: cast_nullable_to_non_nullable
@@ -86,46 +86,58 @@ as List<String>,deleted: null == deleted ? _self.deleted : deleted // ignore: ca
 as bool,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as dynamic,workexperience: null == workexperience ? _self.workexperience : workexperience // ignore: cast_nullable_to_non_nullable
 as List<dynamic>,education: null == education ? _self.education : education // ignore: cast_nullable_to_non_nullable
-as List<dynamic>,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as String,version: null == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
-as int,
+as List<dynamic>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as String?,version: freezed == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 /// Create a copy of UserBioModel
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$BasicInfoModelCopyWith<$Res> get basicinfo {
-  
-  return $BasicInfoModelCopyWith<$Res>(_self.basicinfo, (value) {
+$BasicInfoModelCopyWith<$Res>? get basicinfo {
+    if (_self.basicinfo == null) {
+    return null;
+  }
+
+  return $BasicInfoModelCopyWith<$Res>(_self.basicinfo!, (value) {
     return _then(_self.copyWith(basicinfo: value));
   });
 }/// Create a copy of UserBioModel
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$ContactInfoModelCopyWith<$Res> get contactinfo {
-  
-  return $ContactInfoModelCopyWith<$Res>(_self.contactinfo, (value) {
+$ContactInfoModelCopyWith<$Res>? get contactinfo {
+    if (_self.contactinfo == null) {
+    return null;
+  }
+
+  return $ContactInfoModelCopyWith<$Res>(_self.contactinfo!, (value) {
     return _then(_self.copyWith(contactinfo: value));
   });
 }/// Create a copy of UserBioModel
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$FamilyInfoModelCopyWith<$Res> get familyinfo {
-  
-  return $FamilyInfoModelCopyWith<$Res>(_self.familyinfo, (value) {
+$FamilyInfoModelCopyWith<$Res>? get familyinfo {
+    if (_self.familyinfo == null) {
+    return null;
+  }
+
+  return $FamilyInfoModelCopyWith<$Res>(_self.familyinfo!, (value) {
     return _then(_self.copyWith(familyinfo: value));
   });
 }/// Create a copy of UserBioModel
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$WorkInfoModelCopyWith<$Res> get workinfo {
-  
-  return $WorkInfoModelCopyWith<$Res>(_self.workinfo, (value) {
+$WorkInfoModelCopyWith<$Res>? get workinfo {
+    if (_self.workinfo == null) {
+    return null;
+  }
+
+  return $WorkInfoModelCopyWith<$Res>(_self.workinfo!, (value) {
     return _then(_self.copyWith(workinfo: value));
   });
 }
@@ -210,7 +222,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  String company,  String userid,  BasicInfoModel basicinfo,  ContactInfoModel contactinfo,  FamilyInfoModel familyinfo,  WorkInfoModel workinfo,  bool isotenable,  bool isot1enable,  bool isot2enable,  bool isot3enable,  bool isautoammendenable,  bool isdeductionenable,  bool isunderenable,  List<String> tags,  bool deleted,  dynamic deletedAt,  List<dynamic> workexperience,  List<dynamic> education,  String createdAt,  String updatedAt, @JsonKey(name: '__v')  int version)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id, @JsonKey(fromJson: _parseCompanyId)  String company,  String userid,  BasicInfoModel? basicinfo,  ContactInfoModel? contactinfo,  FamilyInfoModel? familyinfo,  WorkInfoModel? workinfo,  bool isotenable,  bool isot1enable,  bool isot2enable,  bool isot3enable,  bool isautoammendenable,  bool isdeductionenable,  bool isunderenable,  List<String> tags,  bool deleted,  dynamic deletedAt,  List<dynamic> workexperience,  List<dynamic> education,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserBioModel() when $default != null:
 return $default(_that.id,_that.company,_that.userid,_that.basicinfo,_that.contactinfo,_that.familyinfo,_that.workinfo,_that.isotenable,_that.isot1enable,_that.isot2enable,_that.isot3enable,_that.isautoammendenable,_that.isdeductionenable,_that.isunderenable,_that.tags,_that.deleted,_that.deletedAt,_that.workexperience,_that.education,_that.createdAt,_that.updatedAt,_that.version);case _:
@@ -231,7 +243,7 @@ return $default(_that.id,_that.company,_that.userid,_that.basicinfo,_that.contac
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  String company,  String userid,  BasicInfoModel basicinfo,  ContactInfoModel contactinfo,  FamilyInfoModel familyinfo,  WorkInfoModel workinfo,  bool isotenable,  bool isot1enable,  bool isot2enable,  bool isot3enable,  bool isautoammendenable,  bool isdeductionenable,  bool isunderenable,  List<String> tags,  bool deleted,  dynamic deletedAt,  List<dynamic> workexperience,  List<dynamic> education,  String createdAt,  String updatedAt, @JsonKey(name: '__v')  int version)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id, @JsonKey(fromJson: _parseCompanyId)  String company,  String userid,  BasicInfoModel? basicinfo,  ContactInfoModel? contactinfo,  FamilyInfoModel? familyinfo,  WorkInfoModel? workinfo,  bool isotenable,  bool isot1enable,  bool isot2enable,  bool isot3enable,  bool isautoammendenable,  bool isdeductionenable,  bool isunderenable,  List<String> tags,  bool deleted,  dynamic deletedAt,  List<dynamic> workexperience,  List<dynamic> education,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)  $default,) {final _that = this;
 switch (_that) {
 case _UserBioModel():
 return $default(_that.id,_that.company,_that.userid,_that.basicinfo,_that.contactinfo,_that.familyinfo,_that.workinfo,_that.isotenable,_that.isot1enable,_that.isot2enable,_that.isot3enable,_that.isautoammendenable,_that.isdeductionenable,_that.isunderenable,_that.tags,_that.deleted,_that.deletedAt,_that.workexperience,_that.education,_that.createdAt,_that.updatedAt,_that.version);case _:
@@ -251,7 +263,7 @@ return $default(_that.id,_that.company,_that.userid,_that.basicinfo,_that.contac
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String id,  String company,  String userid,  BasicInfoModel basicinfo,  ContactInfoModel contactinfo,  FamilyInfoModel familyinfo,  WorkInfoModel workinfo,  bool isotenable,  bool isot1enable,  bool isot2enable,  bool isot3enable,  bool isautoammendenable,  bool isdeductionenable,  bool isunderenable,  List<String> tags,  bool deleted,  dynamic deletedAt,  List<dynamic> workexperience,  List<dynamic> education,  String createdAt,  String updatedAt, @JsonKey(name: '__v')  int version)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String id, @JsonKey(fromJson: _parseCompanyId)  String company,  String userid,  BasicInfoModel? basicinfo,  ContactInfoModel? contactinfo,  FamilyInfoModel? familyinfo,  WorkInfoModel? workinfo,  bool isotenable,  bool isot1enable,  bool isot2enable,  bool isot3enable,  bool isautoammendenable,  bool isdeductionenable,  bool isunderenable,  List<String> tags,  bool deleted,  dynamic deletedAt,  List<dynamic> workexperience,  List<dynamic> education,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,) {final _that = this;
 switch (_that) {
 case _UserBioModel() when $default != null:
 return $default(_that.id,_that.company,_that.userid,_that.basicinfo,_that.contactinfo,_that.familyinfo,_that.workinfo,_that.isotenable,_that.isot1enable,_that.isot2enable,_that.isot3enable,_that.isautoammendenable,_that.isdeductionenable,_that.isunderenable,_that.tags,_that.deleted,_that.deletedAt,_that.workexperience,_that.education,_that.createdAt,_that.updatedAt,_that.version);case _:
@@ -266,49 +278,49 @@ return $default(_that.id,_that.company,_that.userid,_that.basicinfo,_that.contac
 @JsonSerializable()
 
 class _UserBioModel implements UserBioModel {
-  const _UserBioModel({@JsonKey(name: '_id') required this.id, required this.company, required this.userid, required this.basicinfo, required this.contactinfo, required this.familyinfo, required this.workinfo, required this.isotenable, required this.isot1enable, required this.isot2enable, required this.isot3enable, required this.isautoammendenable, required this.isdeductionenable, required this.isunderenable, required final  List<String> tags, required this.deleted, required this.deletedAt, required final  List<dynamic> workexperience, required final  List<dynamic> education, required this.createdAt, required this.updatedAt, @JsonKey(name: '__v') required this.version}): _tags = tags,_workexperience = workexperience,_education = education;
+  const _UserBioModel({@JsonKey(name: '_id') this.id = '', @JsonKey(fromJson: _parseCompanyId) this.company = '', this.userid = '', this.basicinfo, this.contactinfo, this.familyinfo, this.workinfo, this.isotenable = false, this.isot1enable = false, this.isot2enable = false, this.isot3enable = false, this.isautoammendenable = false, this.isdeductionenable = false, this.isunderenable = false, final  List<String> tags = const [], this.deleted = false, this.deletedAt, final  List<dynamic> workexperience = const [], final  List<dynamic> education = const [], this.createdAt, this.updatedAt, @JsonKey(name: '__v') this.version}): _tags = tags,_workexperience = workexperience,_education = education;
   factory _UserBioModel.fromJson(Map<String, dynamic> json) => _$UserBioModelFromJson(json);
 
 @override@JsonKey(name: '_id') final  String id;
-@override final  String company;
-@override final  String userid;
-@override final  BasicInfoModel basicinfo;
-@override final  ContactInfoModel contactinfo;
-@override final  FamilyInfoModel familyinfo;
-@override final  WorkInfoModel workinfo;
-@override final  bool isotenable;
-@override final  bool isot1enable;
-@override final  bool isot2enable;
-@override final  bool isot3enable;
-@override final  bool isautoammendenable;
-@override final  bool isdeductionenable;
-@override final  bool isunderenable;
+@override@JsonKey(fromJson: _parseCompanyId) final  String company;
+@override@JsonKey() final  String userid;
+@override final  BasicInfoModel? basicinfo;
+@override final  ContactInfoModel? contactinfo;
+@override final  FamilyInfoModel? familyinfo;
+@override final  WorkInfoModel? workinfo;
+@override@JsonKey() final  bool isotenable;
+@override@JsonKey() final  bool isot1enable;
+@override@JsonKey() final  bool isot2enable;
+@override@JsonKey() final  bool isot3enable;
+@override@JsonKey() final  bool isautoammendenable;
+@override@JsonKey() final  bool isdeductionenable;
+@override@JsonKey() final  bool isunderenable;
  final  List<String> _tags;
-@override List<String> get tags {
+@override@JsonKey() List<String> get tags {
   if (_tags is EqualUnmodifiableListView) return _tags;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_tags);
 }
 
-@override final  bool deleted;
+@override@JsonKey() final  bool deleted;
 @override final  dynamic deletedAt;
  final  List<dynamic> _workexperience;
-@override List<dynamic> get workexperience {
+@override@JsonKey() List<dynamic> get workexperience {
   if (_workexperience is EqualUnmodifiableListView) return _workexperience;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_workexperience);
 }
 
  final  List<dynamic> _education;
-@override List<dynamic> get education {
+@override@JsonKey() List<dynamic> get education {
   if (_education is EqualUnmodifiableListView) return _education;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_education);
 }
 
-@override final  String createdAt;
-@override final  String updatedAt;
-@override@JsonKey(name: '__v') final  int version;
+@override final  String? createdAt;
+@override final  String? updatedAt;
+@override@JsonKey(name: '__v') final  int? version;
 
 /// Create a copy of UserBioModel
 /// with the given fields replaced by the non-null parameter values.
@@ -343,11 +355,11 @@ abstract mixin class _$UserBioModelCopyWith<$Res> implements $UserBioModelCopyWi
   factory _$UserBioModelCopyWith(_UserBioModel value, $Res Function(_UserBioModel) _then) = __$UserBioModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: '_id') String id, String company, String userid, BasicInfoModel basicinfo, ContactInfoModel contactinfo, FamilyInfoModel familyinfo, WorkInfoModel workinfo, bool isotenable, bool isot1enable, bool isot2enable, bool isot3enable, bool isautoammendenable, bool isdeductionenable, bool isunderenable, List<String> tags, bool deleted, dynamic deletedAt, List<dynamic> workexperience, List<dynamic> education, String createdAt, String updatedAt,@JsonKey(name: '__v') int version
+@JsonKey(name: '_id') String id,@JsonKey(fromJson: _parseCompanyId) String company, String userid, BasicInfoModel? basicinfo, ContactInfoModel? contactinfo, FamilyInfoModel? familyinfo, WorkInfoModel? workinfo, bool isotenable, bool isot1enable, bool isot2enable, bool isot3enable, bool isautoammendenable, bool isdeductionenable, bool isunderenable, List<String> tags, bool deleted, dynamic deletedAt, List<dynamic> workexperience, List<dynamic> education, String? createdAt, String? updatedAt,@JsonKey(name: '__v') int? version
 });
 
 
-@override $BasicInfoModelCopyWith<$Res> get basicinfo;@override $ContactInfoModelCopyWith<$Res> get contactinfo;@override $FamilyInfoModelCopyWith<$Res> get familyinfo;@override $WorkInfoModelCopyWith<$Res> get workinfo;
+@override $BasicInfoModelCopyWith<$Res>? get basicinfo;@override $ContactInfoModelCopyWith<$Res>? get contactinfo;@override $FamilyInfoModelCopyWith<$Res>? get familyinfo;@override $WorkInfoModelCopyWith<$Res>? get workinfo;
 
 }
 /// @nodoc
@@ -360,16 +372,16 @@ class __$UserBioModelCopyWithImpl<$Res>
 
 /// Create a copy of UserBioModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? company = null,Object? userid = null,Object? basicinfo = null,Object? contactinfo = null,Object? familyinfo = null,Object? workinfo = null,Object? isotenable = null,Object? isot1enable = null,Object? isot2enable = null,Object? isot3enable = null,Object? isautoammendenable = null,Object? isdeductionenable = null,Object? isunderenable = null,Object? tags = null,Object? deleted = null,Object? deletedAt = freezed,Object? workexperience = null,Object? education = null,Object? createdAt = null,Object? updatedAt = null,Object? version = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? company = null,Object? userid = null,Object? basicinfo = freezed,Object? contactinfo = freezed,Object? familyinfo = freezed,Object? workinfo = freezed,Object? isotenable = null,Object? isot1enable = null,Object? isot2enable = null,Object? isot3enable = null,Object? isautoammendenable = null,Object? isdeductionenable = null,Object? isunderenable = null,Object? tags = null,Object? deleted = null,Object? deletedAt = freezed,Object? workexperience = null,Object? education = null,Object? createdAt = freezed,Object? updatedAt = freezed,Object? version = freezed,}) {
   return _then(_UserBioModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,company: null == company ? _self.company : company // ignore: cast_nullable_to_non_nullable
 as String,userid: null == userid ? _self.userid : userid // ignore: cast_nullable_to_non_nullable
-as String,basicinfo: null == basicinfo ? _self.basicinfo : basicinfo // ignore: cast_nullable_to_non_nullable
-as BasicInfoModel,contactinfo: null == contactinfo ? _self.contactinfo : contactinfo // ignore: cast_nullable_to_non_nullable
-as ContactInfoModel,familyinfo: null == familyinfo ? _self.familyinfo : familyinfo // ignore: cast_nullable_to_non_nullable
-as FamilyInfoModel,workinfo: null == workinfo ? _self.workinfo : workinfo // ignore: cast_nullable_to_non_nullable
-as WorkInfoModel,isotenable: null == isotenable ? _self.isotenable : isotenable // ignore: cast_nullable_to_non_nullable
+as String,basicinfo: freezed == basicinfo ? _self.basicinfo : basicinfo // ignore: cast_nullable_to_non_nullable
+as BasicInfoModel?,contactinfo: freezed == contactinfo ? _self.contactinfo : contactinfo // ignore: cast_nullable_to_non_nullable
+as ContactInfoModel?,familyinfo: freezed == familyinfo ? _self.familyinfo : familyinfo // ignore: cast_nullable_to_non_nullable
+as FamilyInfoModel?,workinfo: freezed == workinfo ? _self.workinfo : workinfo // ignore: cast_nullable_to_non_nullable
+as WorkInfoModel?,isotenable: null == isotenable ? _self.isotenable : isotenable // ignore: cast_nullable_to_non_nullable
 as bool,isot1enable: null == isot1enable ? _self.isot1enable : isot1enable // ignore: cast_nullable_to_non_nullable
 as bool,isot2enable: null == isot2enable ? _self.isot2enable : isot2enable // ignore: cast_nullable_to_non_nullable
 as bool,isot3enable: null == isot3enable ? _self.isot3enable : isot3enable // ignore: cast_nullable_to_non_nullable
@@ -381,10 +393,10 @@ as List<String>,deleted: null == deleted ? _self.deleted : deleted // ignore: ca
 as bool,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as dynamic,workexperience: null == workexperience ? _self._workexperience : workexperience // ignore: cast_nullable_to_non_nullable
 as List<dynamic>,education: null == education ? _self._education : education // ignore: cast_nullable_to_non_nullable
-as List<dynamic>,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as String,version: null == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
-as int,
+as List<dynamic>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as String?,version: freezed == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -392,36 +404,48 @@ as int,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$BasicInfoModelCopyWith<$Res> get basicinfo {
-  
-  return $BasicInfoModelCopyWith<$Res>(_self.basicinfo, (value) {
+$BasicInfoModelCopyWith<$Res>? get basicinfo {
+    if (_self.basicinfo == null) {
+    return null;
+  }
+
+  return $BasicInfoModelCopyWith<$Res>(_self.basicinfo!, (value) {
     return _then(_self.copyWith(basicinfo: value));
   });
 }/// Create a copy of UserBioModel
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$ContactInfoModelCopyWith<$Res> get contactinfo {
-  
-  return $ContactInfoModelCopyWith<$Res>(_self.contactinfo, (value) {
+$ContactInfoModelCopyWith<$Res>? get contactinfo {
+    if (_self.contactinfo == null) {
+    return null;
+  }
+
+  return $ContactInfoModelCopyWith<$Res>(_self.contactinfo!, (value) {
     return _then(_self.copyWith(contactinfo: value));
   });
 }/// Create a copy of UserBioModel
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$FamilyInfoModelCopyWith<$Res> get familyinfo {
-  
-  return $FamilyInfoModelCopyWith<$Res>(_self.familyinfo, (value) {
+$FamilyInfoModelCopyWith<$Res>? get familyinfo {
+    if (_self.familyinfo == null) {
+    return null;
+  }
+
+  return $FamilyInfoModelCopyWith<$Res>(_self.familyinfo!, (value) {
     return _then(_self.copyWith(familyinfo: value));
   });
 }/// Create a copy of UserBioModel
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$WorkInfoModelCopyWith<$Res> get workinfo {
-  
-  return $WorkInfoModelCopyWith<$Res>(_self.workinfo, (value) {
+$WorkInfoModelCopyWith<$Res>? get workinfo {
+    if (_self.workinfo == null) {
+    return null;
+  }
+
+  return $WorkInfoModelCopyWith<$Res>(_self.workinfo!, (value) {
     return _then(_self.copyWith(workinfo: value));
   });
 }
