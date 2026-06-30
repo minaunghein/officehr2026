@@ -53,6 +53,11 @@ class TeamScreen extends HookConsumerWidget {
 
             final clockInTime = item.sod?.clockIn;
             final clockOutTime = item.eod?.clockIn;
+            final isClockin =
+                item.sod != null && item.sod!.isSod && !item.eod!.isEod;
+
+            final isClockout =
+                item.eod != null && item.eod!.isEod && !item.sod!.isSod;
 
             String formatTime(DateTime? time) {
               if (time == null) return '--:--';
@@ -197,7 +202,7 @@ class TeamScreen extends HookConsumerWidget {
                         _buildTimeColumn(
                           context,
                           'Clock In',
-                          formatTime(clockInTime),
+                          isClockin ? formatTime(clockInTime) : '--:--',
                           Icons.login,
                           clockInTime != null
                               ? Colors.blue
@@ -213,7 +218,7 @@ class TeamScreen extends HookConsumerWidget {
                         _buildTimeColumn(
                           context,
                           'Clock Out',
-                          formatTime(clockOutTime),
+                          isClockout ? formatTime(clockOutTime) : '--:--',
                           Icons.logout,
                           clockOutTime != null
                               ? Colors.orange

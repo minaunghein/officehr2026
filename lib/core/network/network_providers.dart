@@ -154,7 +154,7 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
     final isRefreshRequest = requestOptions.path == '/api/v1/users/refresh';
     final alreadyRetried = requestOptions.extra['tokenRetried'] == true;
 
-    if (statusCode != 401 || isRefreshRequest || alreadyRetried) {
+    if (statusCode != 500 || isRefreshRequest || alreadyRetried) {
       handler.next(err);
       return;
     }
