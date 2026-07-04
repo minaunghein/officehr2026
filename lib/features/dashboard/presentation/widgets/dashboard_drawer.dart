@@ -62,11 +62,11 @@ class DashboardDrawer extends ConsumerWidget {
                                 ),
                               ),
                               errorWidget: (context, url, error) => Container(
-                                color: theme.colorScheme.primaryContainer,
+                                color: theme.colorScheme.secondaryContainer,
                                 alignment: Alignment.center,
                                 child: Icon(
                                   Icons.person,
-                                  color: theme.colorScheme.onPrimaryContainer,
+                                  color: theme.colorScheme.onSecondaryContainer,
                                   size: 30,
                                 ),
                               ),
@@ -76,7 +76,9 @@ class DashboardDrawer extends ConsumerWidget {
                       : Container(
                           padding: const EdgeInsets.all(15),
                           decoration: BoxDecoration(
-                            border: Border.all(color: theme.primaryColor),
+                            border: Border.all(
+                              color: theme.colorScheme.secondary,
+                            ),
                             borderRadius: BorderRadius.circular(50),
                           ),
                           child: const Icon(Icons.person, size: 30),
@@ -188,7 +190,7 @@ class DashboardDrawer extends ConsumerWidget {
                 icon: Icons.lock_outline_rounded,
                 iconBg: const Color(0xFFF1F5F9),
                 title: 'Change Password',
-                onTap: () {},
+                onTap: () => context.push(AppRoutes.changePassword),
               ),
               const _Divider(),
               _NavTile(

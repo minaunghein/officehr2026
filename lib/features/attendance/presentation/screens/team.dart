@@ -12,229 +12,262 @@ class TeamScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final departmentAttendance = ref.watch(departmentAttendancesProvider);
+    Future<void> refreshTeamAttendance() async {
+      ref.invalidate(departmentAttendancesProvider);
+      await ref.read(departmentAttendancesProvider.future);
+    }
+
     return departmentAttendance.when(
       data: (data) {
         if (data.isEmpty) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+          return RefreshIndicator(
+            onRefresh: refreshTeamAttendance,
+            child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
               children: [
-                Icon(
-                  Icons.groups_2_outlined,
-                  size: 64,
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.25),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'No Team data found',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.65,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.groups_2_outlined,
+                        size: 64,
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.25,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'No Team data found',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: theme.colorScheme.onSurface.withValues(
+                            alpha: 0.5,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           );
         }
-        return ListView.separated(
-          padding: const EdgeInsets.all(16),
-          itemCount: data.length,
-          separatorBuilder: (context, index) => const SizedBox(height: 12),
-          itemBuilder: (context, index) {
-            final item = data[index];
-            final user = item.user;
-            final bio = user.userBio;
-            final fullName = buildFullName(bio?.basicInfo) ?? user.username;
-            final departmentName =
-                user.userBio?.workInfo.department.titles[0] ?? 'No Department';
-            final positionName =
-                user.userBio!.workInfo.position.titles.isNotEmpty
-                ? user.userBio?.workInfo.position.titles[0] ?? 'No Position'
-                : 'No Position';
+        return RefreshIndicator(
+          onRefresh: refreshTeamAttendance,
+          child: ListView.separated(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(16),
+            itemCount: data.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 12),
+            itemBuilder: (context, index) {
+              final item = data[index];
+              final user = item.user;
+              final bio = user.userBio;
+              final fullName = buildFullName(bio?.basicInfo) ?? user.username;
+              final departmentName =
+                  user.userBio?.workInfo.department.titles[0] ??
+                  'No Department';
+              final positionName =
+                  user.userBio!.workInfo.position.titles.isNotEmpty
+                  ? user.userBio?.workInfo.position.titles[0] ?? 'No Position'
+                  : 'No Position';
 
-            final clockInTime = item.sod?.clockIn;
-            final clockOutTime = item.eod?.clockIn;
-            final isClockin =
-                item.sod != null && item.sod!.isSod && !item.eod!.isEod;
+              final clockInTime = item.sod?.clockIn;
+              final clockOutTime = item.eod?.clockIn;
+              final isClockin = item.sod != null && item.sod!.isSod;
 
-            final isClockout =
-                item.eod != null && item.eod!.isEod && !item.sod!.isSod;
+              final isClockout = item.eod != null && item.eod!.isEod;
 
-            String formatTime(DateTime? time) {
-              if (time == null) return '--:--';
-              final hour = time.hour > 12
-                  ? time.hour - 12
-                  : (time.hour == 0 ? 12 : time.hour);
-              final minute = time.minute.toString().padLeft(2, '0');
-              final amPm = time.hour >= 12 ? 'PM' : 'AM';
-              return '$hour:$minute $amPm';
-            }
+              String formatTime(DateTime? time) {
+                if (time == null) return '--:--';
+                final hour = time.hour > 12
+                    ? time.hour - 12
+                    : (time.hour == 0 ? 12 : time.hour);
+                final minute = time.minute.toString().padLeft(2, '0');
+                final amPm = time.hour >= 12 ? 'PM' : 'AM';
+                return '$hour:$minute $amPm';
+              }
 
-            final bool isActive = clockInTime != null && clockOutTime == null;
+              final bool isActive = clockInTime != null && clockOutTime == null;
 
-            return Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppSizes.borderRadiusSm),
-                side: BorderSide(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
+              return Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadiusSm),
+                  side: BorderSide(
+                    color: theme.colorScheme.outline.withValues(alpha: 0.2),
+                  ),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 26,
-                          backgroundColor: Colors.white,
-                          child: ClipOval(
-                            child: SizedBox(
-                              width: 48,
-                              height: 48,
-                              child: user.profileUrl.isNotEmpty
-                                  ? CachedNetworkImage(
-                                      imageUrl: user.profileUrl,
-                                      fit: BoxFit.cover,
-                                      placeholder: (context, url) => Center(
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          color: theme.colorScheme.primary,
-                                        ),
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          Container(
-                                            color: theme
-                                                .colorScheme
-                                                .surfaceContainerHighest,
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              _initials(fullName),
-                                              style: theme
-                                                  .textTheme
-                                                  .headlineMedium
-                                                  ?.copyWith(
-                                                    color: theme
-                                                        .colorScheme
-                                                        .onSurfaceVariant,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                            ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 26,
+                            backgroundColor: Colors.white,
+                            child: ClipOval(
+                              child: SizedBox(
+                                width: 48,
+                                height: 48,
+                                child: user.profileUrl.isNotEmpty
+                                    ? CachedNetworkImage(
+                                        imageUrl: user.profileUrl,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) => Center(
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            color: theme.colorScheme.primary,
                                           ),
-                                    )
-                                  : Container(
-                                      color: theme
-                                          .colorScheme
-                                          .surfaceContainerHighest,
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        _initials(fullName),
-                                        style: theme.textTheme.headlineMedium
-                                            ?.copyWith(
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Container(
                                               color: theme
                                                   .colorScheme
-                                                  .onSurfaceVariant,
-                                              fontWeight: FontWeight.bold,
+                                                  .surfaceContainerHighest,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                _initials(fullName),
+                                                style: theme
+                                                    .textTheme
+                                                    .headlineMedium
+                                                    ?.copyWith(
+                                                      color: theme
+                                                          .colorScheme
+                                                          .onSurfaceVariant,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                              ),
                                             ),
+                                      )
+                                    : Container(
+                                        color: theme
+                                            .colorScheme
+                                            .surfaceContainerHighest,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          _initials(fullName),
+                                          style: theme.textTheme.headlineMedium
+                                              ?.copyWith(
+                                                color: theme
+                                                    .colorScheme
+                                                    .onSurfaceVariant,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
                                       ),
-                                    ),
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                fullName,
-                                style: theme.textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  fullName,
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                '$positionName • $departmentName',
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onSurfaceVariant,
+                                const SizedBox(height: 4),
+                                Text(
+                                  '$positionName • $departmentName',
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: theme.colorScheme.onSurfaceVariant,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          decoration: BoxDecoration(
-                            color: isActive
-                                ? Colors.green.withValues(alpha: 0.1)
-                                : theme.colorScheme.surfaceContainerHighest,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            isActive
-                                ? 'Active'
-                                : (clockInTime == null
-                                      ? 'Absent'
-                                      : 'Clocked Out'),
-                            style: theme.textTheme.labelSmall?.copyWith(
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
                               color: isActive
-                                  ? Colors.green[700]
-                                  : theme.colorScheme.onSurfaceVariant,
-                              fontWeight: FontWeight.bold,
+                                  ? Colors.green.withValues(alpha: 0.1)
+                                  : theme.colorScheme.surfaceContainerHighest,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              isActive
+                                  ? 'Active'
+                                  : (clockInTime == null
+                                        ? 'Absent'
+                                        : 'Clocked Out'),
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                color: isActive
+                                    ? Colors.green[700]
+                                    : theme.colorScheme.onSurfaceVariant,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Divider(
-                      color: theme.colorScheme.outline.withValues(alpha: 0.1),
-                      height: 1,
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildTimeColumn(
-                          context,
-                          'Clock In',
-                          isClockin ? formatTime(clockInTime) : '--:--',
-                          Icons.login,
-                          clockInTime != null
-                              ? Colors.blue
-                              : theme.colorScheme.onSurfaceVariant,
-                        ),
-                        Container(
-                          height: 30,
-                          width: 1,
-                          color: theme.colorScheme.outline.withValues(
-                            alpha: 0.2,
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Divider(
+                        color: theme.colorScheme.outline.withValues(alpha: 0.1),
+                        height: 1,
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _buildTimeColumn(
+                            context,
+                            'Clock In',
+                            isClockin ? formatTime(clockInTime) : '--:--',
+                            Icons.login,
+                            clockInTime != null
+                                ? Colors.blue
+                                : theme.colorScheme.onSurfaceVariant,
                           ),
-                        ),
-                        _buildTimeColumn(
-                          context,
-                          'Clock Out',
-                          isClockout ? formatTime(clockOutTime) : '--:--',
-                          Icons.logout,
-                          clockOutTime != null
-                              ? Colors.orange
-                              : theme.colorScheme.onSurfaceVariant,
-                        ),
-                      ],
-                    ),
-                  ],
+                          Container(
+                            height: 30,
+                            width: 1,
+                            color: theme.colorScheme.outline.withValues(
+                              alpha: 0.2,
+                            ),
+                          ),
+                          _buildTimeColumn(
+                            context,
+                            'Clock Out',
+                            isClockout ? formatTime(clockOutTime) : '--:--',
+                            Icons.logout,
+                            clockOutTime != null
+                                ? Colors.orange
+                                : theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text(error.toString())),
+      error: (error, stack) => RefreshIndicator(
+        onRefresh: refreshTeamAttendance,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: [
+            SizedBox(
+              height: MediaQuery.sizeOf(context).height * 0.65,
+              child: Center(child: Text(error.toString())),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

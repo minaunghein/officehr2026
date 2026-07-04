@@ -2,6 +2,7 @@ import 'package:office_hr/features/attendance/data/datasources/attendance_dataso
 import 'package:office_hr/features/attendance/data/mappers/attendance_mapper.dart';
 import 'package:office_hr/features/attendance/domain/entities/attendance.dart';
 import 'package:office_hr/features/attendance/domain/entities/department_attendances.dart';
+import 'package:office_hr/features/attendance/domain/entities/master_attendance.dart';
 import 'package:office_hr/features/attendance/domain/repositories/attendance_repository.dart';
 
 class AttendanceRepositoryImpl implements AttendanceRepository {
@@ -35,5 +36,16 @@ class AttendanceRepositoryImpl implements AttendanceRepository {
   Future<List<DepartmentAttendances>> getDepartmentAttendances() async {
     final response = await datasource.getDepartmentAttendances();
     return response.map((model) => model.toEntity()).toList();
+  }
+
+  @override
+  Future<List<MasterAttendance>> getMasterClockIn({
+    required int startDateId,
+    required int endDateId,
+  }) {
+    return datasource.getMasterClockIn(
+      startDateId: startDateId,
+      endDateId: endDateId,
+    );
   }
 }

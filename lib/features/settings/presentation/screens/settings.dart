@@ -93,7 +93,7 @@ class SettingsScreen extends ConsumerWidget {
                     iconColor: const Color(0xFF64748B),
                     iconBg: const Color(0xFFF1F5F9),
                     title: 'Change Password',
-                    onTap: () {},
+                    onTap: () => context.push(AppRoutes.changePassword),
                   ),
                   const _Divider(),
                   _NavTile(

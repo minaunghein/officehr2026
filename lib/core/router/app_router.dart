@@ -4,6 +4,7 @@ import 'package:office_hr/features/auth/presentation/providers/auth_providers.da
 import 'package:office_hr/features/dashboard/presentation/screens/dashboard.dart';
 import 'package:office_hr/features/payslip/presentation/screens/payslip_screen.dart';
 import 'package:office_hr/features/user/presentation/screens/company_screen.dart';
+import 'package:office_hr/features/user/presentation/screens/change_password_screen.dart';
 import 'package:office_hr/features/user/presentation/screens/leave_screen.dart';
 import 'package:office_hr/features/user/presentation/screens/profile_screen.dart';
 import 'package:office_hr/features/splash/presentation/screens/splash_screen.dart';
@@ -20,6 +21,7 @@ abstract final class AppRoutes {
   static const payslip = '/payslip';
   static const leave = '/leave';
   static const company = '/company';
+  static const changePassword = '/change-password';
 }
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -61,6 +63,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.company,
         builder: (_, _) => const CompanyScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.changePassword,
+        builder: (_, _) => const ChangePasswordScreen(),
       ),
     ],
   );

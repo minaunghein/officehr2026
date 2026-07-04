@@ -1,6 +1,8 @@
 import 'package:office_hr/core/network/api_service.dart';
+import 'package:office_hr/core/services/app_logger.dart';
 import 'package:office_hr/features/attendance/data/models/attendance_model.dart';
 import 'package:office_hr/features/attendance/data/models/department_attendances.dart';
+import 'package:office_hr/features/attendance/domain/entities/master_attendance.dart';
 
 abstract class AttendanceDatasource {
   Future<AttendanceModel> clockIn({
@@ -12,6 +14,10 @@ abstract class AttendanceDatasource {
 
   Future<List<AttendanceModel>> getTodayClockIn();
   Future<List<DepartmentAttendanceModel>> getDepartmentAttendances();
+  Future<List<MasterAttendance>> getMasterClockIn({
+    required int startDateId,
+    required int endDateId,
+  });
 }
 
 class AttendanceDatasourceImpl implements AttendanceDatasource {
@@ -81,11 +87,36 @@ class AttendanceDatasourceImpl implements AttendanceDatasource {
               DepartmentAttendanceModel.fromJson(_sanitizeAttendance(e)),
             );
           } catch (err) {
-            print('Skipping malformed record: $err');
-            print('JSON: $e');
+            AppLogger.w(
+              'Skipping malformed department attendance record: $err',
+            );
           }
         }
         return result;
+      },
+    );
+    return response;
+  }
+
+  @override
+  Future<List<MasterAttendance>> getMasterClockIn({
+    required int startDateId,
+    required int endDateId,
+  }) async {
+    final response = await _apiService.get<List<MasterAttendance>>(
+      '/api/v1/users/masterclockin',
+      queryParameters: {'startdateid': startDateId, 'enddateid': endDateId},
+      parser: (data) {
+        if (data == null) return [];
+        final dynamic listData = data is List
+            ? data
+            : (data is Map ? data['data'] : null);
+        if (listData is! List) return [];
+
+        return listData
+            .whereType<Map<String, dynamic>>()
+            .map(MasterAttendance.fromJson)
+            .toList();
       },
     );
     return response;

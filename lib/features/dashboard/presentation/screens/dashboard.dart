@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:office_hr/features/attendance/presentation/screens/master_attendance_screen.dart';
 import 'package:office_hr/features/attendance/presentation/screens/team.dart';
 import 'package:office_hr/features/dashboard/presentation/providers/dashboard_provider.dart';
 import 'package:office_hr/features/attendance/presentation/screens/home.dart';
@@ -11,11 +12,7 @@ import 'package:office_hr/shared/global.dart';
 class Dashboard extends ConsumerWidget {
   Dashboard({super.key});
 
-  final _pages = <Widget>[
-    HomeScreen(),
-    SizedBox(child: Center(child: Text('Attendance'))),
-    TeamScreen(),
-  ];
+  final _pages = <Widget>[HomeScreen(), MasterAttendanceScreen(), TeamScreen()];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
