@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
+import 'package:office_hr/features/general_data/domain/entities/simple_option.dart';
+import 'package:office_hr/features/general_data/presentation/providers/general_data_providers.dart';
 import 'package:office_hr/features/payslip/domain/entities/payslip.dart';
 import 'package:office_hr/features/payslip/presentation/providers/payslip_providers.dart';
 
@@ -11,6 +13,7 @@ class PayslipScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final payslipState = ref.watch(payslipProvider);
+    final generalData = ref.watch(generalDataProvider).value;
 
     return Scaffold(
       appBar: AppBar(
@@ -43,12 +46,26 @@ class PayslipScreen extends ConsumerWidget {
             );
           }
           return RefreshIndicator(
-            onRefresh: () => ref.read(payslipProvider.notifier).fetch(),
+            onRefresh: () async {
+              await Future.wait([
+                ref.read(payslipProvider.notifier).fetch(),
+                ref
+                    .read(generalDataProvider.notifier)
+                    .fetchGeneralData(forceRefresh: true),
+              ]);
+            },
             child: ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: payslips.length,
               itemBuilder: (context, index) {
-                return _PayslipCard(payslip: payslips[index]);
+                final payslip = payslips[index];
+                return _PayslipCard(
+                  payslip: payslip,
+                  currency: _currencyFor(
+                    payslip,
+                    generalData?.currencyUnits ?? const [],
+                  ),
+                );
               },
             ),
           );
@@ -93,12 +110,30 @@ class PayslipScreen extends ConsumerWidget {
       ),
     );
   }
+
+  String _currencyFor(Payslip payslip, List<SimpleOption> currencyUnits) {
+    final paymentCode = payslip.salary?.paymentCode;
+    if (paymentCode == null) return 'Kyat';
+
+    for (final currency in currencyUnits) {
+      if (currency.id == paymentCode) {
+        final unit = currency.unit?.trim();
+        if (unit != null && unit.isNotEmpty) return unit;
+
+        final title = currency.title?.trim();
+        if (title != null && title.isNotEmpty) return title;
+      }
+    }
+
+    return 'Kyat';
+  }
 }
 
 class _PayslipCard extends StatelessWidget {
   final Payslip payslip;
+  final String currency;
 
-  const _PayslipCard({required this.payslip});
+  const _PayslipCard({required this.payslip, required this.currency});
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +232,7 @@ class _PayslipCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        payslip.finalSalary.toStringAsFixed(0),
+                        '${payslip.finalSalary.toStringAsFixed(0)} $currency',
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.headlineSmall?.copyWith(
@@ -218,7 +253,8 @@ class _PayslipCard extends StatelessWidget {
                   ),
                 ),
                 OutlinedButton(
-                  onPressed: () => _showBreakdownBottomSheet(context, payslip),
+                  onPressed: () =>
+                      _showBreakdownBottomSheet(context, payslip, currency),
                   style: ButtonStyle(
                     maximumSize: WidgetStateProperty.all(const Size(120, 50)),
                     minimumSize: WidgetStateProperty.all(const Size(100, 40)),
@@ -273,7 +309,11 @@ class _PayslipCard extends StatelessWidget {
     return '$startMonth ${startDate.day}, ${startDate.year} - $endMonth ${endDate.day}, ${endDate.year}';
   }
 
-  void _showBreakdownBottomSheet(BuildContext context, Payslip payslip) {
+  void _showBreakdownBottomSheet(
+    BuildContext context,
+    Payslip payslip,
+    String currency,
+  ) {
     final theme = Theme.of(context);
     showModalBottomSheet(
       context: context,
@@ -322,6 +362,7 @@ class _PayslipCard extends StatelessWidget {
                           _BreakdownRow(
                             label: 'Salary per Day',
                             value: payslip.salaryPerDay,
+                            suffix: currency,
                           ),
                           _BreakdownRow(
                             label: 'Unpaid Leave Days',
@@ -333,31 +374,42 @@ class _PayslipCard extends StatelessWidget {
                           _BreakdownRow(
                             label: 'Attendance Salary',
                             value: payslip.salaryAttendance,
+                            suffix: currency,
                           ),
                           _BreakdownRow(
                             label: 'In-Time Salary',
                             value: payslip.salaryInTime,
+                            suffix: currency,
                           ),
-                          _BreakdownRow(label: 'Bonus', value: payslip.bonus),
+                          _BreakdownRow(
+                            label: 'Bonus',
+                            value: payslip.bonus,
+                            suffix: currency,
+                          ),
                           _BreakdownRow(
                             label: 'Benefits',
                             value: payslip.salaryBenefit,
+                            suffix: currency,
                           ),
                           _BreakdownRow(
                             label: 'Overtime 1 (1.5x)',
                             value: payslip.salaryOt1,
+                            suffix: currency,
                           ),
                           _BreakdownRow(
                             label: 'Overtime 2 (2.0x)',
                             value: payslip.salaryOt2,
+                            suffix: currency,
                           ),
                           _BreakdownRow(
                             label: 'Overtime 3 (3.0x)',
                             value: payslip.salaryOt3,
+                            suffix: currency,
                           ),
                           _BreakdownRow(
                             label: 'Total Overtime',
                             value: payslip.salaryOt,
+                            suffix: currency,
                             fontWeight: FontWeight.bold,
                           ),
                           const Divider(height: 24),
@@ -365,31 +417,37 @@ class _PayslipCard extends StatelessWidget {
                           _BreakdownRow(
                             label: 'Late In Deduction',
                             value: payslip.salaryLate,
+                            suffix: currency,
                             isDeduction: true,
                           ),
                           _BreakdownRow(
                             label: 'Under-Time Deduction',
                             value: payslip.salaryUnder,
+                            suffix: currency,
                             isDeduction: true,
                           ),
                           _BreakdownRow(
                             label: 'Unpaid Leave Deduction',
                             value: payslip.unpaidDeduction,
+                            suffix: currency,
                             isDeduction: true,
                           ),
                           _BreakdownRow(
                             label: 'SSB Contribution',
                             value: payslip.salarySsb,
+                            suffix: currency,
                             isDeduction: true,
                           ),
                           _BreakdownRow(
                             label: 'Loan Payment',
                             value: payslip.loan,
+                            suffix: currency,
                             isDeduction: true,
                           ),
                           _BreakdownRow(
                             label: 'Other Deductions',
                             value: payslip.salaryDeduction,
+                            suffix: currency,
                             isDeduction: true,
                           ),
                           const SizedBox(height: 24),
@@ -409,7 +467,7 @@ class _PayslipCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '${payslip.finalSalary.toStringAsFixed(0)} Kyat',
+                            '${payslip.finalSalary.toStringAsFixed(0)} $currency',
                             style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: theme.colorScheme.primary,
@@ -461,7 +519,7 @@ class _BreakdownRow extends StatelessWidget {
     required this.label,
     required this.value,
     this.isDeduction = false,
-    this.suffix = 'Kyat',
+    required this.suffix,
     this.fontWeight,
   });
 
