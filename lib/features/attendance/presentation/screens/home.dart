@@ -15,31 +15,45 @@ import 'package:office_hr/shared/date_formatter.dart';
 import 'package:office_hr/features/attendance/presentation/widgets/clock_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          _MapSliverAppBar(),
-          SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate.fixed([
-                _CurrentStatusCard(),
-                SizedBox(height: 24),
-                _RecentActivity(),
-                SizedBox(height: 24),
-                // _MonthlyStatistics(),
-                // SizedBox(height: 24),
-              ]),
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      body: RefreshIndicator(
+        onRefresh: () => _onRefresh(ref),
+        child: CustomScrollView(
+          slivers: [
+            _MapSliverAppBar(),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate.fixed([
+                  _CurrentStatusCard(),
+                  SizedBox(height: 24),
+                  _RecentActivity(),
+                  SizedBox(height: 24),
+                  // _MonthlyStatistics(),
+                  // SizedBox(height: 24),
+                ]),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  Future<void> _onRefresh(WidgetRef ref) async {
+    ref.invalidate(currentLocationProvider);
+    await Future.wait([
+      ref.read(attendanceProvider.notifier).checkTodayAttendance(),
+      ref.read(userDetailsProvider.notifier).fetch(),
+      ref.read(shiftProvider.notifier).fetch(),
+      ref.read(branchProvider.notifier).fetch(),
+      ref.read(currentLocationProvider.future),
+    ]);
   }
 }
 

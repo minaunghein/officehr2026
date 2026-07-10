@@ -171,7 +171,7 @@ class DashboardDrawer extends ConsumerWidget {
                 iconBg: const Color(0xFFFFFBEB),
                 title: 'Public Holidays',
                 subtitle: 'National & company holidays',
-                onTap: () {},
+                onTap: () => context.push(AppRoutes.publicHoliday),
               ),
               const _Divider(),
               _NavTile(

@@ -11,7 +11,9 @@ _PayslipModel _$PayslipModelFromJson(Map<String, dynamic> json) =>
       id: json['_id'] as String,
       user: UserDetailsModel.fromJson(json['userid'] as Map<String, dynamic>),
       company: json['company'] as String,
-      salary: json['salary'] as String?,
+      salary: json['salary'] == null
+          ? null
+          : SalaryModel.fromJson(json['salary'] as Map<String, dynamic>),
       salaryperday: json['salaryperday'] as num? ?? 0,
       salarylate: json['salarylate'] as num? ?? 0,
       salaryunder: json['salaryunder'] as num? ?? 0,

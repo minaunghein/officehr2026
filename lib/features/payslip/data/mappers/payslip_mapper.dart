@@ -1,6 +1,41 @@
 import 'package:office_hr/features/payslip/data/models/payslip_model.dart';
+import 'package:office_hr/features/payslip/data/models/salary_model.dart';
 import 'package:office_hr/features/payslip/domain/entities/payslip.dart';
+import 'package:office_hr/features/payslip/domain/entities/salary.dart';
 import 'package:office_hr/features/user/data/mappers/user_details_mapper.dart';
+
+extension OtRateMapper on OtRateModel {
+  OtRate toEntity() {
+    return OtRate(
+      id: id,
+      ot1Rate: ot1rate,
+      ot2Rate: ot2rate,
+      ot3Rate: ot3rate,
+    );
+  }
+}
+
+extension SalaryMapper on SalaryModel {
+  Salary toEntity() {
+    return Salary(
+      id: id,
+      userId: userid,
+      companyId: company,
+      salary: salary,
+      ssb: ssb,
+      otRate: otrate?.toEntity(),
+      otAmount: otamount,
+      isOtFlat: isotflat,
+      tags: tags,
+      isDeleted: deleted,
+      deletedAt: deletedAt,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      paymentCode: paymentcode,
+      paymentNum: paymentnum,
+    );
+  }
+}
 
 extension PayslipMapper on PayslipModel {
   Payslip toEntity() {
@@ -8,7 +43,7 @@ extension PayslipMapper on PayslipModel {
       id: id,
       user: user.toEntity(),
       companyId: company,
-      salaryId: salary,
+      salary: salary?.toEntity(),
       salaryPerDay: salaryperday,
       salaryLate: salarylate,
       salaryUnder: salaryunder,

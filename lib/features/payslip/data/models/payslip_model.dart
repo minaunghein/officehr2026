@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:office_hr/features/payslip/data/models/salary_model.dart';
 import 'package:office_hr/features/user/data/models/user_details_model.dart';
 
 part 'payslip_model.freezed.dart';
@@ -10,7 +11,7 @@ abstract class PayslipModel with _$PayslipModel {
     @JsonKey(name: '_id') required String id,
     @JsonKey(name: 'userid') required UserDetailsModel user,
     required String company,
-    String? salary,
+    SalaryModel? salary,
     @Default(0) num salaryperday,
     @Default(0) num salarylate,
     @Default(0) num salaryunder,

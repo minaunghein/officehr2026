@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:office_hr/features/payslip/domain/entities/salary.dart';
 import 'package:office_hr/features/user/domain/entities/user_details.dart';
 
 part 'payslip.freezed.dart';
@@ -9,7 +10,7 @@ abstract class Payslip with _$Payslip {
     required String id,
     required UserDetails user,
     required String companyId,
-    String? salaryId,
+    Salary? salary,
     required num salaryPerDay,
     required num salaryLate,
     required num salaryUnder,

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PayslipModel {
 
-@JsonKey(name: '_id') String get id;@JsonKey(name: 'userid') UserDetailsModel get user; String get company; String? get salary; num get salaryperday; num get salarylate; num get salaryunder; num get salaryot1; num get salaryot2; num get salaryot3; num get salaryot; num get salaryssb; num get unpaidleave; num get unpaiddeduction; num get salarybenefit; num get loan; num get bonus; num get salarydeduction; num get salaryattendance; num get salaryintime; num get finalsalary; String? get salarystartdate; String? get salaryenddate; List<dynamic> get tags; bool get deleted; bool get isackg; dynamic get deletedAt; List<dynamic> get deductiontypes; List<dynamic> get benefittypes; String? get createdAt; String? get updatedAt;@JsonKey(name: '__v') int? get version;
+@JsonKey(name: '_id') String get id;@JsonKey(name: 'userid') UserDetailsModel get user; String get company; SalaryModel? get salary; num get salaryperday; num get salarylate; num get salaryunder; num get salaryot1; num get salaryot2; num get salaryot3; num get salaryot; num get salaryssb; num get unpaidleave; num get unpaiddeduction; num get salarybenefit; num get loan; num get bonus; num get salarydeduction; num get salaryattendance; num get salaryintime; num get finalsalary; String? get salarystartdate; String? get salaryenddate; List<dynamic> get tags; bool get deleted; bool get isackg; dynamic get deletedAt; List<dynamic> get deductiontypes; List<dynamic> get benefittypes; String? get createdAt; String? get updatedAt;@JsonKey(name: '__v') int? get version;
 /// Create a copy of PayslipModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,11 +48,11 @@ abstract mixin class $PayslipModelCopyWith<$Res>  {
   factory $PayslipModelCopyWith(PayslipModel value, $Res Function(PayslipModel) _then) = _$PayslipModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: '_id') String id,@JsonKey(name: 'userid') UserDetailsModel user, String company, String? salary, num salaryperday, num salarylate, num salaryunder, num salaryot1, num salaryot2, num salaryot3, num salaryot, num salaryssb, num unpaidleave, num unpaiddeduction, num salarybenefit, num loan, num bonus, num salarydeduction, num salaryattendance, num salaryintime, num finalsalary, String? salarystartdate, String? salaryenddate, List<dynamic> tags, bool deleted, bool isackg, dynamic deletedAt, List<dynamic> deductiontypes, List<dynamic> benefittypes, String? createdAt, String? updatedAt,@JsonKey(name: '__v') int? version
+@JsonKey(name: '_id') String id,@JsonKey(name: 'userid') UserDetailsModel user, String company, SalaryModel? salary, num salaryperday, num salarylate, num salaryunder, num salaryot1, num salaryot2, num salaryot3, num salaryot, num salaryssb, num unpaidleave, num unpaiddeduction, num salarybenefit, num loan, num bonus, num salarydeduction, num salaryattendance, num salaryintime, num finalsalary, String? salarystartdate, String? salaryenddate, List<dynamic> tags, bool deleted, bool isackg, dynamic deletedAt, List<dynamic> deductiontypes, List<dynamic> benefittypes, String? createdAt, String? updatedAt,@JsonKey(name: '__v') int? version
 });
 
 
-$UserDetailsModelCopyWith<$Res> get user;
+$UserDetailsModelCopyWith<$Res> get user;$SalaryModelCopyWith<$Res>? get salary;
 
 }
 /// @nodoc
@@ -71,7 +71,7 @@ id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as UserDetailsModel,company: null == company ? _self.company : company // ignore: cast_nullable_to_non_nullable
 as String,salary: freezed == salary ? _self.salary : salary // ignore: cast_nullable_to_non_nullable
-as String?,salaryperday: null == salaryperday ? _self.salaryperday : salaryperday // ignore: cast_nullable_to_non_nullable
+as SalaryModel?,salaryperday: null == salaryperday ? _self.salaryperday : salaryperday // ignore: cast_nullable_to_non_nullable
 as num,salarylate: null == salarylate ? _self.salarylate : salarylate // ignore: cast_nullable_to_non_nullable
 as num,salaryunder: null == salaryunder ? _self.salaryunder : salaryunder // ignore: cast_nullable_to_non_nullable
 as num,salaryot1: null == salaryot1 ? _self.salaryot1 : salaryot1 // ignore: cast_nullable_to_non_nullable
@@ -110,6 +110,18 @@ $UserDetailsModelCopyWith<$Res> get user {
   
   return $UserDetailsModelCopyWith<$Res>(_self.user, (value) {
     return _then(_self.copyWith(user: value));
+  });
+}/// Create a copy of PayslipModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SalaryModelCopyWith<$Res>? get salary {
+    if (_self.salary == null) {
+    return null;
+  }
+
+  return $SalaryModelCopyWith<$Res>(_self.salary!, (value) {
+    return _then(_self.copyWith(salary: value));
   });
 }
 }
@@ -193,7 +205,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id, @JsonKey(name: 'userid')  UserDetailsModel user,  String company,  String? salary,  num salaryperday,  num salarylate,  num salaryunder,  num salaryot1,  num salaryot2,  num salaryot3,  num salaryot,  num salaryssb,  num unpaidleave,  num unpaiddeduction,  num salarybenefit,  num loan,  num bonus,  num salarydeduction,  num salaryattendance,  num salaryintime,  num finalsalary,  String? salarystartdate,  String? salaryenddate,  List<dynamic> tags,  bool deleted,  bool isackg,  dynamic deletedAt,  List<dynamic> deductiontypes,  List<dynamic> benefittypes,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id, @JsonKey(name: 'userid')  UserDetailsModel user,  String company,  SalaryModel? salary,  num salaryperday,  num salarylate,  num salaryunder,  num salaryot1,  num salaryot2,  num salaryot3,  num salaryot,  num salaryssb,  num unpaidleave,  num unpaiddeduction,  num salarybenefit,  num loan,  num bonus,  num salarydeduction,  num salaryattendance,  num salaryintime,  num finalsalary,  String? salarystartdate,  String? salaryenddate,  List<dynamic> tags,  bool deleted,  bool isackg,  dynamic deletedAt,  List<dynamic> deductiontypes,  List<dynamic> benefittypes,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PayslipModel() when $default != null:
 return $default(_that.id,_that.user,_that.company,_that.salary,_that.salaryperday,_that.salarylate,_that.salaryunder,_that.salaryot1,_that.salaryot2,_that.salaryot3,_that.salaryot,_that.salaryssb,_that.unpaidleave,_that.unpaiddeduction,_that.salarybenefit,_that.loan,_that.bonus,_that.salarydeduction,_that.salaryattendance,_that.salaryintime,_that.finalsalary,_that.salarystartdate,_that.salaryenddate,_that.tags,_that.deleted,_that.isackg,_that.deletedAt,_that.deductiontypes,_that.benefittypes,_that.createdAt,_that.updatedAt,_that.version);case _:
@@ -214,7 +226,7 @@ return $default(_that.id,_that.user,_that.company,_that.salary,_that.salaryperda
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id, @JsonKey(name: 'userid')  UserDetailsModel user,  String company,  String? salary,  num salaryperday,  num salarylate,  num salaryunder,  num salaryot1,  num salaryot2,  num salaryot3,  num salaryot,  num salaryssb,  num unpaidleave,  num unpaiddeduction,  num salarybenefit,  num loan,  num bonus,  num salarydeduction,  num salaryattendance,  num salaryintime,  num finalsalary,  String? salarystartdate,  String? salaryenddate,  List<dynamic> tags,  bool deleted,  bool isackg,  dynamic deletedAt,  List<dynamic> deductiontypes,  List<dynamic> benefittypes,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id, @JsonKey(name: 'userid')  UserDetailsModel user,  String company,  SalaryModel? salary,  num salaryperday,  num salarylate,  num salaryunder,  num salaryot1,  num salaryot2,  num salaryot3,  num salaryot,  num salaryssb,  num unpaidleave,  num unpaiddeduction,  num salarybenefit,  num loan,  num bonus,  num salarydeduction,  num salaryattendance,  num salaryintime,  num finalsalary,  String? salarystartdate,  String? salaryenddate,  List<dynamic> tags,  bool deleted,  bool isackg,  dynamic deletedAt,  List<dynamic> deductiontypes,  List<dynamic> benefittypes,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)  $default,) {final _that = this;
 switch (_that) {
 case _PayslipModel():
 return $default(_that.id,_that.user,_that.company,_that.salary,_that.salaryperday,_that.salarylate,_that.salaryunder,_that.salaryot1,_that.salaryot2,_that.salaryot3,_that.salaryot,_that.salaryssb,_that.unpaidleave,_that.unpaiddeduction,_that.salarybenefit,_that.loan,_that.bonus,_that.salarydeduction,_that.salaryattendance,_that.salaryintime,_that.finalsalary,_that.salarystartdate,_that.salaryenddate,_that.tags,_that.deleted,_that.isackg,_that.deletedAt,_that.deductiontypes,_that.benefittypes,_that.createdAt,_that.updatedAt,_that.version);case _:
@@ -234,7 +246,7 @@ return $default(_that.id,_that.user,_that.company,_that.salary,_that.salaryperda
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String id, @JsonKey(name: 'userid')  UserDetailsModel user,  String company,  String? salary,  num salaryperday,  num salarylate,  num salaryunder,  num salaryot1,  num salaryot2,  num salaryot3,  num salaryot,  num salaryssb,  num unpaidleave,  num unpaiddeduction,  num salarybenefit,  num loan,  num bonus,  num salarydeduction,  num salaryattendance,  num salaryintime,  num finalsalary,  String? salarystartdate,  String? salaryenddate,  List<dynamic> tags,  bool deleted,  bool isackg,  dynamic deletedAt,  List<dynamic> deductiontypes,  List<dynamic> benefittypes,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String id, @JsonKey(name: 'userid')  UserDetailsModel user,  String company,  SalaryModel? salary,  num salaryperday,  num salarylate,  num salaryunder,  num salaryot1,  num salaryot2,  num salaryot3,  num salaryot,  num salaryssb,  num unpaidleave,  num unpaiddeduction,  num salarybenefit,  num loan,  num bonus,  num salarydeduction,  num salaryattendance,  num salaryintime,  num finalsalary,  String? salarystartdate,  String? salaryenddate,  List<dynamic> tags,  bool deleted,  bool isackg,  dynamic deletedAt,  List<dynamic> deductiontypes,  List<dynamic> benefittypes,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,) {final _that = this;
 switch (_that) {
 case _PayslipModel() when $default != null:
 return $default(_that.id,_that.user,_that.company,_that.salary,_that.salaryperday,_that.salarylate,_that.salaryunder,_that.salaryot1,_that.salaryot2,_that.salaryot3,_that.salaryot,_that.salaryssb,_that.unpaidleave,_that.unpaiddeduction,_that.salarybenefit,_that.loan,_that.bonus,_that.salarydeduction,_that.salaryattendance,_that.salaryintime,_that.finalsalary,_that.salarystartdate,_that.salaryenddate,_that.tags,_that.deleted,_that.isackg,_that.deletedAt,_that.deductiontypes,_that.benefittypes,_that.createdAt,_that.updatedAt,_that.version);case _:
@@ -255,7 +267,7 @@ class _PayslipModel implements PayslipModel {
 @override@JsonKey(name: '_id') final  String id;
 @override@JsonKey(name: 'userid') final  UserDetailsModel user;
 @override final  String company;
-@override final  String? salary;
+@override final  SalaryModel? salary;
 @override@JsonKey() final  num salaryperday;
 @override@JsonKey() final  num salarylate;
 @override@JsonKey() final  num salaryunder;
@@ -336,11 +348,11 @@ abstract mixin class _$PayslipModelCopyWith<$Res> implements $PayslipModelCopyWi
   factory _$PayslipModelCopyWith(_PayslipModel value, $Res Function(_PayslipModel) _then) = __$PayslipModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: '_id') String id,@JsonKey(name: 'userid') UserDetailsModel user, String company, String? salary, num salaryperday, num salarylate, num salaryunder, num salaryot1, num salaryot2, num salaryot3, num salaryot, num salaryssb, num unpaidleave, num unpaiddeduction, num salarybenefit, num loan, num bonus, num salarydeduction, num salaryattendance, num salaryintime, num finalsalary, String? salarystartdate, String? salaryenddate, List<dynamic> tags, bool deleted, bool isackg, dynamic deletedAt, List<dynamic> deductiontypes, List<dynamic> benefittypes, String? createdAt, String? updatedAt,@JsonKey(name: '__v') int? version
+@JsonKey(name: '_id') String id,@JsonKey(name: 'userid') UserDetailsModel user, String company, SalaryModel? salary, num salaryperday, num salarylate, num salaryunder, num salaryot1, num salaryot2, num salaryot3, num salaryot, num salaryssb, num unpaidleave, num unpaiddeduction, num salarybenefit, num loan, num bonus, num salarydeduction, num salaryattendance, num salaryintime, num finalsalary, String? salarystartdate, String? salaryenddate, List<dynamic> tags, bool deleted, bool isackg, dynamic deletedAt, List<dynamic> deductiontypes, List<dynamic> benefittypes, String? createdAt, String? updatedAt,@JsonKey(name: '__v') int? version
 });
 
 
-@override $UserDetailsModelCopyWith<$Res> get user;
+@override $UserDetailsModelCopyWith<$Res> get user;@override $SalaryModelCopyWith<$Res>? get salary;
 
 }
 /// @nodoc
@@ -359,7 +371,7 @@ id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as UserDetailsModel,company: null == company ? _self.company : company // ignore: cast_nullable_to_non_nullable
 as String,salary: freezed == salary ? _self.salary : salary // ignore: cast_nullable_to_non_nullable
-as String?,salaryperday: null == salaryperday ? _self.salaryperday : salaryperday // ignore: cast_nullable_to_non_nullable
+as SalaryModel?,salaryperday: null == salaryperday ? _self.salaryperday : salaryperday // ignore: cast_nullable_to_non_nullable
 as num,salarylate: null == salarylate ? _self.salarylate : salarylate // ignore: cast_nullable_to_non_nullable
 as num,salaryunder: null == salaryunder ? _self.salaryunder : salaryunder // ignore: cast_nullable_to_non_nullable
 as num,salaryot1: null == salaryot1 ? _self.salaryot1 : salaryot1 // ignore: cast_nullable_to_non_nullable
@@ -399,6 +411,18 @@ $UserDetailsModelCopyWith<$Res> get user {
   
   return $UserDetailsModelCopyWith<$Res>(_self.user, (value) {
     return _then(_self.copyWith(user: value));
+  });
+}/// Create a copy of PayslipModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SalaryModelCopyWith<$Res>? get salary {
+    if (_self.salary == null) {
+    return null;
+  }
+
+  return $SalaryModelCopyWith<$Res>(_self.salary!, (value) {
+    return _then(_self.copyWith(salary: value));
   });
 }
 }

@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/features/dashboard/presentation/screens/dashboard.dart';
 import 'package:office_hr/features/payslip/presentation/screens/payslip_screen.dart';
+import 'package:office_hr/features/public_holiday/presentation/screens/public_holiday_screen.dart';
 import 'package:office_hr/features/user/presentation/screens/company_screen.dart';
 import 'package:office_hr/features/user/presentation/screens/change_password_screen.dart';
 import 'package:office_hr/features/user/presentation/screens/leave_screen.dart';
@@ -19,6 +20,7 @@ abstract final class AppRoutes {
   static const login = '/login';
   static const profile = '/profile';
   static const payslip = '/payslip';
+  static const publicHoliday = '/public-holidays';
   static const leave = '/leave';
   static const company = '/company';
   static const changePassword = '/change-password';
@@ -58,6 +60,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.payslip,
         builder: (_, _) => const PayslipScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.publicHoliday,
+        builder: (_, _) => const PublicHolidayScreen(),
       ),
       GoRoute(path: AppRoutes.leave, builder: (_, _) => const LeaveScreen()),
       GoRoute(
