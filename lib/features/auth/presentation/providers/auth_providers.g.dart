@@ -139,11 +139,58 @@ final class LoginUsecaseProvider
 
 String _$loginUsecaseHash() => r'406312b4f824a6c7127408913113b94909c9c451';
 
+@ProviderFor(getSessionUseCase)
+final getSessionUseCaseProvider = GetSessionUseCaseProvider._();
+
+final class GetSessionUseCaseProvider
+    extends
+        $FunctionalProvider<
+          GetSessionUseCase,
+          GetSessionUseCase,
+          GetSessionUseCase
+        >
+    with $Provider<GetSessionUseCase> {
+  GetSessionUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getSessionUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getSessionUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetSessionUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetSessionUseCase create(Ref ref) {
+    return getSessionUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetSessionUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetSessionUseCase>(value),
+    );
+  }
+}
+
+String _$getSessionUseCaseHash() => r'5baacbf87572499cc34c41a2d3107e0e9e0db77a';
+
 @ProviderFor(CurrentUser)
 final currentUserProvider = CurrentUserProvider._();
 
 final class CurrentUserProvider
-    extends $AsyncNotifierProvider<CurrentUser, AuthUser?> {
+    extends $AsyncNotifierProvider<CurrentUser, AuthSession?> {
   CurrentUserProvider._()
     : super(
         from: null,
@@ -163,25 +210,64 @@ final class CurrentUserProvider
   CurrentUser create() => CurrentUser();
 }
 
-String _$currentUserHash() => r'4bcf9142664e41667f6b42dc9daeaad0d11eca9b';
+String _$currentUserHash() => r'6d0932d51a30d9c9548fd48e3ea619de0237e1e6';
 
-abstract class _$CurrentUser extends $AsyncNotifier<AuthUser?> {
-  FutureOr<AuthUser?> build();
+abstract class _$CurrentUser extends $AsyncNotifier<AuthSession?> {
+  FutureOr<AuthSession?> build();
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
-    final ref = this.ref as $Ref<AsyncValue<AuthUser?>, AuthUser?>;
+    final ref = this.ref as $Ref<AsyncValue<AuthSession?>, AuthSession?>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<AuthUser?>, AuthUser?>,
-              AsyncValue<AuthUser?>,
+              AnyNotifier<AsyncValue<AuthSession?>, AuthSession?>,
+              AsyncValue<AuthSession?>,
               Object?,
               Object?
             >;
     return element.handleCreate(ref, build);
   }
 }
+
+@ProviderFor(getSession)
+final getSessionProvider = GetSessionProvider._();
+
+final class GetSessionProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<AuthSession>,
+          AuthSession,
+          FutureOr<AuthSession>
+        >
+    with $FutureModifier<AuthSession>, $FutureProvider<AuthSession> {
+  GetSessionProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getSessionProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getSessionHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<AuthSession> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<AuthSession> create(Ref ref) {
+    return getSession(ref);
+  }
+}
+
+String _$getSessionHash() => r'fafcaf8308ca4c1eb3ca9dce9243917415e1e102';
 
 @ProviderFor(LoginNotifier)
 final loginProvider = LoginNotifierProvider._();
@@ -207,7 +293,7 @@ final class LoginNotifierProvider
   LoginNotifier create() => LoginNotifier();
 }
 
-String _$loginNotifierHash() => r'2ff8a0998e6e6592e62869be7adf6660fff1d539';
+String _$loginNotifierHash() => r'90ee0195b2fa34bdaa3c138099bbaf05d11013f0';
 
 abstract class _$LoginNotifier extends $AsyncNotifier<void> {
   FutureOr<void> build();
@@ -238,7 +324,7 @@ final class CompanySetupNotifierProvider
         argument: null,
         retry: null,
         name: r'companySetupProvider',
-        isAutoDispose: false,
+        isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -252,7 +338,7 @@ final class CompanySetupNotifierProvider
 }
 
 String _$companySetupNotifierHash() =>
-    r'05022de4931178c45b3facbeefd9f7d219e74d60';
+    r'1d76fa048d5997e85f6572d4eec5d7340037088b';
 
 abstract class _$CompanySetupNotifier extends $AsyncNotifier<bool> {
   FutureOr<bool> build();
@@ -311,4 +397,4 @@ final class IsAuthenticatedProvider
   }
 }
 
-String _$isAuthenticatedHash() => r'382e0bd45cbdf6c1cc8b0333fbf27c8698696204';
+String _$isAuthenticatedHash() => r'83a1451973b29d9ff37548f4c8838b1f926ebb0b';

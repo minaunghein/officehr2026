@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:office_hr/features/user/domain/entities/basic_info.dart';
+import 'package:office_hr/features/auth/domain/entities/auth_session.dart';
+import 'package:office_hr/features/auth/domain/entities/user_entities/basic_info/basic_info.dart';
+import 'package:office_hr/features/auth/domain/entities/user_entities/user/user.dart';
 
 String? buildFullName(BasicInfo? info) {
   if (info == null) return null;
-  final first = info.firstNames.firstWhere(
-    (n) => n != null && n.trim().isNotEmpty,
-    orElse: () => null,
-  );
-  final last = info.lastNames.firstWhere(
-    (n) => n != null && n.trim().isNotEmpty,
-    orElse: () => null,
-  );
-  final name = [first, last].where((n) => n != null).join(' ').trim();
+
+  final name = [info.firstName, info.firstName].join(' ').trim();
   return name.isEmpty ? null : name;
 }
 
@@ -34,4 +29,25 @@ String? initials(String fullName) {
   }
 
   return result.isEmpty ? null : result;
+}
+
+String userDisplayName(Object? user) {
+  if (user is AuthSession) return user.displayName;
+
+  final legacyUser = user is User ? user : null;
+  final name = buildFullName(legacyUser?.employee?.basicInfo);
+  if (name != null && name.isNotEmpty) return name;
+
+  final username = legacyUser?.username.trim() ?? '';
+  if (username.isNotEmpty) return username;
+
+  final email = legacyUser?.email.trim() ?? '';
+  if (email.isNotEmpty) return email;
+
+  return 'Unknown User';
+}
+
+String valueOrDash(String? value) {
+  final trimmed = value?.trim() ?? '';
+  return trimmed.isEmpty ? '-' : trimmed;
 }

@@ -24,9 +24,7 @@ class LoginScreen extends ConsumerWidget {
         error: (error, stackTrace) {
           String errorMessage = 'Login failed. Please try again.';
           if (error is ApiException) {
-            if (error.statusCode == 401 ||
-                error.statusCode == 404 ||
-                error.type == ApiErrorType.unauthorized) {
+            if (error.isUnauthorized || error.statusCode == 404) {
               errorMessage = 'Invalid username or password';
             } else {
               errorMessage = error.message;
@@ -134,9 +132,8 @@ class LoginScreenContent extends HookConsumerWidget {
                                       textAlign: TextAlign.center,
                                       text: TextSpan(
                                         style: textTheme.bodyMedium?.copyWith(
-                                          color: colorScheme.onSurface.withValues(
-                                            alpha: 0.7,
-                                          ),
+                                          color: colorScheme.onSurface
+                                              .withValues(alpha: 0.7),
                                         ),
                                         children: [
                                           const TextSpan(text: 'for '),
@@ -155,9 +152,13 @@ class LoginScreenContent extends HookConsumerWidget {
                                         context.push(AppRoutes.companySetup);
                                       },
                                       style: TextButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 4,
+                                        ),
                                         minimumSize: Size.zero,
-                                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                        tapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
                                       ),
                                       child: Text(
                                         'Change Company',
@@ -285,8 +286,9 @@ class LoginScreenContent extends HookConsumerWidget {
                                               ref
                                                   .read(loginProvider.notifier)
                                                   .login(
-                                                    username:
-                                                        usernameController.text,
+                                                    username: usernameController
+                                                        .text
+                                                        .trim(),
                                                     password:
                                                         passwordController.text,
                                                     rememberDevice:
@@ -343,7 +345,8 @@ class LoginScreenContent extends HookConsumerWidget {
                                                           .login(
                                                             username:
                                                                 usernameController
-                                                                    .text,
+                                                                    .text
+                                                                    .trim(),
                                                             password:
                                                                 passwordController
                                                                     .text,
@@ -392,8 +395,8 @@ class LoginScreenContent extends HookConsumerWidget {
                             ),
                           ),
                           const SizedBox(height: 80),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          Wrap(
+                            alignment: WrapAlignment.center,
                             children: [
                               Text(
                                 'Need help?',
@@ -423,8 +426,8 @@ class LoginScreenContent extends HookConsumerWidget {
                             ],
                           ),
                           const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          Wrap(
+                            alignment: WrapAlignment.center,
                             children: [
                               Text(
                                 'Privacy Policy',

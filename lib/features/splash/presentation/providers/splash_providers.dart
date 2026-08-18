@@ -1,7 +1,6 @@
+import 'package:office_hr/core/network/api_exception.dart';
 import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
-import 'package:office_hr/features/general_data/presentation/providers/general_data_providers.dart';
-import 'package:office_hr/features/user/presentation/providers/user_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'splash_providers.g.dart';
@@ -13,9 +12,6 @@ class SplashInitialization extends _$SplashInitialization {
   @override
   Future<SplashState> build() async {
     await ref.read(authTokenProvider.future);
-    await ref.read(currentUserProvider.future);
-
-    await ref.watch(generalDataProvider.future);
 
     final hasCompletedSetup = await ref.read(companySetupProvider.future);
     if (!hasCompletedSetup) {
@@ -27,11 +23,14 @@ class SplashInitialization extends _$SplashInitialization {
       return SplashState.unauthenticated;
     }
 
-    await Future.wait([
-      ref.read(userDetailsProvider.notifier).fetch(),
-      ref.read(shiftProvider.notifier).fetch(),
-      ref.read(branchProvider.notifier).fetch(),
-    ]);
+    try {
+      await ref.read(currentUserProvider.notifier).loadSession();
+    } on ApiException catch (error) {
+      if (error.isUnauthorized) {
+        return SplashState.unauthenticated;
+      }
+      rethrow;
+    }
 
     return SplashState.authenticated;
   }

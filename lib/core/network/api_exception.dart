@@ -30,6 +30,9 @@ class ApiException implements Exception {
   final String? endpoint;
   final Object? responseBody;
 
+  bool get isUnauthorized =>
+      type == ApiErrorType.unauthorized || statusCode == 401;
+
   factory ApiException.fromDioException(DioException error) {
     final statusCode = error.response?.statusCode;
     final responseBody = error.response?.data;
@@ -143,13 +146,15 @@ class ApiException implements Exception {
       return responseBody.trim();
     }
 
+    if (responseBody is List && responseBody.isNotEmpty) {
+      return _extractMessage(responseBody.first);
+    }
+
     if (responseBody is Map<String, dynamic>) {
       const keys = ['message', 'error', 'detail', 'title', 'description'];
       for (final key in keys) {
-        final value = responseBody[key];
-        if (value is String && value.trim().isNotEmpty) {
-          return value.trim();
-        }
+        final message = _extractMessage(responseBody[key]);
+        if (message != null) return message;
       }
 
       final errors = responseBody['errors'];

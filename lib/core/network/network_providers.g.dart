@@ -121,7 +121,7 @@ final class AuthTokenProvider
   AuthToken create() => AuthToken();
 }
 
-String _$authTokenHash() => r'8770c2dfad2254edadf5e21d8c3b94680a03ad5d';
+String _$authTokenHash() => r'9ea663405e7fd2069175c782aed46b060afb7957';
 
 abstract class _$AuthToken extends $AsyncNotifier<String?> {
   FutureOr<String?> build();
@@ -165,7 +165,7 @@ final class AuthRefreshTokenProvider
   AuthRefreshToken create() => AuthRefreshToken();
 }
 
-String _$authRefreshTokenHash() => r'b7effe88aee74c9e54a963f3406e4518abec08a6';
+String _$authRefreshTokenHash() => r'51d3fadda2df07ec7b38adf319bb496f45e18e9f';
 
 abstract class _$AuthRefreshToken extends $AsyncNotifier<String?> {
   FutureOr<String?> build();
@@ -223,7 +223,7 @@ final class DioProvider extends $FunctionalProvider<Dio, Dio, Dio>
   }
 }
 
-String _$dioHash() => r'2c607d04d5a0b02347c86baec9dcbeec65c56e96';
+String _$dioHash() => r'09458c00b7aa1cad4ae833112b93f5107879b33f';
 
 @ProviderFor(apiService)
 final apiServiceProvider = ApiServiceProvider._();

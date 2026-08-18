@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$LoginResponseModel {
 
-@JsonKey(name: 'token_type') String get tokenType;@JsonKey(name: 'access_token') String get accessToken;@JsonKey(name: 'refresh_token') String get refreshToken;@JsonKey(name: 'expiresIn') int get expiresIn;@JsonKey(name: 'userid') String get userid;
+@JsonKey(readValue: _readAccessToken) String get accessToken;@JsonKey(readValue: _readRefreshToken) String get refreshToken;@JsonKey(readValue: _readSession) AuthSessionModel get session;
 /// Create a copy of LoginResponseModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $LoginResponseModelCopyWith<LoginResponseModel> get copyWith => _$LoginResponseM
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoginResponseModel&&(identical(other.tokenType, tokenType) || other.tokenType == tokenType)&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.expiresIn, expiresIn) || other.expiresIn == expiresIn)&&(identical(other.userid, userid) || other.userid == userid));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoginResponseModel&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.session, session) || other.session == session));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,tokenType,accessToken,refreshToken,expiresIn,userid);
+int get hashCode => Object.hash(runtimeType,accessToken,refreshToken,session);
 
 @override
 String toString() {
-  return 'LoginResponseModel(tokenType: $tokenType, accessToken: $accessToken, refreshToken: $refreshToken, expiresIn: $expiresIn, userid: $userid)';
+  return 'LoginResponseModel(accessToken: $accessToken, refreshToken: $refreshToken, session: $session)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $LoginResponseModelCopyWith<$Res>  {
   factory $LoginResponseModelCopyWith(LoginResponseModel value, $Res Function(LoginResponseModel) _then) = _$LoginResponseModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'token_type') String tokenType,@JsonKey(name: 'access_token') String accessToken,@JsonKey(name: 'refresh_token') String refreshToken,@JsonKey(name: 'expiresIn') int expiresIn,@JsonKey(name: 'userid') String userid
+@JsonKey(readValue: _readAccessToken) String accessToken,@JsonKey(readValue: _readRefreshToken) String refreshToken,@JsonKey(readValue: _readSession) AuthSessionModel session
 });
 
 
-
+$AuthSessionModelCopyWith<$Res> get session;
 
 }
 /// @nodoc
@@ -65,17 +65,24 @@ class _$LoginResponseModelCopyWithImpl<$Res>
 
 /// Create a copy of LoginResponseModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? tokenType = null,Object? accessToken = null,Object? refreshToken = null,Object? expiresIn = null,Object? userid = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? accessToken = null,Object? refreshToken = null,Object? session = null,}) {
   return _then(_self.copyWith(
-tokenType: null == tokenType ? _self.tokenType : tokenType // ignore: cast_nullable_to_non_nullable
-as String,accessToken: null == accessToken ? _self.accessToken : accessToken // ignore: cast_nullable_to_non_nullable
+accessToken: null == accessToken ? _self.accessToken : accessToken // ignore: cast_nullable_to_non_nullable
 as String,refreshToken: null == refreshToken ? _self.refreshToken : refreshToken // ignore: cast_nullable_to_non_nullable
-as String,expiresIn: null == expiresIn ? _self.expiresIn : expiresIn // ignore: cast_nullable_to_non_nullable
-as int,userid: null == userid ? _self.userid : userid // ignore: cast_nullable_to_non_nullable
-as String,
+as String,session: null == session ? _self.session : session // ignore: cast_nullable_to_non_nullable
+as AuthSessionModel,
   ));
 }
-
+/// Create a copy of LoginResponseModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AuthSessionModelCopyWith<$Res> get session {
+  
+  return $AuthSessionModelCopyWith<$Res>(_self.session, (value) {
+    return _then(_self.copyWith(session: value));
+  });
+}
 }
 
 
@@ -157,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'token_type')  String tokenType, @JsonKey(name: 'access_token')  String accessToken, @JsonKey(name: 'refresh_token')  String refreshToken, @JsonKey(name: 'expiresIn')  int expiresIn, @JsonKey(name: 'userid')  String userid)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readAccessToken)  String accessToken, @JsonKey(readValue: _readRefreshToken)  String refreshToken, @JsonKey(readValue: _readSession)  AuthSessionModel session)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LoginResponseModel() when $default != null:
-return $default(_that.tokenType,_that.accessToken,_that.refreshToken,_that.expiresIn,_that.userid);case _:
+return $default(_that.accessToken,_that.refreshToken,_that.session);case _:
   return orElse();
 
 }
@@ -178,10 +185,10 @@ return $default(_that.tokenType,_that.accessToken,_that.refreshToken,_that.expir
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'token_type')  String tokenType, @JsonKey(name: 'access_token')  String accessToken, @JsonKey(name: 'refresh_token')  String refreshToken, @JsonKey(name: 'expiresIn')  int expiresIn, @JsonKey(name: 'userid')  String userid)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readAccessToken)  String accessToken, @JsonKey(readValue: _readRefreshToken)  String refreshToken, @JsonKey(readValue: _readSession)  AuthSessionModel session)  $default,) {final _that = this;
 switch (_that) {
 case _LoginResponseModel():
-return $default(_that.tokenType,_that.accessToken,_that.refreshToken,_that.expiresIn,_that.userid);case _:
+return $default(_that.accessToken,_that.refreshToken,_that.session);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +205,10 @@ return $default(_that.tokenType,_that.accessToken,_that.refreshToken,_that.expir
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'token_type')  String tokenType, @JsonKey(name: 'access_token')  String accessToken, @JsonKey(name: 'refresh_token')  String refreshToken, @JsonKey(name: 'expiresIn')  int expiresIn, @JsonKey(name: 'userid')  String userid)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(readValue: _readAccessToken)  String accessToken, @JsonKey(readValue: _readRefreshToken)  String refreshToken, @JsonKey(readValue: _readSession)  AuthSessionModel session)?  $default,) {final _that = this;
 switch (_that) {
 case _LoginResponseModel() when $default != null:
-return $default(_that.tokenType,_that.accessToken,_that.refreshToken,_that.expiresIn,_that.userid);case _:
+return $default(_that.accessToken,_that.refreshToken,_that.session);case _:
   return null;
 
 }
@@ -212,15 +219,13 @@ return $default(_that.tokenType,_that.accessToken,_that.refreshToken,_that.expir
 /// @nodoc
 @JsonSerializable()
 
-class _LoginResponseModel implements LoginResponseModel {
-  const _LoginResponseModel({@JsonKey(name: 'token_type') this.tokenType = 'Bearer', @JsonKey(name: 'access_token') this.accessToken = '', @JsonKey(name: 'refresh_token') this.refreshToken = '', @JsonKey(name: 'expiresIn') this.expiresIn = 0, @JsonKey(name: 'userid') this.userid = ''});
+class _LoginResponseModel extends LoginResponseModel {
+  const _LoginResponseModel({@JsonKey(readValue: _readAccessToken) this.accessToken = '', @JsonKey(readValue: _readRefreshToken) this.refreshToken = '', @JsonKey(readValue: _readSession) required this.session}): super._();
   factory _LoginResponseModel.fromJson(Map<String, dynamic> json) => _$LoginResponseModelFromJson(json);
 
-@override@JsonKey(name: 'token_type') final  String tokenType;
-@override@JsonKey(name: 'access_token') final  String accessToken;
-@override@JsonKey(name: 'refresh_token') final  String refreshToken;
-@override@JsonKey(name: 'expiresIn') final  int expiresIn;
-@override@JsonKey(name: 'userid') final  String userid;
+@override@JsonKey(readValue: _readAccessToken) final  String accessToken;
+@override@JsonKey(readValue: _readRefreshToken) final  String refreshToken;
+@override@JsonKey(readValue: _readSession) final  AuthSessionModel session;
 
 /// Create a copy of LoginResponseModel
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +240,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoginResponseModel&&(identical(other.tokenType, tokenType) || other.tokenType == tokenType)&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.expiresIn, expiresIn) || other.expiresIn == expiresIn)&&(identical(other.userid, userid) || other.userid == userid));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoginResponseModel&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.session, session) || other.session == session));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,tokenType,accessToken,refreshToken,expiresIn,userid);
+int get hashCode => Object.hash(runtimeType,accessToken,refreshToken,session);
 
 @override
 String toString() {
-  return 'LoginResponseModel(tokenType: $tokenType, accessToken: $accessToken, refreshToken: $refreshToken, expiresIn: $expiresIn, userid: $userid)';
+  return 'LoginResponseModel(accessToken: $accessToken, refreshToken: $refreshToken, session: $session)';
 }
 
 
@@ -255,11 +260,11 @@ abstract mixin class _$LoginResponseModelCopyWith<$Res> implements $LoginRespons
   factory _$LoginResponseModelCopyWith(_LoginResponseModel value, $Res Function(_LoginResponseModel) _then) = __$LoginResponseModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'token_type') String tokenType,@JsonKey(name: 'access_token') String accessToken,@JsonKey(name: 'refresh_token') String refreshToken,@JsonKey(name: 'expiresIn') int expiresIn,@JsonKey(name: 'userid') String userid
+@JsonKey(readValue: _readAccessToken) String accessToken,@JsonKey(readValue: _readRefreshToken) String refreshToken,@JsonKey(readValue: _readSession) AuthSessionModel session
 });
 
 
-
+@override $AuthSessionModelCopyWith<$Res> get session;
 
 }
 /// @nodoc
@@ -272,18 +277,25 @@ class __$LoginResponseModelCopyWithImpl<$Res>
 
 /// Create a copy of LoginResponseModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? tokenType = null,Object? accessToken = null,Object? refreshToken = null,Object? expiresIn = null,Object? userid = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? accessToken = null,Object? refreshToken = null,Object? session = null,}) {
   return _then(_LoginResponseModel(
-tokenType: null == tokenType ? _self.tokenType : tokenType // ignore: cast_nullable_to_non_nullable
-as String,accessToken: null == accessToken ? _self.accessToken : accessToken // ignore: cast_nullable_to_non_nullable
+accessToken: null == accessToken ? _self.accessToken : accessToken // ignore: cast_nullable_to_non_nullable
 as String,refreshToken: null == refreshToken ? _self.refreshToken : refreshToken // ignore: cast_nullable_to_non_nullable
-as String,expiresIn: null == expiresIn ? _self.expiresIn : expiresIn // ignore: cast_nullable_to_non_nullable
-as int,userid: null == userid ? _self.userid : userid // ignore: cast_nullable_to_non_nullable
-as String,
+as String,session: null == session ? _self.session : session // ignore: cast_nullable_to_non_nullable
+as AuthSessionModel,
   ));
 }
 
-
+/// Create a copy of LoginResponseModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AuthSessionModelCopyWith<$Res> get session {
+  
+  return $AuthSessionModelCopyWith<$Res>(_self.session, (value) {
+    return _then(_self.copyWith(session: value));
+  });
+}
 }
 
 // dart format on

@@ -1,12 +1,11 @@
-import 'dart:convert';
-
 import 'package:office_hr/core/network/network_providers.dart';
+import 'package:office_hr/core/network/api_exception.dart';
 import 'package:office_hr/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:office_hr/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:office_hr/features/auth/domain/entities/auth_user.dart';
+import 'package:office_hr/features/auth/domain/entities/auth_session.dart';
 import 'package:office_hr/features/auth/domain/repositories/auth_repository.dart';
+import 'package:office_hr/features/auth/domain/usecases/get_session.dart';
 import 'package:office_hr/features/auth/domain/usecases/login_usecase.dart';
-import 'package:office_hr/features/user/presentation/providers/user_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_providers.g.dart';
@@ -32,44 +31,60 @@ LoginUsecase loginUsecase(Ref ref) {
   return LoginUsecase(repository);
 }
 
+@riverpod
+GetSessionUseCase getSessionUseCase(Ref ref) {
+  final repository = ref.watch(authRepositoryProvider);
+  return GetSessionUseCase(repository);
+}
+
 // ==================== State Management ====================
 
 @Riverpod(keepAlive: true)
 class CurrentUser extends _$CurrentUser {
-  static const _userKey = 'auth_user';
-
   @override
-  Future<AuthUser?> build() async {
-    final storage = ref.read(secureStorageProvider);
-    final raw = await storage.read(key: _userKey);
-    if (raw == null || raw.isEmpty) return null;
+  Future<AuthSession?> build() async => null;
 
+  Future<AuthSession> loadSession() async {
+    state = const AsyncValue.loading();
+    final getSessionUseCase = ref.read(getSessionUseCaseProvider);
     try {
-      final user = AuthUser.fromJson(jsonDecode(raw) as Map<String, dynamic>);
-      if (user.isTokenValid || user.hasRefreshToken) return user;
-      await storage.delete(key: _userKey);
-      return null;
-    } catch (_) {
-      await storage.delete(key: _userKey);
-      return null;
+      final session = await getSessionUseCase();
+      state = AsyncData(session);
+      return session;
+    } on ApiException catch (error) {
+      if (error.isUnauthorized) {
+        await logout();
+      }
+      rethrow;
     }
   }
 
-  Future<void> setUser(AuthUser user, {bool persist = true}) async {
-    final storage = ref.read(secureStorageProvider);
-    if (persist) {
-      await storage.write(key: _userKey, value: jsonEncode(user.toJson()));
-    } else {
-      await storage.delete(key: _userKey);
-    }
-    state = AsyncData(user);
+  void refresh() {
+    ref.invalidateSelf();
+  }
+
+  Future<void> setSession(AuthSession session) async {
+    state = AsyncData(session);
   }
 
   Future<void> clear() async {
-    final storage = ref.read(secureStorageProvider);
-    await storage.delete(key: _userKey);
     state = const AsyncData(null);
   }
+
+  Future<void> logout() async {
+    await clear();
+    await ref.read(authTokenProvider.notifier).setToken(null);
+    await ref.read(authRefreshTokenProvider.notifier).setToken(null);
+    await deleteStoredValue(
+      ref.read(secureStorageProvider),
+      companyIdStorageKey,
+    );
+  }
+}
+
+@riverpod
+Future<AuthSession> getSession(Ref ref) async {
+  return ref.read(currentUserProvider.notifier).loadSession();
 }
 
 @riverpod
@@ -89,19 +104,28 @@ class LoginNotifier extends _$LoginNotifier {
     final authRefreshTokenNotifier = ref.read(
       authRefreshTokenProvider.notifier,
     );
-    final userDetailsNotifier = ref.read(userDetailsProvider.notifier);
-    final shiftNotifier = ref.read(shiftProvider.notifier);
-    final branchNotifier = ref.read(branchProvider.notifier);
-
     final newState = await AsyncValue.guard(() async {
-      final user = await loginUsecase(username: username, password: password);
-      await currentUserNotifier.setUser(user, persist: true);
-      await authTokenNotifier.setToken(user.accessToken, persist: true);
-      await authRefreshTokenNotifier.setToken(user.refreshToken, persist: true);
-
-      await userDetailsNotifier.fetch();
-      await shiftNotifier.fetch();
-      await branchNotifier.fetch();
+      final authenticated = await loginUsecase(
+        username: username,
+        password: password,
+      );
+      await currentUserNotifier.setSession(authenticated.session);
+      await authTokenNotifier.setToken(
+        authenticated.accessToken,
+        persist: true,
+      );
+      await authRefreshTokenNotifier.setToken(
+        authenticated.refreshToken,
+        persist: true,
+      );
+      final storage = ref.read(secureStorageProvider);
+      final companyId = authenticated.session.activeCompany.id;
+      if (companyId.isNotEmpty) {
+        await writeStoredValue(storage, companyIdStorageKey, companyId);
+      } else {
+        await deleteStoredValue(storage, companyIdStorageKey);
+      }
+      ref.invalidate(getSessionProvider);
     });
 
     if (ref.mounted) {
@@ -110,33 +134,33 @@ class LoginNotifier extends _$LoginNotifier {
   }
 
   Future<void> logout() async {
-    await ref.read(currentUserProvider.notifier).clear();
-    await ref.read(authTokenProvider.notifier).setToken(null);
-    await ref.read(authRefreshTokenProvider.notifier).setToken(null);
-    state = const AsyncValue.data(null);
+    await ref.read(currentUserProvider.notifier).logout();
+    if (ref.mounted) {
+      state = const AsyncValue.data(null);
+    }
   }
 }
 
-@Riverpod(keepAlive: true)
+@riverpod
 class CompanySetupNotifier extends _$CompanySetupNotifier {
   static const _key = 'company_setup_completed';
 
   @override
   Future<bool> build() async {
     final storage = ref.read(secureStorageProvider);
-    final val = await storage.read(key: _key);
+    final val = await readStoredValue(storage, _key);
     return val == 'true';
   }
 
   Future<void> completeSetup() async {
     final storage = ref.read(secureStorageProvider);
-    await storage.write(key: _key, value: 'true');
+    await writeStoredValue(storage, _key, 'true');
     state = const AsyncData(true);
   }
 }
 
 @riverpod
 bool isAuthenticated(Ref ref) {
-  final user = ref.watch(currentUserProvider).value;
-  return user != null && (user.isTokenValid || user.hasRefreshToken);
+  final token = ref.watch(authTokenProvider).value;
+  return token != null && token.isNotEmpty;
 }

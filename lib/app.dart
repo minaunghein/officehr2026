@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import 'package:office_hr/core/theme/app_theme.dart';
 import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/core/theme/theme_notifier.dart';

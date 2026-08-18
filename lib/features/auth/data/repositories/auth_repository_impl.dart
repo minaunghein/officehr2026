@@ -1,15 +1,15 @@
 import 'package:office_hr/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:office_hr/features/auth/domain/entities/auth_user.dart';
+import 'package:office_hr/features/auth/domain/entities/auth_session.dart';
+import 'package:office_hr/features/auth/domain/entities/login_response.dart';
 import 'package:office_hr/features/auth/domain/repositories/auth_repository.dart';
 
-/// Implementation of [AuthRepository]
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource _remoteDataSource;
 
   AuthRepositoryImpl(this._remoteDataSource);
 
   @override
-  Future<AuthUser> login({
+  Future<LoginResponse> login({
     required String username,
     required String password,
   }) async {
@@ -18,13 +18,12 @@ class AuthRepositoryImpl implements AuthRepository {
       password: password,
     );
 
-    // Convert response to domain entity
-    return AuthUser(
-      userId: response.userid,
-      accessToken: response.accessToken,
-      refreshToken: response.refreshToken,
-      tokenType: response.tokenType,
-      expiresAt: DateTime.now().add(Duration(seconds: response.expiresIn)),
-    );
+    return response.toEntity();
+  }
+
+  @override
+  Future<AuthSession> getSession() async {
+    final response = await _remoteDataSource.getSession();
+    return response.toEntity();
   }
 }

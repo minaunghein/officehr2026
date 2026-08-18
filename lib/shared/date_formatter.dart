@@ -1,4 +1,4 @@
-import 'package:office_hr/features/user/domain/entities/shift.dart';
+import 'package:office_hr/features/auth/domain/entities/user_entities/shift/shift.dart';
 
 String formatDateTime(DateTime dt) {
   final months = [
@@ -77,26 +77,54 @@ String formatDateTimeWithSeconds(DateTime dt) {
 
 String formatShiftWorkHours(Shift? shift) {
   if (shift == null) return '--:--';
+
   final todayWeekday = DateTime.now().weekday;
-  final todayDayId = (todayWeekday % 7) + 1;
-  final todayWorkingDay = shift.workingDays.firstWhere(
-    (wd) => wd.dayId == todayDayId,
-    orElse: () => shift.workingDays.first,
-  );
+  final todayWorkingDay = shift.days.where((day) {
+    return day.dayNo == todayWeekday ||
+        day.day.toLowerCase() == _weekdayName(todayWeekday);
+  }).firstOrNull;
 
-  if (todayWorkingDay.isOffDay) {
-    return 'Off Day';
+  if (todayWorkingDay != null) {
+    if (todayWorkingDay.isHalfDay) {
+      return 'Half Day';
+    }
+
+    if (todayWorkingDay.isOffDay || !todayWorkingDay.isWorkingDay) {
+      return 'Off Day';
+    }
+
+    final start = todayWorkingDay.workStart ?? shift.defaultStart;
+    final end = todayWorkingDay.workEnd ?? shift.defaultEnd;
+    return '${_formatShiftTime(start)} - ${_formatShiftTime(end)}${todayWorkingDay.isHalfDay ? ' (Half Day)' : ''}';
   }
 
-  String formatIntTime(int timeInt) {
-    final hour = timeInt ~/ 100;
-    final minute = timeInt % 100;
-    final hour12 = hour == 0 ? 12 : (hour > 12 ? hour - 12 : hour);
-    final amPm = hour < 12 ? 'AM' : 'PM';
-    final mm = minute.toString().padLeft(2, '0');
-    final hh = hour12.toString().padLeft(2, '0');
-    return '$hh:$mm $amPm';
-  }
+  return '${_formatShiftTime(shift.defaultStart)} - ${_formatShiftTime(shift.defaultEnd)}';
+}
 
-  return '${formatIntTime(todayWorkingDay.workStart)} - ${formatIntTime(todayWorkingDay.workEnd)}${todayWorkingDay.isHalfDay ? ' (Half Day)' : ''}';
+String _formatShiftTime(String time) {
+  final parts = time.trim().split(':');
+  if (parts.length < 2) return '--:--';
+
+  final hour = int.tryParse(parts[0]);
+  final minute = int.tryParse(parts[1]);
+  if (hour == null || minute == null) return '--:--';
+
+  final hour12 = hour == 0 ? 12 : (hour > 12 ? hour - 12 : hour);
+  final amPm = hour < 12 ? 'AM' : 'PM';
+  final hh = hour12.toString().padLeft(2, '0');
+  final mm = minute.toString().padLeft(2, '0');
+  return '$hh:$mm $amPm';
+}
+
+String _weekdayName(int weekday) {
+  return switch (weekday) {
+    DateTime.monday => 'monday',
+    DateTime.tuesday => 'tuesday',
+    DateTime.wednesday => 'wednesday',
+    DateTime.thursday => 'thursday',
+    DateTime.friday => 'friday',
+    DateTime.saturday => 'saturday',
+    DateTime.sunday => 'sunday',
+    _ => '',
+  };
 }

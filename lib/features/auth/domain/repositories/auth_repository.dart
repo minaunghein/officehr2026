@@ -1,5 +1,11 @@
-import 'package:office_hr/features/auth/domain/entities/auth_user.dart';
+import 'package:office_hr/features/auth/domain/entities/auth_session.dart';
+import 'package:office_hr/features/auth/domain/entities/login_response.dart';
 
 abstract class AuthRepository {
-  Future<AuthUser> login({required String username, required String password});
+  Future<LoginResponse> login({
+    required String username,
+    required String password,
+  });
+
+  Future<AuthSession> getSession();
 }

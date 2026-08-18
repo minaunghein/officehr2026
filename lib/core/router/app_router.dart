@@ -1,13 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:office_hr/core/services/dialog_service.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
-import 'package:office_hr/features/dashboard/presentation/screens/dashboard.dart';
-import 'package:office_hr/features/payslip/presentation/screens/payslip_screen.dart';
+import 'package:office_hr/features/dashboard/presentation/views/dashboard.dart';
 import 'package:office_hr/features/public_holiday/presentation/screens/public_holiday_screen.dart';
-import 'package:office_hr/features/user/presentation/screens/company_screen.dart';
-import 'package:office_hr/features/user/presentation/screens/change_password_screen.dart';
-import 'package:office_hr/features/user/presentation/screens/leave_screen.dart';
-import 'package:office_hr/features/user/presentation/screens/profile_screen.dart';
 import 'package:office_hr/features/splash/presentation/screens/splash_screen.dart';
 import 'package:office_hr/features/auth/presentation/screens/company_setup_screen.dart';
 import 'package:office_hr/features/auth/presentation/screens/login_screen.dart';
@@ -28,6 +24,7 @@ abstract final class AppRoutes {
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
+    navigatorKey: DialogService.navigatorKey,
     initialLocation: AppRoutes.splash,
     redirect: (context, state) {
       final isAuthenticated = ref.read(isAuthenticatedProvider);
@@ -53,27 +50,27 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: AppRoutes.login, builder: (_, _) => const LoginScreen()),
       GoRoute(path: AppRoutes.dashboard, builder: (_, _) => Dashboard()),
-      GoRoute(
-        path: AppRoutes.profile,
-        builder: (_, _) => const ProfileScreen(),
-      ),
-      GoRoute(
-        path: AppRoutes.payslip,
-        builder: (_, _) => const PayslipScreen(),
-      ),
+      // GoRoute(
+      //   path: AppRoutes.profile,
+      //   builder: (_, _) => const ProfileScreen(),
+      // ),
+      // GoRoute(
+      //   path: AppRoutes.payslip,
+      //   builder: (_, _) => const PayslipScreen(),
+      // ),
       GoRoute(
         path: AppRoutes.publicHoliday,
         builder: (_, _) => const PublicHolidayScreen(),
       ),
-      GoRoute(path: AppRoutes.leave, builder: (_, _) => const LeaveScreen()),
-      GoRoute(
-        path: AppRoutes.company,
-        builder: (_, _) => const CompanyScreen(),
-      ),
-      GoRoute(
-        path: AppRoutes.changePassword,
-        builder: (_, _) => const ChangePasswordScreen(),
-      ),
+      // GoRoute(path: AppRoutes.leave, builder: (_, _) => const LeaveScreen()),
+      // GoRoute(
+      //   path: AppRoutes.company,
+      //   builder: (_, _) => const CompanyScreen(),
+      // ),
+      // GoRoute(
+      //   path: AppRoutes.changePassword,
+      //   builder: (_, _) => const ChangePasswordScreen(),
+      // ),
     ],
   );
 
