@@ -6,10 +6,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/features/home/presentation/providers/location_provider.dart';
-import 'package:office_hr/features/home/presentation/widgets/map_location_status.dart';
-import 'package:office_hr/features/home/presentation/widgets/map_pin.dart';
-import 'package:office_hr/features/home/presentation/widgets/map_refresh_button.dart';
-import 'package:office_hr/features/home/presentation/widgets/map_shift_title.dart';
+import 'package:office_hr/features/home/presentation/widgets/map_app_bar/map_location_status.dart';
+import 'package:office_hr/features/home/presentation/widgets/map_app_bar/map_pin.dart';
+import 'package:office_hr/features/home/presentation/widgets/map_app_bar/map_refresh_button.dart';
+import 'package:office_hr/features/home/presentation/widgets/map_app_bar/map_shift_title.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MapSliverAppBar extends HookConsumerWidget {

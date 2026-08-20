@@ -1,4 +1,5 @@
 import 'package:office_hr/features/auth/domain/entities/user_entities/shift/shift.dart';
+import 'package:office_hr/features/auth/domain/entities/user_entities/shift_day/shift_day.dart';
 
 String formatDateTime(DateTime dt) {
   final months = [
@@ -127,4 +128,121 @@ String _weekdayName(int weekday) {
     DateTime.sunday => 'sunday',
     _ => '',
   };
+}
+
+DateTime? parseAttendanceTime(String? value) {
+  if (value == null || value.trim().isEmpty) return null;
+
+  final parsedDateTime = DateTime.tryParse(value);
+  if (parsedDateTime != null) return parsedDateTime.toLocal();
+
+  final parts = value.trim().split(':');
+  if (parts.length < 2) return null;
+
+  final hour = int.tryParse(parts[0]);
+  final minute = int.tryParse(parts[1]);
+  final second = parts.length > 2 ? int.tryParse(parts[2]) ?? 0 : 0;
+  if (hour == null || minute == null) return null;
+
+  final now = DateTime.now();
+  return DateTime(now.year, now.month, now.day, hour, minute, second);
+}
+
+String formatAttendanceTime(String? value) {
+  final time = parseAttendanceTime(value);
+  return time == null ? '--:--' : formatTime(time);
+}
+
+String formatDurationText(Duration duration) {
+  final hours = duration.inHours;
+  final minutes = duration.inMinutes.remainder(60);
+
+  if (hours > 0 && minutes > 0) return '${hours}h ${minutes}m';
+  if (hours > 0) return '${hours}h';
+  return '${minutes}m';
+}
+
+ShiftDay? getShiftDayForDate(Shift shift, DateTime date) {
+  return shift.days.where((day) {
+    return day.dayNo == date.weekday ||
+        day.day.toLowerCase() == _weekdayName(date.weekday);
+  }).firstOrNull;
+}
+
+DateTime? parseTimeOnDate(String? value, DateTime date) {
+  if (value == null || value.trim().isEmpty) return null;
+
+  final parts = value.trim().split(':');
+  if (parts.length < 2) return null;
+
+  final hour = int.tryParse(parts[0]);
+  final minute = int.tryParse(parts[1]);
+  final second = parts.length > 2 ? int.tryParse(parts[2]) ?? 0 : 0;
+  if (hour == null || minute == null) return null;
+
+  return DateTime(date.year, date.month, date.day, hour, minute, second);
+}
+
+String weekdayName(int weekday) {
+  return switch (weekday) {
+    DateTime.monday => 'monday',
+    DateTime.tuesday => 'tuesday',
+    DateTime.wednesday => 'wednesday',
+    DateTime.thursday => 'thursday',
+    DateTime.friday => 'friday',
+    DateTime.saturday => 'saturday',
+    DateTime.sunday => 'sunday',
+    _ => '',
+  };
+}
+
+DateTime? parseClockTime(String? value) {
+  if (value == null || value.trim().isEmpty) return null;
+
+  final parsedDateTime = DateTime.tryParse(value);
+  if (parsedDateTime != null) return parsedDateTime.toLocal();
+
+  final parts = value.trim().split(':');
+  if (parts.length < 2) return null;
+
+  final hour = int.tryParse(parts[0]);
+  final minute = int.tryParse(parts[1]);
+  final second = parts.length > 2 ? int.tryParse(parts[2]) ?? 0 : 0;
+  if (hour == null || minute == null) return null;
+
+  final now = DateTime.now();
+  return DateTime(now.year, now.month, now.day, hour, minute, second);
+}
+
+DateTime? getTodayShiftStart(Shift? shift) {
+  if (shift == null) return null;
+
+  final shiftDay = getTodayShiftDay(shift);
+  if (shiftDay != null && (!shiftDay.isWorkingDay || shiftDay.isOffDay)) {
+    return null;
+  }
+
+  return parseShiftTime(shiftDay?.workStart ?? shift.defaultStart);
+}
+
+ShiftDay? getTodayShiftDay(Shift shift) {
+  final todayWeekday = DateTime.now().weekday;
+  return shift.days.where((day) {
+    return day.dayNo == todayWeekday ||
+        day.day.toLowerCase() == _weekdayName(todayWeekday);
+  }).firstOrNull;
+}
+
+DateTime? parseShiftTime(String? value) {
+  if (value == null || value.trim().isEmpty) return null;
+
+  final parts = value.trim().split(':');
+  if (parts.length < 2) return null;
+
+  final hour = int.tryParse(parts[0]);
+  final minute = int.tryParse(parts[1]);
+  if (hour == null || minute == null) return null;
+
+  final now = DateTime.now();
+  return DateTime(now.year, now.month, now.day, hour, minute);
 }

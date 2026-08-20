@@ -1,5 +1,4 @@
 import 'package:office_hr/core/network/network_providers.dart';
-import 'package:office_hr/core/network/api_exception.dart';
 import 'package:office_hr/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:office_hr/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:office_hr/features/auth/domain/entities/auth_session.dart';
@@ -51,10 +50,8 @@ class CurrentUser extends _$CurrentUser {
       final session = await getSessionUseCase();
       state = AsyncData(session);
       return session;
-    } on ApiException catch (error) {
-      if (error.isUnauthorized) {
-        await logout();
-      }
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
       rethrow;
     }
   }

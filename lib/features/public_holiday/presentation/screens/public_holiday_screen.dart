@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
+import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/features/public_holiday/domain/entities/public_holiday.dart';
 import 'package:office_hr/features/public_holiday/presentation/providers/public_holiday_providers.dart';
 
@@ -75,7 +76,7 @@ class PublicHolidayScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  error.toString(),
+                  getUserFriendlyError(error),
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.6),

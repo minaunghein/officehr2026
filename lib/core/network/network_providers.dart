@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -8,6 +6,9 @@ import 'package:office_hr/core/config/app_config.dart';
 import 'package:office_hr/core/network/api_service.dart';
 import 'package:office_hr/core/network/dio_api_service.dart';
 import 'package:office_hr/core/network/interceptors/api_logging_interceptor.dart';
+import 'package:office_hr/core/network/interceptors/retry_interceptor.dart';
+import 'package:office_hr/core/services/app_logger.dart';
+import 'package:office_hr/features/auth/data/models/login_response_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,7 +16,6 @@ part 'network_providers.g.dart';
 
 const String _authTokenKey = 'auth_token';
 const String _refreshTokenKey = 'refresh_token';
-const String _authUserKey = 'auth_user';
 const String companyIdStorageKey = 'company_id';
 
 @riverpod
@@ -87,9 +87,7 @@ class AuthRefreshToken extends _$AuthRefreshToken {
 @riverpod
 Dio dio(Ref ref) {
   final config = ref.watch(apiConfigProvider);
-  final tokenAsync = ref.watch(authTokenProvider);
-  final token = tokenAsync.value;
-  final storage = ref.watch(secureStorageProvider);
+  final storage = ref.read(secureStorageProvider);
 
   final client = Dio(
     BaseOptions(
@@ -97,10 +95,9 @@ Dio dio(Ref ref) {
       connectTimeout: config.connectTimeout,
       receiveTimeout: config.receiveTimeout,
       sendTimeout: config.sendTimeout,
-      headers: {
+      headers: const {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        if (token != null && token.isNotEmpty) 'Authorization': 'Bearer $token',
       },
       responseType: ResponseType.json,
       validateStatus: _validateStatus,
@@ -112,6 +109,7 @@ Dio dio(Ref ref) {
     _RefreshTokenInterceptor(
       client,
       storage,
+      ref: ref,
 
       baseOptions: BaseOptions(
         baseUrl: config.baseUrl,
@@ -129,6 +127,8 @@ Dio dio(Ref ref) {
     ),
   );
 
+  client.interceptors.add(RetryInterceptor(dio: client));
+
   if (_shouldLogRequests()) {
     client.interceptors.add(const ApiLoggingInterceptor());
   }
@@ -140,11 +140,13 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
   _RefreshTokenInterceptor(
     this._client,
     this._storage, {
+    required this._ref,
     required BaseOptions baseOptions,
   }) : _refreshClient = Dio(baseOptions);
 
   final Dio _client;
   final FlutterSecureStorage _storage;
+  final Ref _ref;
   final Dio _refreshClient;
 
   @override
@@ -152,6 +154,10 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
+    final accessToken = await readStoredValue(_storage, _authTokenKey);
+    if (accessToken != null && accessToken.isNotEmpty) {
+      options.headers['Authorization'] = 'Bearer $accessToken';
+    }
     final companyId = await readStoredValue(_storage, companyIdStorageKey);
     if (companyId != null && companyId.isNotEmpty) {
       options.headers['X-Company-Id'] = companyId;
@@ -178,14 +184,27 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
       return;
     }
 
+    AppLogger.w(
+      'Received 401 for ${requestOptions.method} ${requestOptions.uri}. '
+      'Starting refresh-token flow.',
+      tag: 'AuthRefresh',
+    );
     final refreshToken = await readStoredValue(_storage, _refreshTokenKey);
     if (refreshToken == null || refreshToken.isEmpty) {
+      AppLogger.w(
+        'Refresh skipped: no refresh token is stored.',
+        tag: 'AuthRefresh',
+      );
       handler.next(err);
       return;
     }
 
     try {
       final companyId = await readStoredValue(_storage, companyIdStorageKey);
+      AppLogger.d(
+        'Calling /api/v1/auth/refresh with refresh token ${_maskToken(refreshToken)}.',
+        tag: 'AuthRefresh',
+      );
       final refreshResponse = await _refreshClient.post<dynamic>(
         '/api/v1/auth/refresh',
         data: {'refreshToken': refreshToken},
@@ -196,64 +215,86 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
           },
         ),
       );
+      AppLogger.d(
+        'Refresh endpoint returned HTTP ${refreshResponse.statusCode}.',
+        tag: 'AuthRefresh',
+      );
       final responseData = refreshResponse.data;
       if (responseData is! Map<String, dynamic>) {
+        AppLogger.e(
+          'Refresh response body is not a JSON object.',
+          tag: 'AuthRefresh',
+        );
         handler.next(err);
         return;
       }
-      final data = responseData['data'] is Map<String, dynamic>
-          ? responseData['data'] as Map<String, dynamic>
-          : responseData;
-
-      final accessToken =
-          (data['accessToken'] ?? data['access_token']) as String?;
-      if (accessToken == null || accessToken.isEmpty) {
+      final authenticated = LoginResponseModel.fromJson(
+        responseData,
+      ).toEntity();
+      final accessToken = authenticated.accessToken;
+      if (accessToken.isEmpty) {
+        AppLogger.e(
+          'Refresh response did not contain an access token.',
+          tag: 'AuthRefresh',
+        );
         handler.next(err);
         return;
       }
 
-      final newRefreshToken =
-          (data['refreshToken'] ?? data['refresh_token']) as String? ??
-          refreshToken;
+      final newRefreshToken = authenticated.refreshToken.isNotEmpty
+          ? authenticated.refreshToken
+          : refreshToken;
       await writeStoredValue(_storage, _authTokenKey, accessToken);
       await writeStoredValue(_storage, _refreshTokenKey, newRefreshToken);
-      await _updateStoredUser(data, accessToken, newRefreshToken);
-      _client.options.headers['Authorization'] = 'Bearer $accessToken';
-      if (companyId != null && companyId.isNotEmpty) {
-        _client.options.headers['X-Company-Id'] = companyId;
+      await _ref.read(authTokenProvider.notifier).setToken(accessToken);
+      await _ref
+          .read(authRefreshTokenProvider.notifier)
+          .setToken(newRefreshToken);
+      final activeCompanyId = authenticated.session.activeCompany.id;
+      if (activeCompanyId.isNotEmpty) {
+        await writeStoredValue(_storage, companyIdStorageKey, activeCompanyId);
       }
+      _client.options.headers['Authorization'] = 'Bearer $accessToken';
+      if (activeCompanyId.isNotEmpty) {
+        _client.options.headers['X-Company-Id'] = activeCompanyId;
+      }
+
+      AppLogger.s(
+        'Refresh token flow succeeded. Retrying the original request once.',
+        tag: 'AuthRefresh',
+      );
 
       final retryOptions = await _copyRequestOptions(
         requestOptions,
         accessToken,
       );
       final retryResponse = await _client.fetch<dynamic>(retryOptions);
+      AppLogger.s(
+        'Retried ${requestOptions.method} ${requestOptions.uri} successfully.',
+        tag: 'AuthRefresh',
+      );
       handler.resolve(retryResponse);
-    } catch (_) {
+    } catch (error, stackTrace) {
+      if (error is DioException) {
+        AppLogger.e(
+          'Refresh endpoint rejected the request with HTTP '
+          '${error.response?.statusCode}. Body: ${error.response?.data}',
+          tag: 'AuthRefresh',
+        );
+      }
+      AppLogger.e(
+        'Refresh token flow failed. Returning the original 401 response.',
+        tag: 'AuthRefresh',
+        error: error,
+        stack: stackTrace,
+      );
       handler.next(err);
     }
   }
 
-  Future<void> _updateStoredUser(
-    Map<String, dynamic> tokenData,
-    String accessToken,
-    String refreshToken,
-  ) async {
-    final rawUser = await readStoredValue(_storage, _authUserKey);
-    if (rawUser == null || rawUser.isEmpty) return;
-
-    final decoded = jsonDecode(rawUser);
-    if (decoded is! Map<String, dynamic>) return;
-
-    final expiresIn = tokenData['expiresIn'] as int? ?? 0;
-    decoded['accessToken'] = accessToken;
-    decoded['refreshToken'] = refreshToken;
-    decoded['tokenType'] = tokenData['token_type'] as String? ?? 'Bearer';
-    decoded['expiresAt'] = DateTime.now()
-        .add(Duration(seconds: expiresIn))
-        .toIso8601String();
-
-    await writeStoredValue(_storage, _authUserKey, jsonEncode(decoded));
+  String _maskToken(String token) {
+    if (token.length <= 8) return '********';
+    return '${token.substring(0, 4)}...${token.substring(token.length - 4)}';
   }
 
   Future<RequestOptions> _copyRequestOptions(
