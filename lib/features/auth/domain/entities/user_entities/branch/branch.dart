@@ -14,5 +14,8 @@ abstract class Branch with _$Branch {
     required bool isActive,
     required bool deleted,
     String? deletedAt,
+    String? createdAt,
+    String? updatedAt,
+    int? version,
   }) = _Branch;
 }

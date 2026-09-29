@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/features/home/data/models/attendance_punch_model.dart';
 import 'package:office_hr/features/home/data/models/attendance_record_model.dart';
 import 'package:office_hr/features/home/domain/entities/today_attendance.dart';
@@ -11,7 +12,7 @@ abstract class TodayAttendanceModel with _$TodayAttendanceModel {
   const TodayAttendanceModel._();
 
   const factory TodayAttendanceModel({
-    DateTime? date,
+    @JsonKey(fromJson: parseLocalDateTime) DateTime? date,
     @JsonKey(name: 'clocked_in') @Default(false) bool clockedIn,
     @JsonKey(name: 'break_in_progress') @Default(false) bool breakInProgress,
     @JsonKey(name: 'last_clock_in') String? lastClockIn,
@@ -35,12 +36,12 @@ abstract class TodayAttendanceModel with _$TodayAttendanceModel {
     date: date,
     clockedIn: clockedIn,
     breakInProgress: breakInProgress,
-    lastClockIn: lastClockIn,
-    lastClockOut: lastClockOut,
-    clockIn: clockIn,
-    clockOut: clockOut,
-    breakStart: breakStart,
-    breakEnd: breakEnd,
+    lastClockIn: normalizeLocalDateTimeString(lastClockIn),
+    lastClockOut: normalizeLocalDateTimeString(lastClockOut),
+    clockIn: normalizeLocalDateTimeString(clockIn),
+    clockOut: normalizeLocalDateTimeString(clockOut),
+    breakStart: normalizeLocalDateTimeString(breakStart),
+    breakEnd: normalizeLocalDateTimeString(breakEnd),
     workDuration: workDuration,
     breakDuration: breakDuration,
     status: status,

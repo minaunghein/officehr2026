@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_record.dart';
 
 part 'attendance_record_model.freezed.dart';
@@ -12,7 +13,7 @@ abstract class AttendanceRecordModel with _$AttendanceRecordModel {
     @JsonKey(readValue: _readId) @Default('') String id,
     @JsonKey(name: 'employee_id') @Default('') String employeeId,
     @JsonKey(name: 'company_id') @Default('') String companyId,
-    DateTime? date,
+    @JsonKey(fromJson: parseLocalDateTime) DateTime? date,
     @JsonKey(name: 'shift_id') @Default('') String shiftId,
     AttendanceTimeRangeModel? scheduled,
     AttendanceTimeRangeModel? actual,
@@ -29,8 +30,8 @@ abstract class AttendanceRecordModel with _$AttendanceRecordModel {
     @JsonKey(name: 'is_half_day') @Default(false) bool isHalfDay,
     @JsonKey(name: 'edited_by') String? editedBy,
     @Default(false) bool deleted,
-    DateTime? createdAt,
-    DateTime? updatedAt,
+    @JsonKey(fromJson: parseLocalDateTime) DateTime? createdAt,
+    @JsonKey(fromJson: parseLocalDateTime) DateTime? updatedAt,
     @JsonKey(name: '__v') int? version,
   }) = _AttendanceRecordModel;
 

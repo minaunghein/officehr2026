@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AttendancePunchModel {
 
-@JsonKey(readValue: _readId) String get id;@JsonKey(name: 'employee_id') String get employeeId;@JsonKey(name: 'company_id') String get companyId; DateTime? get date;@JsonKey(name: 'punch_time') String get punchTime;@JsonKey(name: 'punch_type') String get punchType; AttendanceLocationModel? get location; AttendanceDeviceModel? get device;@JsonKey(name: 'is_manual') bool get isManual; bool get deleted; DateTime? get createdAt; DateTime? get updatedAt;@JsonKey(name: '__v') int? get version;
+@JsonKey(readValue: _readId) String get id;@JsonKey(name: 'employee_id') String get employeeId;@JsonKey(name: 'company_id') String get companyId;@JsonKey(fromJson: parseLocalDateTime) DateTime? get date;@JsonKey(name: 'punch_time') String get punchTime;@JsonKey(name: 'punch_type') String get punchType; AttendanceLocationModel? get location; AttendanceDeviceModel? get device;@JsonKey(name: 'is_manual') bool get isManual; bool get deleted;@JsonKey(fromJson: parseLocalDateTime) DateTime? get createdAt;@JsonKey(fromJson: parseLocalDateTime) DateTime? get updatedAt;@JsonKey(name: '__v') int? get version;
 /// Create a copy of AttendancePunchModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $AttendancePunchModelCopyWith<$Res>  {
   factory $AttendancePunchModelCopyWith(AttendancePunchModel value, $Res Function(AttendancePunchModel) _then) = _$AttendancePunchModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(readValue: _readId) String id,@JsonKey(name: 'employee_id') String employeeId,@JsonKey(name: 'company_id') String companyId, DateTime? date,@JsonKey(name: 'punch_time') String punchTime,@JsonKey(name: 'punch_type') String punchType, AttendanceLocationModel? location, AttendanceDeviceModel? device,@JsonKey(name: 'is_manual') bool isManual, bool deleted, DateTime? createdAt, DateTime? updatedAt,@JsonKey(name: '__v') int? version
+@JsonKey(readValue: _readId) String id,@JsonKey(name: 'employee_id') String employeeId,@JsonKey(name: 'company_id') String companyId,@JsonKey(fromJson: parseLocalDateTime) DateTime? date,@JsonKey(name: 'punch_time') String punchTime,@JsonKey(name: 'punch_type') String punchType, AttendanceLocationModel? location, AttendanceDeviceModel? device,@JsonKey(name: 'is_manual') bool isManual, bool deleted,@JsonKey(fromJson: parseLocalDateTime) DateTime? createdAt,@JsonKey(fromJson: parseLocalDateTime) DateTime? updatedAt,@JsonKey(name: '__v') int? version
 });
 
 
@@ -189,7 +189,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'employee_id')  String employeeId, @JsonKey(name: 'company_id')  String companyId,  DateTime? date, @JsonKey(name: 'punch_time')  String punchTime, @JsonKey(name: 'punch_type')  String punchType,  AttendanceLocationModel? location,  AttendanceDeviceModel? device, @JsonKey(name: 'is_manual')  bool isManual,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'employee_id')  String employeeId, @JsonKey(name: 'company_id')  String companyId, @JsonKey(fromJson: parseLocalDateTime)  DateTime? date, @JsonKey(name: 'punch_time')  String punchTime, @JsonKey(name: 'punch_type')  String punchType,  AttendanceLocationModel? location,  AttendanceDeviceModel? device, @JsonKey(name: 'is_manual')  bool isManual,  bool deleted, @JsonKey(fromJson: parseLocalDateTime)  DateTime? createdAt, @JsonKey(fromJson: parseLocalDateTime)  DateTime? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AttendancePunchModel() when $default != null:
 return $default(_that.id,_that.employeeId,_that.companyId,_that.date,_that.punchTime,_that.punchType,_that.location,_that.device,_that.isManual,_that.deleted,_that.createdAt,_that.updatedAt,_that.version);case _:
@@ -210,7 +210,7 @@ return $default(_that.id,_that.employeeId,_that.companyId,_that.date,_that.punch
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'employee_id')  String employeeId, @JsonKey(name: 'company_id')  String companyId,  DateTime? date, @JsonKey(name: 'punch_time')  String punchTime, @JsonKey(name: 'punch_type')  String punchType,  AttendanceLocationModel? location,  AttendanceDeviceModel? device, @JsonKey(name: 'is_manual')  bool isManual,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: '__v')  int? version)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'employee_id')  String employeeId, @JsonKey(name: 'company_id')  String companyId, @JsonKey(fromJson: parseLocalDateTime)  DateTime? date, @JsonKey(name: 'punch_time')  String punchTime, @JsonKey(name: 'punch_type')  String punchType,  AttendanceLocationModel? location,  AttendanceDeviceModel? device, @JsonKey(name: 'is_manual')  bool isManual,  bool deleted, @JsonKey(fromJson: parseLocalDateTime)  DateTime? createdAt, @JsonKey(fromJson: parseLocalDateTime)  DateTime? updatedAt, @JsonKey(name: '__v')  int? version)  $default,) {final _that = this;
 switch (_that) {
 case _AttendancePunchModel():
 return $default(_that.id,_that.employeeId,_that.companyId,_that.date,_that.punchTime,_that.punchType,_that.location,_that.device,_that.isManual,_that.deleted,_that.createdAt,_that.updatedAt,_that.version);case _:
@@ -230,7 +230,7 @@ return $default(_that.id,_that.employeeId,_that.companyId,_that.date,_that.punch
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'employee_id')  String employeeId, @JsonKey(name: 'company_id')  String companyId,  DateTime? date, @JsonKey(name: 'punch_time')  String punchTime, @JsonKey(name: 'punch_type')  String punchType,  AttendanceLocationModel? location,  AttendanceDeviceModel? device, @JsonKey(name: 'is_manual')  bool isManual,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'employee_id')  String employeeId, @JsonKey(name: 'company_id')  String companyId, @JsonKey(fromJson: parseLocalDateTime)  DateTime? date, @JsonKey(name: 'punch_time')  String punchTime, @JsonKey(name: 'punch_type')  String punchType,  AttendanceLocationModel? location,  AttendanceDeviceModel? device, @JsonKey(name: 'is_manual')  bool isManual,  bool deleted, @JsonKey(fromJson: parseLocalDateTime)  DateTime? createdAt, @JsonKey(fromJson: parseLocalDateTime)  DateTime? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,) {final _that = this;
 switch (_that) {
 case _AttendancePunchModel() when $default != null:
 return $default(_that.id,_that.employeeId,_that.companyId,_that.date,_that.punchTime,_that.punchType,_that.location,_that.device,_that.isManual,_that.deleted,_that.createdAt,_that.updatedAt,_that.version);case _:
@@ -245,21 +245,21 @@ return $default(_that.id,_that.employeeId,_that.companyId,_that.date,_that.punch
 @JsonSerializable()
 
 class _AttendancePunchModel extends AttendancePunchModel {
-  const _AttendancePunchModel({@JsonKey(readValue: _readId) this.id = '', @JsonKey(name: 'employee_id') this.employeeId = '', @JsonKey(name: 'company_id') this.companyId = '', this.date, @JsonKey(name: 'punch_time') this.punchTime = '', @JsonKey(name: 'punch_type') this.punchType = '', this.location, this.device, @JsonKey(name: 'is_manual') this.isManual = false, this.deleted = false, this.createdAt, this.updatedAt, @JsonKey(name: '__v') this.version}): super._();
+  const _AttendancePunchModel({@JsonKey(readValue: _readId) this.id = '', @JsonKey(name: 'employee_id') this.employeeId = '', @JsonKey(name: 'company_id') this.companyId = '', @JsonKey(fromJson: parseLocalDateTime) this.date, @JsonKey(name: 'punch_time') this.punchTime = '', @JsonKey(name: 'punch_type') this.punchType = '', this.location, this.device, @JsonKey(name: 'is_manual') this.isManual = false, this.deleted = false, @JsonKey(fromJson: parseLocalDateTime) this.createdAt, @JsonKey(fromJson: parseLocalDateTime) this.updatedAt, @JsonKey(name: '__v') this.version}): super._();
   factory _AttendancePunchModel.fromJson(Map<String, dynamic> json) => _$AttendancePunchModelFromJson(json);
 
 @override@JsonKey(readValue: _readId) final  String id;
 @override@JsonKey(name: 'employee_id') final  String employeeId;
 @override@JsonKey(name: 'company_id') final  String companyId;
-@override final  DateTime? date;
+@override@JsonKey(fromJson: parseLocalDateTime) final  DateTime? date;
 @override@JsonKey(name: 'punch_time') final  String punchTime;
 @override@JsonKey(name: 'punch_type') final  String punchType;
 @override final  AttendanceLocationModel? location;
 @override final  AttendanceDeviceModel? device;
 @override@JsonKey(name: 'is_manual') final  bool isManual;
 @override@JsonKey() final  bool deleted;
-@override final  DateTime? createdAt;
-@override final  DateTime? updatedAt;
+@override@JsonKey(fromJson: parseLocalDateTime) final  DateTime? createdAt;
+@override@JsonKey(fromJson: parseLocalDateTime) final  DateTime? updatedAt;
 @override@JsonKey(name: '__v') final  int? version;
 
 /// Create a copy of AttendancePunchModel
@@ -295,7 +295,7 @@ abstract mixin class _$AttendancePunchModelCopyWith<$Res> implements $Attendance
   factory _$AttendancePunchModelCopyWith(_AttendancePunchModel value, $Res Function(_AttendancePunchModel) _then) = __$AttendancePunchModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(readValue: _readId) String id,@JsonKey(name: 'employee_id') String employeeId,@JsonKey(name: 'company_id') String companyId, DateTime? date,@JsonKey(name: 'punch_time') String punchTime,@JsonKey(name: 'punch_type') String punchType, AttendanceLocationModel? location, AttendanceDeviceModel? device,@JsonKey(name: 'is_manual') bool isManual, bool deleted, DateTime? createdAt, DateTime? updatedAt,@JsonKey(name: '__v') int? version
+@JsonKey(readValue: _readId) String id,@JsonKey(name: 'employee_id') String employeeId,@JsonKey(name: 'company_id') String companyId,@JsonKey(fromJson: parseLocalDateTime) DateTime? date,@JsonKey(name: 'punch_time') String punchTime,@JsonKey(name: 'punch_type') String punchType, AttendanceLocationModel? location, AttendanceDeviceModel? device,@JsonKey(name: 'is_manual') bool isManual, bool deleted,@JsonKey(fromJson: parseLocalDateTime) DateTime? createdAt,@JsonKey(fromJson: parseLocalDateTime) DateTime? updatedAt,@JsonKey(name: '__v') int? version
 });
 
 

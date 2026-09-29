@@ -50,11 +50,11 @@ GetTodayAttendanceUsecase getTodayAttendanceUsecase(Ref ref) {
 
 // ==================== Function Providers ====================
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<AttendanceStats> monthlyAttendanceStats(Ref ref) {
   final now = DateTime.now();
-  final start = DateTime.utc(now.year, now.month);
-  final end = DateTime.utc(now.year, now.month, now.day);
+  final start = DateTime(now.year, now.month);
+  final end = DateTime(now.year, now.month, now.day);
 
   return ref
       .read(attendanceRepositoryProvider)

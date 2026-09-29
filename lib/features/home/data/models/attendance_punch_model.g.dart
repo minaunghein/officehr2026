@@ -12,7 +12,7 @@ _AttendancePunchModel _$AttendancePunchModelFromJson(
   id: _readId(json, 'id') as String? ?? '',
   employeeId: json['employee_id'] as String? ?? '',
   companyId: json['company_id'] as String? ?? '',
-  date: json['date'] == null ? null : DateTime.parse(json['date'] as String),
+  date: parseLocalDateTime(json['date'] as String?),
   punchTime: json['punch_time'] as String? ?? '',
   punchType: json['punch_type'] as String? ?? '',
   location: json['location'] == null
@@ -25,12 +25,8 @@ _AttendancePunchModel _$AttendancePunchModelFromJson(
       : AttendanceDeviceModel.fromJson(json['device'] as Map<String, dynamic>),
   isManual: json['is_manual'] as bool? ?? false,
   deleted: json['deleted'] as bool? ?? false,
-  createdAt: json['createdAt'] == null
-      ? null
-      : DateTime.parse(json['createdAt'] as String),
-  updatedAt: json['updatedAt'] == null
-      ? null
-      : DateTime.parse(json['updatedAt'] as String),
+  createdAt: parseLocalDateTime(json['createdAt'] as String?),
+  updatedAt: parseLocalDateTime(json['updatedAt'] as String?),
   version: (json['__v'] as num?)?.toInt(),
 );
 

@@ -12,7 +12,7 @@ _AttendanceRecordModel _$AttendanceRecordModelFromJson(
   id: _readId(json, 'id') as String? ?? '',
   employeeId: json['employee_id'] as String? ?? '',
   companyId: json['company_id'] as String? ?? '',
-  date: json['date'] == null ? null : DateTime.parse(json['date'] as String),
+  date: parseLocalDateTime(json['date'] as String?),
   shiftId: json['shift_id'] as String? ?? '',
   scheduled: json['scheduled'] == null
       ? null
@@ -41,12 +41,8 @@ _AttendanceRecordModel _$AttendanceRecordModelFromJson(
   isHalfDay: json['is_half_day'] as bool? ?? false,
   editedBy: json['edited_by'] as String?,
   deleted: json['deleted'] as bool? ?? false,
-  createdAt: json['createdAt'] == null
-      ? null
-      : DateTime.parse(json['createdAt'] as String),
-  updatedAt: json['updatedAt'] == null
-      ? null
-      : DateTime.parse(json['updatedAt'] as String),
+  createdAt: parseLocalDateTime(json['createdAt'] as String?),
+  updatedAt: parseLocalDateTime(json['updatedAt'] as String?),
   version: (json['__v'] as num?)?.toInt(),
 );
 

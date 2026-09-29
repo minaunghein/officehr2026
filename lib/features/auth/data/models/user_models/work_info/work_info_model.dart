@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/features/auth/data/models/user_models/branch/branch_model.dart';
 import 'package:office_hr/features/auth/data/models/user_models/department/department_model.dart';
 import 'package:office_hr/features/auth/data/models/user_models/position/position_model.dart';
@@ -45,9 +46,9 @@ abstract class WorkInfoModel with _$WorkInfoModel {
     branchId: branchId,
     shiftId: shiftId,
     supervisorId: supervisorId,
-    employmentDate: employmentDate,
-    probationEndDate: probationEndDate,
-    resignationDate: resignationDate,
+    employmentDate: normalizeLocalDateTimeString(employmentDate),
+    probationEndDate: normalizeLocalDateTimeString(probationEndDate),
+    resignationDate: normalizeLocalDateTimeString(resignationDate),
     employmentStatus: employmentStatus,
     employmentType: employmentType,
     workMode: workMode,

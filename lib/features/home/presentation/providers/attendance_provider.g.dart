@@ -9,46 +9,6 @@ part of 'attendance_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(monthlyAttendanceStats)
-final monthlyAttendanceStatsProvider = MonthlyAttendanceStatsProvider._();
-
-final class MonthlyAttendanceStatsProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<AttendanceStats>,
-          AttendanceStats,
-          FutureOr<AttendanceStats>
-        >
-    with $FutureModifier<AttendanceStats>, $FutureProvider<AttendanceStats> {
-  MonthlyAttendanceStatsProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'monthlyAttendanceStatsProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$monthlyAttendanceStatsHash();
-
-  @$internal
-  @override
-  $FutureProviderElement<AttendanceStats> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<AttendanceStats> create(Ref ref) {
-    return monthlyAttendanceStats(ref);
-  }
-}
-
-String _$monthlyAttendanceStatsHash() =>
-    r'ec9e852d63e5ccc330094096fa1f2df072bf0edc';
-
 @ProviderFor(attendanceDatasource)
 final attendanceDatasourceProvider = AttendanceDatasourceProvider._();
 
@@ -275,6 +235,46 @@ final class GetTodayAttendanceUsecaseProvider
 
 String _$getTodayAttendanceUsecaseHash() =>
     r'8624120efe9790d978dc95c303ad304055cdf6c0';
+
+@ProviderFor(monthlyAttendanceStats)
+final monthlyAttendanceStatsProvider = MonthlyAttendanceStatsProvider._();
+
+final class MonthlyAttendanceStatsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<AttendanceStats>,
+          AttendanceStats,
+          FutureOr<AttendanceStats>
+        >
+    with $FutureModifier<AttendanceStats>, $FutureProvider<AttendanceStats> {
+  MonthlyAttendanceStatsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'monthlyAttendanceStatsProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$monthlyAttendanceStatsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<AttendanceStats> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<AttendanceStats> create(Ref ref) {
+    return monthlyAttendanceStats(ref);
+  }
+}
+
+String _$monthlyAttendanceStatsHash() =>
+    r'cf885a365461538351728a417bd62042f00fb3ac';
 
 @ProviderFor(AttendanceNotifier)
 final attendanceProvider = AttendanceNotifierProvider._();

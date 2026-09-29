@@ -1,8 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/features/auth/data/models/user_models/basic_info/basic_info_model.dart';
 import 'package:office_hr/features/auth/data/models/user_models/contact_info/contact_info_model.dart';
 import 'package:office_hr/features/auth/data/models/user_models/family_info/family_info_model.dart';
 import 'package:office_hr/features/auth/data/models/user_models/work_info/work_info_model.dart';
+import 'package:office_hr/features/auth/data/models/user_models/education/education_model.dart';
+import 'package:office_hr/features/auth/data/models/user_models/work_experience/work_experience_model.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/employee/employee.dart';
 
 part 'employee_model.freezed.dart';
@@ -22,10 +25,10 @@ abstract class EmployeeModel with _$EmployeeModel {
     @JsonKey(name: 'work_info') required WorkInfoModel workInfo,
     @Default(false) bool deleted,
     String? deletedAt,
-    @Default(<dynamic>[]) List<dynamic> education,
+    @Default(<EducationModel>[]) List<EducationModel> education,
     @JsonKey(name: 'work_experience')
-    @Default(<dynamic>[])
-    List<dynamic> workExperience,
+    @Default(<WorkExperienceModel>[])
+    List<WorkExperienceModel> workExperience,
     String? createdAt,
     String? updatedAt,
   }) = _EmployeeModel;
@@ -42,11 +45,11 @@ abstract class EmployeeModel with _$EmployeeModel {
     familyInfo: familyInfo.toEntity(),
     workInfo: workInfo.toEntity(),
     deleted: deleted,
-    deletedAt: deletedAt,
-    education: education,
-    workExperience: workExperience,
-    createdAt: createdAt,
-    updatedAt: updatedAt,
+    deletedAt: normalizeLocalDateTimeString(deletedAt),
+    education: education.map((item) => item.toEntity()).toList(),
+    workExperience: workExperience.map((item) => item.toEntity()).toList(),
+    createdAt: normalizeLocalDateTimeString(createdAt),
+    updatedAt: normalizeLocalDateTimeString(updatedAt),
   );
 }
 

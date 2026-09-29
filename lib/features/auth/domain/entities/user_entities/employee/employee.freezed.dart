@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Employee {
 
- String get id; String get companyId; String get userId; BasicInfo get basicInfo; ContactInfo get contactInfo; FamilyInfo get familyInfo; WorkInfo get workInfo; bool get deleted; String? get deletedAt; List<dynamic> get education; List<dynamic> get workExperience; String? get createdAt; String? get updatedAt;
+ String get id; String get companyId; String get userId; BasicInfo get basicInfo; ContactInfo get contactInfo; FamilyInfo get familyInfo; WorkInfo get workInfo; bool get deleted; String? get deletedAt; List<Education> get education; List<WorkExperience> get workExperience; String? get createdAt; String? get updatedAt;
 /// Create a copy of Employee
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $EmployeeCopyWith<$Res>  {
   factory $EmployeeCopyWith(Employee value, $Res Function(Employee) _then) = _$EmployeeCopyWithImpl;
 @useResult
 $Res call({
- String id, String companyId, String userId, BasicInfo basicInfo, ContactInfo contactInfo, FamilyInfo familyInfo, WorkInfo workInfo, bool deleted, String? deletedAt, List<dynamic> education, List<dynamic> workExperience, String? createdAt, String? updatedAt
+ String id, String companyId, String userId, BasicInfo basicInfo, ContactInfo contactInfo, FamilyInfo familyInfo, WorkInfo workInfo, bool deleted, String? deletedAt, List<Education> education, List<WorkExperience> workExperience, String? createdAt, String? updatedAt
 });
 
 
@@ -74,8 +74,8 @@ as FamilyInfo,workInfo: null == workInfo ? _self.workInfo : workInfo // ignore: 
 as WorkInfo,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
 as bool,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as String?,education: null == education ? _self.education : education // ignore: cast_nullable_to_non_nullable
-as List<dynamic>,workExperience: null == workExperience ? _self.workExperience : workExperience // ignore: cast_nullable_to_non_nullable
-as List<dynamic>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as List<Education>,workExperience: null == workExperience ? _self.workExperience : workExperience // ignore: cast_nullable_to_non_nullable
+as List<WorkExperience>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -198,7 +198,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String companyId,  String userId,  BasicInfo basicInfo,  ContactInfo contactInfo,  FamilyInfo familyInfo,  WorkInfo workInfo,  bool deleted,  String? deletedAt,  List<dynamic> education,  List<dynamic> workExperience,  String? createdAt,  String? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String companyId,  String userId,  BasicInfo basicInfo,  ContactInfo contactInfo,  FamilyInfo familyInfo,  WorkInfo workInfo,  bool deleted,  String? deletedAt,  List<Education> education,  List<WorkExperience> workExperience,  String? createdAt,  String? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Employee() when $default != null:
 return $default(_that.id,_that.companyId,_that.userId,_that.basicInfo,_that.contactInfo,_that.familyInfo,_that.workInfo,_that.deleted,_that.deletedAt,_that.education,_that.workExperience,_that.createdAt,_that.updatedAt);case _:
@@ -219,7 +219,7 @@ return $default(_that.id,_that.companyId,_that.userId,_that.basicInfo,_that.cont
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String companyId,  String userId,  BasicInfo basicInfo,  ContactInfo contactInfo,  FamilyInfo familyInfo,  WorkInfo workInfo,  bool deleted,  String? deletedAt,  List<dynamic> education,  List<dynamic> workExperience,  String? createdAt,  String? updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String companyId,  String userId,  BasicInfo basicInfo,  ContactInfo contactInfo,  FamilyInfo familyInfo,  WorkInfo workInfo,  bool deleted,  String? deletedAt,  List<Education> education,  List<WorkExperience> workExperience,  String? createdAt,  String? updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _Employee():
 return $default(_that.id,_that.companyId,_that.userId,_that.basicInfo,_that.contactInfo,_that.familyInfo,_that.workInfo,_that.deleted,_that.deletedAt,_that.education,_that.workExperience,_that.createdAt,_that.updatedAt);case _:
@@ -239,7 +239,7 @@ return $default(_that.id,_that.companyId,_that.userId,_that.basicInfo,_that.cont
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String companyId,  String userId,  BasicInfo basicInfo,  ContactInfo contactInfo,  FamilyInfo familyInfo,  WorkInfo workInfo,  bool deleted,  String? deletedAt,  List<dynamic> education,  List<dynamic> workExperience,  String? createdAt,  String? updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String companyId,  String userId,  BasicInfo basicInfo,  ContactInfo contactInfo,  FamilyInfo familyInfo,  WorkInfo workInfo,  bool deleted,  String? deletedAt,  List<Education> education,  List<WorkExperience> workExperience,  String? createdAt,  String? updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Employee() when $default != null:
 return $default(_that.id,_that.companyId,_that.userId,_that.basicInfo,_that.contactInfo,_that.familyInfo,_that.workInfo,_that.deleted,_that.deletedAt,_that.education,_that.workExperience,_that.createdAt,_that.updatedAt);case _:
@@ -254,7 +254,7 @@ return $default(_that.id,_that.companyId,_that.userId,_that.basicInfo,_that.cont
 
 
 class _Employee implements Employee {
-  const _Employee({required this.id, required this.companyId, required this.userId, required this.basicInfo, required this.contactInfo, required this.familyInfo, required this.workInfo, required this.deleted, this.deletedAt, required final  List<dynamic> education, required final  List<dynamic> workExperience, this.createdAt, this.updatedAt}): _education = education,_workExperience = workExperience;
+  const _Employee({required this.id, required this.companyId, required this.userId, required this.basicInfo, required this.contactInfo, required this.familyInfo, required this.workInfo, required this.deleted, this.deletedAt, required final  List<Education> education, required final  List<WorkExperience> workExperience, this.createdAt, this.updatedAt}): _education = education,_workExperience = workExperience;
   
 
 @override final  String id;
@@ -266,15 +266,15 @@ class _Employee implements Employee {
 @override final  WorkInfo workInfo;
 @override final  bool deleted;
 @override final  String? deletedAt;
- final  List<dynamic> _education;
-@override List<dynamic> get education {
+ final  List<Education> _education;
+@override List<Education> get education {
   if (_education is EqualUnmodifiableListView) return _education;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_education);
 }
 
- final  List<dynamic> _workExperience;
-@override List<dynamic> get workExperience {
+ final  List<WorkExperience> _workExperience;
+@override List<WorkExperience> get workExperience {
   if (_workExperience is EqualUnmodifiableListView) return _workExperience;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_workExperience);
@@ -313,7 +313,7 @@ abstract mixin class _$EmployeeCopyWith<$Res> implements $EmployeeCopyWith<$Res>
   factory _$EmployeeCopyWith(_Employee value, $Res Function(_Employee) _then) = __$EmployeeCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String companyId, String userId, BasicInfo basicInfo, ContactInfo contactInfo, FamilyInfo familyInfo, WorkInfo workInfo, bool deleted, String? deletedAt, List<dynamic> education, List<dynamic> workExperience, String? createdAt, String? updatedAt
+ String id, String companyId, String userId, BasicInfo basicInfo, ContactInfo contactInfo, FamilyInfo familyInfo, WorkInfo workInfo, bool deleted, String? deletedAt, List<Education> education, List<WorkExperience> workExperience, String? createdAt, String? updatedAt
 });
 
 
@@ -342,8 +342,8 @@ as FamilyInfo,workInfo: null == workInfo ? _self.workInfo : workInfo // ignore: 
 as WorkInfo,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
 as bool,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as String?,education: null == education ? _self._education : education // ignore: cast_nullable_to_non_nullable
-as List<dynamic>,workExperience: null == workExperience ? _self._workExperience : workExperience // ignore: cast_nullable_to_non_nullable
-as List<dynamic>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as List<Education>,workExperience: null == workExperience ? _self._workExperience : workExperience // ignore: cast_nullable_to_non_nullable
+as List<WorkExperience>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as String?,
   ));

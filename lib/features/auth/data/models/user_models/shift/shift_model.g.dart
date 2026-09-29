@@ -26,6 +26,15 @@ _ShiftModel _$ShiftModelFromJson(Map<String, dynamic> json) => _ShiftModel(
   isActive: json['is_active'] as bool? ?? false,
   deleted: json['deleted'] as bool? ?? false,
   deletedAt: json['deletedAt'] as String?,
+  earlyLeaveGraceMinutes:
+      (json['early_leave_grace_minutes'] as num?)?.toInt() ?? 0,
+  lateGraceMinutes: (json['late_grace_minutes'] as num?)?.toInt() ?? 0,
+  mergeWindowMinutes: (json['merge_window_minutes'] as num?)?.toInt() ?? 0,
+  roundingInterval: (json['rounding_interval'] as num?)?.toInt() ?? 0,
+  roundingMode: json['rounding_mode'] as String? ?? '',
+  createdAt: json['createdAt'] as String?,
+  updatedAt: json['updatedAt'] as String?,
+  version: (json['__v'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$ShiftModelToJson(_ShiftModel instance) =>
@@ -45,4 +54,12 @@ Map<String, dynamic> _$ShiftModelToJson(_ShiftModel instance) =>
       'is_active': instance.isActive,
       'deleted': instance.deleted,
       'deletedAt': instance.deletedAt,
+      'early_leave_grace_minutes': instance.earlyLeaveGraceMinutes,
+      'late_grace_minutes': instance.lateGraceMinutes,
+      'merge_window_minutes': instance.mergeWindowMinutes,
+      'rounding_interval': instance.roundingInterval,
+      'rounding_mode': instance.roundingMode,
+      'createdAt': instance.createdAt,
+      'updatedAt': instance.updatedAt,
+      '__v': instance.version,
     };

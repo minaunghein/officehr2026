@@ -3,6 +3,8 @@ import 'package:office_hr/features/auth/domain/entities/user_entities/basic_info
 import 'package:office_hr/features/auth/domain/entities/user_entities/contact_info/contact_info.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/family_info/family_info.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/work_info/work_info.dart';
+import 'package:office_hr/features/auth/domain/entities/user_entities/education/education.dart';
+import 'package:office_hr/features/auth/domain/entities/user_entities/work_experience/work_experience.dart';
 
 part 'employee.freezed.dart';
 
@@ -18,8 +20,8 @@ abstract class Employee with _$Employee {
     required WorkInfo workInfo,
     required bool deleted,
     String? deletedAt,
-    required List<dynamic> education,
-    required List<dynamic> workExperience,
+    required List<Education> education,
+    required List<WorkExperience> workExperience,
     String? createdAt,
     String? updatedAt,
   }) = _Employee;

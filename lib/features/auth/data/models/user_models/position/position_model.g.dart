@@ -18,6 +18,9 @@ _PositionModel _$PositionModelFromJson(Map<String, dynamic> json) =>
       isActive: json['is_active'] as bool? ?? false,
       deleted: json['deleted'] as bool? ?? false,
       deletedAt: json['deletedAt'] as String?,
+      createdAt: json['createdAt'] as String?,
+      updatedAt: json['updatedAt'] as String?,
+      version: (json['__v'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$PositionModelToJson(_PositionModel instance) =>
@@ -32,4 +35,7 @@ Map<String, dynamic> _$PositionModelToJson(_PositionModel instance) =>
       'is_active': instance.isActive,
       'deleted': instance.deleted,
       'deletedAt': instance.deletedAt,
+      'createdAt': instance.createdAt,
+      'updatedAt': instance.updatedAt,
+      '__v': instance.version,
     };

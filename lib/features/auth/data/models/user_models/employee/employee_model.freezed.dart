@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$EmployeeModel {
 
-@JsonKey(readValue: _readId) String get id;@JsonKey(name: 'company_id') String get companyId;@JsonKey(name: 'user_id') String get userId;@JsonKey(name: 'basic_info') BasicInfoModel get basicInfo;@JsonKey(name: 'contact_info') ContactInfoModel get contactInfo;@JsonKey(name: 'family_info') FamilyInfoModel get familyInfo;@JsonKey(name: 'work_info') WorkInfoModel get workInfo; bool get deleted; String? get deletedAt; List<dynamic> get education;@JsonKey(name: 'work_experience') List<dynamic> get workExperience; String? get createdAt; String? get updatedAt;
+@JsonKey(readValue: _readId) String get id;@JsonKey(name: 'company_id') String get companyId;@JsonKey(name: 'user_id') String get userId;@JsonKey(name: 'basic_info') BasicInfoModel get basicInfo;@JsonKey(name: 'contact_info') ContactInfoModel get contactInfo;@JsonKey(name: 'family_info') FamilyInfoModel get familyInfo;@JsonKey(name: 'work_info') WorkInfoModel get workInfo; bool get deleted; String? get deletedAt; List<EducationModel> get education;@JsonKey(name: 'work_experience') List<WorkExperienceModel> get workExperience; String? get createdAt; String? get updatedAt;
 /// Create a copy of EmployeeModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $EmployeeModelCopyWith<$Res>  {
   factory $EmployeeModelCopyWith(EmployeeModel value, $Res Function(EmployeeModel) _then) = _$EmployeeModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(readValue: _readId) String id,@JsonKey(name: 'company_id') String companyId,@JsonKey(name: 'user_id') String userId,@JsonKey(name: 'basic_info') BasicInfoModel basicInfo,@JsonKey(name: 'contact_info') ContactInfoModel contactInfo,@JsonKey(name: 'family_info') FamilyInfoModel familyInfo,@JsonKey(name: 'work_info') WorkInfoModel workInfo, bool deleted, String? deletedAt, List<dynamic> education,@JsonKey(name: 'work_experience') List<dynamic> workExperience, String? createdAt, String? updatedAt
+@JsonKey(readValue: _readId) String id,@JsonKey(name: 'company_id') String companyId,@JsonKey(name: 'user_id') String userId,@JsonKey(name: 'basic_info') BasicInfoModel basicInfo,@JsonKey(name: 'contact_info') ContactInfoModel contactInfo,@JsonKey(name: 'family_info') FamilyInfoModel familyInfo,@JsonKey(name: 'work_info') WorkInfoModel workInfo, bool deleted, String? deletedAt, List<EducationModel> education,@JsonKey(name: 'work_experience') List<WorkExperienceModel> workExperience, String? createdAt, String? updatedAt
 });
 
 
@@ -77,8 +77,8 @@ as FamilyInfoModel,workInfo: null == workInfo ? _self.workInfo : workInfo // ign
 as WorkInfoModel,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
 as bool,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as String?,education: null == education ? _self.education : education // ignore: cast_nullable_to_non_nullable
-as List<dynamic>,workExperience: null == workExperience ? _self.workExperience : workExperience // ignore: cast_nullable_to_non_nullable
-as List<dynamic>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as List<EducationModel>,workExperience: null == workExperience ? _self.workExperience : workExperience // ignore: cast_nullable_to_non_nullable
+as List<WorkExperienceModel>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -201,7 +201,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'user_id')  String userId, @JsonKey(name: 'basic_info')  BasicInfoModel basicInfo, @JsonKey(name: 'contact_info')  ContactInfoModel contactInfo, @JsonKey(name: 'family_info')  FamilyInfoModel familyInfo, @JsonKey(name: 'work_info')  WorkInfoModel workInfo,  bool deleted,  String? deletedAt,  List<dynamic> education, @JsonKey(name: 'work_experience')  List<dynamic> workExperience,  String? createdAt,  String? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'user_id')  String userId, @JsonKey(name: 'basic_info')  BasicInfoModel basicInfo, @JsonKey(name: 'contact_info')  ContactInfoModel contactInfo, @JsonKey(name: 'family_info')  FamilyInfoModel familyInfo, @JsonKey(name: 'work_info')  WorkInfoModel workInfo,  bool deleted,  String? deletedAt,  List<EducationModel> education, @JsonKey(name: 'work_experience')  List<WorkExperienceModel> workExperience,  String? createdAt,  String? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _EmployeeModel() when $default != null:
 return $default(_that.id,_that.companyId,_that.userId,_that.basicInfo,_that.contactInfo,_that.familyInfo,_that.workInfo,_that.deleted,_that.deletedAt,_that.education,_that.workExperience,_that.createdAt,_that.updatedAt);case _:
@@ -222,7 +222,7 @@ return $default(_that.id,_that.companyId,_that.userId,_that.basicInfo,_that.cont
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'user_id')  String userId, @JsonKey(name: 'basic_info')  BasicInfoModel basicInfo, @JsonKey(name: 'contact_info')  ContactInfoModel contactInfo, @JsonKey(name: 'family_info')  FamilyInfoModel familyInfo, @JsonKey(name: 'work_info')  WorkInfoModel workInfo,  bool deleted,  String? deletedAt,  List<dynamic> education, @JsonKey(name: 'work_experience')  List<dynamic> workExperience,  String? createdAt,  String? updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'user_id')  String userId, @JsonKey(name: 'basic_info')  BasicInfoModel basicInfo, @JsonKey(name: 'contact_info')  ContactInfoModel contactInfo, @JsonKey(name: 'family_info')  FamilyInfoModel familyInfo, @JsonKey(name: 'work_info')  WorkInfoModel workInfo,  bool deleted,  String? deletedAt,  List<EducationModel> education, @JsonKey(name: 'work_experience')  List<WorkExperienceModel> workExperience,  String? createdAt,  String? updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _EmployeeModel():
 return $default(_that.id,_that.companyId,_that.userId,_that.basicInfo,_that.contactInfo,_that.familyInfo,_that.workInfo,_that.deleted,_that.deletedAt,_that.education,_that.workExperience,_that.createdAt,_that.updatedAt);case _:
@@ -242,7 +242,7 @@ return $default(_that.id,_that.companyId,_that.userId,_that.basicInfo,_that.cont
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'user_id')  String userId, @JsonKey(name: 'basic_info')  BasicInfoModel basicInfo, @JsonKey(name: 'contact_info')  ContactInfoModel contactInfo, @JsonKey(name: 'family_info')  FamilyInfoModel familyInfo, @JsonKey(name: 'work_info')  WorkInfoModel workInfo,  bool deleted,  String? deletedAt,  List<dynamic> education, @JsonKey(name: 'work_experience')  List<dynamic> workExperience,  String? createdAt,  String? updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'user_id')  String userId, @JsonKey(name: 'basic_info')  BasicInfoModel basicInfo, @JsonKey(name: 'contact_info')  ContactInfoModel contactInfo, @JsonKey(name: 'family_info')  FamilyInfoModel familyInfo, @JsonKey(name: 'work_info')  WorkInfoModel workInfo,  bool deleted,  String? deletedAt,  List<EducationModel> education, @JsonKey(name: 'work_experience')  List<WorkExperienceModel> workExperience,  String? createdAt,  String? updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _EmployeeModel() when $default != null:
 return $default(_that.id,_that.companyId,_that.userId,_that.basicInfo,_that.contactInfo,_that.familyInfo,_that.workInfo,_that.deleted,_that.deletedAt,_that.education,_that.workExperience,_that.createdAt,_that.updatedAt);case _:
@@ -257,7 +257,7 @@ return $default(_that.id,_that.companyId,_that.userId,_that.basicInfo,_that.cont
 @JsonSerializable()
 
 class _EmployeeModel extends EmployeeModel {
-  const _EmployeeModel({@JsonKey(readValue: _readId) this.id = '', @JsonKey(name: 'company_id') this.companyId = '', @JsonKey(name: 'user_id') this.userId = '', @JsonKey(name: 'basic_info') required this.basicInfo, @JsonKey(name: 'contact_info') required this.contactInfo, @JsonKey(name: 'family_info') required this.familyInfo, @JsonKey(name: 'work_info') required this.workInfo, this.deleted = false, this.deletedAt, final  List<dynamic> education = const <dynamic>[], @JsonKey(name: 'work_experience') final  List<dynamic> workExperience = const <dynamic>[], this.createdAt, this.updatedAt}): _education = education,_workExperience = workExperience,super._();
+  const _EmployeeModel({@JsonKey(readValue: _readId) this.id = '', @JsonKey(name: 'company_id') this.companyId = '', @JsonKey(name: 'user_id') this.userId = '', @JsonKey(name: 'basic_info') required this.basicInfo, @JsonKey(name: 'contact_info') required this.contactInfo, @JsonKey(name: 'family_info') required this.familyInfo, @JsonKey(name: 'work_info') required this.workInfo, this.deleted = false, this.deletedAt, final  List<EducationModel> education = const <EducationModel>[], @JsonKey(name: 'work_experience') final  List<WorkExperienceModel> workExperience = const <WorkExperienceModel>[], this.createdAt, this.updatedAt}): _education = education,_workExperience = workExperience,super._();
   factory _EmployeeModel.fromJson(Map<String, dynamic> json) => _$EmployeeModelFromJson(json);
 
 @override@JsonKey(readValue: _readId) final  String id;
@@ -269,15 +269,15 @@ class _EmployeeModel extends EmployeeModel {
 @override@JsonKey(name: 'work_info') final  WorkInfoModel workInfo;
 @override@JsonKey() final  bool deleted;
 @override final  String? deletedAt;
- final  List<dynamic> _education;
-@override@JsonKey() List<dynamic> get education {
+ final  List<EducationModel> _education;
+@override@JsonKey() List<EducationModel> get education {
   if (_education is EqualUnmodifiableListView) return _education;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_education);
 }
 
- final  List<dynamic> _workExperience;
-@override@JsonKey(name: 'work_experience') List<dynamic> get workExperience {
+ final  List<WorkExperienceModel> _workExperience;
+@override@JsonKey(name: 'work_experience') List<WorkExperienceModel> get workExperience {
   if (_workExperience is EqualUnmodifiableListView) return _workExperience;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_workExperience);
@@ -319,7 +319,7 @@ abstract mixin class _$EmployeeModelCopyWith<$Res> implements $EmployeeModelCopy
   factory _$EmployeeModelCopyWith(_EmployeeModel value, $Res Function(_EmployeeModel) _then) = __$EmployeeModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(readValue: _readId) String id,@JsonKey(name: 'company_id') String companyId,@JsonKey(name: 'user_id') String userId,@JsonKey(name: 'basic_info') BasicInfoModel basicInfo,@JsonKey(name: 'contact_info') ContactInfoModel contactInfo,@JsonKey(name: 'family_info') FamilyInfoModel familyInfo,@JsonKey(name: 'work_info') WorkInfoModel workInfo, bool deleted, String? deletedAt, List<dynamic> education,@JsonKey(name: 'work_experience') List<dynamic> workExperience, String? createdAt, String? updatedAt
+@JsonKey(readValue: _readId) String id,@JsonKey(name: 'company_id') String companyId,@JsonKey(name: 'user_id') String userId,@JsonKey(name: 'basic_info') BasicInfoModel basicInfo,@JsonKey(name: 'contact_info') ContactInfoModel contactInfo,@JsonKey(name: 'family_info') FamilyInfoModel familyInfo,@JsonKey(name: 'work_info') WorkInfoModel workInfo, bool deleted, String? deletedAt, List<EducationModel> education,@JsonKey(name: 'work_experience') List<WorkExperienceModel> workExperience, String? createdAt, String? updatedAt
 });
 
 
@@ -348,8 +348,8 @@ as FamilyInfoModel,workInfo: null == workInfo ? _self.workInfo : workInfo // ign
 as WorkInfoModel,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
 as bool,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as String?,education: null == education ? _self._education : education // ignore: cast_nullable_to_non_nullable
-as List<dynamic>,workExperience: null == workExperience ? _self._workExperience : workExperience // ignore: cast_nullable_to_non_nullable
-as List<dynamic>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as List<EducationModel>,workExperience: null == workExperience ? _self._workExperience : workExperience // ignore: cast_nullable_to_non_nullable
+as List<WorkExperienceModel>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as String?,
   ));

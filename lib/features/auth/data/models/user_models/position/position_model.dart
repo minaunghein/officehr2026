@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/position/position.dart';
 
 part 'position_model.freezed.dart';
@@ -19,6 +20,9 @@ abstract class PositionModel with _$PositionModel {
     @JsonKey(name: 'is_active') @Default(false) bool isActive,
     @Default(false) bool deleted,
     String? deletedAt,
+    String? createdAt,
+    String? updatedAt,
+    @JsonKey(name: '__v') int? version,
   }) = _PositionModel;
 
   factory PositionModel.fromJson(Map<String, dynamic> json) =>
@@ -34,7 +38,10 @@ abstract class PositionModel with _$PositionModel {
     companyId: companyId,
     isActive: isActive,
     deleted: deleted,
-    deletedAt: deletedAt,
+    deletedAt: normalizeLocalDateTimeString(deletedAt),
+    createdAt: normalizeLocalDateTimeString(createdAt),
+    updatedAt: normalizeLocalDateTimeString(updatedAt),
+    version: version,
   );
 }
 

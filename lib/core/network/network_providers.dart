@@ -189,6 +189,30 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
       'Starting refresh-token flow.',
       tag: 'AuthRefresh',
     );
+
+    // Several requests can be in flight when an access token expires. Since
+    // this interceptor is queued, an earlier request may already have
+    // refreshed the token by the time this 401 is handled. Retry with that
+    // token instead of refreshing again and propagating the stale 401.
+    final currentAccessToken = await readStoredValue(_storage, _authTokenKey);
+    final requestAccessToken = _accessTokenFromHeaders(requestOptions.headers);
+    if (currentAccessToken != null &&
+        currentAccessToken.isNotEmpty &&
+        requestAccessToken != null &&
+        requestAccessToken != currentAccessToken) {
+      try {
+        final retryOptions = await _copyRequestOptions(
+          requestOptions,
+          currentAccessToken,
+        );
+        final retryResponse = await _client.fetch<dynamic>(retryOptions);
+        handler.resolve(retryResponse);
+      } catch (retryError) {
+        handler.next(retryError is DioException ? retryError : err);
+      }
+      return;
+    }
+
     final refreshToken = await readStoredValue(_storage, _refreshTokenKey);
     if (refreshToken == null || refreshToken.isEmpty) {
       AppLogger.w(
@@ -295,6 +319,14 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
   String _maskToken(String token) {
     if (token.length <= 8) return '********';
     return '${token.substring(0, 4)}...${token.substring(token.length - 4)}';
+  }
+
+  String? _accessTokenFromHeaders(Map<String, dynamic> headers) {
+    final authorization = headers['Authorization'] ?? headers['authorization'];
+    if (authorization is! String) return null;
+    const prefix = 'Bearer ';
+    if (!authorization.startsWith(prefix)) return null;
+    return authorization.substring(prefix.length);
   }
 
   Future<RequestOptions> _copyRequestOptions(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
+import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/features/public_holiday/domain/entities/public_holiday.dart';
 import 'package:office_hr/features/public_holiday/presentation/providers/public_holiday_providers.dart';
 
@@ -190,7 +191,7 @@ class _PublicHolidayCard extends StatelessWidget {
   String _formatDate(String? value) {
     if (value == null || value.isEmpty) return 'No date';
 
-    final date = DateTime.tryParse(value)?.toLocal();
+    final date = parseLocalDateTime(value);
     if (date == null) return value;
 
     const months = [

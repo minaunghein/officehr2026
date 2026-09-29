@@ -14,5 +14,8 @@ abstract class Department with _$Department {
     required bool isActive,
     required bool deleted,
     String? deletedAt,
+    String? createdAt,
+    String? updatedAt,
+    int? version,
   }) = _Department;
 }

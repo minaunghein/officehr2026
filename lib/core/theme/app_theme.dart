@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:office_hr/core/constants/app_colors.dart';
 
 enum OfficeHrTheme {
   light,
@@ -53,7 +54,8 @@ class AppTheme {
       brightness: Brightness.light,
       primary: const Color(0xFF0052CC),
       secondary: const Color(0xFF627180),
-      background: const Color(0xFFF9F9FF),
+      cardBackground: AppColors.cardBackgroundLight,
+      background: AppColors.background,
       surface: const Color(0xFFFFFFFF),
       surfaceVariant: const Color(0xFFE8EDFF),
       onPrimary: const Color(0xFFFFFFFF),
@@ -76,6 +78,7 @@ class AppTheme {
       surfaceVariant: const Color(0xFF2E3F5C),
       onPrimary: const Color(0xFF001848),
       onBackground: const Color(0xFFEDF0FF),
+      cardBackground: AppColors.cardBackgroundDark,
       outline: const Color.fromARGB(255, 117, 122, 145),
       error: const Color(0xFFBA1A1A),
       gradient: const LinearGradient(
@@ -89,6 +92,7 @@ class AppTheme {
     required Color primary,
     required Color secondary,
     required Color background,
+    required Color cardBackground,
     required Color surface,
     required Color surfaceVariant,
     required Color onPrimary,
@@ -228,7 +232,7 @@ class AppTheme {
         iconTheme: IconThemeData(color: onBackground),
       ),
       cardTheme: CardThemeData(
-        color: surface,
+        color: cardBackground,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),

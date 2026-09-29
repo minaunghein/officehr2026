@@ -9,7 +9,7 @@ part of 'today_attendance_model.dart';
 _TodayAttendanceModel _$TodayAttendanceModelFromJson(
   Map<String, dynamic> json,
 ) => _TodayAttendanceModel(
-  date: json['date'] == null ? null : DateTime.parse(json['date'] as String),
+  date: parseLocalDateTime(json['date'] as String?),
   clockedIn: json['clocked_in'] as bool? ?? false,
   breakInProgress: json['break_in_progress'] as bool? ?? false,
   lastClockIn: json['last_clock_in'] as String?,

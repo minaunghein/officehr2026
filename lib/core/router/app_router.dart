@@ -7,6 +7,10 @@ import 'package:office_hr/features/public_holiday/presentation/screens/public_ho
 import 'package:office_hr/features/splash/presentation/screens/splash_screen.dart';
 import 'package:office_hr/features/auth/presentation/screens/company_setup_screen.dart';
 import 'package:office_hr/features/auth/presentation/screens/login_screen.dart';
+import 'package:office_hr/features/user_profile/presentation/screens/change_password_screen.dart';
+import 'package:office_hr/features/user_profile/presentation/screens/company_screen.dart';
+import 'package:office_hr/features/user_profile/presentation/screens/leave_screen.dart';
+import 'package:office_hr/features/user_profile/presentation/screens/profile_screen.dart';
 
 abstract final class AppRoutes {
   static const splash = '/';
@@ -50,10 +54,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: AppRoutes.login, builder: (_, _) => const LoginScreen()),
       GoRoute(path: AppRoutes.dashboard, builder: (_, _) => Dashboard()),
-      // GoRoute(
-      //   path: AppRoutes.profile,
-      //   builder: (_, _) => const ProfileScreen(),
-      // ),
+      GoRoute(
+        path: AppRoutes.profile,
+        builder: (_, _) => const ProfileScreen(),
+      ),
       // GoRoute(
       //   path: AppRoutes.payslip,
       //   builder: (_, _) => const PayslipScreen(),
@@ -62,15 +66,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.publicHoliday,
         builder: (_, _) => const PublicHolidayScreen(),
       ),
-      // GoRoute(path: AppRoutes.leave, builder: (_, _) => const LeaveScreen()),
-      // GoRoute(
-      //   path: AppRoutes.company,
-      //   builder: (_, _) => const CompanyScreen(),
-      // ),
-      // GoRoute(
-      //   path: AppRoutes.changePassword,
-      //   builder: (_, _) => const ChangePasswordScreen(),
-      // ),
+      GoRoute(path: AppRoutes.leave, builder: (_, _) => const LeaveScreen()),
+      GoRoute(
+        path: AppRoutes.company,
+        builder: (_, _) => const CompanyScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.changePassword,
+        builder: (_, _) => const ChangePasswordScreen(),
+      ),
     ],
   );
 

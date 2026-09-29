@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Branch {
 
- String get id; String get title; String get code; Geofence get geofence; String get companyId; bool get isActive; bool get deleted; String? get deletedAt;
+ String get id; String get title; String get code; Geofence get geofence; String get companyId; bool get isActive; bool get deleted; String? get deletedAt; String? get createdAt; String? get updatedAt; int? get version;
 /// Create a copy of Branch
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $BranchCopyWith<Branch> get copyWith => _$BranchCopyWithImpl<Branch>(this as Bra
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Branch&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.code, code) || other.code == code)&&(identical(other.geofence, geofence) || other.geofence == geofence)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Branch&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.code, code) || other.code == code)&&(identical(other.geofence, geofence) || other.geofence == geofence)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.version, version) || other.version == version));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,code,geofence,companyId,isActive,deleted,deletedAt);
+int get hashCode => Object.hash(runtimeType,id,title,code,geofence,companyId,isActive,deleted,deletedAt,createdAt,updatedAt,version);
 
 @override
 String toString() {
-  return 'Branch(id: $id, title: $title, code: $code, geofence: $geofence, companyId: $companyId, isActive: $isActive, deleted: $deleted, deletedAt: $deletedAt)';
+  return 'Branch(id: $id, title: $title, code: $code, geofence: $geofence, companyId: $companyId, isActive: $isActive, deleted: $deleted, deletedAt: $deletedAt, createdAt: $createdAt, updatedAt: $updatedAt, version: $version)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $BranchCopyWith<$Res>  {
   factory $BranchCopyWith(Branch value, $Res Function(Branch) _then) = _$BranchCopyWithImpl;
 @useResult
 $Res call({
- String id, String title, String code, Geofence geofence, String companyId, bool isActive, bool deleted, String? deletedAt
+ String id, String title, String code, Geofence geofence, String companyId, bool isActive, bool deleted, String? deletedAt, String? createdAt, String? updatedAt, int? version
 });
 
 
@@ -62,7 +62,7 @@ class _$BranchCopyWithImpl<$Res>
 
 /// Create a copy of Branch
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? code = null,Object? geofence = null,Object? companyId = null,Object? isActive = null,Object? deleted = null,Object? deletedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? code = null,Object? geofence = null,Object? companyId = null,Object? isActive = null,Object? deleted = null,Object? deletedAt = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? version = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -72,7 +72,10 @@ as Geofence,companyId: null == companyId ? _self.companyId : companyId // ignore
 as String,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
 as bool,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
 as bool,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as String?,version: freezed == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 /// Create a copy of Branch
@@ -166,10 +169,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String code,  Geofence geofence,  String companyId,  bool isActive,  bool deleted,  String? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String code,  Geofence geofence,  String companyId,  bool isActive,  bool deleted,  String? deletedAt,  String? createdAt,  String? updatedAt,  int? version)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Branch() when $default != null:
-return $default(_that.id,_that.title,_that.code,_that.geofence,_that.companyId,_that.isActive,_that.deleted,_that.deletedAt);case _:
+return $default(_that.id,_that.title,_that.code,_that.geofence,_that.companyId,_that.isActive,_that.deleted,_that.deletedAt,_that.createdAt,_that.updatedAt,_that.version);case _:
   return orElse();
 
 }
@@ -187,10 +190,10 @@ return $default(_that.id,_that.title,_that.code,_that.geofence,_that.companyId,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String code,  Geofence geofence,  String companyId,  bool isActive,  bool deleted,  String? deletedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String code,  Geofence geofence,  String companyId,  bool isActive,  bool deleted,  String? deletedAt,  String? createdAt,  String? updatedAt,  int? version)  $default,) {final _that = this;
 switch (_that) {
 case _Branch():
-return $default(_that.id,_that.title,_that.code,_that.geofence,_that.companyId,_that.isActive,_that.deleted,_that.deletedAt);case _:
+return $default(_that.id,_that.title,_that.code,_that.geofence,_that.companyId,_that.isActive,_that.deleted,_that.deletedAt,_that.createdAt,_that.updatedAt,_that.version);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -207,10 +210,10 @@ return $default(_that.id,_that.title,_that.code,_that.geofence,_that.companyId,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String code,  Geofence geofence,  String companyId,  bool isActive,  bool deleted,  String? deletedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String code,  Geofence geofence,  String companyId,  bool isActive,  bool deleted,  String? deletedAt,  String? createdAt,  String? updatedAt,  int? version)?  $default,) {final _that = this;
 switch (_that) {
 case _Branch() when $default != null:
-return $default(_that.id,_that.title,_that.code,_that.geofence,_that.companyId,_that.isActive,_that.deleted,_that.deletedAt);case _:
+return $default(_that.id,_that.title,_that.code,_that.geofence,_that.companyId,_that.isActive,_that.deleted,_that.deletedAt,_that.createdAt,_that.updatedAt,_that.version);case _:
   return null;
 
 }
@@ -222,7 +225,7 @@ return $default(_that.id,_that.title,_that.code,_that.geofence,_that.companyId,_
 
 
 class _Branch implements Branch {
-  const _Branch({required this.id, required this.title, required this.code, required this.geofence, required this.companyId, required this.isActive, required this.deleted, this.deletedAt});
+  const _Branch({required this.id, required this.title, required this.code, required this.geofence, required this.companyId, required this.isActive, required this.deleted, this.deletedAt, this.createdAt, this.updatedAt, this.version});
   
 
 @override final  String id;
@@ -233,6 +236,9 @@ class _Branch implements Branch {
 @override final  bool isActive;
 @override final  bool deleted;
 @override final  String? deletedAt;
+@override final  String? createdAt;
+@override final  String? updatedAt;
+@override final  int? version;
 
 /// Create a copy of Branch
 /// with the given fields replaced by the non-null parameter values.
@@ -244,16 +250,16 @@ _$BranchCopyWith<_Branch> get copyWith => __$BranchCopyWithImpl<_Branch>(this, _
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Branch&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.code, code) || other.code == code)&&(identical(other.geofence, geofence) || other.geofence == geofence)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Branch&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.code, code) || other.code == code)&&(identical(other.geofence, geofence) || other.geofence == geofence)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.version, version) || other.version == version));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,code,geofence,companyId,isActive,deleted,deletedAt);
+int get hashCode => Object.hash(runtimeType,id,title,code,geofence,companyId,isActive,deleted,deletedAt,createdAt,updatedAt,version);
 
 @override
 String toString() {
-  return 'Branch(id: $id, title: $title, code: $code, geofence: $geofence, companyId: $companyId, isActive: $isActive, deleted: $deleted, deletedAt: $deletedAt)';
+  return 'Branch(id: $id, title: $title, code: $code, geofence: $geofence, companyId: $companyId, isActive: $isActive, deleted: $deleted, deletedAt: $deletedAt, createdAt: $createdAt, updatedAt: $updatedAt, version: $version)';
 }
 
 
@@ -264,7 +270,7 @@ abstract mixin class _$BranchCopyWith<$Res> implements $BranchCopyWith<$Res> {
   factory _$BranchCopyWith(_Branch value, $Res Function(_Branch) _then) = __$BranchCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String title, String code, Geofence geofence, String companyId, bool isActive, bool deleted, String? deletedAt
+ String id, String title, String code, Geofence geofence, String companyId, bool isActive, bool deleted, String? deletedAt, String? createdAt, String? updatedAt, int? version
 });
 
 
@@ -281,7 +287,7 @@ class __$BranchCopyWithImpl<$Res>
 
 /// Create a copy of Branch
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? code = null,Object? geofence = null,Object? companyId = null,Object? isActive = null,Object? deleted = null,Object? deletedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? code = null,Object? geofence = null,Object? companyId = null,Object? isActive = null,Object? deleted = null,Object? deletedAt = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? version = freezed,}) {
   return _then(_Branch(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -291,7 +297,10 @@ as Geofence,companyId: null == companyId ? _self.companyId : companyId // ignore
 as String,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
 as bool,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
 as bool,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as String?,version: freezed == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
