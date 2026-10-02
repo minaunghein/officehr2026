@@ -2,8 +2,10 @@ import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:office_hr/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:office_hr/features/auth/domain/entities/auth_session.dart';
+import 'package:office_hr/features/auth/domain/entities/change_password_result.dart';
 import 'package:office_hr/features/auth/domain/repositories/auth_repository.dart';
 import 'package:office_hr/features/auth/domain/usecases/get_session.dart';
+import 'package:office_hr/features/auth/domain/usecases/change_password_usecase.dart';
 import 'package:office_hr/features/auth/domain/usecases/login_usecase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -34,6 +36,12 @@ LoginUsecase loginUsecase(Ref ref) {
 GetSessionUseCase getSessionUseCase(Ref ref) {
   final repository = ref.watch(authRepositoryProvider);
   return GetSessionUseCase(repository);
+}
+
+@riverpod
+ChangePasswordUsecase changePasswordUsecase(Ref ref) {
+  final repository = ref.watch(authRepositoryProvider);
+  return ChangePasswordUsecase(repository);
 }
 
 // ==================== State Management ====================
@@ -134,6 +142,67 @@ class LoginNotifier extends _$LoginNotifier {
     await ref.read(currentUserProvider.notifier).logout();
     if (ref.mounted) {
       state = const AsyncValue.data(null);
+    }
+  }
+}
+
+@riverpod
+class ChangePasswordNotifier extends _$ChangePasswordNotifier {
+  @override
+  FutureOr<void> build() {}
+
+  Future<ChangePasswordResult> submit({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    state = const AsyncValue.loading();
+    final usecase = ref.read(changePasswordUsecaseProvider);
+    final result = await AsyncValue.guard(
+      () => usecase(oldPassword: oldPassword, newPassword: newPassword),
+    );
+
+    if (result.hasError) {
+      if (ref.mounted) {
+        state = AsyncValue.error(
+          result.error!,
+          result.stackTrace ?? StackTrace.current,
+        );
+      }
+      Error.throwWithStackTrace(
+        result.error!,
+        result.stackTrace ?? StackTrace.current,
+      );
+    }
+
+    final changeResult = result.value!;
+    await _applySession(changeResult);
+
+    if (ref.mounted) {
+      state = const AsyncValue.data(null);
+    }
+    return changeResult;
+  }
+
+  Future<void> _applySession(ChangePasswordResult result) async {
+    final authTokenNotifier = ref.read(authTokenProvider.notifier);
+    final refreshTokenNotifier = ref.read(authRefreshTokenProvider.notifier);
+    final currentUserNotifier = ref.read(currentUserProvider.notifier);
+
+    if (result.hasAccessToken) {
+      await authTokenNotifier.setToken(result.accessToken);
+    }
+    if (result.hasRefreshToken) {
+      await refreshTokenNotifier.setToken(result.refreshToken);
+    }
+
+    final session = result.session;
+    if (session != null) {
+      await currentUserNotifier.setSession(session);
+      final companyId = session.activeCompany.id;
+      final storage = ref.read(secureStorageProvider);
+      if (companyId.isNotEmpty) {
+        await writeStoredValue(storage, companyIdStorageKey, companyId);
+      }
     }
   }
 }

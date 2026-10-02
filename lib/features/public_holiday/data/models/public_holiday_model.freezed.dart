@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PublicHolidayModel {
 
-@JsonKey(name: '_id') String get id; String get company; String? get holidaydate; List<String> get holidayname; String? get remarks; List<dynamic> get tags;@JsonKey(name: '__v') int? get version;
+@JsonKey(name: '_id') String get id;@JsonKey(name: 'company_id') String get companyId; String get title;@JsonKey(name: 'title_mm') String get titleMm; String? get date; String get type;@JsonKey(name: 'is_active') bool get isActive;@JsonKey(name: 'deleted') bool get deleted; String? get createdAt; String? get updatedAt;@JsonKey(name: '__v') int? get version;
 /// Create a copy of PublicHolidayModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PublicHolidayModelCopyWith<PublicHolidayModel> get copyWith => _$PublicHolidayM
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PublicHolidayModel&&(identical(other.id, id) || other.id == id)&&(identical(other.company, company) || other.company == company)&&(identical(other.holidaydate, holidaydate) || other.holidaydate == holidaydate)&&const DeepCollectionEquality().equals(other.holidayname, holidayname)&&(identical(other.remarks, remarks) || other.remarks == remarks)&&const DeepCollectionEquality().equals(other.tags, tags)&&(identical(other.version, version) || other.version == version));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PublicHolidayModel&&(identical(other.id, id) || other.id == id)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.title, title) || other.title == title)&&(identical(other.titleMm, titleMm) || other.titleMm == titleMm)&&(identical(other.date, date) || other.date == date)&&(identical(other.type, type) || other.type == type)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.version, version) || other.version == version));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,company,holidaydate,const DeepCollectionEquality().hash(holidayname),remarks,const DeepCollectionEquality().hash(tags),version);
+int get hashCode => Object.hash(runtimeType,id,companyId,title,titleMm,date,type,isActive,deleted,createdAt,updatedAt,version);
 
 @override
 String toString() {
-  return 'PublicHolidayModel(id: $id, company: $company, holidaydate: $holidaydate, holidayname: $holidayname, remarks: $remarks, tags: $tags, version: $version)';
+  return 'PublicHolidayModel(id: $id, companyId: $companyId, title: $title, titleMm: $titleMm, date: $date, type: $type, isActive: $isActive, deleted: $deleted, createdAt: $createdAt, updatedAt: $updatedAt, version: $version)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $PublicHolidayModelCopyWith<$Res>  {
   factory $PublicHolidayModelCopyWith(PublicHolidayModel value, $Res Function(PublicHolidayModel) _then) = _$PublicHolidayModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: '_id') String id, String company, String? holidaydate, List<String> holidayname, String? remarks, List<dynamic> tags,@JsonKey(name: '__v') int? version
+@JsonKey(name: '_id') String id,@JsonKey(name: 'company_id') String companyId, String title,@JsonKey(name: 'title_mm') String titleMm, String? date, String type,@JsonKey(name: 'is_active') bool isActive,@JsonKey(name: 'deleted') bool deleted, String? createdAt, String? updatedAt,@JsonKey(name: '__v') int? version
 });
 
 
@@ -65,15 +65,19 @@ class _$PublicHolidayModelCopyWithImpl<$Res>
 
 /// Create a copy of PublicHolidayModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? company = null,Object? holidaydate = freezed,Object? holidayname = null,Object? remarks = freezed,Object? tags = null,Object? version = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? companyId = null,Object? title = null,Object? titleMm = null,Object? date = freezed,Object? type = null,Object? isActive = null,Object? deleted = null,Object? createdAt = freezed,Object? updatedAt = freezed,Object? version = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,company: null == company ? _self.company : company // ignore: cast_nullable_to_non_nullable
-as String,holidaydate: freezed == holidaydate ? _self.holidaydate : holidaydate // ignore: cast_nullable_to_non_nullable
-as String?,holidayname: null == holidayname ? _self.holidayname : holidayname // ignore: cast_nullable_to_non_nullable
-as List<String>,remarks: freezed == remarks ? _self.remarks : remarks // ignore: cast_nullable_to_non_nullable
-as String?,tags: null == tags ? _self.tags : tags // ignore: cast_nullable_to_non_nullable
-as List<dynamic>,version: freezed == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
+as String,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,titleMm: null == titleMm ? _self.titleMm : titleMm // ignore: cast_nullable_to_non_nullable
+as String,date: freezed == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
+as String?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
+as bool,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as String?,version: freezed == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
 as int?,
   ));
 }
@@ -159,10 +163,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  String company,  String? holidaydate,  List<String> holidayname,  String? remarks,  List<dynamic> tags, @JsonKey(name: '__v')  int? version)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id, @JsonKey(name: 'company_id')  String companyId,  String title, @JsonKey(name: 'title_mm')  String titleMm,  String? date,  String type, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'deleted')  bool deleted,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PublicHolidayModel() when $default != null:
-return $default(_that.id,_that.company,_that.holidaydate,_that.holidayname,_that.remarks,_that.tags,_that.version);case _:
+return $default(_that.id,_that.companyId,_that.title,_that.titleMm,_that.date,_that.type,_that.isActive,_that.deleted,_that.createdAt,_that.updatedAt,_that.version);case _:
   return orElse();
 
 }
@@ -180,10 +184,10 @@ return $default(_that.id,_that.company,_that.holidaydate,_that.holidayname,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  String company,  String? holidaydate,  List<String> holidayname,  String? remarks,  List<dynamic> tags, @JsonKey(name: '__v')  int? version)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id, @JsonKey(name: 'company_id')  String companyId,  String title, @JsonKey(name: 'title_mm')  String titleMm,  String? date,  String type, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'deleted')  bool deleted,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)  $default,) {final _that = this;
 switch (_that) {
 case _PublicHolidayModel():
-return $default(_that.id,_that.company,_that.holidaydate,_that.holidayname,_that.remarks,_that.tags,_that.version);case _:
+return $default(_that.id,_that.companyId,_that.title,_that.titleMm,_that.date,_that.type,_that.isActive,_that.deleted,_that.createdAt,_that.updatedAt,_that.version);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +204,10 @@ return $default(_that.id,_that.company,_that.holidaydate,_that.holidayname,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String id,  String company,  String? holidaydate,  List<String> holidayname,  String? remarks,  List<dynamic> tags, @JsonKey(name: '__v')  int? version)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String id, @JsonKey(name: 'company_id')  String companyId,  String title, @JsonKey(name: 'title_mm')  String titleMm,  String? date,  String type, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'deleted')  bool deleted,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,) {final _that = this;
 switch (_that) {
 case _PublicHolidayModel() when $default != null:
-return $default(_that.id,_that.company,_that.holidaydate,_that.holidayname,_that.remarks,_that.tags,_that.version);case _:
+return $default(_that.id,_that.companyId,_that.title,_that.titleMm,_that.date,_that.type,_that.isActive,_that.deleted,_that.createdAt,_that.updatedAt,_that.version);case _:
   return null;
 
 }
@@ -215,27 +219,19 @@ return $default(_that.id,_that.company,_that.holidaydate,_that.holidayname,_that
 @JsonSerializable()
 
 class _PublicHolidayModel implements PublicHolidayModel {
-  const _PublicHolidayModel({@JsonKey(name: '_id') required this.id, required this.company, this.holidaydate, final  List<String> holidayname = const [], this.remarks, final  List<dynamic> tags = const [], @JsonKey(name: '__v') this.version}): _holidayname = holidayname,_tags = tags;
+  const _PublicHolidayModel({@JsonKey(name: '_id') required this.id, @JsonKey(name: 'company_id') this.companyId = '', this.title = '', @JsonKey(name: 'title_mm') this.titleMm = '', this.date, this.type = '', @JsonKey(name: 'is_active') this.isActive = true, @JsonKey(name: 'deleted') this.deleted = false, this.createdAt, this.updatedAt, @JsonKey(name: '__v') this.version});
   factory _PublicHolidayModel.fromJson(Map<String, dynamic> json) => _$PublicHolidayModelFromJson(json);
 
 @override@JsonKey(name: '_id') final  String id;
-@override final  String company;
-@override final  String? holidaydate;
- final  List<String> _holidayname;
-@override@JsonKey() List<String> get holidayname {
-  if (_holidayname is EqualUnmodifiableListView) return _holidayname;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_holidayname);
-}
-
-@override final  String? remarks;
- final  List<dynamic> _tags;
-@override@JsonKey() List<dynamic> get tags {
-  if (_tags is EqualUnmodifiableListView) return _tags;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_tags);
-}
-
+@override@JsonKey(name: 'company_id') final  String companyId;
+@override@JsonKey() final  String title;
+@override@JsonKey(name: 'title_mm') final  String titleMm;
+@override final  String? date;
+@override@JsonKey() final  String type;
+@override@JsonKey(name: 'is_active') final  bool isActive;
+@override@JsonKey(name: 'deleted') final  bool deleted;
+@override final  String? createdAt;
+@override final  String? updatedAt;
 @override@JsonKey(name: '__v') final  int? version;
 
 /// Create a copy of PublicHolidayModel
@@ -251,16 +247,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PublicHolidayModel&&(identical(other.id, id) || other.id == id)&&(identical(other.company, company) || other.company == company)&&(identical(other.holidaydate, holidaydate) || other.holidaydate == holidaydate)&&const DeepCollectionEquality().equals(other._holidayname, _holidayname)&&(identical(other.remarks, remarks) || other.remarks == remarks)&&const DeepCollectionEquality().equals(other._tags, _tags)&&(identical(other.version, version) || other.version == version));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PublicHolidayModel&&(identical(other.id, id) || other.id == id)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.title, title) || other.title == title)&&(identical(other.titleMm, titleMm) || other.titleMm == titleMm)&&(identical(other.date, date) || other.date == date)&&(identical(other.type, type) || other.type == type)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.version, version) || other.version == version));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,company,holidaydate,const DeepCollectionEquality().hash(_holidayname),remarks,const DeepCollectionEquality().hash(_tags),version);
+int get hashCode => Object.hash(runtimeType,id,companyId,title,titleMm,date,type,isActive,deleted,createdAt,updatedAt,version);
 
 @override
 String toString() {
-  return 'PublicHolidayModel(id: $id, company: $company, holidaydate: $holidaydate, holidayname: $holidayname, remarks: $remarks, tags: $tags, version: $version)';
+  return 'PublicHolidayModel(id: $id, companyId: $companyId, title: $title, titleMm: $titleMm, date: $date, type: $type, isActive: $isActive, deleted: $deleted, createdAt: $createdAt, updatedAt: $updatedAt, version: $version)';
 }
 
 
@@ -271,7 +267,7 @@ abstract mixin class _$PublicHolidayModelCopyWith<$Res> implements $PublicHolida
   factory _$PublicHolidayModelCopyWith(_PublicHolidayModel value, $Res Function(_PublicHolidayModel) _then) = __$PublicHolidayModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: '_id') String id, String company, String? holidaydate, List<String> holidayname, String? remarks, List<dynamic> tags,@JsonKey(name: '__v') int? version
+@JsonKey(name: '_id') String id,@JsonKey(name: 'company_id') String companyId, String title,@JsonKey(name: 'title_mm') String titleMm, String? date, String type,@JsonKey(name: 'is_active') bool isActive,@JsonKey(name: 'deleted') bool deleted, String? createdAt, String? updatedAt,@JsonKey(name: '__v') int? version
 });
 
 
@@ -288,15 +284,19 @@ class __$PublicHolidayModelCopyWithImpl<$Res>
 
 /// Create a copy of PublicHolidayModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? company = null,Object? holidaydate = freezed,Object? holidayname = null,Object? remarks = freezed,Object? tags = null,Object? version = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? companyId = null,Object? title = null,Object? titleMm = null,Object? date = freezed,Object? type = null,Object? isActive = null,Object? deleted = null,Object? createdAt = freezed,Object? updatedAt = freezed,Object? version = freezed,}) {
   return _then(_PublicHolidayModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,company: null == company ? _self.company : company // ignore: cast_nullable_to_non_nullable
-as String,holidaydate: freezed == holidaydate ? _self.holidaydate : holidaydate // ignore: cast_nullable_to_non_nullable
-as String?,holidayname: null == holidayname ? _self._holidayname : holidayname // ignore: cast_nullable_to_non_nullable
-as List<String>,remarks: freezed == remarks ? _self.remarks : remarks // ignore: cast_nullable_to_non_nullable
-as String?,tags: null == tags ? _self._tags : tags // ignore: cast_nullable_to_non_nullable
-as List<dynamic>,version: freezed == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
+as String,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,titleMm: null == titleMm ? _self.titleMm : titleMm // ignore: cast_nullable_to_non_nullable
+as String,date: freezed == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
+as String?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
+as bool,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as String?,version: freezed == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
 as int?,
   ));
 }

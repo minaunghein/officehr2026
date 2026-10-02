@@ -9,6 +9,7 @@ This Flutter project uses feature-first clean architecture. Keep changes small, 
 - Always include generated part files when needed: `.freezed.dart`, `.g.dart`.
 - Run `dart run build_runner build --delete-conflicting-outputs` after changing annotated providers, Freezed classes, or JSON models.
 - Keep widgets separated. Do not grow long screen files with many private widgets; move reusable UI into `presentation/widgets/`.
+- For stateful widgets, always use `HookConsumerWidget` with hooks (`useState`, `useTextEditingController`, `useEffect`, `useMemoized`, etc.) instead of `StatefulWidget`/`ConsumerStatefulWidget`. Do not create `ConsumerStatefulWidget` or manual `State` classes.
 - Prefer global/shared services and utilities from `lib/core` and `lib/shared` before creating feature-local duplicates.
 - Keep domain entities independent from networking/UI details.
 - Keep API parsing in data models/datasources, business flow in repositories/usecases/providers, and rendering in widgets.

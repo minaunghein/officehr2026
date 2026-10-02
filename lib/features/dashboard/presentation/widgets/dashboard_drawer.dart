@@ -57,7 +57,7 @@ class DashboardDrawer extends ConsumerWidget {
                                 ),
                               ),
                               errorWidget: (context, url, error) => Container(
-                                color: theme.colorScheme.secondaryContainer,
+                                color: theme.colorScheme.onPrimary,
                                 alignment: Alignment.center,
                                 child: Icon(
                                   Icons.person,
@@ -76,7 +76,11 @@ class DashboardDrawer extends ConsumerWidget {
                             ),
                             borderRadius: BorderRadius.circular(50),
                           ),
-                          child: const Icon(Icons.person, size: 30),
+                          child: Icon(
+                            Icons.person,
+                            size: 30,
+                            color: theme.colorScheme.onPrimary,
+                          ),
                         ),
                   const SizedBox(width: 12),
 

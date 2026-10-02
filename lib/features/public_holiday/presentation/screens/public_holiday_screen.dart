@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/utils/date_time_utils.dart';
+import 'package:office_hr/core/widgets/container_shimmer.dart';
 import 'package:office_hr/features/public_holiday/domain/entities/public_holiday.dart';
 import 'package:office_hr/features/public_holiday/presentation/providers/public_holiday_providers.dart';
 
@@ -56,7 +57,18 @@ class PublicHolidayScreen extends ConsumerWidget {
             ),
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => Column(
+          children: [
+            for (int i = 0; i < 5; i++) ...[
+              ContainerShimmer(
+                borderRadius: BorderRadius.circular(AppSizes.borderRadiusMd),
+                height: 100,
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              ),
+            ],
+          ],
+        ),
         error: (error, stack) => Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -107,15 +119,14 @@ class _PublicHolidayCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final names = holiday.holidayName.where((name) => name.trim().isNotEmpty);
-    final title = names.isNotEmpty ? names.first : 'Public Holiday';
-    final subtitle = names.length > 1 ? names.skip(1).join(' / ') : null;
+    final title = holiday.displayTitle;
+    final subtitle = holiday.hasMyanmarTitle ? holiday.titleMm : null;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizes.borderRadiusSm),
+        borderRadius: BorderRadius.circular(AppSizes.borderRadiusMd),
         side: BorderSide(
           color: theme.colorScheme.outlineVariant.withValues(alpha: 0.4),
         ),
@@ -142,11 +153,20 @@ class _PublicHolidayCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      if (holiday.type.isNotEmpty)
+                        _TypeChip(type: holiday.type),
+                    ],
                   ),
                   if (subtitle != null) ...[
                     const SizedBox(height: 2),
@@ -161,24 +181,12 @@ class _PublicHolidayCard extends StatelessWidget {
                   ],
                   const SizedBox(height: 8),
                   Text(
-                    _formatDate(holiday.holidayDate),
+                    _formatHolidayDate(holiday.date),
                     style: theme.textTheme.labelLarge?.copyWith(
                       color: theme.colorScheme.primary,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  if (holiday.remarks != null &&
-                      holiday.remarks!.trim().isNotEmpty) ...[
-                    const SizedBox(height: 8),
-                    Text(
-                      holiday.remarks!,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(
-                          alpha: 0.55,
-                        ),
-                      ),
-                    ),
-                  ],
                 ],
               ),
             ),
@@ -187,28 +195,53 @@ class _PublicHolidayCard extends StatelessWidget {
       ),
     );
   }
+}
 
-  String _formatDate(String? value) {
-    if (value == null || value.isEmpty) return 'No date';
+class _TypeChip extends StatelessWidget {
+  const _TypeChip({required this.type});
 
-    final date = parseLocalDateTime(value);
-    if (date == null) return value;
+  final String type;
 
-    const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-
-    return '${date.day} ${months[date.month - 1]} ${date.year}';
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.primary.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        type,
+        style: theme.textTheme.labelSmall?.copyWith(
+          color: theme.colorScheme.primary,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
   }
+}
+
+String _formatHolidayDate(String? value) {
+  if (value == null || value.isEmpty) return 'No date';
+
+  final date = parseLocalDateTime(value);
+  if (date == null) return value;
+
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  return '${date.day} ${months[date.month - 1]} ${date.year}';
 }

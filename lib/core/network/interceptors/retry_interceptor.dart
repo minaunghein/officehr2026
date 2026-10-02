@@ -41,7 +41,9 @@ class RetryInterceptor extends Interceptor {
     await Future<void>.delayed(retryDelay);
 
     try {
+      final data = requestOptions.data;
       final retryOptions = requestOptions.copyWith(
+        data: data is FormData ? data.clone() : data,
         extra: {...requestOptions.extra, retryCountKey: nextRetryCount},
       );
       final response = await dio.fetch<dynamic>(retryOptions);

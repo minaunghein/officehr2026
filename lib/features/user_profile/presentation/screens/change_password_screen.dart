@@ -1,92 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/network/api_exception.dart';
-import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/core/utils/snackbar_utils.dart';
+import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 
-class ChangePasswordScreen extends ConsumerStatefulWidget {
+class ChangePasswordScreen extends HookConsumerWidget {
   const ChangePasswordScreen({super.key});
 
   @override
-  ConsumerState<ChangePasswordScreen> createState() =>
-      _ChangePasswordScreenState();
-}
-
-class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _oldPasswordController = TextEditingController();
-  final _newPasswordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-
-  bool _isSubmitting = false;
-  bool _showOldPassword = false;
-  bool _showNewPassword = false;
-  bool _showConfirmPassword = false;
-
-  @override
-  void dispose() {
-    _oldPasswordController.dispose();
-    _newPasswordController.dispose();
-    _confirmPasswordController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _submit() async {
-    final form = _formKey.currentState;
-    if (form == null || !form.validate()) return;
-
-    setState(() => _isSubmitting = true);
-    try {
-      final apiService = ref.read(apiServiceProvider);
-      final response = await apiService.put<Map<String, dynamic>>(
-        '/api/v1/users/changepassword',
-        data: {
-          'oldpassword': _oldPasswordController.text,
-          'password': _newPasswordController.text,
-          'confirmpassword': _confirmPasswordController.text,
-        },
-        parser: (data) => data is Map<String, dynamic>
-            ? data
-            : Map<String, dynamic>.from(data as Map),
-      );
-
-      if (!mounted) return;
-      await _showSuccessDialog(_messageFromResponse(response));
-      if (mounted) Navigator.of(context).pop();
-    } catch (error) {
-      if (!mounted) return;
-      context.showErrorSnackBar(_friendlyErrorMessage(error));
-    } finally {
-      if (mounted) setState(() => _isSubmitting = false);
-    }
-  }
-
-  Future<void> _showSuccessDialog(String message) {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (dialogContext) => AlertDialog(
-        icon: Icon(
-          Icons.check_circle_outline_rounded,
-          color: Theme.of(dialogContext).colorScheme.primary,
-          size: 44,
-        ),
-        title: const Text('Password Changed'),
-        content: Text(message),
-        actions: [
-          FilledButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final formKey = useMemoized(() => GlobalKey<FormState>());
+    final oldPasswordController = useTextEditingController();
+    final newPasswordController = useTextEditingController();
+    final confirmPasswordController = useTextEditingController();
+    final showOldPassword = useState(false);
+    final showNewPassword = useState(false);
+    final showConfirmPassword = useState(false);
+    final isSubmitting = useState(false);
+
+    final changePasswordState = ref.watch(changePasswordProvider);
+    final isBusy = isSubmitting.value || changePasswordState.isLoading;
+
+    Future<void> submit() async {
+      FocusScope.of(context).unfocus();
+
+      final form = formKey.currentState;
+      if (form == null || !form.validate()) return;
+
+      isSubmitting.value = true;
+      try {
+        final result = await ref
+            .read(changePasswordProvider.notifier)
+            .submit(
+              oldPassword: oldPasswordController.text,
+              newPassword: newPasswordController.text,
+            );
+
+        if (!context.mounted) return;
+        SnackbarUtils.showSuccess(result.message);
+        oldPasswordController.clear();
+        newPasswordController.clear();
+        confirmPasswordController.clear();
+        formKey.currentState?.reset();
+        isSubmitting.value = false;
+      } catch (error) {
+        if (!context.mounted) return;
+        SnackbarUtils.showError(_friendlyErrorMessage(error));
+        isSubmitting.value = false;
+      }
+    }
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -95,7 +61,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -131,32 +97,32 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                           ),
                           const SizedBox(height: 24),
                           _PasswordField(
-                            controller: _oldPasswordController,
+                            controller: oldPasswordController,
                             label: 'Old Password',
-                            visible: _showOldPassword,
+                            visible: showOldPassword.value,
+                            enabled: !isBusy,
                             textInputAction: TextInputAction.next,
-                            onToggleVisibility: () => setState(
-                              () => _showOldPassword = !_showOldPassword,
-                            ),
+                            onToggleVisibility: () =>
+                                showOldPassword.value = !showOldPassword.value,
                             validator: (value) =>
                                 _requiredPassword(value, label: 'old password'),
                           ),
                           const SizedBox(height: 16),
                           _PasswordField(
-                            controller: _newPasswordController,
+                            controller: newPasswordController,
                             label: 'New Password',
-                            visible: _showNewPassword,
+                            visible: showNewPassword.value,
+                            enabled: !isBusy,
                             textInputAction: TextInputAction.next,
-                            onToggleVisibility: () => setState(
-                              () => _showNewPassword = !_showNewPassword,
-                            ),
+                            onToggleVisibility: () =>
+                                showNewPassword.value = !showNewPassword.value,
                             validator: (value) {
                               final required = _requiredPassword(
                                 value,
                                 label: 'new password',
                               );
                               if (required != null) return required;
-                              if (value == _oldPasswordController.text) {
+                              if (value == oldPasswordController.text) {
                                 return 'New password must be different from old password';
                               }
                               return null;
@@ -164,22 +130,22 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                           ),
                           const SizedBox(height: 16),
                           _PasswordField(
-                            controller: _confirmPasswordController,
+                            controller: confirmPasswordController,
                             label: 'Confirm Password',
-                            visible: _showConfirmPassword,
+                            visible: showConfirmPassword.value,
+                            enabled: !isBusy,
                             textInputAction: TextInputAction.done,
-                            onFieldSubmitted: (_) => _submit(),
-                            onToggleVisibility: () => setState(
-                              () =>
-                                  _showConfirmPassword = !_showConfirmPassword,
-                            ),
+                            onFieldSubmitted: (_) => submit(),
+                            onToggleVisibility: () =>
+                                showConfirmPassword.value =
+                                    !showConfirmPassword.value,
                             validator: (value) {
                               final required = _requiredPassword(
                                 value,
                                 label: 'confirm password',
                               );
                               if (required != null) return required;
-                              if (value != _newPasswordController.text) {
+                              if (value != newPasswordController.text) {
                                 return 'Confirm password does not match';
                               }
                               return null;
@@ -191,17 +157,15 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                   ),
                   const SizedBox(height: 20),
                   FilledButton.icon(
-                    onPressed: _isSubmitting ? null : _submit,
-                    icon: _isSubmitting
+                    onPressed: isBusy ? null : submit,
+                    icon: isBusy
                         ? const SizedBox(
                             width: 18,
                             height: 18,
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : const Icon(Icons.lock_reset_rounded),
-                    label: Text(
-                      _isSubmitting ? 'Updating...' : 'Update Password',
-                    ),
+                    label: Text(isBusy ? 'Updating...' : 'Update Password'),
                   ),
                 ],
               ),
@@ -221,12 +185,14 @@ class _PasswordField extends StatelessWidget {
     required this.onToggleVisibility,
     required this.validator,
     required this.textInputAction,
+    this.enabled = true,
     this.onFieldSubmitted,
   });
 
   final TextEditingController controller;
   final String label;
   final bool visible;
+  final bool enabled;
   final VoidCallback onToggleVisibility;
   final FormFieldValidator<String> validator;
   final TextInputAction textInputAction;
@@ -236,6 +202,7 @@ class _PasswordField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      enabled: enabled,
       obscureText: !visible,
       enableSuggestions: false,
       autocorrect: false,
@@ -264,49 +231,14 @@ String? _requiredPassword(String? value, {required String label}) {
   return null;
 }
 
-String _messageFromResponse(Map<String, dynamic> response) {
-  final message = response['message'];
-  if (message is List && message.isNotEmpty) return message.first.toString();
-  if (message is String && message.trim().isNotEmpty) return message;
-  return 'Password changed successfully';
-}
-
 String _friendlyErrorMessage(Object error) {
   if (error is ApiException) {
-    switch (error.type) {
-      case ApiErrorType.unauthorized:
-      case ApiErrorType.forbidden:
-        return 'Your current password is incorrect.';
-      case ApiErrorType.badRequest:
-      case ApiErrorType.validationError:
-        return _passwordValidationMessage(error.message);
-      case ApiErrorType.networkError:
-      case ApiErrorType.timeout:
-        return error.message;
-      case ApiErrorType.serverError:
-        return 'Unable to change password right now. Please try again later.';
-      case ApiErrorType.notFound:
-      case ApiErrorType.conflict:
-      case ApiErrorType.cancelled:
-      case ApiErrorType.parsingError:
-      case ApiErrorType.unknown:
-        return 'Unable to change password. Please check your details and try again.';
-    }
+    final message = error.message.trim();
+    if (message.isNotEmpty) return message;
   }
+
+  final message = error.toString().trim();
+  if (message.isNotEmpty && message != 'Exception') return message;
 
   return 'Unable to change password. Please try again.';
-}
-
-String _passwordValidationMessage(String message) {
-  final lower = message.toLowerCase();
-  if (lower.contains('old') || lower.contains('current')) {
-    return 'Your current password is incorrect.';
-  }
-  if (lower.contains('confirm') || lower.contains('match')) {
-    return 'New password and confirm password must match.';
-  }
-  if (lower.contains('short') || lower.contains('length')) {
-    return 'Please choose a stronger password.';
-  }
-  return 'Please check your password details and try again.';
 }

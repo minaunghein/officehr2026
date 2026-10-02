@@ -6,11 +6,13 @@ extension PublicHolidayMapper on PublicHolidayModel {
   PublicHoliday toEntity() {
     return PublicHoliday(
       id: id,
-      companyId: company,
-      holidayDate: normalizeLocalDateTimeString(holidaydate),
-      holidayName: holidayname,
-      remarks: remarks,
-      tags: tags,
+      companyId: companyId,
+      title: title,
+      titleMm: titleMm,
+      date: normalizeLocalDateTimeString(date),
+      type: type,
+      isActive: isActive,
+      deleted: deleted,
     );
   }
 }

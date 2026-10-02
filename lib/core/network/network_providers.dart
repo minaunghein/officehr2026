@@ -1,14 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:go_router/go_router.dart';
 import 'package:office_hr/core/config/api_config.dart';
 import 'package:office_hr/core/config/app_config.dart';
 import 'package:office_hr/core/network/api_service.dart';
 import 'package:office_hr/core/network/dio_api_service.dart';
 import 'package:office_hr/core/network/interceptors/api_logging_interceptor.dart';
 import 'package:office_hr/core/network/interceptors/retry_interceptor.dart';
+import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/core/services/app_logger.dart';
+import 'package:office_hr/core/services/dialog_service.dart';
 import 'package:office_hr/features/auth/data/models/login_response_model.dart';
+import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,7 +22,7 @@ const String _authTokenKey = 'auth_token';
 const String _refreshTokenKey = 'refresh_token';
 const String companyIdStorageKey = 'company_id';
 
-@riverpod
+@Riverpod(keepAlive: true)
 ApiConfig apiConfig(Ref ref) {
   return const ApiConfig();
 }
@@ -84,7 +88,28 @@ class AuthRefreshToken extends _$AuthRefreshToken {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
+Dio refreshDio(Ref ref) {
+  final config = ref.watch(apiConfigProvider);
+
+  return Dio(
+    BaseOptions(
+      baseUrl: config.baseUrl,
+      connectTimeout: config.connectTimeout,
+      receiveTimeout: config.receiveTimeout,
+      sendTimeout: config.sendTimeout,
+      headers: const {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      responseType: ResponseType.json,
+      validateStatus: _validateStatus,
+      receiveDataWhenStatusError: true,
+    ),
+  );
+}
+
+@Riverpod(keepAlive: true)
 Dio dio(Ref ref) {
   final config = ref.watch(apiConfigProvider);
   final storage = ref.read(secureStorageProvider);
@@ -109,21 +134,8 @@ Dio dio(Ref ref) {
     _RefreshTokenInterceptor(
       client,
       storage,
+      ref.watch(refreshDioProvider),
       ref: ref,
-
-      baseOptions: BaseOptions(
-        baseUrl: config.baseUrl,
-        connectTimeout: config.connectTimeout,
-        receiveTimeout: config.receiveTimeout,
-        sendTimeout: config.sendTimeout,
-        headers: const {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        responseType: ResponseType.json,
-        validateStatus: _validateStatus,
-        receiveDataWhenStatusError: true,
-      ),
     ),
   );
 
@@ -139,10 +151,10 @@ Dio dio(Ref ref) {
 class _RefreshTokenInterceptor extends QueuedInterceptor {
   _RefreshTokenInterceptor(
     this._client,
-    this._storage, {
+    this._storage,
+    this._refreshClient, {
     required this._ref,
-    required BaseOptions baseOptions,
-  }) : _refreshClient = Dio(baseOptions);
+  });
 
   final Dio _client;
   final FlutterSecureStorage _storage;
@@ -154,7 +166,7 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final accessToken = await readStoredValue(_storage, _authTokenKey);
+    final accessToken = await _latestAccessToken();
     if (accessToken != null && accessToken.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $accessToken';
     }
@@ -163,6 +175,21 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
       options.headers['X-Company-Id'] = companyId;
     }
     handler.next(options);
+  }
+
+  /// Returns the freshest access token. The in-memory provider state is the
+  /// source of truth because it is updated synchronously after a successful
+  /// refresh; secure storage is only a fallback. Relying on storage alone can
+  /// leave a just-refreshed retry carrying the previous token if the read is
+  /// served from a stale cache.
+  Future<String?> _latestAccessToken() async {
+    if (_ref.mounted) {
+      final value = _ref.read(authTokenProvider).value;
+      if (value != null && value.isNotEmpty) {
+        return value;
+      }
+    }
+    return readStoredValue(_storage, _authTokenKey);
   }
 
   @override
@@ -174,11 +201,15 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
     final requestOptions = err.requestOptions;
     final isRefreshRequest = requestOptions.path == '/api/v1/auth/refresh';
     final isLoginRequest = requestOptions.path == '/api/v1/auth/login';
+    // final isChangePasswordRequest =
+    //     requestOptions.method.toUpperCase() == 'PATCH' &&
+    //     requestOptions.path == '/api/v1/auth/password';
     final alreadyRetried = requestOptions.extra['tokenRetried'] == true;
 
     if (statusCode != 401 ||
         isRefreshRequest ||
         isLoginRequest ||
+        // isChangePasswordRequest ||
         alreadyRetried) {
       handler.next(err);
       return;
@@ -194,7 +225,7 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
     // this interceptor is queued, an earlier request may already have
     // refreshed the token by the time this 401 is handled. Retry with that
     // token instead of refreshing again and propagating the stale 401.
-    final currentAccessToken = await readStoredValue(_storage, _authTokenKey);
+    final currentAccessToken = await _latestAccessToken();
     final requestAccessToken = _accessTokenFromHeaders(requestOptions.headers);
     if (currentAccessToken != null &&
         currentAccessToken.isNotEmpty &&
@@ -223,6 +254,7 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
       return;
     }
 
+    final String accessToken;
     try {
       final companyId = await readStoredValue(_storage, companyIdStorageKey);
       AppLogger.d(
@@ -245,24 +277,18 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
       );
       final responseData = refreshResponse.data;
       if (responseData is! Map<String, dynamic>) {
-        AppLogger.e(
+        throw const FormatException(
           'Refresh response body is not a JSON object.',
-          tag: 'AuthRefresh',
         );
-        handler.next(err);
-        return;
       }
       final authenticated = LoginResponseModel.fromJson(
         responseData,
       ).toEntity();
-      final accessToken = authenticated.accessToken;
+      accessToken = authenticated.accessToken;
       if (accessToken.isEmpty) {
-        AppLogger.e(
+        throw const FormatException(
           'Refresh response did not contain an access token.',
-          tag: 'AuthRefresh',
         );
-        handler.next(err);
-        return;
       }
 
       final newRefreshToken = authenticated.refreshToken.isNotEmpty
@@ -270,10 +296,12 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
           : refreshToken;
       await writeStoredValue(_storage, _authTokenKey, accessToken);
       await writeStoredValue(_storage, _refreshTokenKey, newRefreshToken);
-      await _ref.read(authTokenProvider.notifier).setToken(accessToken);
-      await _ref
-          .read(authRefreshTokenProvider.notifier)
-          .setToken(newRefreshToken);
+      if (_ref.mounted) {
+        await _ref.read(authTokenProvider.notifier).setToken(accessToken);
+        await _ref
+            .read(authRefreshTokenProvider.notifier)
+            .setToken(newRefreshToken);
+      }
       final activeCompanyId = authenticated.session.activeCompany.id;
       if (activeCompanyId.isNotEmpty) {
         await writeStoredValue(_storage, companyIdStorageKey, activeCompanyId);
@@ -287,7 +315,42 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
         'Refresh token flow succeeded. Retrying the original request once.',
         tag: 'AuthRefresh',
       );
+    } catch (error, stackTrace) {
+      if (error is DioException) {
+        AppLogger.e(
+          'Refresh endpoint rejected the request with HTTP '
+          '${error.response?.statusCode}. Body: ${error.response?.data}',
+          tag: 'AuthRefresh',
+        );
+      }
+      AppLogger.e(
+        'Refresh token flow failed. Clearing session and redirecting to login.',
+        tag: 'AuthRefresh',
+        error: error,
+        stack: stackTrace,
+      );
+      // Always complete the handler. If an exception escapes before
+      // `handler.next`, a QueuedInterceptor never releases the request and the
+      // caller hangs forever with neither a success nor an error.
+      try {
+        await _clearSession();
+        _navigateToLogin();
+      } catch (handlingError, handlingStack) {
+        AppLogger.e(
+          'Failed while handling the refresh failure.',
+          tag: 'AuthRefresh',
+          error: handlingError,
+          stack: handlingStack,
+        );
+      } finally {
+        handler.next(err);
+      }
+      return;
+    }
 
+    // The refresh succeeded, so retry the original request with the new token.
+    // Failures here must not clear the session.
+    try {
       final retryOptions = await _copyRequestOptions(
         requestOptions,
         accessToken,
@@ -298,21 +361,68 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
         tag: 'AuthRefresh',
       );
       handler.resolve(retryResponse);
-    } catch (error, stackTrace) {
-      if (error is DioException) {
-        AppLogger.e(
-          'Refresh endpoint rejected the request with HTTP '
-          '${error.response?.statusCode}. Body: ${error.response?.data}',
-          tag: 'AuthRefresh',
-        );
-      }
+    } catch (retryError, retryStackTrace) {
       AppLogger.e(
-        'Refresh token flow failed. Returning the original 401 response.',
+        'Retrying the original request after a successful refresh failed.',
+        tag: 'AuthRefresh',
+        error: retryError,
+        stack: retryStackTrace,
+      );
+      handler.next(retryError is DioException ? retryError : err);
+    }
+  }
+
+  Future<void> _clearSession() async {
+    // Clear the in-memory auth state as well as persisted tokens. Clearing
+    // `authTokenProvider` flips `isAuthenticatedProvider` to false, which makes
+    // the router's redirect allow `/login` instead of bouncing to the
+    // dashboard.
+    try {
+      if (_ref.mounted) {
+        await _ref.read(currentUserProvider.notifier).logout();
+        return;
+      }
+    } catch (error, stack) {
+      AppLogger.e(
+        'Failed to clear the session through providers. Falling back to '
+        'storage cleanup.',
         tag: 'AuthRefresh',
         error: error,
-        stack: stackTrace,
+        stack: stack,
       );
-      handler.next(err);
+    }
+
+    for (final key in const [
+      _authTokenKey,
+      _refreshTokenKey,
+      companyIdStorageKey,
+    ]) {
+      try {
+        await deleteStoredValue(_storage, key);
+      } catch (error, stack) {
+        AppLogger.e(
+          'Failed to delete stored value "$key".',
+          tag: 'AuthRefresh',
+          error: error,
+          stack: stack,
+        );
+      }
+    }
+  }
+
+  void _navigateToLogin() {
+    try {
+      final context = DialogService.navigatorKey.currentContext;
+      if (context != null && context.mounted) {
+        GoRouter.of(context).go(AppRoutes.login);
+      }
+    } catch (error, stack) {
+      AppLogger.e(
+        'Failed to navigate to the login screen.',
+        tag: 'AuthRefresh',
+        error: error,
+        stack: stack,
+      );
     }
   }
 
@@ -340,7 +450,10 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
       headers['X-Company-Id'] = companyId;
     }
 
+    // A FormData can only be finalized once, so clone it before retrying.
+    final data = requestOptions.data;
     return requestOptions.copyWith(
+      data: data is FormData ? data.clone() : data,
       headers: headers,
       extra: {...requestOptions.extra, 'tokenRetried': true},
     );
@@ -382,7 +495,7 @@ Future<void> deleteStoredValue(FlutterSecureStorage storage, String key) async {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 ApiService apiService(Ref ref) {
   return DioApiService(ref.watch(dioProvider));
 }

@@ -9,7 +9,8 @@ import 'package:office_hr/features/auth/presentation/screens/company_setup_scree
 import 'package:office_hr/features/auth/presentation/screens/login_screen.dart';
 import 'package:office_hr/features/user_profile/presentation/screens/change_password_screen.dart';
 import 'package:office_hr/features/user_profile/presentation/screens/company_screen.dart';
-import 'package:office_hr/features/user_profile/presentation/screens/leave_screen.dart';
+import 'package:office_hr/features/leave/presentation/screens/create_leave_request_screen.dart';
+import 'package:office_hr/features/leave/presentation/screens/leave_screen.dart';
 import 'package:office_hr/features/user_profile/presentation/screens/profile_screen.dart';
 
 abstract final class AppRoutes {
@@ -22,6 +23,7 @@ abstract final class AppRoutes {
   static const payslip = '/payslip';
   static const publicHoliday = '/public-holidays';
   static const leave = '/leave';
+  static const createLeave = '/leave/new';
   static const company = '/company';
   static const changePassword = '/change-password';
 }
@@ -67,6 +69,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (_, _) => const PublicHolidayScreen(),
       ),
       GoRoute(path: AppRoutes.leave, builder: (_, _) => const LeaveScreen()),
+      GoRoute(
+        path: AppRoutes.createLeave,
+        builder: (_, _) => const CreateLeaveRequestScreen(),
+      ),
       GoRoute(
         path: AppRoutes.company,
         builder: (_, _) => const CompanyScreen(),
