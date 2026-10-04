@@ -236,6 +236,135 @@ final class GetTodayAttendanceUsecaseProvider
 String _$getTodayAttendanceUsecaseHash() =>
     r'8624120efe9790d978dc95c303ad304055cdf6c0';
 
+@ProviderFor(getMyAttendanceUsecase)
+final getMyAttendanceUsecaseProvider = GetMyAttendanceUsecaseProvider._();
+
+final class GetMyAttendanceUsecaseProvider
+    extends
+        $FunctionalProvider<
+          GetMyAttendanceUsecase,
+          GetMyAttendanceUsecase,
+          GetMyAttendanceUsecase
+        >
+    with $Provider<GetMyAttendanceUsecase> {
+  GetMyAttendanceUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getMyAttendanceUsecaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getMyAttendanceUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetMyAttendanceUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetMyAttendanceUsecase create(Ref ref) {
+    return getMyAttendanceUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetMyAttendanceUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetMyAttendanceUsecase>(value),
+    );
+  }
+}
+
+String _$getMyAttendanceUsecaseHash() =>
+    r'cde7de7468a858118567b0fdc40011523668d405';
+
+@ProviderFor(attendanceHistory)
+final attendanceHistoryProvider = AttendanceHistoryFamily._();
+
+final class AttendanceHistoryProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<TodayAttendance>>,
+          List<TodayAttendance>,
+          FutureOr<List<TodayAttendance>>
+        >
+    with
+        $FutureModifier<List<TodayAttendance>>,
+        $FutureProvider<List<TodayAttendance>> {
+  AttendanceHistoryProvider._({
+    required AttendanceHistoryFamily super.from,
+    required AttendanceHistoryQuery super.argument,
+  }) : super(
+         retry: null,
+         name: r'attendanceHistoryProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$attendanceHistoryHash();
+
+  @override
+  String toString() {
+    return r'attendanceHistoryProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<TodayAttendance>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<TodayAttendance>> create(Ref ref) {
+    final argument = this.argument as AttendanceHistoryQuery;
+    return attendanceHistory(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is AttendanceHistoryProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$attendanceHistoryHash() => r'78c9ecdcb584a2bf3cefe1f6267138d63847b657';
+
+final class AttendanceHistoryFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<List<TodayAttendance>>,
+          AttendanceHistoryQuery
+        > {
+  AttendanceHistoryFamily._()
+    : super(
+        retry: null,
+        name: r'attendanceHistoryProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  AttendanceHistoryProvider call(AttendanceHistoryQuery query) =>
+      AttendanceHistoryProvider._(argument: query, from: this);
+
+  @override
+  String toString() => r'attendanceHistoryProvider';
+}
+
 @ProviderFor(monthlyAttendanceStats)
 final monthlyAttendanceStatsProvider = MonthlyAttendanceStatsProvider._();
 

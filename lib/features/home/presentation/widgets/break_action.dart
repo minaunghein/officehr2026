@@ -82,6 +82,7 @@ class BreakActions extends ConsumerWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                 ),
               ),
             ),
@@ -109,6 +110,7 @@ class BreakActions extends ConsumerWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
+                  padding: EdgeInsets.symmetric(horizontal: 8),
                 ),
               ),
             ),

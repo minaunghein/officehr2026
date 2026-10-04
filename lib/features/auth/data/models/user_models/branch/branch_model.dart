@@ -14,7 +14,7 @@ abstract class BranchModel with _$BranchModel {
     @JsonKey(readValue: _readId) @Default('') String id,
     @Default('') String title,
     @Default('') String code,
-    required GeofenceModel geofence,
+    @Default(GeofenceModel()) GeofenceModel geofence,
     @JsonKey(name: 'company_id') @Default('') String companyId,
     @JsonKey(name: 'is_active') @Default(false) bool isActive,
     @Default(false) bool deleted,

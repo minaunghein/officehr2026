@@ -5,10 +5,12 @@ import 'package:office_hr/features/home/data/repositories/attendance_repository_
 import 'package:office_hr/features/home/domain/entities/attendance_stats.dart';
 import 'package:office_hr/features/home/domain/entities/clock_attendance_response.dart';
 import 'package:office_hr/features/home/domain/entities/today_attendance.dart';
+import 'package:office_hr/features/home/domain/params/attendance_history_query.dart';
 import 'package:office_hr/features/home/domain/params/clock_attendance_params.dart';
 import 'package:office_hr/features/home/domain/repositories/attendance_repository.dart';
 import 'package:office_hr/features/home/domain/usecases/clockin_usecase.dart';
 import 'package:office_hr/features/home/domain/usecases/clockout_usecase.dart';
+import 'package:office_hr/features/home/domain/usecases/get_my_attendance_usecase.dart';
 import 'package:office_hr/features/home/domain/usecases/get_today_attendance_usecase.dart';
 import 'package:office_hr/features/home/presentation/state/attendance_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -48,7 +50,25 @@ GetTodayAttendanceUsecase getTodayAttendanceUsecase(Ref ref) {
   return GetTodayAttendanceUsecase(attendanceRepository: repository);
 }
 
+@riverpod
+GetMyAttendanceUsecase getMyAttendanceUsecase(Ref ref) {
+  final repository = ref.watch(attendanceRepositoryProvider);
+  return GetMyAttendanceUsecase(attendanceRepository: repository);
+}
+
 // ==================== Function Providers ====================
+
+@riverpod
+Future<List<TodayAttendance>> attendanceHistory(
+  Ref ref,
+  AttendanceHistoryQuery query,
+) {
+  return ref.watch(getMyAttendanceUsecaseProvider)(
+    date: query.date,
+    start: query.start,
+    end: query.end,
+  );
+}
 
 @Riverpod(keepAlive: true)
 Future<AttendanceStats> monthlyAttendanceStats(Ref ref) {
@@ -142,7 +162,7 @@ class AttendanceNotifier extends _$AttendanceNotifier {
       ),
       action: () => ref.read(
         clockOutUsecaseProvider,
-      )(), // TODO: Add params in the clockInUsecaseProvider read after backend ready
+      )(), // TODO: Add params in the clockOutUsecaseProvider read after backend ready
     );
   }
 

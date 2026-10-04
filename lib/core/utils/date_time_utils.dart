@@ -5,6 +5,14 @@ DateTime? parseLocalDateTime(String? value) {
   return parsed?.toLocal();
 }
 
+/// Formats [date] as the `YYYY-MM-DD` string used by attendance APIs.
+String formatApiDate(DateTime date) {
+  final local = date.toLocal();
+  final month = local.month.toString().padLeft(2, '0');
+  final day = local.day.toString().padLeft(2, '0');
+  return '${local.year}-$month-$day';
+}
+
 String? normalizeLocalDateTimeString(String? value) {
   if (value == null || value.trim().isEmpty) return value;
 

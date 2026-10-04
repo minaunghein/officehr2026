@@ -1,4 +1,6 @@
 import 'package:office_hr/core/network/api_service.dart';
+import 'package:office_hr/core/services/app_logger.dart';
+import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/features/home/data/models/attendance_stats_model.dart';
 import 'package:office_hr/features/home/data/models/clock_attendance_response_model.dart';
 import 'package:office_hr/features/home/data/models/today_attendance_model.dart';
@@ -16,6 +18,15 @@ abstract class AttendanceRemoteDatasource {
     ClockAttendanceParams? params,
   ]);
   Future<TodayAttendanceModel> getTodayAttendance();
+
+  /// Fetches attendance for a single [date] or a [start]/[end] range.
+  /// All dates are sent as `YYYY-MM-DD` query parameters.
+  Future<List<TodayAttendanceModel>> getMyAttendance({
+    DateTime? date,
+    DateTime? start,
+    DateTime? end,
+  });
+
   Future<AttendanceStatsModel> getAttendanceStats({
     required DateTime start,
     required DateTime end,
@@ -86,6 +97,53 @@ class AttendanceRemoteDatasourceImpl implements AttendanceRemoteDatasource {
     );
 
     return TodayAttendanceModel.fromJson(response);
+  }
+
+  @override
+  Future<List<TodayAttendanceModel>> getMyAttendance({
+    DateTime? date,
+    DateTime? start,
+    DateTime? end,
+  }) async {
+    final queryParameters = <String, dynamic>{
+      if (date != null)
+        'date': formatApiDate(date)
+      else if (start != null && end != null) ...{
+        'start': formatApiDate(start),
+        'end': formatApiDate(end),
+      },
+    };
+
+    return _apiService.get<List<TodayAttendanceModel>>(
+      '/api/v1/attendance/my-attendance',
+      queryParameters: queryParameters.isEmpty ? null : queryParameters,
+      parser: _parseAttendanceList,
+    );
+  }
+
+  List<TodayAttendanceModel> _parseAttendanceList(dynamic data) {
+    try {
+      final payload = data is Map<String, dynamic>
+          ? data['data'] ?? data
+          : data;
+      if (payload is List) {
+        return payload
+            .whereType<Map<String, dynamic>>()
+            .map(TodayAttendanceModel.fromJson)
+            .toList();
+      }
+      if (payload is Map<String, dynamic>) {
+        return [TodayAttendanceModel.fromJson(payload)];
+      }
+      return const [];
+    } catch (e, stack) {
+      AppLogger.e(
+        'Error parsing attendance history: $e',
+        error: e,
+        stack: stack,
+      );
+      rethrow;
+    }
   }
 
   @override

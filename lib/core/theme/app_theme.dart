@@ -240,6 +240,20 @@ class AppTheme {
         ),
         margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
       ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: primary,
+          foregroundColor: onPrimary,
+          // elevation: 0,
+          // padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+          // textStyle: GoogleFonts.inter(
+          //   fontSize: 14,
+          //   fontWeight: FontWeight.w600,
+          // ),
+          // minimumSize: const Size(48, 48),
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: primary,
@@ -340,6 +354,22 @@ class AppTheme {
         checkColor: WidgetStateProperty.all(onPrimary),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       ),
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return primary;
+            }
+            return surfaceVariant;
+          }),
+          foregroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return onPrimary;
+            }
+            return onBackground;
+          }),
+        ),
+      ),
       radioTheme: RadioThemeData(
         fillColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
@@ -351,6 +381,7 @@ class AppTheme {
       chipTheme: ChipThemeData(
         backgroundColor: surfaceVariant,
         selectedColor: primary,
+        checkmarkColor: onPrimary,
         labelStyle: GoogleFonts.inter(
           color: onBackground,
           fontSize: 12,

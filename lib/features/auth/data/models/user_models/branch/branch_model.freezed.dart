@@ -228,13 +228,13 @@ return $default(_that.id,_that.title,_that.code,_that.geofence,_that.companyId,_
 @JsonSerializable()
 
 class _BranchModel extends BranchModel {
-  const _BranchModel({@JsonKey(readValue: _readId) this.id = '', this.title = '', this.code = '', required this.geofence, @JsonKey(name: 'company_id') this.companyId = '', @JsonKey(name: 'is_active') this.isActive = false, this.deleted = false, this.deletedAt, this.createdAt, this.updatedAt, @JsonKey(name: '__v') this.version}): super._();
+  const _BranchModel({@JsonKey(readValue: _readId) this.id = '', this.title = '', this.code = '', this.geofence = const GeofenceModel(), @JsonKey(name: 'company_id') this.companyId = '', @JsonKey(name: 'is_active') this.isActive = false, this.deleted = false, this.deletedAt, this.createdAt, this.updatedAt, @JsonKey(name: '__v') this.version}): super._();
   factory _BranchModel.fromJson(Map<String, dynamic> json) => _$BranchModelFromJson(json);
 
 @override@JsonKey(readValue: _readId) final  String id;
 @override@JsonKey() final  String title;
 @override@JsonKey() final  String code;
-@override final  GeofenceModel geofence;
+@override@JsonKey() final  GeofenceModel geofence;
 @override@JsonKey(name: 'company_id') final  String companyId;
 @override@JsonKey(name: 'is_active') final  bool isActive;
 @override@JsonKey() final  bool deleted;

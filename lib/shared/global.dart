@@ -6,7 +6,7 @@ import 'package:office_hr/features/auth/domain/entities/user_entities/user/user.
 String? buildFullName(BasicInfo? info) {
   if (info == null) return null;
 
-  final name = [info.firstName, info.firstName].join(' ').trim();
+  final name = [info.firstName, info.lastName].join(' ').trim();
   return name.isEmpty ? null : name;
 }
 

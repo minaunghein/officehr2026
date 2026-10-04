@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:office_hr/core/constants/app_sizes.dart';
 
 class UserProfileSection extends StatelessWidget {
   const UserProfileSection({
@@ -17,39 +18,39 @@ class UserProfileSection extends StatelessWidget {
     final theme = Theme.of(context);
     return Card(
       elevation: 0,
-
+      color: theme.colorScheme.surface,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14),
-        side: BorderSide(color: theme.colorScheme.outlineVariant),
+        borderRadius: BorderRadius.circular(AppSizes.cardRadiusLg),
+        side: BorderSide(
+          color: theme.colorScheme.onSurface.withValues(alpha: 0.12),
+        ),
       ),
       clipBehavior: Clip.antiAlias,
       child: Padding(
-        padding: const EdgeInsets.all(18),
+        padding: const EdgeInsets.all(AppSizes.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Container(
-                  width: 34,
-                  height: 34,
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.09),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Icon(icon, size: 18, color: theme.colorScheme.primary),
+                Icon(
+                  icon,
+                  size: AppSizes.iconMd,
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
-                const SizedBox(width: 11),
-                Text(
-                  title,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
+                const SizedBox(width: AppSizes.sm),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ],
             ),
-            const Divider(height: 26),
+            const Divider(height: AppSizes.xxl),
             ...children,
           ],
         ),
@@ -80,9 +81,9 @@ class UserProfileInfoRow extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            label.toUpperCase(),
-            style: theme.textTheme.labelSmall?.copyWith(
-              letterSpacing: 0.7,
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontSize: 12,
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
@@ -109,8 +110,13 @@ class UserProfileFieldGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final columns = constraints.maxWidth >= 560 ? 3 : 2;
-        const spacing = 12.0;
+        final largeText = MediaQuery.textScalerOf(context).scale(14) > 20;
+        final columns = constraints.maxWidth < 320 || largeText
+            ? 1
+            : constraints.maxWidth >= 680
+            ? 3
+            : 2;
+        const spacing = AppSizes.spaceBtwItems;
         final width =
             (constraints.maxWidth - spacing * (columns - 1)) / columns;
         return Wrap(

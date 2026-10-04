@@ -146,6 +146,7 @@ class MapSliverAppBar extends HookConsumerWidget {
     final locationAsync = ref.watch(currentLocationProvider);
     final location = locationAsync.hasValue ? locationAsync.value : null;
     final branch = currentUser.value?.employee?.workInfo.branch;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return SliverAppBar(
       expandedHeight: 280,
@@ -161,6 +162,9 @@ class MapSliverAppBar extends HookConsumerWidget {
               options: MapOptions(
                 initialCenter: currentCenter.value,
                 initialZoom: _mapZoom,
+                backgroundColor: isDark
+                    ? Theme.of(context).scaffoldBackgroundColor
+                    : const Color(0xFFE0E0E0),
                 onMapReady: () {
                   mapReady.value = true;
                   mapController.move(currentCenter.value, _mapZoom);
@@ -173,6 +177,7 @@ class MapSliverAppBar extends HookConsumerWidget {
                 TileLayer(
                   urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                   userAgentPackageName: 'com.tps.officehr',
+                  tileBuilder: isDark ? darkModeTileBuilder : null,
                 ),
                 if (branch != null)
                   CircleLayer(

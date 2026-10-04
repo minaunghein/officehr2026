@@ -142,18 +142,20 @@ class _BalancesTab extends StatelessWidget {
       },
       loading: () => Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 96),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ContainerShimmer(height: 150),
-            const SizedBox(height: 20),
-            ContainerShimmer(height: 20, width: 120),
-            const SizedBox(height: 12),
-            for (int i = 0; i < 3; i++) ...[
-              ContainerShimmer(height: 120),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ContainerShimmer(height: 150),
+              const SizedBox(height: 20),
+              ContainerShimmer(height: 20, width: 120),
               const SizedBox(height: 12),
+              for (int i = 0; i < 3; i++) ...[
+                ContainerShimmer(height: 120),
+                const SizedBox(height: 12),
+              ],
             ],
-          ],
+          ),
         ),
       ),
       error: (error, _) =>

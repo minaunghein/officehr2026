@@ -48,6 +48,20 @@ class AttendanceRepositoryImpl implements AttendanceRepository {
   }
 
   @override
+  Future<List<TodayAttendance>> getMyAttendance({
+    DateTime? date,
+    DateTime? start,
+    DateTime? end,
+  }) async {
+    final models = await datasource.getMyAttendance(
+      date: date,
+      start: start,
+      end: end,
+    );
+    return models.map((model) => model.toEntity()).toList();
+  }
+
+  @override
   Future<AttendanceStats> getAttendanceStats({
     required DateTime start,
     required DateTime end,

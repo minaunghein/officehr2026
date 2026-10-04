@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:office_hr/core/constants/app_sizes.dart';
 
 class UserProfileEmptyState extends StatelessWidget {
   const UserProfileEmptyState({super.key, required this.message});
@@ -7,7 +8,28 @@ class UserProfileEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text(message));
+    final theme = Theme.of(context);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSizes.xl),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.info_outline_rounded,
+              size: 40,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+            const SizedBox(height: AppSizes.md),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyMedium,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -23,15 +45,33 @@ class UserProfileErrorState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline_rounded, size: 42),
+            Icon(
+              Icons.error_outline_rounded,
+              size: 40,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
             const SizedBox(height: 12),
-            Text(message, textAlign: TextAlign.center),
+            Text(
+              'Unable to load information',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: AppSizes.xs),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
             const SizedBox(height: 16),
             FilledButton.icon(
               onPressed: onRetry,

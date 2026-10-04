@@ -8,6 +8,7 @@ class MapLocationStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     if (!locationAsync.isLoading && !locationAsync.hasError) {
       return const SizedBox.shrink();
     }
@@ -23,7 +24,7 @@ class MapLocationStatus extends StatelessWidget {
           decoration: BoxDecoration(
             color: isError
                 ? const Color(0xFFD32F2F).withValues(alpha: 0.9)
-                : Colors.white.withValues(alpha: 0.9),
+                : theme.colorScheme.surface.withValues(alpha: 0.9),
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
@@ -39,12 +40,12 @@ class MapLocationStatus extends StatelessWidget {
               if (isError)
                 const Icon(Icons.error_outline, size: 16, color: Colors.white)
               else
-                const SizedBox(
+                SizedBox(
                   width: 14,
                   height: 14,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    color: Color(0xFF0052CC),
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
               const SizedBox(width: 8),
@@ -52,7 +53,7 @@ class MapLocationStatus extends StatelessWidget {
                 isError ? 'Location Error' : 'Getting location...',
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   fontWeight: FontWeight.w700,
-                  color: isError ? Colors.white : const Color(0xFF0052CC),
+                  color: isError ? Colors.white : theme.colorScheme.onSurface,
                 ),
               ),
             ],

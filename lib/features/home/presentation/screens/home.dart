@@ -30,11 +30,6 @@ class HomeScreen extends ConsumerWidget {
                   SizedBox(height: 24),
                   MonthlyStatistics(),
                   SizedBox(height: 24),
-                  TextButton(
-                    onPressed: () =>
-                        ref.read(currentUserProvider.notifier).logout(),
-                    child: Text('Logout'),
-                  ),
                 ]),
               ),
             ),

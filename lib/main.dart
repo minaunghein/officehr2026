@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/services/hive_service.dart';
@@ -18,9 +18,14 @@ Future<void> main() async {
       await HiveService.init();
 
       final config = await AppConfig.load();
-      await Firebase.initializeApp(
-        options: config.firebase.toFirebaseOptions(),
-      );
+      if (defaultTargetPlatform == TargetPlatform.iOS ||
+          defaultTargetPlatform == TargetPlatform.macOS) {
+        await Firebase.initializeApp();
+      } else {
+        await Firebase.initializeApp(
+          options: config.firebase.toFirebaseOptions(),
+        );
+      }
 
       await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
         config.features.enableCrashlytics,
@@ -53,6 +58,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ProviderScope(child: OfficeHrApp());
+    return ProviderScope(
+      retry: (retryCount, error) => null,
+      child: const OfficeHrApp(),
+    );
   }
 }

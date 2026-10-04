@@ -9,6 +9,11 @@ abstract class AttendanceRepository {
   Future<ClockAttendanceResponse> breakStart([ClockAttendanceParams? params]);
   Future<ClockAttendanceResponse> breakEnd([ClockAttendanceParams? params]);
   Future<TodayAttendance> getTodayAttendance();
+  Future<List<TodayAttendance>> getMyAttendance({
+    DateTime? date,
+    DateTime? start,
+    DateTime? end,
+  });
   Future<AttendanceStats> getAttendanceStats({
     required DateTime start,
     required DateTime end,

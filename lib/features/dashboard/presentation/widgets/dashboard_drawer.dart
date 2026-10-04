@@ -18,6 +18,7 @@ class DashboardDrawer extends ConsumerWidget {
     final themeStyle = ref.watch(themeProvider);
     final userDetails = ref.watch(currentUserProvider);
     final employee = userDetails.value?.employee;
+    final role = userDetails.value?.role;
     final fullName =
         buildFullName(employee?.basicInfo) ?? userDetails.value?.username;
     final positionTitle = employee?.workInfo.position?.title;
@@ -116,26 +117,51 @@ class DashboardDrawer extends ConsumerWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      if (empCode != null) ...[
-                        const SizedBox(height: 6),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 3,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.18),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            'ID: $empCode',
-                            style: theme.textTheme.labelSmall?.copyWith(
-                              color: theme.colorScheme.onPrimary,
-                              fontWeight: FontWeight.w600,
+                      const SizedBox(height: 6),
+                      Flex(
+                        direction: Axis.horizontal,
+                        children: [
+                          if (empCode != null) ...[
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 3,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.18),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                'ID: $empCode',
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                  color: theme.colorScheme.onPrimary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ],
+                            const SizedBox(width: 6),
+                          ],
+                          if (role != null) ...[
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 3,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.18),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                role.name,
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                  color: theme.colorScheme.onPrimary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
                     ],
                   ),
                 ],
@@ -145,6 +171,18 @@ class DashboardDrawer extends ConsumerWidget {
           const _SectionLabel(label: 'Appearance'),
           _SettingsGroup(
             children: [_ThemeTile(themeStyle: themeStyle, ref: ref)],
+          ),
+          const _SectionLabel(label: 'Profile'),
+          _SettingsGroup(
+            children: [
+              _NavTile(
+                icon: Icons.badge_rounded,
+                iconBg: const Color(0xFFEEF2FF),
+                title: 'Digital ID Card',
+                subtitle: 'Your staff identity card',
+                onTap: () => context.push(AppRoutes.staffIdCard),
+              ),
+            ],
           ),
           const _SectionLabel(label: 'HR Modules'),
           _SettingsGroup(

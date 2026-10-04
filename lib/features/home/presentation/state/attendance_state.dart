@@ -61,13 +61,23 @@ class AttendanceState {
 
   String? get breakEndTime => todayAttendance?.breakEnd;
 
-  String get statusText => isClockedIn
-      ? (clockInTime != null && clockInTime!.isNotEmpty)
-            ? 'Currently Clocked In'
-            : (clockOutTime != null && clockOutTime!.isNotEmpty)
-            ? 'Currently Clocked Out'
-            : 'Today Not Clocked In'
-      : 'Today Not Clocked In';
+  String get statusText {
+    if (isClockedIn) {
+      return (clockInTime != null && clockInTime!.isNotEmpty)
+          ? 'Currently Clocked In'
+          : 'Today Not Clocked In';
+    }
+
+    if (clockOutTime != null && clockOutTime!.isNotEmpty) {
+      return 'Clocked Out Today';
+    }
+
+    if (clockInTime != null && clockInTime!.isNotEmpty) {
+      return 'Currently Clocked Out';
+    }
+
+    return 'Today Not Clocked In';
+  }
 
   String get primaryClockButtonText => isClockedIn ? 'Clock Out' : 'Clock In';
 

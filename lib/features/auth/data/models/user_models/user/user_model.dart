@@ -10,7 +10,7 @@ abstract class UserModel with _$UserModel {
   const UserModel._();
 
   const factory UserModel({
-    @Default('') String id,
+    @JsonKey(readValue: _readId) @Default('') String id,
     @Default('') String username,
     @Default('') String email,
     EmployeeModel? employee,
@@ -26,3 +26,6 @@ abstract class UserModel with _$UserModel {
     employee: employee?.toEntity(),
   );
 }
+
+Object? _readId(Map<dynamic, dynamic> json, String key) =>
+    json['_id'] ?? json[key];

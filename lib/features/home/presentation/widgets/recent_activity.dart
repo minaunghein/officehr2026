@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
+import 'package:office_hr/core/widgets/container_shimmer.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_punch.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_provider.dart';
 import 'package:office_hr/shared/date_formatter.dart';
@@ -41,18 +42,7 @@ class RecentActivity extends ConsumerWidget {
         ),
         const SizedBox(height: 12),
         if (isLoading && attendances.isEmpty)
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppSizes.borderRadiusLg),
-              side: BorderSide(
-                color: theme.colorScheme.outline.withValues(alpha: 0.15),
-              ),
-            ),
-            child: const Padding(
-              padding: EdgeInsets.all(24),
-              child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
-            ),
-          )
+          const _ActivitySkeleton()
         else if (attendances.isEmpty)
           Card(
             shape: RoundedRectangleBorder(
@@ -112,6 +102,52 @@ class RecentActivity extends ConsumerWidget {
             ),
           ),
       ],
+    );
+  }
+}
+
+class _ActivitySkeleton extends StatelessWidget {
+  const _ActivitySkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(AppSizes.borderRadiusLg),
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: 0.15),
+        ),
+      ),
+      child: Column(
+        children: [
+          for (int i = 0; i < 3; i++) ...[
+            Row(
+              children: [
+                ContainerShimmer(
+                  width: 44,
+                  height: 44,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ContainerShimmer(width: 150, height: 14),
+                      const SizedBox(height: 8),
+                      ContainerShimmer(width: 100, height: 11),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            if (i < 2) const SizedBox(height: 18),
+          ],
+        ],
+      ),
     );
   }
 }

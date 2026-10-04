@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:office_hr/core/constants/app_sizes.dart';
+import 'package:office_hr/features/user_profile/presentation/widgets/user_profile_section.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
 class CompanyPayloadView extends StatelessWidget {
@@ -15,42 +17,28 @@ class CompanyPayloadView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-      margin: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14),
-        side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Padding(
-        padding: const EdgeInsets.all(18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(icon, color: Theme.of(context).colorScheme.primary),
-                const SizedBox(width: 8),
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            ),
-            const Divider(height: 24),
-            ...payload.entries.map(
-              (entry) => _PayloadField(
-                label: _payloadLabel(entry.key),
-                keyName: entry.key,
-                value: entry.value,
+    final entries = payload.entries
+        .where((entry) => _hasValue(entry.value))
+        .toList();
+    return UserProfileSection(
+      title: title,
+      icon: icon,
+      children: entries.isEmpty
+          ? [
+              Text(
+                'No information provided.',
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
-            ),
-          ],
-        ),
-      ),
+            ]
+          : entries
+                .map(
+                  (entry) => _PayloadField(
+                    label: _payloadLabel(entry.key),
+                    keyName: entry.key,
+                    value: entry.value,
+                  ),
+                )
+                .toList(),
     );
   }
 }
@@ -64,7 +52,6 @@ class _PayloadField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     if (value is Map) {
       final map = Map<String, dynamic>.from(value as Map);
       return Padding(
@@ -73,13 +60,17 @@ class _PayloadField extends StatelessWidget {
           shape: const Border(),
           collapsedShape: const Border(),
           tilePadding: EdgeInsets.zero,
-          childrenPadding: const EdgeInsets.only(left: 16, bottom: 4),
-          initiallyExpanded: true,
+          childrenPadding: const EdgeInsets.only(
+            left: AppSizes.lg,
+            bottom: AppSizes.xxxs,
+          ),
+          initiallyExpanded: false,
           title: Text(
             label,
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
           children: map.entries
+              .where((entry) => _hasValue(entry.value))
               .map(
                 (entry) => _PayloadField(
                   label: _payloadLabel(entry.key),
@@ -97,44 +88,26 @@ class _PayloadField extends StatelessWidget {
         shape: const Border(),
         collapsedShape: const Border(),
         tilePadding: EdgeInsets.zero,
-        childrenPadding: const EdgeInsets.only(left: 16, bottom: 4),
+        childrenPadding: const EdgeInsets.only(
+          left: AppSizes.lg,
+          bottom: AppSizes.xxxs,
+        ),
         title: Text('$label (${list.length})'),
         children: list
             .asMap()
             .entries
             .map(
-              (entry) =>
-                  _PayloadField(label: '#${entry.key + 1}', value: entry.value),
+              (entry) => _PayloadField(
+                label: 'Entry ${entry.key + 1}',
+                value: entry.value,
+              ),
             )
             .toList(),
       );
     }
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Text(
-              label,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            flex: 3,
-            child: Text(
-              _displayPayloadValue(value, keyName),
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
-      ),
+    return UserProfileInfoRow(
+      label: label,
+      value: _displayPayloadValue(value, keyName),
     );
   }
 }
@@ -148,9 +121,20 @@ String _payloadLabel(String key) {
       )
       .split(RegExp(r'\s+'))
       .where((part) => part.isNotEmpty)
-      .map((part) => '${part[0].toUpperCase()}${part.substring(1)}')
+      .indexed
+      .map(
+        (part) => part.$1 == 0
+            ? '${part.$2[0].toUpperCase()}${part.$2.substring(1)}'
+            : part.$2,
+      )
       .join(' ');
 }
+
+bool _hasValue(Object? value) =>
+    value != null &&
+    (value is! String || value.trim().isNotEmpty) &&
+    (value is! Map || value.isNotEmpty) &&
+    (value is! List || value.isNotEmpty);
 
 String _displayPayloadValue(Object? value, String? keyName) {
   if (value == null) return '-';
