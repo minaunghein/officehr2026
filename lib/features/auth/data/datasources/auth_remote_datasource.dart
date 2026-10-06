@@ -1,6 +1,7 @@
 import 'package:office_hr/core/network/api_service.dart';
 import 'package:office_hr/core/services/app_logger.dart';
 import 'package:office_hr/features/auth/data/models/auth_session_model.dart';
+import 'package:office_hr/features/auth/data/models/change_password_response_model.dart';
 import 'package:office_hr/features/auth/data/models/login_response_model.dart';
 
 abstract class AuthRemoteDataSource {
@@ -10,6 +11,11 @@ abstract class AuthRemoteDataSource {
   });
 
   Future<AuthSessionModel> getSession();
+
+  Future<ChangePasswordResponseModel> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  });
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -50,5 +56,30 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         }
       },
     );
+  }
+
+  @override
+  Future<ChangePasswordResponseModel> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    final response = await _apiService.patch<Map<String, dynamic>>(
+      '/api/v1/auth/password',
+      data: {'oldPassword': oldPassword, 'newPassword': newPassword},
+      parser: (data) => data is Map<String, dynamic>
+          ? data
+          : Map<String, dynamic>.from(data as Map),
+    );
+
+    try {
+      return ChangePasswordResponseModel.fromJson(response);
+    } catch (e, stack) {
+      AppLogger.e(
+        'Error parsing change password response: $e',
+        error: e,
+        stack: stack,
+      );
+      rethrow;
+    }
   }
 }

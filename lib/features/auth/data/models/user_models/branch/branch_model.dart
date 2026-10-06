@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/features/auth/data/models/user_models/geofence/geofence_model.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/branch/branch.dart';
 
@@ -13,11 +14,14 @@ abstract class BranchModel with _$BranchModel {
     @JsonKey(readValue: _readId) @Default('') String id,
     @Default('') String title,
     @Default('') String code,
-    required GeofenceModel geofence,
+    @Default(GeofenceModel()) GeofenceModel geofence,
     @JsonKey(name: 'company_id') @Default('') String companyId,
     @JsonKey(name: 'is_active') @Default(false) bool isActive,
     @Default(false) bool deleted,
     String? deletedAt,
+    String? createdAt,
+    String? updatedAt,
+    @JsonKey(name: '__v') int? version,
   }) = _BranchModel;
 
   factory BranchModel.fromJson(Map<String, dynamic> json) =>
@@ -31,7 +35,10 @@ abstract class BranchModel with _$BranchModel {
     companyId: companyId,
     isActive: isActive,
     deleted: deleted,
-    deletedAt: deletedAt,
+    deletedAt: normalizeLocalDateTimeString(deletedAt),
+    createdAt: normalizeLocalDateTimeString(createdAt),
+    updatedAt: normalizeLocalDateTimeString(updatedAt),
+    version: version,
   );
 }
 

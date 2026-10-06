@@ -15,7 +15,8 @@ class PublicHolidayRemoteDataSourceImpl
   @override
   Future<List<PublicHolidayModel>> getPublicHolidays() async {
     return _apiService.get<List<PublicHolidayModel>>(
-      '/api/v1/settings/publicholidays',
+      '/api/v1/holidays',
+      queryParameters: {'year': DateTime.now().year},
       parser: (data) {
         try {
           final jsonData = data is Map<String, dynamic>

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BasicInfoModel {
 
-@JsonKey(name: 'first_name') String get firstName;@JsonKey(name: 'last_name') String get lastName; String? get nrc;
+@JsonKey(name: 'first_name') String get firstName;@JsonKey(name: 'last_name') String get lastName; NrcModel? get nrc;@JsonKey(name: 'first_name_mm') String get firstNameMm;@JsonKey(name: 'last_name_mm') String get lastNameMm;@JsonKey(name: 'marital_status') String get maritalStatus; String get gender;@JsonKey(name: 'blood_type') String get bloodType; String get nationality;@JsonKey(name: 'date_of_birth') String? get dateOfBirth; int? get height; int? get weight; String get religion; String get ethnicity;
 /// Create a copy of BasicInfoModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $BasicInfoModelCopyWith<BasicInfoModel> get copyWith => _$BasicInfoModelCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BasicInfoModel&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.nrc, nrc) || other.nrc == nrc));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BasicInfoModel&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.nrc, nrc) || other.nrc == nrc)&&(identical(other.firstNameMm, firstNameMm) || other.firstNameMm == firstNameMm)&&(identical(other.lastNameMm, lastNameMm) || other.lastNameMm == lastNameMm)&&(identical(other.maritalStatus, maritalStatus) || other.maritalStatus == maritalStatus)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.bloodType, bloodType) || other.bloodType == bloodType)&&(identical(other.nationality, nationality) || other.nationality == nationality)&&(identical(other.dateOfBirth, dateOfBirth) || other.dateOfBirth == dateOfBirth)&&(identical(other.height, height) || other.height == height)&&(identical(other.weight, weight) || other.weight == weight)&&(identical(other.religion, religion) || other.religion == religion)&&(identical(other.ethnicity, ethnicity) || other.ethnicity == ethnicity));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,firstName,lastName,nrc);
+int get hashCode => Object.hash(runtimeType,firstName,lastName,nrc,firstNameMm,lastNameMm,maritalStatus,gender,bloodType,nationality,dateOfBirth,height,weight,religion,ethnicity);
 
 @override
 String toString() {
-  return 'BasicInfoModel(firstName: $firstName, lastName: $lastName, nrc: $nrc)';
+  return 'BasicInfoModel(firstName: $firstName, lastName: $lastName, nrc: $nrc, firstNameMm: $firstNameMm, lastNameMm: $lastNameMm, maritalStatus: $maritalStatus, gender: $gender, bloodType: $bloodType, nationality: $nationality, dateOfBirth: $dateOfBirth, height: $height, weight: $weight, religion: $religion, ethnicity: $ethnicity)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $BasicInfoModelCopyWith<$Res>  {
   factory $BasicInfoModelCopyWith(BasicInfoModel value, $Res Function(BasicInfoModel) _then) = _$BasicInfoModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'first_name') String firstName,@JsonKey(name: 'last_name') String lastName, String? nrc
+@JsonKey(name: 'first_name') String firstName,@JsonKey(name: 'last_name') String lastName, NrcModel? nrc,@JsonKey(name: 'first_name_mm') String firstNameMm,@JsonKey(name: 'last_name_mm') String lastNameMm,@JsonKey(name: 'marital_status') String maritalStatus, String gender,@JsonKey(name: 'blood_type') String bloodType, String nationality,@JsonKey(name: 'date_of_birth') String? dateOfBirth, int? height, int? weight, String religion, String ethnicity
 });
 
 
-
+$NrcModelCopyWith<$Res>? get nrc;
 
 }
 /// @nodoc
@@ -65,15 +65,38 @@ class _$BasicInfoModelCopyWithImpl<$Res>
 
 /// Create a copy of BasicInfoModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? firstName = null,Object? lastName = null,Object? nrc = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? firstName = null,Object? lastName = null,Object? nrc = freezed,Object? firstNameMm = null,Object? lastNameMm = null,Object? maritalStatus = null,Object? gender = null,Object? bloodType = null,Object? nationality = null,Object? dateOfBirth = freezed,Object? height = freezed,Object? weight = freezed,Object? religion = null,Object? ethnicity = null,}) {
   return _then(_self.copyWith(
 firstName: null == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
 as String,lastName: null == lastName ? _self.lastName : lastName // ignore: cast_nullable_to_non_nullable
 as String,nrc: freezed == nrc ? _self.nrc : nrc // ignore: cast_nullable_to_non_nullable
-as String?,
+as NrcModel?,firstNameMm: null == firstNameMm ? _self.firstNameMm : firstNameMm // ignore: cast_nullable_to_non_nullable
+as String,lastNameMm: null == lastNameMm ? _self.lastNameMm : lastNameMm // ignore: cast_nullable_to_non_nullable
+as String,maritalStatus: null == maritalStatus ? _self.maritalStatus : maritalStatus // ignore: cast_nullable_to_non_nullable
+as String,gender: null == gender ? _self.gender : gender // ignore: cast_nullable_to_non_nullable
+as String,bloodType: null == bloodType ? _self.bloodType : bloodType // ignore: cast_nullable_to_non_nullable
+as String,nationality: null == nationality ? _self.nationality : nationality // ignore: cast_nullable_to_non_nullable
+as String,dateOfBirth: freezed == dateOfBirth ? _self.dateOfBirth : dateOfBirth // ignore: cast_nullable_to_non_nullable
+as String?,height: freezed == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
+as int?,weight: freezed == weight ? _self.weight : weight // ignore: cast_nullable_to_non_nullable
+as int?,religion: null == religion ? _self.religion : religion // ignore: cast_nullable_to_non_nullable
+as String,ethnicity: null == ethnicity ? _self.ethnicity : ethnicity // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
+/// Create a copy of BasicInfoModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$NrcModelCopyWith<$Res>? get nrc {
+    if (_self.nrc == null) {
+    return null;
+  }
 
+  return $NrcModelCopyWith<$Res>(_self.nrc!, (value) {
+    return _then(_self.copyWith(nrc: value));
+  });
+}
 }
 
 
@@ -155,10 +178,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'first_name')  String firstName, @JsonKey(name: 'last_name')  String lastName,  String? nrc)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'first_name')  String firstName, @JsonKey(name: 'last_name')  String lastName,  NrcModel? nrc, @JsonKey(name: 'first_name_mm')  String firstNameMm, @JsonKey(name: 'last_name_mm')  String lastNameMm, @JsonKey(name: 'marital_status')  String maritalStatus,  String gender, @JsonKey(name: 'blood_type')  String bloodType,  String nationality, @JsonKey(name: 'date_of_birth')  String? dateOfBirth,  int? height,  int? weight,  String religion,  String ethnicity)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BasicInfoModel() when $default != null:
-return $default(_that.firstName,_that.lastName,_that.nrc);case _:
+return $default(_that.firstName,_that.lastName,_that.nrc,_that.firstNameMm,_that.lastNameMm,_that.maritalStatus,_that.gender,_that.bloodType,_that.nationality,_that.dateOfBirth,_that.height,_that.weight,_that.religion,_that.ethnicity);case _:
   return orElse();
 
 }
@@ -176,10 +199,10 @@ return $default(_that.firstName,_that.lastName,_that.nrc);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'first_name')  String firstName, @JsonKey(name: 'last_name')  String lastName,  String? nrc)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'first_name')  String firstName, @JsonKey(name: 'last_name')  String lastName,  NrcModel? nrc, @JsonKey(name: 'first_name_mm')  String firstNameMm, @JsonKey(name: 'last_name_mm')  String lastNameMm, @JsonKey(name: 'marital_status')  String maritalStatus,  String gender, @JsonKey(name: 'blood_type')  String bloodType,  String nationality, @JsonKey(name: 'date_of_birth')  String? dateOfBirth,  int? height,  int? weight,  String religion,  String ethnicity)  $default,) {final _that = this;
 switch (_that) {
 case _BasicInfoModel():
-return $default(_that.firstName,_that.lastName,_that.nrc);case _:
+return $default(_that.firstName,_that.lastName,_that.nrc,_that.firstNameMm,_that.lastNameMm,_that.maritalStatus,_that.gender,_that.bloodType,_that.nationality,_that.dateOfBirth,_that.height,_that.weight,_that.religion,_that.ethnicity);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +219,10 @@ return $default(_that.firstName,_that.lastName,_that.nrc);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'first_name')  String firstName, @JsonKey(name: 'last_name')  String lastName,  String? nrc)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'first_name')  String firstName, @JsonKey(name: 'last_name')  String lastName,  NrcModel? nrc, @JsonKey(name: 'first_name_mm')  String firstNameMm, @JsonKey(name: 'last_name_mm')  String lastNameMm, @JsonKey(name: 'marital_status')  String maritalStatus,  String gender, @JsonKey(name: 'blood_type')  String bloodType,  String nationality, @JsonKey(name: 'date_of_birth')  String? dateOfBirth,  int? height,  int? weight,  String religion,  String ethnicity)?  $default,) {final _that = this;
 switch (_that) {
 case _BasicInfoModel() when $default != null:
-return $default(_that.firstName,_that.lastName,_that.nrc);case _:
+return $default(_that.firstName,_that.lastName,_that.nrc,_that.firstNameMm,_that.lastNameMm,_that.maritalStatus,_that.gender,_that.bloodType,_that.nationality,_that.dateOfBirth,_that.height,_that.weight,_that.religion,_that.ethnicity);case _:
   return null;
 
 }
@@ -211,12 +234,23 @@ return $default(_that.firstName,_that.lastName,_that.nrc);case _:
 @JsonSerializable()
 
 class _BasicInfoModel extends BasicInfoModel {
-  const _BasicInfoModel({@JsonKey(name: 'first_name') this.firstName = '', @JsonKey(name: 'last_name') this.lastName = '', this.nrc}): super._();
+  const _BasicInfoModel({@JsonKey(name: 'first_name') this.firstName = '', @JsonKey(name: 'last_name') this.lastName = '', this.nrc, @JsonKey(name: 'first_name_mm') this.firstNameMm = '', @JsonKey(name: 'last_name_mm') this.lastNameMm = '', @JsonKey(name: 'marital_status') this.maritalStatus = '', this.gender = '', @JsonKey(name: 'blood_type') this.bloodType = '', this.nationality = '', @JsonKey(name: 'date_of_birth') this.dateOfBirth, this.height, this.weight, this.religion = '', this.ethnicity = ''}): super._();
   factory _BasicInfoModel.fromJson(Map<String, dynamic> json) => _$BasicInfoModelFromJson(json);
 
 @override@JsonKey(name: 'first_name') final  String firstName;
 @override@JsonKey(name: 'last_name') final  String lastName;
-@override final  String? nrc;
+@override final  NrcModel? nrc;
+@override@JsonKey(name: 'first_name_mm') final  String firstNameMm;
+@override@JsonKey(name: 'last_name_mm') final  String lastNameMm;
+@override@JsonKey(name: 'marital_status') final  String maritalStatus;
+@override@JsonKey() final  String gender;
+@override@JsonKey(name: 'blood_type') final  String bloodType;
+@override@JsonKey() final  String nationality;
+@override@JsonKey(name: 'date_of_birth') final  String? dateOfBirth;
+@override final  int? height;
+@override final  int? weight;
+@override@JsonKey() final  String religion;
+@override@JsonKey() final  String ethnicity;
 
 /// Create a copy of BasicInfoModel
 /// with the given fields replaced by the non-null parameter values.
@@ -231,16 +265,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BasicInfoModel&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.nrc, nrc) || other.nrc == nrc));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BasicInfoModel&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.nrc, nrc) || other.nrc == nrc)&&(identical(other.firstNameMm, firstNameMm) || other.firstNameMm == firstNameMm)&&(identical(other.lastNameMm, lastNameMm) || other.lastNameMm == lastNameMm)&&(identical(other.maritalStatus, maritalStatus) || other.maritalStatus == maritalStatus)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.bloodType, bloodType) || other.bloodType == bloodType)&&(identical(other.nationality, nationality) || other.nationality == nationality)&&(identical(other.dateOfBirth, dateOfBirth) || other.dateOfBirth == dateOfBirth)&&(identical(other.height, height) || other.height == height)&&(identical(other.weight, weight) || other.weight == weight)&&(identical(other.religion, religion) || other.religion == religion)&&(identical(other.ethnicity, ethnicity) || other.ethnicity == ethnicity));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,firstName,lastName,nrc);
+int get hashCode => Object.hash(runtimeType,firstName,lastName,nrc,firstNameMm,lastNameMm,maritalStatus,gender,bloodType,nationality,dateOfBirth,height,weight,religion,ethnicity);
 
 @override
 String toString() {
-  return 'BasicInfoModel(firstName: $firstName, lastName: $lastName, nrc: $nrc)';
+  return 'BasicInfoModel(firstName: $firstName, lastName: $lastName, nrc: $nrc, firstNameMm: $firstNameMm, lastNameMm: $lastNameMm, maritalStatus: $maritalStatus, gender: $gender, bloodType: $bloodType, nationality: $nationality, dateOfBirth: $dateOfBirth, height: $height, weight: $weight, religion: $religion, ethnicity: $ethnicity)';
 }
 
 
@@ -251,11 +285,11 @@ abstract mixin class _$BasicInfoModelCopyWith<$Res> implements $BasicInfoModelCo
   factory _$BasicInfoModelCopyWith(_BasicInfoModel value, $Res Function(_BasicInfoModel) _then) = __$BasicInfoModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'first_name') String firstName,@JsonKey(name: 'last_name') String lastName, String? nrc
+@JsonKey(name: 'first_name') String firstName,@JsonKey(name: 'last_name') String lastName, NrcModel? nrc,@JsonKey(name: 'first_name_mm') String firstNameMm,@JsonKey(name: 'last_name_mm') String lastNameMm,@JsonKey(name: 'marital_status') String maritalStatus, String gender,@JsonKey(name: 'blood_type') String bloodType, String nationality,@JsonKey(name: 'date_of_birth') String? dateOfBirth, int? height, int? weight, String religion, String ethnicity
 });
 
 
-
+@override $NrcModelCopyWith<$Res>? get nrc;
 
 }
 /// @nodoc
@@ -268,16 +302,39 @@ class __$BasicInfoModelCopyWithImpl<$Res>
 
 /// Create a copy of BasicInfoModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? firstName = null,Object? lastName = null,Object? nrc = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? firstName = null,Object? lastName = null,Object? nrc = freezed,Object? firstNameMm = null,Object? lastNameMm = null,Object? maritalStatus = null,Object? gender = null,Object? bloodType = null,Object? nationality = null,Object? dateOfBirth = freezed,Object? height = freezed,Object? weight = freezed,Object? religion = null,Object? ethnicity = null,}) {
   return _then(_BasicInfoModel(
 firstName: null == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
 as String,lastName: null == lastName ? _self.lastName : lastName // ignore: cast_nullable_to_non_nullable
 as String,nrc: freezed == nrc ? _self.nrc : nrc // ignore: cast_nullable_to_non_nullable
-as String?,
+as NrcModel?,firstNameMm: null == firstNameMm ? _self.firstNameMm : firstNameMm // ignore: cast_nullable_to_non_nullable
+as String,lastNameMm: null == lastNameMm ? _self.lastNameMm : lastNameMm // ignore: cast_nullable_to_non_nullable
+as String,maritalStatus: null == maritalStatus ? _self.maritalStatus : maritalStatus // ignore: cast_nullable_to_non_nullable
+as String,gender: null == gender ? _self.gender : gender // ignore: cast_nullable_to_non_nullable
+as String,bloodType: null == bloodType ? _self.bloodType : bloodType // ignore: cast_nullable_to_non_nullable
+as String,nationality: null == nationality ? _self.nationality : nationality // ignore: cast_nullable_to_non_nullable
+as String,dateOfBirth: freezed == dateOfBirth ? _self.dateOfBirth : dateOfBirth // ignore: cast_nullable_to_non_nullable
+as String?,height: freezed == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
+as int?,weight: freezed == weight ? _self.weight : weight // ignore: cast_nullable_to_non_nullable
+as int?,religion: null == religion ? _self.religion : religion // ignore: cast_nullable_to_non_nullable
+as String,ethnicity: null == ethnicity ? _self.ethnicity : ethnicity // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
+/// Create a copy of BasicInfoModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$NrcModelCopyWith<$Res>? get nrc {
+    if (_self.nrc == null) {
+    return null;
+  }
 
+  return $NrcModelCopyWith<$Res>(_self.nrc!, (value) {
+    return _then(_self.copyWith(nrc: value));
+  });
+}
 }
 
 // dart format on

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PublicHoliday {
 
- String get id; String get companyId; String? get holidayDate; List<String> get holidayName; String? get remarks; List<dynamic> get tags;
+ String get id; String get companyId; String get title; String get titleMm; String? get date; String get type; bool get isActive; bool get deleted;
 /// Create a copy of PublicHoliday
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $PublicHolidayCopyWith<PublicHoliday> get copyWith => _$PublicHolidayCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PublicHoliday&&(identical(other.id, id) || other.id == id)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.holidayDate, holidayDate) || other.holidayDate == holidayDate)&&const DeepCollectionEquality().equals(other.holidayName, holidayName)&&(identical(other.remarks, remarks) || other.remarks == remarks)&&const DeepCollectionEquality().equals(other.tags, tags));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PublicHoliday&&(identical(other.id, id) || other.id == id)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.title, title) || other.title == title)&&(identical(other.titleMm, titleMm) || other.titleMm == titleMm)&&(identical(other.date, date) || other.date == date)&&(identical(other.type, type) || other.type == type)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.deleted, deleted) || other.deleted == deleted));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,companyId,holidayDate,const DeepCollectionEquality().hash(holidayName),remarks,const DeepCollectionEquality().hash(tags));
+int get hashCode => Object.hash(runtimeType,id,companyId,title,titleMm,date,type,isActive,deleted);
 
 @override
 String toString() {
-  return 'PublicHoliday(id: $id, companyId: $companyId, holidayDate: $holidayDate, holidayName: $holidayName, remarks: $remarks, tags: $tags)';
+  return 'PublicHoliday(id: $id, companyId: $companyId, title: $title, titleMm: $titleMm, date: $date, type: $type, isActive: $isActive, deleted: $deleted)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $PublicHolidayCopyWith<$Res>  {
   factory $PublicHolidayCopyWith(PublicHoliday value, $Res Function(PublicHoliday) _then) = _$PublicHolidayCopyWithImpl;
 @useResult
 $Res call({
- String id, String companyId, String? holidayDate, List<String> holidayName, String? remarks, List<dynamic> tags
+ String id, String companyId, String title, String titleMm, String? date, String type, bool isActive, bool deleted
 });
 
 
@@ -62,15 +62,17 @@ class _$PublicHolidayCopyWithImpl<$Res>
 
 /// Create a copy of PublicHoliday
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? companyId = null,Object? holidayDate = freezed,Object? holidayName = null,Object? remarks = freezed,Object? tags = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? companyId = null,Object? title = null,Object? titleMm = null,Object? date = freezed,Object? type = null,Object? isActive = null,Object? deleted = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
-as String,holidayDate: freezed == holidayDate ? _self.holidayDate : holidayDate // ignore: cast_nullable_to_non_nullable
-as String?,holidayName: null == holidayName ? _self.holidayName : holidayName // ignore: cast_nullable_to_non_nullable
-as List<String>,remarks: freezed == remarks ? _self.remarks : remarks // ignore: cast_nullable_to_non_nullable
-as String?,tags: null == tags ? _self.tags : tags // ignore: cast_nullable_to_non_nullable
-as List<dynamic>,
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,titleMm: null == titleMm ? _self.titleMm : titleMm // ignore: cast_nullable_to_non_nullable
+as String,date: freezed == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
+as String?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -155,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String companyId,  String? holidayDate,  List<String> holidayName,  String? remarks,  List<dynamic> tags)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String companyId,  String title,  String titleMm,  String? date,  String type,  bool isActive,  bool deleted)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PublicHoliday() when $default != null:
-return $default(_that.id,_that.companyId,_that.holidayDate,_that.holidayName,_that.remarks,_that.tags);case _:
+return $default(_that.id,_that.companyId,_that.title,_that.titleMm,_that.date,_that.type,_that.isActive,_that.deleted);case _:
   return orElse();
 
 }
@@ -176,10 +178,10 @@ return $default(_that.id,_that.companyId,_that.holidayDate,_that.holidayName,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String companyId,  String? holidayDate,  List<String> holidayName,  String? remarks,  List<dynamic> tags)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String companyId,  String title,  String titleMm,  String? date,  String type,  bool isActive,  bool deleted)  $default,) {final _that = this;
 switch (_that) {
 case _PublicHoliday():
-return $default(_that.id,_that.companyId,_that.holidayDate,_that.holidayName,_that.remarks,_that.tags);case _:
+return $default(_that.id,_that.companyId,_that.title,_that.titleMm,_that.date,_that.type,_that.isActive,_that.deleted);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +198,10 @@ return $default(_that.id,_that.companyId,_that.holidayDate,_that.holidayName,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String companyId,  String? holidayDate,  List<String> holidayName,  String? remarks,  List<dynamic> tags)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String companyId,  String title,  String titleMm,  String? date,  String type,  bool isActive,  bool deleted)?  $default,) {final _that = this;
 switch (_that) {
 case _PublicHoliday() when $default != null:
-return $default(_that.id,_that.companyId,_that.holidayDate,_that.holidayName,_that.remarks,_that.tags);case _:
+return $default(_that.id,_that.companyId,_that.title,_that.titleMm,_that.date,_that.type,_that.isActive,_that.deleted);case _:
   return null;
 
 }
@@ -210,28 +212,18 @@ return $default(_that.id,_that.companyId,_that.holidayDate,_that.holidayName,_th
 /// @nodoc
 
 
-class _PublicHoliday implements PublicHoliday {
-  const _PublicHoliday({required this.id, required this.companyId, this.holidayDate, final  List<String> holidayName = const [], this.remarks, final  List<dynamic> tags = const []}): _holidayName = holidayName,_tags = tags;
+class _PublicHoliday extends PublicHoliday {
+  const _PublicHoliday({required this.id, this.companyId = '', this.title = '', this.titleMm = '', this.date, this.type = '', this.isActive = true, this.deleted = false}): super._();
   
 
 @override final  String id;
-@override final  String companyId;
-@override final  String? holidayDate;
- final  List<String> _holidayName;
-@override@JsonKey() List<String> get holidayName {
-  if (_holidayName is EqualUnmodifiableListView) return _holidayName;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_holidayName);
-}
-
-@override final  String? remarks;
- final  List<dynamic> _tags;
-@override@JsonKey() List<dynamic> get tags {
-  if (_tags is EqualUnmodifiableListView) return _tags;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_tags);
-}
-
+@override@JsonKey() final  String companyId;
+@override@JsonKey() final  String title;
+@override@JsonKey() final  String titleMm;
+@override final  String? date;
+@override@JsonKey() final  String type;
+@override@JsonKey() final  bool isActive;
+@override@JsonKey() final  bool deleted;
 
 /// Create a copy of PublicHoliday
 /// with the given fields replaced by the non-null parameter values.
@@ -243,16 +235,16 @@ _$PublicHolidayCopyWith<_PublicHoliday> get copyWith => __$PublicHolidayCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PublicHoliday&&(identical(other.id, id) || other.id == id)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.holidayDate, holidayDate) || other.holidayDate == holidayDate)&&const DeepCollectionEquality().equals(other._holidayName, _holidayName)&&(identical(other.remarks, remarks) || other.remarks == remarks)&&const DeepCollectionEquality().equals(other._tags, _tags));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PublicHoliday&&(identical(other.id, id) || other.id == id)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.title, title) || other.title == title)&&(identical(other.titleMm, titleMm) || other.titleMm == titleMm)&&(identical(other.date, date) || other.date == date)&&(identical(other.type, type) || other.type == type)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.deleted, deleted) || other.deleted == deleted));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,companyId,holidayDate,const DeepCollectionEquality().hash(_holidayName),remarks,const DeepCollectionEquality().hash(_tags));
+int get hashCode => Object.hash(runtimeType,id,companyId,title,titleMm,date,type,isActive,deleted);
 
 @override
 String toString() {
-  return 'PublicHoliday(id: $id, companyId: $companyId, holidayDate: $holidayDate, holidayName: $holidayName, remarks: $remarks, tags: $tags)';
+  return 'PublicHoliday(id: $id, companyId: $companyId, title: $title, titleMm: $titleMm, date: $date, type: $type, isActive: $isActive, deleted: $deleted)';
 }
 
 
@@ -263,7 +255,7 @@ abstract mixin class _$PublicHolidayCopyWith<$Res> implements $PublicHolidayCopy
   factory _$PublicHolidayCopyWith(_PublicHoliday value, $Res Function(_PublicHoliday) _then) = __$PublicHolidayCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String companyId, String? holidayDate, List<String> holidayName, String? remarks, List<dynamic> tags
+ String id, String companyId, String title, String titleMm, String? date, String type, bool isActive, bool deleted
 });
 
 
@@ -280,15 +272,17 @@ class __$PublicHolidayCopyWithImpl<$Res>
 
 /// Create a copy of PublicHoliday
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? companyId = null,Object? holidayDate = freezed,Object? holidayName = null,Object? remarks = freezed,Object? tags = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? companyId = null,Object? title = null,Object? titleMm = null,Object? date = freezed,Object? type = null,Object? isActive = null,Object? deleted = null,}) {
   return _then(_PublicHoliday(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
-as String,holidayDate: freezed == holidayDate ? _self.holidayDate : holidayDate // ignore: cast_nullable_to_non_nullable
-as String?,holidayName: null == holidayName ? _self._holidayName : holidayName // ignore: cast_nullable_to_non_nullable
-as List<String>,remarks: freezed == remarks ? _self.remarks : remarks // ignore: cast_nullable_to_non_nullable
-as String?,tags: null == tags ? _self._tags : tags // ignore: cast_nullable_to_non_nullable
-as List<dynamic>,
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,titleMm: null == titleMm ? _self.titleMm : titleMm // ignore: cast_nullable_to_non_nullable
+as String,date: freezed == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
+as String?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

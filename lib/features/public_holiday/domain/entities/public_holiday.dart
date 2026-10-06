@@ -4,12 +4,22 @@ part 'public_holiday.freezed.dart';
 
 @freezed
 abstract class PublicHoliday with _$PublicHoliday {
+  const PublicHoliday._();
+
   const factory PublicHoliday({
     required String id,
-    required String companyId,
-    String? holidayDate,
-    @Default([]) List<String> holidayName,
-    String? remarks,
-    @Default([]) List<dynamic> tags,
+    @Default('') String companyId,
+    @Default('') String title,
+    @Default('') String titleMm,
+    String? date,
+    @Default('') String type,
+    @Default(true) bool isActive,
+    @Default(false) bool deleted,
   }) = _PublicHoliday;
+
+  String get displayTitle => title.isNotEmpty
+      ? title
+      : (titleMm.isNotEmpty ? titleMm : 'Public Holiday');
+
+  bool get hasMyanmarTitle => titleMm.isNotEmpty && titleMm != title;
 }

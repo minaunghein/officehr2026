@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DepartmentModel {
 
-@JsonKey(readValue: _readId) String get id; String get title;@JsonKey(name: 'title_mm') String get titleMm; String get code; String get description;@JsonKey(name: 'company_id') String get companyId;@JsonKey(name: 'is_active') bool get isActive; bool get deleted; String? get deletedAt;
+@JsonKey(readValue: _readId) String get id; String get title;@JsonKey(name: 'title_mm') String get titleMm; String get code; String get description;@JsonKey(name: 'company_id') String get companyId;@JsonKey(name: 'is_active') bool get isActive; bool get deleted; String? get deletedAt; String? get createdAt; String? get updatedAt;@JsonKey(name: '__v') int? get version;
 /// Create a copy of DepartmentModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $DepartmentModelCopyWith<DepartmentModel> get copyWith => _$DepartmentModelCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DepartmentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.titleMm, titleMm) || other.titleMm == titleMm)&&(identical(other.code, code) || other.code == code)&&(identical(other.description, description) || other.description == description)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DepartmentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.titleMm, titleMm) || other.titleMm == titleMm)&&(identical(other.code, code) || other.code == code)&&(identical(other.description, description) || other.description == description)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.version, version) || other.version == version));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,titleMm,code,description,companyId,isActive,deleted,deletedAt);
+int get hashCode => Object.hash(runtimeType,id,title,titleMm,code,description,companyId,isActive,deleted,deletedAt,createdAt,updatedAt,version);
 
 @override
 String toString() {
-  return 'DepartmentModel(id: $id, title: $title, titleMm: $titleMm, code: $code, description: $description, companyId: $companyId, isActive: $isActive, deleted: $deleted, deletedAt: $deletedAt)';
+  return 'DepartmentModel(id: $id, title: $title, titleMm: $titleMm, code: $code, description: $description, companyId: $companyId, isActive: $isActive, deleted: $deleted, deletedAt: $deletedAt, createdAt: $createdAt, updatedAt: $updatedAt, version: $version)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $DepartmentModelCopyWith<$Res>  {
   factory $DepartmentModelCopyWith(DepartmentModel value, $Res Function(DepartmentModel) _then) = _$DepartmentModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(readValue: _readId) String id, String title,@JsonKey(name: 'title_mm') String titleMm, String code, String description,@JsonKey(name: 'company_id') String companyId,@JsonKey(name: 'is_active') bool isActive, bool deleted, String? deletedAt
+@JsonKey(readValue: _readId) String id, String title,@JsonKey(name: 'title_mm') String titleMm, String code, String description,@JsonKey(name: 'company_id') String companyId,@JsonKey(name: 'is_active') bool isActive, bool deleted, String? deletedAt, String? createdAt, String? updatedAt,@JsonKey(name: '__v') int? version
 });
 
 
@@ -65,7 +65,7 @@ class _$DepartmentModelCopyWithImpl<$Res>
 
 /// Create a copy of DepartmentModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? titleMm = null,Object? code = null,Object? description = null,Object? companyId = null,Object? isActive = null,Object? deleted = null,Object? deletedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? titleMm = null,Object? code = null,Object? description = null,Object? companyId = null,Object? isActive = null,Object? deleted = null,Object? deletedAt = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? version = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -76,7 +76,10 @@ as String,companyId: null == companyId ? _self.companyId : companyId // ignore: 
 as String,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
 as bool,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
 as bool,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as String?,version: freezed == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -161,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id,  String title, @JsonKey(name: 'title_mm')  String titleMm,  String code,  String description, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'is_active')  bool isActive,  bool deleted,  String? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id,  String title, @JsonKey(name: 'title_mm')  String titleMm,  String code,  String description, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'is_active')  bool isActive,  bool deleted,  String? deletedAt,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DepartmentModel() when $default != null:
-return $default(_that.id,_that.title,_that.titleMm,_that.code,_that.description,_that.companyId,_that.isActive,_that.deleted,_that.deletedAt);case _:
+return $default(_that.id,_that.title,_that.titleMm,_that.code,_that.description,_that.companyId,_that.isActive,_that.deleted,_that.deletedAt,_that.createdAt,_that.updatedAt,_that.version);case _:
   return orElse();
 
 }
@@ -182,10 +185,10 @@ return $default(_that.id,_that.title,_that.titleMm,_that.code,_that.description,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id,  String title, @JsonKey(name: 'title_mm')  String titleMm,  String code,  String description, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'is_active')  bool isActive,  bool deleted,  String? deletedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id,  String title, @JsonKey(name: 'title_mm')  String titleMm,  String code,  String description, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'is_active')  bool isActive,  bool deleted,  String? deletedAt,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)  $default,) {final _that = this;
 switch (_that) {
 case _DepartmentModel():
-return $default(_that.id,_that.title,_that.titleMm,_that.code,_that.description,_that.companyId,_that.isActive,_that.deleted,_that.deletedAt);case _:
+return $default(_that.id,_that.title,_that.titleMm,_that.code,_that.description,_that.companyId,_that.isActive,_that.deleted,_that.deletedAt,_that.createdAt,_that.updatedAt,_that.version);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -202,10 +205,10 @@ return $default(_that.id,_that.title,_that.titleMm,_that.code,_that.description,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(readValue: _readId)  String id,  String title, @JsonKey(name: 'title_mm')  String titleMm,  String code,  String description, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'is_active')  bool isActive,  bool deleted,  String? deletedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(readValue: _readId)  String id,  String title, @JsonKey(name: 'title_mm')  String titleMm,  String code,  String description, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'is_active')  bool isActive,  bool deleted,  String? deletedAt,  String? createdAt,  String? updatedAt, @JsonKey(name: '__v')  int? version)?  $default,) {final _that = this;
 switch (_that) {
 case _DepartmentModel() when $default != null:
-return $default(_that.id,_that.title,_that.titleMm,_that.code,_that.description,_that.companyId,_that.isActive,_that.deleted,_that.deletedAt);case _:
+return $default(_that.id,_that.title,_that.titleMm,_that.code,_that.description,_that.companyId,_that.isActive,_that.deleted,_that.deletedAt,_that.createdAt,_that.updatedAt,_that.version);case _:
   return null;
 
 }
@@ -217,7 +220,7 @@ return $default(_that.id,_that.title,_that.titleMm,_that.code,_that.description,
 @JsonSerializable()
 
 class _DepartmentModel extends DepartmentModel {
-  const _DepartmentModel({@JsonKey(readValue: _readId) this.id = '', this.title = '', @JsonKey(name: 'title_mm') this.titleMm = '', this.code = '', this.description = '', @JsonKey(name: 'company_id') this.companyId = '', @JsonKey(name: 'is_active') this.isActive = false, this.deleted = false, this.deletedAt}): super._();
+  const _DepartmentModel({@JsonKey(readValue: _readId) this.id = '', this.title = '', @JsonKey(name: 'title_mm') this.titleMm = '', this.code = '', this.description = '', @JsonKey(name: 'company_id') this.companyId = '', @JsonKey(name: 'is_active') this.isActive = false, this.deleted = false, this.deletedAt, this.createdAt, this.updatedAt, @JsonKey(name: '__v') this.version}): super._();
   factory _DepartmentModel.fromJson(Map<String, dynamic> json) => _$DepartmentModelFromJson(json);
 
 @override@JsonKey(readValue: _readId) final  String id;
@@ -229,6 +232,9 @@ class _DepartmentModel extends DepartmentModel {
 @override@JsonKey(name: 'is_active') final  bool isActive;
 @override@JsonKey() final  bool deleted;
 @override final  String? deletedAt;
+@override final  String? createdAt;
+@override final  String? updatedAt;
+@override@JsonKey(name: '__v') final  int? version;
 
 /// Create a copy of DepartmentModel
 /// with the given fields replaced by the non-null parameter values.
@@ -243,16 +249,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DepartmentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.titleMm, titleMm) || other.titleMm == titleMm)&&(identical(other.code, code) || other.code == code)&&(identical(other.description, description) || other.description == description)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DepartmentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.titleMm, titleMm) || other.titleMm == titleMm)&&(identical(other.code, code) || other.code == code)&&(identical(other.description, description) || other.description == description)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.version, version) || other.version == version));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,titleMm,code,description,companyId,isActive,deleted,deletedAt);
+int get hashCode => Object.hash(runtimeType,id,title,titleMm,code,description,companyId,isActive,deleted,deletedAt,createdAt,updatedAt,version);
 
 @override
 String toString() {
-  return 'DepartmentModel(id: $id, title: $title, titleMm: $titleMm, code: $code, description: $description, companyId: $companyId, isActive: $isActive, deleted: $deleted, deletedAt: $deletedAt)';
+  return 'DepartmentModel(id: $id, title: $title, titleMm: $titleMm, code: $code, description: $description, companyId: $companyId, isActive: $isActive, deleted: $deleted, deletedAt: $deletedAt, createdAt: $createdAt, updatedAt: $updatedAt, version: $version)';
 }
 
 
@@ -263,7 +269,7 @@ abstract mixin class _$DepartmentModelCopyWith<$Res> implements $DepartmentModel
   factory _$DepartmentModelCopyWith(_DepartmentModel value, $Res Function(_DepartmentModel) _then) = __$DepartmentModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(readValue: _readId) String id, String title,@JsonKey(name: 'title_mm') String titleMm, String code, String description,@JsonKey(name: 'company_id') String companyId,@JsonKey(name: 'is_active') bool isActive, bool deleted, String? deletedAt
+@JsonKey(readValue: _readId) String id, String title,@JsonKey(name: 'title_mm') String titleMm, String code, String description,@JsonKey(name: 'company_id') String companyId,@JsonKey(name: 'is_active') bool isActive, bool deleted, String? deletedAt, String? createdAt, String? updatedAt,@JsonKey(name: '__v') int? version
 });
 
 
@@ -280,7 +286,7 @@ class __$DepartmentModelCopyWithImpl<$Res>
 
 /// Create a copy of DepartmentModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? titleMm = null,Object? code = null,Object? description = null,Object? companyId = null,Object? isActive = null,Object? deleted = null,Object? deletedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? titleMm = null,Object? code = null,Object? description = null,Object? companyId = null,Object? isActive = null,Object? deleted = null,Object? deletedAt = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? version = freezed,}) {
   return _then(_DepartmentModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -291,7 +297,10 @@ as String,companyId: null == companyId ? _self.companyId : companyId // ignore: 
 as String,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
 as bool,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
 as bool,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as String?,version: freezed == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 

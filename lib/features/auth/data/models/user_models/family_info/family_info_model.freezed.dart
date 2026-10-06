@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FamilyInfoModel {
 
- List<dynamic> get members;
+ List<dynamic> get members;@JsonKey(name: 'father_name') String get fatherName;@JsonKey(name: 'father_name_mm') String get fatherNameMm;@JsonKey(name: 'mother_name') String get motherName;@JsonKey(name: 'mother_name_mm') String get motherNameMm;@JsonKey(name: 'number_of_family_number') int get numberOfFamilyNumber;
 /// Create a copy of FamilyInfoModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $FamilyInfoModelCopyWith<FamilyInfoModel> get copyWith => _$FamilyInfoModelCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FamilyInfoModel&&const DeepCollectionEquality().equals(other.members, members));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FamilyInfoModel&&const DeepCollectionEquality().equals(other.members, members)&&(identical(other.fatherName, fatherName) || other.fatherName == fatherName)&&(identical(other.fatherNameMm, fatherNameMm) || other.fatherNameMm == fatherNameMm)&&(identical(other.motherName, motherName) || other.motherName == motherName)&&(identical(other.motherNameMm, motherNameMm) || other.motherNameMm == motherNameMm)&&(identical(other.numberOfFamilyNumber, numberOfFamilyNumber) || other.numberOfFamilyNumber == numberOfFamilyNumber));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(members));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(members),fatherName,fatherNameMm,motherName,motherNameMm,numberOfFamilyNumber);
 
 @override
 String toString() {
-  return 'FamilyInfoModel(members: $members)';
+  return 'FamilyInfoModel(members: $members, fatherName: $fatherName, fatherNameMm: $fatherNameMm, motherName: $motherName, motherNameMm: $motherNameMm, numberOfFamilyNumber: $numberOfFamilyNumber)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $FamilyInfoModelCopyWith<$Res>  {
   factory $FamilyInfoModelCopyWith(FamilyInfoModel value, $Res Function(FamilyInfoModel) _then) = _$FamilyInfoModelCopyWithImpl;
 @useResult
 $Res call({
- List<dynamic> members
+ List<dynamic> members,@JsonKey(name: 'father_name') String fatherName,@JsonKey(name: 'father_name_mm') String fatherNameMm,@JsonKey(name: 'mother_name') String motherName,@JsonKey(name: 'mother_name_mm') String motherNameMm,@JsonKey(name: 'number_of_family_number') int numberOfFamilyNumber
 });
 
 
@@ -65,10 +65,15 @@ class _$FamilyInfoModelCopyWithImpl<$Res>
 
 /// Create a copy of FamilyInfoModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? members = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? members = null,Object? fatherName = null,Object? fatherNameMm = null,Object? motherName = null,Object? motherNameMm = null,Object? numberOfFamilyNumber = null,}) {
   return _then(_self.copyWith(
 members: null == members ? _self.members : members // ignore: cast_nullable_to_non_nullable
-as List<dynamic>,
+as List<dynamic>,fatherName: null == fatherName ? _self.fatherName : fatherName // ignore: cast_nullable_to_non_nullable
+as String,fatherNameMm: null == fatherNameMm ? _self.fatherNameMm : fatherNameMm // ignore: cast_nullable_to_non_nullable
+as String,motherName: null == motherName ? _self.motherName : motherName // ignore: cast_nullable_to_non_nullable
+as String,motherNameMm: null == motherNameMm ? _self.motherNameMm : motherNameMm // ignore: cast_nullable_to_non_nullable
+as String,numberOfFamilyNumber: null == numberOfFamilyNumber ? _self.numberOfFamilyNumber : numberOfFamilyNumber // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -153,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<dynamic> members)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<dynamic> members, @JsonKey(name: 'father_name')  String fatherName, @JsonKey(name: 'father_name_mm')  String fatherNameMm, @JsonKey(name: 'mother_name')  String motherName, @JsonKey(name: 'mother_name_mm')  String motherNameMm, @JsonKey(name: 'number_of_family_number')  int numberOfFamilyNumber)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FamilyInfoModel() when $default != null:
-return $default(_that.members);case _:
+return $default(_that.members,_that.fatherName,_that.fatherNameMm,_that.motherName,_that.motherNameMm,_that.numberOfFamilyNumber);case _:
   return orElse();
 
 }
@@ -174,10 +179,10 @@ return $default(_that.members);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<dynamic> members)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<dynamic> members, @JsonKey(name: 'father_name')  String fatherName, @JsonKey(name: 'father_name_mm')  String fatherNameMm, @JsonKey(name: 'mother_name')  String motherName, @JsonKey(name: 'mother_name_mm')  String motherNameMm, @JsonKey(name: 'number_of_family_number')  int numberOfFamilyNumber)  $default,) {final _that = this;
 switch (_that) {
 case _FamilyInfoModel():
-return $default(_that.members);case _:
+return $default(_that.members,_that.fatherName,_that.fatherNameMm,_that.motherName,_that.motherNameMm,_that.numberOfFamilyNumber);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +199,10 @@ return $default(_that.members);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<dynamic> members)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<dynamic> members, @JsonKey(name: 'father_name')  String fatherName, @JsonKey(name: 'father_name_mm')  String fatherNameMm, @JsonKey(name: 'mother_name')  String motherName, @JsonKey(name: 'mother_name_mm')  String motherNameMm, @JsonKey(name: 'number_of_family_number')  int numberOfFamilyNumber)?  $default,) {final _that = this;
 switch (_that) {
 case _FamilyInfoModel() when $default != null:
-return $default(_that.members);case _:
+return $default(_that.members,_that.fatherName,_that.fatherNameMm,_that.motherName,_that.motherNameMm,_that.numberOfFamilyNumber);case _:
   return null;
 
 }
@@ -209,7 +214,7 @@ return $default(_that.members);case _:
 @JsonSerializable()
 
 class _FamilyInfoModel extends FamilyInfoModel {
-  const _FamilyInfoModel({final  List<dynamic> members = const <dynamic>[]}): _members = members,super._();
+  const _FamilyInfoModel({final  List<dynamic> members = const <dynamic>[], @JsonKey(name: 'father_name') this.fatherName = '', @JsonKey(name: 'father_name_mm') this.fatherNameMm = '', @JsonKey(name: 'mother_name') this.motherName = '', @JsonKey(name: 'mother_name_mm') this.motherNameMm = '', @JsonKey(name: 'number_of_family_number') this.numberOfFamilyNumber = 0}): _members = members,super._();
   factory _FamilyInfoModel.fromJson(Map<String, dynamic> json) => _$FamilyInfoModelFromJson(json);
 
  final  List<dynamic> _members;
@@ -219,6 +224,11 @@ class _FamilyInfoModel extends FamilyInfoModel {
   return EqualUnmodifiableListView(_members);
 }
 
+@override@JsonKey(name: 'father_name') final  String fatherName;
+@override@JsonKey(name: 'father_name_mm') final  String fatherNameMm;
+@override@JsonKey(name: 'mother_name') final  String motherName;
+@override@JsonKey(name: 'mother_name_mm') final  String motherNameMm;
+@override@JsonKey(name: 'number_of_family_number') final  int numberOfFamilyNumber;
 
 /// Create a copy of FamilyInfoModel
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +243,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FamilyInfoModel&&const DeepCollectionEquality().equals(other._members, _members));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FamilyInfoModel&&const DeepCollectionEquality().equals(other._members, _members)&&(identical(other.fatherName, fatherName) || other.fatherName == fatherName)&&(identical(other.fatherNameMm, fatherNameMm) || other.fatherNameMm == fatherNameMm)&&(identical(other.motherName, motherName) || other.motherName == motherName)&&(identical(other.motherNameMm, motherNameMm) || other.motherNameMm == motherNameMm)&&(identical(other.numberOfFamilyNumber, numberOfFamilyNumber) || other.numberOfFamilyNumber == numberOfFamilyNumber));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_members));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_members),fatherName,fatherNameMm,motherName,motherNameMm,numberOfFamilyNumber);
 
 @override
 String toString() {
-  return 'FamilyInfoModel(members: $members)';
+  return 'FamilyInfoModel(members: $members, fatherName: $fatherName, fatherNameMm: $fatherNameMm, motherName: $motherName, motherNameMm: $motherNameMm, numberOfFamilyNumber: $numberOfFamilyNumber)';
 }
 
 
@@ -253,7 +263,7 @@ abstract mixin class _$FamilyInfoModelCopyWith<$Res> implements $FamilyInfoModel
   factory _$FamilyInfoModelCopyWith(_FamilyInfoModel value, $Res Function(_FamilyInfoModel) _then) = __$FamilyInfoModelCopyWithImpl;
 @override @useResult
 $Res call({
- List<dynamic> members
+ List<dynamic> members,@JsonKey(name: 'father_name') String fatherName,@JsonKey(name: 'father_name_mm') String fatherNameMm,@JsonKey(name: 'mother_name') String motherName,@JsonKey(name: 'mother_name_mm') String motherNameMm,@JsonKey(name: 'number_of_family_number') int numberOfFamilyNumber
 });
 
 
@@ -270,10 +280,15 @@ class __$FamilyInfoModelCopyWithImpl<$Res>
 
 /// Create a copy of FamilyInfoModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? members = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? members = null,Object? fatherName = null,Object? fatherNameMm = null,Object? motherName = null,Object? motherNameMm = null,Object? numberOfFamilyNumber = null,}) {
   return _then(_FamilyInfoModel(
 members: null == members ? _self._members : members // ignore: cast_nullable_to_non_nullable
-as List<dynamic>,
+as List<dynamic>,fatherName: null == fatherName ? _self.fatherName : fatherName // ignore: cast_nullable_to_non_nullable
+as String,fatherNameMm: null == fatherNameMm ? _self.fatherNameMm : fatherNameMm // ignore: cast_nullable_to_non_nullable
+as String,motherName: null == motherName ? _self.motherName : motherName // ignore: cast_nullable_to_non_nullable
+as String,motherNameMm: null == motherNameMm ? _self.motherNameMm : motherNameMm // ignore: cast_nullable_to_non_nullable
+as String,numberOfFamilyNumber: null == numberOfFamilyNumber ? _self.numberOfFamilyNumber : numberOfFamilyNumber // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

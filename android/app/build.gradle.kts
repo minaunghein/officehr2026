@@ -57,3 +57,9 @@ kotlin {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    // Required so the Theme.AppCompat.* parent used by local_auth's Android
+    // BiometricPrompt resolves on all supported API levels.
+    implementation("androidx.appcompat:appcompat:1.7.1")
+}

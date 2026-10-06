@@ -15,5 +15,8 @@ abstract class Position with _$Position {
     required bool isActive,
     required bool deleted,
     String? deletedAt,
+    String? createdAt,
+    String? updatedAt,
+    int? version,
   }) = _Position;
 }

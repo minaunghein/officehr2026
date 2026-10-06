@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserModel {
 
- String get id; String get username; String get email; EmployeeModel? get employee;
+@JsonKey(readValue: _readId) String get id; String get username; String get email; EmployeeModel? get employee;
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $UserModelCopyWith<$Res>  {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) _then) = _$UserModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String username, String email, EmployeeModel? employee
+@JsonKey(readValue: _readId) String id, String username, String email, EmployeeModel? employee
 });
 
 
@@ -168,7 +168,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String username,  String email,  EmployeeModel? employee)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id,  String username,  String email,  EmployeeModel? employee)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
 return $default(_that.id,_that.username,_that.email,_that.employee);case _:
@@ -189,7 +189,7 @@ return $default(_that.id,_that.username,_that.email,_that.employee);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String username,  String email,  EmployeeModel? employee)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id,  String username,  String email,  EmployeeModel? employee)  $default,) {final _that = this;
 switch (_that) {
 case _UserModel():
 return $default(_that.id,_that.username,_that.email,_that.employee);case _:
@@ -209,7 +209,7 @@ return $default(_that.id,_that.username,_that.email,_that.employee);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String username,  String email,  EmployeeModel? employee)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(readValue: _readId)  String id,  String username,  String email,  EmployeeModel? employee)?  $default,) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
 return $default(_that.id,_that.username,_that.email,_that.employee);case _:
@@ -224,10 +224,10 @@ return $default(_that.id,_that.username,_that.email,_that.employee);case _:
 @JsonSerializable()
 
 class _UserModel extends UserModel {
-  const _UserModel({this.id = '', this.username = '', this.email = '', this.employee}): super._();
+  const _UserModel({@JsonKey(readValue: _readId) this.id = '', this.username = '', this.email = '', this.employee}): super._();
   factory _UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
-@override@JsonKey() final  String id;
+@override@JsonKey(readValue: _readId) final  String id;
 @override@JsonKey() final  String username;
 @override@JsonKey() final  String email;
 @override final  EmployeeModel? employee;
@@ -265,7 +265,7 @@ abstract mixin class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Re
   factory _$UserModelCopyWith(_UserModel value, $Res Function(_UserModel) _then) = __$UserModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String username, String email, EmployeeModel? employee
+@JsonKey(readValue: _readId) String id, String username, String email, EmployeeModel? employee
 });
 
 

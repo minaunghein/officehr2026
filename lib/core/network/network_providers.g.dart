@@ -21,7 +21,7 @@ final class ApiConfigProvider
         argument: null,
         retry: null,
         name: r'apiConfigProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -48,7 +48,7 @@ final class ApiConfigProvider
   }
 }
 
-String _$apiConfigHash() => r'504e42332e50fa43641fe2804c7f0eca6f21a66e';
+String _$apiConfigHash() => r'56f1568ca3cc9d84c69c0dd2bd68fa65204fad6f';
 
 @ProviderFor(secureStorage)
 final secureStorageProvider = SecureStorageProvider._();
@@ -185,6 +185,46 @@ abstract class _$AuthRefreshToken extends $AsyncNotifier<String?> {
   }
 }
 
+@ProviderFor(refreshDio)
+final refreshDioProvider = RefreshDioProvider._();
+
+final class RefreshDioProvider extends $FunctionalProvider<Dio, Dio, Dio>
+    with $Provider<Dio> {
+  RefreshDioProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'refreshDioProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$refreshDioHash();
+
+  @$internal
+  @override
+  $ProviderElement<Dio> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  Dio create(Ref ref) {
+    return refreshDio(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Dio value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Dio>(value),
+    );
+  }
+}
+
+String _$refreshDioHash() => r'7399d4429a48a0745a3ba6ac7c9576d940fb1ff0';
+
 @ProviderFor(dio)
 final dioProvider = DioProvider._();
 
@@ -196,7 +236,7 @@ final class DioProvider extends $FunctionalProvider<Dio, Dio, Dio>
         argument: null,
         retry: null,
         name: r'dioProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -223,7 +263,7 @@ final class DioProvider extends $FunctionalProvider<Dio, Dio, Dio>
   }
 }
 
-String _$dioHash() => r'09458c00b7aa1cad4ae833112b93f5107879b33f';
+String _$dioHash() => r'c4ea76fc3152ad041db2357679e839d8f360b719';
 
 @ProviderFor(apiService)
 final apiServiceProvider = ApiServiceProvider._();
@@ -237,7 +277,7 @@ final class ApiServiceProvider
         argument: null,
         retry: null,
         name: r'apiServiceProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -264,4 +304,4 @@ final class ApiServiceProvider
   }
 }
 
-String _$apiServiceHash() => r'92dd8e18382bfbb9fc8368c11e6cae9c0673c3d3';
+String _$apiServiceHash() => r'3a7eaa7b5c5ca6934d45550d0605c233b410bc45';

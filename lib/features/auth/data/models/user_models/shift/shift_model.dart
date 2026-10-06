@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/features/auth/data/models/user_models/shift_day/shift_day_model.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/shift/shift.dart';
 
@@ -25,6 +26,16 @@ abstract class ShiftModel with _$ShiftModel {
     @JsonKey(name: 'is_active') @Default(false) bool isActive,
     @Default(false) bool deleted,
     String? deletedAt,
+    @JsonKey(name: 'early_leave_grace_minutes')
+    @Default(0)
+    int earlyLeaveGraceMinutes,
+    @JsonKey(name: 'late_grace_minutes') @Default(0) int lateGraceMinutes,
+    @JsonKey(name: 'merge_window_minutes') @Default(0) int mergeWindowMinutes,
+    @JsonKey(name: 'rounding_interval') @Default(0) int roundingInterval,
+    @JsonKey(name: 'rounding_mode') @Default('') String roundingMode,
+    String? createdAt,
+    String? updatedAt,
+    @JsonKey(name: '__v') int? version,
   }) = _ShiftModel;
 
   factory ShiftModel.fromJson(Map<String, dynamic> json) =>
@@ -45,7 +56,15 @@ abstract class ShiftModel with _$ShiftModel {
     companyId: companyId,
     isActive: isActive,
     deleted: deleted,
-    deletedAt: deletedAt,
+    deletedAt: normalizeLocalDateTimeString(deletedAt),
+    earlyLeaveGraceMinutes: earlyLeaveGraceMinutes,
+    lateGraceMinutes: lateGraceMinutes,
+    mergeWindowMinutes: mergeWindowMinutes,
+    roundingInterval: roundingInterval,
+    roundingMode: roundingMode,
+    createdAt: normalizeLocalDateTimeString(createdAt),
+    updatedAt: normalizeLocalDateTimeString(updatedAt),
+    version: version,
   );
 }
 

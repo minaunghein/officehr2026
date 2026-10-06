@@ -21,5 +21,13 @@ abstract class Shift with _$Shift {
     required bool isActive,
     required bool deleted,
     String? deletedAt,
+    required int earlyLeaveGraceMinutes,
+    required int lateGraceMinutes,
+    required int mergeWindowMinutes,
+    required int roundingInterval,
+    required String roundingMode,
+    String? createdAt,
+    String? updatedAt,
+    int? version,
   }) = _Shift;
 }

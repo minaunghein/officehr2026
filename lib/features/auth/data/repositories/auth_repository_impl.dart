@@ -1,5 +1,6 @@
 import 'package:office_hr/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:office_hr/features/auth/domain/entities/auth_session.dart';
+import 'package:office_hr/features/auth/domain/entities/change_password_result.dart';
 import 'package:office_hr/features/auth/domain/entities/login_response.dart';
 import 'package:office_hr/features/auth/domain/repositories/auth_repository.dart';
 
@@ -24,6 +25,18 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<AuthSession> getSession() async {
     final response = await _remoteDataSource.getSession();
+    return response.toEntity();
+  }
+
+  @override
+  Future<ChangePasswordResult> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    final response = await _remoteDataSource.changePassword(
+      oldPassword: oldPassword,
+      newPassword: newPassword,
+    );
     return response.toEntity();
   }
 }

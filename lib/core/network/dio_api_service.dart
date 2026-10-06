@@ -132,7 +132,7 @@ class DioApiService implements ApiService {
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
         ApiException(
-          message: 'Unexpected error while calling $path.',
+          message: 'Something went wrong. Please try again.',
           type: ApiErrorType.unknown,
           endpoint: path,
           responseBody: error.toString(),
@@ -155,7 +155,7 @@ class DioApiService implements ApiService {
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
         ApiException(
-          message: 'Failed to parse API response for ${T.toString()}.',
+          message: 'Something went wrong. Please try again.',
           type: ApiErrorType.parsingError,
           responseBody: data,
         ),

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BasicInfo {
 
- String get firstName; String get lastName; String? get nrc;
+ String get firstName; String get lastName; Nrc? get nrc; String get firstNameMm; String get lastNameMm; String get maritalStatus; String get gender; String get bloodType; String get nationality; String? get dateOfBirth; int? get height; int? get weight; String get religion; String get ethnicity;
 /// Create a copy of BasicInfo
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $BasicInfoCopyWith<BasicInfo> get copyWith => _$BasicInfoCopyWithImpl<BasicInfo>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BasicInfo&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.nrc, nrc) || other.nrc == nrc));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BasicInfo&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.nrc, nrc) || other.nrc == nrc)&&(identical(other.firstNameMm, firstNameMm) || other.firstNameMm == firstNameMm)&&(identical(other.lastNameMm, lastNameMm) || other.lastNameMm == lastNameMm)&&(identical(other.maritalStatus, maritalStatus) || other.maritalStatus == maritalStatus)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.bloodType, bloodType) || other.bloodType == bloodType)&&(identical(other.nationality, nationality) || other.nationality == nationality)&&(identical(other.dateOfBirth, dateOfBirth) || other.dateOfBirth == dateOfBirth)&&(identical(other.height, height) || other.height == height)&&(identical(other.weight, weight) || other.weight == weight)&&(identical(other.religion, religion) || other.religion == religion)&&(identical(other.ethnicity, ethnicity) || other.ethnicity == ethnicity));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,firstName,lastName,nrc);
+int get hashCode => Object.hash(runtimeType,firstName,lastName,nrc,firstNameMm,lastNameMm,maritalStatus,gender,bloodType,nationality,dateOfBirth,height,weight,religion,ethnicity);
 
 @override
 String toString() {
-  return 'BasicInfo(firstName: $firstName, lastName: $lastName, nrc: $nrc)';
+  return 'BasicInfo(firstName: $firstName, lastName: $lastName, nrc: $nrc, firstNameMm: $firstNameMm, lastNameMm: $lastNameMm, maritalStatus: $maritalStatus, gender: $gender, bloodType: $bloodType, nationality: $nationality, dateOfBirth: $dateOfBirth, height: $height, weight: $weight, religion: $religion, ethnicity: $ethnicity)';
 }
 
 
@@ -45,11 +45,11 @@ abstract mixin class $BasicInfoCopyWith<$Res>  {
   factory $BasicInfoCopyWith(BasicInfo value, $Res Function(BasicInfo) _then) = _$BasicInfoCopyWithImpl;
 @useResult
 $Res call({
- String firstName, String lastName, String? nrc
+ String firstName, String lastName, Nrc? nrc, String firstNameMm, String lastNameMm, String maritalStatus, String gender, String bloodType, String nationality, String? dateOfBirth, int? height, int? weight, String religion, String ethnicity
 });
 
 
-
+$NrcCopyWith<$Res>? get nrc;
 
 }
 /// @nodoc
@@ -62,15 +62,38 @@ class _$BasicInfoCopyWithImpl<$Res>
 
 /// Create a copy of BasicInfo
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? firstName = null,Object? lastName = null,Object? nrc = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? firstName = null,Object? lastName = null,Object? nrc = freezed,Object? firstNameMm = null,Object? lastNameMm = null,Object? maritalStatus = null,Object? gender = null,Object? bloodType = null,Object? nationality = null,Object? dateOfBirth = freezed,Object? height = freezed,Object? weight = freezed,Object? religion = null,Object? ethnicity = null,}) {
   return _then(_self.copyWith(
 firstName: null == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
 as String,lastName: null == lastName ? _self.lastName : lastName // ignore: cast_nullable_to_non_nullable
 as String,nrc: freezed == nrc ? _self.nrc : nrc // ignore: cast_nullable_to_non_nullable
-as String?,
+as Nrc?,firstNameMm: null == firstNameMm ? _self.firstNameMm : firstNameMm // ignore: cast_nullable_to_non_nullable
+as String,lastNameMm: null == lastNameMm ? _self.lastNameMm : lastNameMm // ignore: cast_nullable_to_non_nullable
+as String,maritalStatus: null == maritalStatus ? _self.maritalStatus : maritalStatus // ignore: cast_nullable_to_non_nullable
+as String,gender: null == gender ? _self.gender : gender // ignore: cast_nullable_to_non_nullable
+as String,bloodType: null == bloodType ? _self.bloodType : bloodType // ignore: cast_nullable_to_non_nullable
+as String,nationality: null == nationality ? _self.nationality : nationality // ignore: cast_nullable_to_non_nullable
+as String,dateOfBirth: freezed == dateOfBirth ? _self.dateOfBirth : dateOfBirth // ignore: cast_nullable_to_non_nullable
+as String?,height: freezed == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
+as int?,weight: freezed == weight ? _self.weight : weight // ignore: cast_nullable_to_non_nullable
+as int?,religion: null == religion ? _self.religion : religion // ignore: cast_nullable_to_non_nullable
+as String,ethnicity: null == ethnicity ? _self.ethnicity : ethnicity // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
+/// Create a copy of BasicInfo
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$NrcCopyWith<$Res>? get nrc {
+    if (_self.nrc == null) {
+    return null;
+  }
 
+  return $NrcCopyWith<$Res>(_self.nrc!, (value) {
+    return _then(_self.copyWith(nrc: value));
+  });
+}
 }
 
 
@@ -152,10 +175,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String firstName,  String lastName,  String? nrc)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String firstName,  String lastName,  Nrc? nrc,  String firstNameMm,  String lastNameMm,  String maritalStatus,  String gender,  String bloodType,  String nationality,  String? dateOfBirth,  int? height,  int? weight,  String religion,  String ethnicity)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BasicInfo() when $default != null:
-return $default(_that.firstName,_that.lastName,_that.nrc);case _:
+return $default(_that.firstName,_that.lastName,_that.nrc,_that.firstNameMm,_that.lastNameMm,_that.maritalStatus,_that.gender,_that.bloodType,_that.nationality,_that.dateOfBirth,_that.height,_that.weight,_that.religion,_that.ethnicity);case _:
   return orElse();
 
 }
@@ -173,10 +196,10 @@ return $default(_that.firstName,_that.lastName,_that.nrc);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String firstName,  String lastName,  String? nrc)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String firstName,  String lastName,  Nrc? nrc,  String firstNameMm,  String lastNameMm,  String maritalStatus,  String gender,  String bloodType,  String nationality,  String? dateOfBirth,  int? height,  int? weight,  String religion,  String ethnicity)  $default,) {final _that = this;
 switch (_that) {
 case _BasicInfo():
-return $default(_that.firstName,_that.lastName,_that.nrc);case _:
+return $default(_that.firstName,_that.lastName,_that.nrc,_that.firstNameMm,_that.lastNameMm,_that.maritalStatus,_that.gender,_that.bloodType,_that.nationality,_that.dateOfBirth,_that.height,_that.weight,_that.religion,_that.ethnicity);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +216,10 @@ return $default(_that.firstName,_that.lastName,_that.nrc);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String firstName,  String lastName,  String? nrc)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String firstName,  String lastName,  Nrc? nrc,  String firstNameMm,  String lastNameMm,  String maritalStatus,  String gender,  String bloodType,  String nationality,  String? dateOfBirth,  int? height,  int? weight,  String religion,  String ethnicity)?  $default,) {final _that = this;
 switch (_that) {
 case _BasicInfo() when $default != null:
-return $default(_that.firstName,_that.lastName,_that.nrc);case _:
+return $default(_that.firstName,_that.lastName,_that.nrc,_that.firstNameMm,_that.lastNameMm,_that.maritalStatus,_that.gender,_that.bloodType,_that.nationality,_that.dateOfBirth,_that.height,_that.weight,_that.religion,_that.ethnicity);case _:
   return null;
 
 }
@@ -208,12 +231,23 @@ return $default(_that.firstName,_that.lastName,_that.nrc);case _:
 
 
 class _BasicInfo implements BasicInfo {
-  const _BasicInfo({required this.firstName, required this.lastName, this.nrc});
+  const _BasicInfo({required this.firstName, required this.lastName, this.nrc, required this.firstNameMm, required this.lastNameMm, required this.maritalStatus, required this.gender, required this.bloodType, required this.nationality, this.dateOfBirth, this.height, this.weight, required this.religion, required this.ethnicity});
   
 
 @override final  String firstName;
 @override final  String lastName;
-@override final  String? nrc;
+@override final  Nrc? nrc;
+@override final  String firstNameMm;
+@override final  String lastNameMm;
+@override final  String maritalStatus;
+@override final  String gender;
+@override final  String bloodType;
+@override final  String nationality;
+@override final  String? dateOfBirth;
+@override final  int? height;
+@override final  int? weight;
+@override final  String religion;
+@override final  String ethnicity;
 
 /// Create a copy of BasicInfo
 /// with the given fields replaced by the non-null parameter values.
@@ -225,16 +259,16 @@ _$BasicInfoCopyWith<_BasicInfo> get copyWith => __$BasicInfoCopyWithImpl<_BasicI
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BasicInfo&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.nrc, nrc) || other.nrc == nrc));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BasicInfo&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.nrc, nrc) || other.nrc == nrc)&&(identical(other.firstNameMm, firstNameMm) || other.firstNameMm == firstNameMm)&&(identical(other.lastNameMm, lastNameMm) || other.lastNameMm == lastNameMm)&&(identical(other.maritalStatus, maritalStatus) || other.maritalStatus == maritalStatus)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.bloodType, bloodType) || other.bloodType == bloodType)&&(identical(other.nationality, nationality) || other.nationality == nationality)&&(identical(other.dateOfBirth, dateOfBirth) || other.dateOfBirth == dateOfBirth)&&(identical(other.height, height) || other.height == height)&&(identical(other.weight, weight) || other.weight == weight)&&(identical(other.religion, religion) || other.religion == religion)&&(identical(other.ethnicity, ethnicity) || other.ethnicity == ethnicity));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,firstName,lastName,nrc);
+int get hashCode => Object.hash(runtimeType,firstName,lastName,nrc,firstNameMm,lastNameMm,maritalStatus,gender,bloodType,nationality,dateOfBirth,height,weight,religion,ethnicity);
 
 @override
 String toString() {
-  return 'BasicInfo(firstName: $firstName, lastName: $lastName, nrc: $nrc)';
+  return 'BasicInfo(firstName: $firstName, lastName: $lastName, nrc: $nrc, firstNameMm: $firstNameMm, lastNameMm: $lastNameMm, maritalStatus: $maritalStatus, gender: $gender, bloodType: $bloodType, nationality: $nationality, dateOfBirth: $dateOfBirth, height: $height, weight: $weight, religion: $religion, ethnicity: $ethnicity)';
 }
 
 
@@ -245,11 +279,11 @@ abstract mixin class _$BasicInfoCopyWith<$Res> implements $BasicInfoCopyWith<$Re
   factory _$BasicInfoCopyWith(_BasicInfo value, $Res Function(_BasicInfo) _then) = __$BasicInfoCopyWithImpl;
 @override @useResult
 $Res call({
- String firstName, String lastName, String? nrc
+ String firstName, String lastName, Nrc? nrc, String firstNameMm, String lastNameMm, String maritalStatus, String gender, String bloodType, String nationality, String? dateOfBirth, int? height, int? weight, String religion, String ethnicity
 });
 
 
-
+@override $NrcCopyWith<$Res>? get nrc;
 
 }
 /// @nodoc
@@ -262,16 +296,39 @@ class __$BasicInfoCopyWithImpl<$Res>
 
 /// Create a copy of BasicInfo
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? firstName = null,Object? lastName = null,Object? nrc = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? firstName = null,Object? lastName = null,Object? nrc = freezed,Object? firstNameMm = null,Object? lastNameMm = null,Object? maritalStatus = null,Object? gender = null,Object? bloodType = null,Object? nationality = null,Object? dateOfBirth = freezed,Object? height = freezed,Object? weight = freezed,Object? religion = null,Object? ethnicity = null,}) {
   return _then(_BasicInfo(
 firstName: null == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
 as String,lastName: null == lastName ? _self.lastName : lastName // ignore: cast_nullable_to_non_nullable
 as String,nrc: freezed == nrc ? _self.nrc : nrc // ignore: cast_nullable_to_non_nullable
-as String?,
+as Nrc?,firstNameMm: null == firstNameMm ? _self.firstNameMm : firstNameMm // ignore: cast_nullable_to_non_nullable
+as String,lastNameMm: null == lastNameMm ? _self.lastNameMm : lastNameMm // ignore: cast_nullable_to_non_nullable
+as String,maritalStatus: null == maritalStatus ? _self.maritalStatus : maritalStatus // ignore: cast_nullable_to_non_nullable
+as String,gender: null == gender ? _self.gender : gender // ignore: cast_nullable_to_non_nullable
+as String,bloodType: null == bloodType ? _self.bloodType : bloodType // ignore: cast_nullable_to_non_nullable
+as String,nationality: null == nationality ? _self.nationality : nationality // ignore: cast_nullable_to_non_nullable
+as String,dateOfBirth: freezed == dateOfBirth ? _self.dateOfBirth : dateOfBirth // ignore: cast_nullable_to_non_nullable
+as String?,height: freezed == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
+as int?,weight: freezed == weight ? _self.weight : weight // ignore: cast_nullable_to_non_nullable
+as int?,religion: null == religion ? _self.religion : religion // ignore: cast_nullable_to_non_nullable
+as String,ethnicity: null == ethnicity ? _self.ethnicity : ethnicity // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
+/// Create a copy of BasicInfo
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$NrcCopyWith<$Res>? get nrc {
+    if (_self.nrc == null) {
+    return null;
+  }
 
+  return $NrcCopyWith<$Res>(_self.nrc!, (value) {
+    return _then(_self.copyWith(nrc: value));
+  });
+}
 }
 
 // dart format on

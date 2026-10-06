@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ContactInfoModel {
 
-@JsonKey(name: 'emergency_contact') dynamic get emergencyContact;
+@JsonKey(name: 'emergency_contact') dynamic get emergencyContact; String get phone; String get email;@JsonKey(name: 'current_address') AddressModel? get currentAddress;@JsonKey(name: 'permanent_address') AddressModel? get permanentAddress;
 /// Create a copy of ContactInfoModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ContactInfoModelCopyWith<ContactInfoModel> get copyWith => _$ContactInfoModelCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ContactInfoModel&&const DeepCollectionEquality().equals(other.emergencyContact, emergencyContact));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ContactInfoModel&&const DeepCollectionEquality().equals(other.emergencyContact, emergencyContact)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.email, email) || other.email == email)&&(identical(other.currentAddress, currentAddress) || other.currentAddress == currentAddress)&&(identical(other.permanentAddress, permanentAddress) || other.permanentAddress == permanentAddress));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(emergencyContact));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(emergencyContact),phone,email,currentAddress,permanentAddress);
 
 @override
 String toString() {
-  return 'ContactInfoModel(emergencyContact: $emergencyContact)';
+  return 'ContactInfoModel(emergencyContact: $emergencyContact, phone: $phone, email: $email, currentAddress: $currentAddress, permanentAddress: $permanentAddress)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $ContactInfoModelCopyWith<$Res>  {
   factory $ContactInfoModelCopyWith(ContactInfoModel value, $Res Function(ContactInfoModel) _then) = _$ContactInfoModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'emergency_contact') dynamic emergencyContact
+@JsonKey(name: 'emergency_contact') dynamic emergencyContact, String phone, String email,@JsonKey(name: 'current_address') AddressModel? currentAddress,@JsonKey(name: 'permanent_address') AddressModel? permanentAddress
 });
 
 
-
+$AddressModelCopyWith<$Res>? get currentAddress;$AddressModelCopyWith<$Res>? get permanentAddress;
 
 }
 /// @nodoc
@@ -65,13 +65,41 @@ class _$ContactInfoModelCopyWithImpl<$Res>
 
 /// Create a copy of ContactInfoModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? emergencyContact = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? emergencyContact = freezed,Object? phone = null,Object? email = null,Object? currentAddress = freezed,Object? permanentAddress = freezed,}) {
   return _then(_self.copyWith(
 emergencyContact: freezed == emergencyContact ? _self.emergencyContact : emergencyContact // ignore: cast_nullable_to_non_nullable
-as dynamic,
+as dynamic,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,currentAddress: freezed == currentAddress ? _self.currentAddress : currentAddress // ignore: cast_nullable_to_non_nullable
+as AddressModel?,permanentAddress: freezed == permanentAddress ? _self.permanentAddress : permanentAddress // ignore: cast_nullable_to_non_nullable
+as AddressModel?,
   ));
 }
+/// Create a copy of ContactInfoModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AddressModelCopyWith<$Res>? get currentAddress {
+    if (_self.currentAddress == null) {
+    return null;
+  }
 
+  return $AddressModelCopyWith<$Res>(_self.currentAddress!, (value) {
+    return _then(_self.copyWith(currentAddress: value));
+  });
+}/// Create a copy of ContactInfoModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AddressModelCopyWith<$Res>? get permanentAddress {
+    if (_self.permanentAddress == null) {
+    return null;
+  }
+
+  return $AddressModelCopyWith<$Res>(_self.permanentAddress!, (value) {
+    return _then(_self.copyWith(permanentAddress: value));
+  });
+}
 }
 
 
@@ -153,10 +181,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'emergency_contact')  dynamic emergencyContact)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'emergency_contact')  dynamic emergencyContact,  String phone,  String email, @JsonKey(name: 'current_address')  AddressModel? currentAddress, @JsonKey(name: 'permanent_address')  AddressModel? permanentAddress)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ContactInfoModel() when $default != null:
-return $default(_that.emergencyContact);case _:
+return $default(_that.emergencyContact,_that.phone,_that.email,_that.currentAddress,_that.permanentAddress);case _:
   return orElse();
 
 }
@@ -174,10 +202,10 @@ return $default(_that.emergencyContact);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'emergency_contact')  dynamic emergencyContact)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'emergency_contact')  dynamic emergencyContact,  String phone,  String email, @JsonKey(name: 'current_address')  AddressModel? currentAddress, @JsonKey(name: 'permanent_address')  AddressModel? permanentAddress)  $default,) {final _that = this;
 switch (_that) {
 case _ContactInfoModel():
-return $default(_that.emergencyContact);case _:
+return $default(_that.emergencyContact,_that.phone,_that.email,_that.currentAddress,_that.permanentAddress);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +222,10 @@ return $default(_that.emergencyContact);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'emergency_contact')  dynamic emergencyContact)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'emergency_contact')  dynamic emergencyContact,  String phone,  String email, @JsonKey(name: 'current_address')  AddressModel? currentAddress, @JsonKey(name: 'permanent_address')  AddressModel? permanentAddress)?  $default,) {final _that = this;
 switch (_that) {
 case _ContactInfoModel() when $default != null:
-return $default(_that.emergencyContact);case _:
+return $default(_that.emergencyContact,_that.phone,_that.email,_that.currentAddress,_that.permanentAddress);case _:
   return null;
 
 }
@@ -209,10 +237,14 @@ return $default(_that.emergencyContact);case _:
 @JsonSerializable()
 
 class _ContactInfoModel extends ContactInfoModel {
-  const _ContactInfoModel({@JsonKey(name: 'emergency_contact') this.emergencyContact}): super._();
+  const _ContactInfoModel({@JsonKey(name: 'emergency_contact') this.emergencyContact, this.phone = '', this.email = '', @JsonKey(name: 'current_address') this.currentAddress, @JsonKey(name: 'permanent_address') this.permanentAddress}): super._();
   factory _ContactInfoModel.fromJson(Map<String, dynamic> json) => _$ContactInfoModelFromJson(json);
 
 @override@JsonKey(name: 'emergency_contact') final  dynamic emergencyContact;
+@override@JsonKey() final  String phone;
+@override@JsonKey() final  String email;
+@override@JsonKey(name: 'current_address') final  AddressModel? currentAddress;
+@override@JsonKey(name: 'permanent_address') final  AddressModel? permanentAddress;
 
 /// Create a copy of ContactInfoModel
 /// with the given fields replaced by the non-null parameter values.
@@ -227,16 +259,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ContactInfoModel&&const DeepCollectionEquality().equals(other.emergencyContact, emergencyContact));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ContactInfoModel&&const DeepCollectionEquality().equals(other.emergencyContact, emergencyContact)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.email, email) || other.email == email)&&(identical(other.currentAddress, currentAddress) || other.currentAddress == currentAddress)&&(identical(other.permanentAddress, permanentAddress) || other.permanentAddress == permanentAddress));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(emergencyContact));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(emergencyContact),phone,email,currentAddress,permanentAddress);
 
 @override
 String toString() {
-  return 'ContactInfoModel(emergencyContact: $emergencyContact)';
+  return 'ContactInfoModel(emergencyContact: $emergencyContact, phone: $phone, email: $email, currentAddress: $currentAddress, permanentAddress: $permanentAddress)';
 }
 
 
@@ -247,11 +279,11 @@ abstract mixin class _$ContactInfoModelCopyWith<$Res> implements $ContactInfoMod
   factory _$ContactInfoModelCopyWith(_ContactInfoModel value, $Res Function(_ContactInfoModel) _then) = __$ContactInfoModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'emergency_contact') dynamic emergencyContact
+@JsonKey(name: 'emergency_contact') dynamic emergencyContact, String phone, String email,@JsonKey(name: 'current_address') AddressModel? currentAddress,@JsonKey(name: 'permanent_address') AddressModel? permanentAddress
 });
 
 
-
+@override $AddressModelCopyWith<$Res>? get currentAddress;@override $AddressModelCopyWith<$Res>? get permanentAddress;
 
 }
 /// @nodoc
@@ -264,14 +296,42 @@ class __$ContactInfoModelCopyWithImpl<$Res>
 
 /// Create a copy of ContactInfoModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? emergencyContact = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? emergencyContact = freezed,Object? phone = null,Object? email = null,Object? currentAddress = freezed,Object? permanentAddress = freezed,}) {
   return _then(_ContactInfoModel(
 emergencyContact: freezed == emergencyContact ? _self.emergencyContact : emergencyContact // ignore: cast_nullable_to_non_nullable
-as dynamic,
+as dynamic,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,currentAddress: freezed == currentAddress ? _self.currentAddress : currentAddress // ignore: cast_nullable_to_non_nullable
+as AddressModel?,permanentAddress: freezed == permanentAddress ? _self.permanentAddress : permanentAddress // ignore: cast_nullable_to_non_nullable
+as AddressModel?,
   ));
 }
 
+/// Create a copy of ContactInfoModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AddressModelCopyWith<$Res>? get currentAddress {
+    if (_self.currentAddress == null) {
+    return null;
+  }
 
+  return $AddressModelCopyWith<$Res>(_self.currentAddress!, (value) {
+    return _then(_self.copyWith(currentAddress: value));
+  });
+}/// Create a copy of ContactInfoModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AddressModelCopyWith<$Res>? get permanentAddress {
+    if (_self.permanentAddress == null) {
+    return null;
+  }
+
+  return $AddressModelCopyWith<$Res>(_self.permanentAddress!, (value) {
+    return _then(_self.copyWith(permanentAddress: value));
+  });
+}
 }
 
 // dart format on

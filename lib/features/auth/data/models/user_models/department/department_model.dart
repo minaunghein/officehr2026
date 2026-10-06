@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/department/department.dart';
 
 part 'department_model.freezed.dart';
@@ -18,6 +19,9 @@ abstract class DepartmentModel with _$DepartmentModel {
     @JsonKey(name: 'is_active') @Default(false) bool isActive,
     @Default(false) bool deleted,
     String? deletedAt,
+    String? createdAt,
+    String? updatedAt,
+    @JsonKey(name: '__v') int? version,
   }) = _DepartmentModel;
 
   factory DepartmentModel.fromJson(Map<String, dynamic> json) =>
@@ -32,7 +36,10 @@ abstract class DepartmentModel with _$DepartmentModel {
     companyId: companyId,
     isActive: isActive,
     deleted: deleted,
-    deletedAt: deletedAt,
+    deletedAt: normalizeLocalDateTimeString(deletedAt),
+    createdAt: normalizeLocalDateTimeString(createdAt),
+    updatedAt: normalizeLocalDateTimeString(updatedAt),
+    version: version,
   );
 }
 

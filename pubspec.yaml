@@ -52,12 +52,16 @@ dependencies:
   json_annotation: ^4.12.0
   cached_network_image: ^3.4.1
   package_info_plus: ^10.1.0
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^7.4.0
   dio: ^5.9.2
   shimmer: ^3.0.0
   flutter_map: ^8.3.0
   geolocator: ^14.0.3
   latlong2: ^0.9.1
   shared_preferences: ^2.5.5
+  image_picker: ^1.2.3
+  local_auth: ^3.0.2
   
 
 dev_dependencies:

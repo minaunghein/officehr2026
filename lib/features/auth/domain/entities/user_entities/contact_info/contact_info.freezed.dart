@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ContactInfo {
 
- dynamic get emergencyContact;
+ dynamic get emergencyContact; String get phone; String get email; Address? get currentAddress; Address? get permanentAddress;
 /// Create a copy of ContactInfo
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ContactInfoCopyWith<ContactInfo> get copyWith => _$ContactInfoCopyWithImpl<Cont
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ContactInfo&&const DeepCollectionEquality().equals(other.emergencyContact, emergencyContact));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ContactInfo&&const DeepCollectionEquality().equals(other.emergencyContact, emergencyContact)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.email, email) || other.email == email)&&(identical(other.currentAddress, currentAddress) || other.currentAddress == currentAddress)&&(identical(other.permanentAddress, permanentAddress) || other.permanentAddress == permanentAddress));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(emergencyContact));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(emergencyContact),phone,email,currentAddress,permanentAddress);
 
 @override
 String toString() {
-  return 'ContactInfo(emergencyContact: $emergencyContact)';
+  return 'ContactInfo(emergencyContact: $emergencyContact, phone: $phone, email: $email, currentAddress: $currentAddress, permanentAddress: $permanentAddress)';
 }
 
 
@@ -45,11 +45,11 @@ abstract mixin class $ContactInfoCopyWith<$Res>  {
   factory $ContactInfoCopyWith(ContactInfo value, $Res Function(ContactInfo) _then) = _$ContactInfoCopyWithImpl;
 @useResult
 $Res call({
- dynamic emergencyContact
+ dynamic emergencyContact, String phone, String email, Address? currentAddress, Address? permanentAddress
 });
 
 
-
+$AddressCopyWith<$Res>? get currentAddress;$AddressCopyWith<$Res>? get permanentAddress;
 
 }
 /// @nodoc
@@ -62,13 +62,41 @@ class _$ContactInfoCopyWithImpl<$Res>
 
 /// Create a copy of ContactInfo
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? emergencyContact = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? emergencyContact = freezed,Object? phone = null,Object? email = null,Object? currentAddress = freezed,Object? permanentAddress = freezed,}) {
   return _then(_self.copyWith(
 emergencyContact: freezed == emergencyContact ? _self.emergencyContact : emergencyContact // ignore: cast_nullable_to_non_nullable
-as dynamic,
+as dynamic,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,currentAddress: freezed == currentAddress ? _self.currentAddress : currentAddress // ignore: cast_nullable_to_non_nullable
+as Address?,permanentAddress: freezed == permanentAddress ? _self.permanentAddress : permanentAddress // ignore: cast_nullable_to_non_nullable
+as Address?,
   ));
 }
+/// Create a copy of ContactInfo
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AddressCopyWith<$Res>? get currentAddress {
+    if (_self.currentAddress == null) {
+    return null;
+  }
 
+  return $AddressCopyWith<$Res>(_self.currentAddress!, (value) {
+    return _then(_self.copyWith(currentAddress: value));
+  });
+}/// Create a copy of ContactInfo
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AddressCopyWith<$Res>? get permanentAddress {
+    if (_self.permanentAddress == null) {
+    return null;
+  }
+
+  return $AddressCopyWith<$Res>(_self.permanentAddress!, (value) {
+    return _then(_self.copyWith(permanentAddress: value));
+  });
+}
 }
 
 
@@ -150,10 +178,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( dynamic emergencyContact)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( dynamic emergencyContact,  String phone,  String email,  Address? currentAddress,  Address? permanentAddress)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ContactInfo() when $default != null:
-return $default(_that.emergencyContact);case _:
+return $default(_that.emergencyContact,_that.phone,_that.email,_that.currentAddress,_that.permanentAddress);case _:
   return orElse();
 
 }
@@ -171,10 +199,10 @@ return $default(_that.emergencyContact);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( dynamic emergencyContact)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( dynamic emergencyContact,  String phone,  String email,  Address? currentAddress,  Address? permanentAddress)  $default,) {final _that = this;
 switch (_that) {
 case _ContactInfo():
-return $default(_that.emergencyContact);case _:
+return $default(_that.emergencyContact,_that.phone,_that.email,_that.currentAddress,_that.permanentAddress);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -191,10 +219,10 @@ return $default(_that.emergencyContact);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( dynamic emergencyContact)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( dynamic emergencyContact,  String phone,  String email,  Address? currentAddress,  Address? permanentAddress)?  $default,) {final _that = this;
 switch (_that) {
 case _ContactInfo() when $default != null:
-return $default(_that.emergencyContact);case _:
+return $default(_that.emergencyContact,_that.phone,_that.email,_that.currentAddress,_that.permanentAddress);case _:
   return null;
 
 }
@@ -206,10 +234,14 @@ return $default(_that.emergencyContact);case _:
 
 
 class _ContactInfo implements ContactInfo {
-  const _ContactInfo({this.emergencyContact});
+  const _ContactInfo({this.emergencyContact, required this.phone, required this.email, this.currentAddress, this.permanentAddress});
   
 
 @override final  dynamic emergencyContact;
+@override final  String phone;
+@override final  String email;
+@override final  Address? currentAddress;
+@override final  Address? permanentAddress;
 
 /// Create a copy of ContactInfo
 /// with the given fields replaced by the non-null parameter values.
@@ -221,16 +253,16 @@ _$ContactInfoCopyWith<_ContactInfo> get copyWith => __$ContactInfoCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ContactInfo&&const DeepCollectionEquality().equals(other.emergencyContact, emergencyContact));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ContactInfo&&const DeepCollectionEquality().equals(other.emergencyContact, emergencyContact)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.email, email) || other.email == email)&&(identical(other.currentAddress, currentAddress) || other.currentAddress == currentAddress)&&(identical(other.permanentAddress, permanentAddress) || other.permanentAddress == permanentAddress));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(emergencyContact));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(emergencyContact),phone,email,currentAddress,permanentAddress);
 
 @override
 String toString() {
-  return 'ContactInfo(emergencyContact: $emergencyContact)';
+  return 'ContactInfo(emergencyContact: $emergencyContact, phone: $phone, email: $email, currentAddress: $currentAddress, permanentAddress: $permanentAddress)';
 }
 
 
@@ -241,11 +273,11 @@ abstract mixin class _$ContactInfoCopyWith<$Res> implements $ContactInfoCopyWith
   factory _$ContactInfoCopyWith(_ContactInfo value, $Res Function(_ContactInfo) _then) = __$ContactInfoCopyWithImpl;
 @override @useResult
 $Res call({
- dynamic emergencyContact
+ dynamic emergencyContact, String phone, String email, Address? currentAddress, Address? permanentAddress
 });
 
 
-
+@override $AddressCopyWith<$Res>? get currentAddress;@override $AddressCopyWith<$Res>? get permanentAddress;
 
 }
 /// @nodoc
@@ -258,14 +290,42 @@ class __$ContactInfoCopyWithImpl<$Res>
 
 /// Create a copy of ContactInfo
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? emergencyContact = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? emergencyContact = freezed,Object? phone = null,Object? email = null,Object? currentAddress = freezed,Object? permanentAddress = freezed,}) {
   return _then(_ContactInfo(
 emergencyContact: freezed == emergencyContact ? _self.emergencyContact : emergencyContact // ignore: cast_nullable_to_non_nullable
-as dynamic,
+as dynamic,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,currentAddress: freezed == currentAddress ? _self.currentAddress : currentAddress // ignore: cast_nullable_to_non_nullable
+as Address?,permanentAddress: freezed == permanentAddress ? _self.permanentAddress : permanentAddress // ignore: cast_nullable_to_non_nullable
+as Address?,
   ));
 }
 
+/// Create a copy of ContactInfo
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AddressCopyWith<$Res>? get currentAddress {
+    if (_self.currentAddress == null) {
+    return null;
+  }
 
+  return $AddressCopyWith<$Res>(_self.currentAddress!, (value) {
+    return _then(_self.copyWith(currentAddress: value));
+  });
+}/// Create a copy of ContactInfo
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AddressCopyWith<$Res>? get permanentAddress {
+    if (_self.permanentAddress == null) {
+    return null;
+  }
+
+  return $AddressCopyWith<$Res>(_self.permanentAddress!, (value) {
+    return _then(_self.copyWith(permanentAddress: value));
+  });
+}
 }
 
 // dart format on

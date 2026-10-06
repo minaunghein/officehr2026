@@ -186,6 +186,54 @@ final class GetSessionUseCaseProvider
 
 String _$getSessionUseCaseHash() => r'5baacbf87572499cc34c41a2d3107e0e9e0db77a';
 
+@ProviderFor(changePasswordUsecase)
+final changePasswordUsecaseProvider = ChangePasswordUsecaseProvider._();
+
+final class ChangePasswordUsecaseProvider
+    extends
+        $FunctionalProvider<
+          ChangePasswordUsecase,
+          ChangePasswordUsecase,
+          ChangePasswordUsecase
+        >
+    with $Provider<ChangePasswordUsecase> {
+  ChangePasswordUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'changePasswordUsecaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$changePasswordUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<ChangePasswordUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ChangePasswordUsecase create(Ref ref) {
+    return changePasswordUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ChangePasswordUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ChangePasswordUsecase>(value),
+    );
+  }
+}
+
+String _$changePasswordUsecaseHash() =>
+    r'd5490ef53647b8d00bdf17fb0e73b12e3a06ff3a';
+
 @ProviderFor(CurrentUser)
 final currentUserProvider = CurrentUserProvider._();
 
@@ -210,7 +258,7 @@ final class CurrentUserProvider
   CurrentUser create() => CurrentUser();
 }
 
-String _$currentUserHash() => r'6d0932d51a30d9c9548fd48e3ea619de0237e1e6';
+String _$currentUserHash() => r'b6f871ae7b99dd7b659ded7c7782f3681342b877';
 
 abstract class _$CurrentUser extends $AsyncNotifier<AuthSession?> {
   FutureOr<AuthSession?> build();
@@ -296,6 +344,51 @@ final class LoginNotifierProvider
 String _$loginNotifierHash() => r'90ee0195b2fa34bdaa3c138099bbaf05d11013f0';
 
 abstract class _$LoginNotifier extends $AsyncNotifier<void> {
+  FutureOr<void> build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<AsyncValue<void>, void>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<void>, void>,
+              AsyncValue<void>,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
+
+@ProviderFor(ChangePasswordNotifier)
+final changePasswordProvider = ChangePasswordNotifierProvider._();
+
+final class ChangePasswordNotifierProvider
+    extends $AsyncNotifierProvider<ChangePasswordNotifier, void> {
+  ChangePasswordNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'changePasswordProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$changePasswordNotifierHash();
+
+  @$internal
+  @override
+  ChangePasswordNotifier create() => ChangePasswordNotifier();
+}
+
+String _$changePasswordNotifierHash() =>
+    r'a98b4ae6528c6831b2d756c0fad7a5582434ce7e';
+
+abstract class _$ChangePasswordNotifier extends $AsyncNotifier<void> {
   FutureOr<void> build();
   @$mustCallSuper
   @override

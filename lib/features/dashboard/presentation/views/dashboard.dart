@@ -3,12 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/features/dashboard/presentation/providers/dashboard_provider.dart';
+import 'package:office_hr/features/dashboard/presentation/widgets/dashboard_drawer.dart';
+import 'package:office_hr/features/home/presentation/screens/attendance.dart';
 import 'package:office_hr/features/home/presentation/screens/home.dart';
+import 'package:office_hr/features/home/presentation/screens/team.dart';
 
 class Dashboard extends ConsumerWidget {
   Dashboard({super.key});
 
-  final _pages = <Widget>[HomeScreen(), Container(), Container()];
+  final _pages = <Widget>[
+    const HomeScreen(),
+    const AttendanceScreen(),
+    const TeamScreen(),
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,7 +24,7 @@ class Dashboard extends ConsumerWidget {
 
     return Scaffold(
       appBar: _DashboardAppBar(ref: ref),
-      // drawer: const DashboardDrawer(),
+      drawer: const DashboardDrawer(),
       body: IndexedStack(index: safeIndex, children: _pages),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0,
@@ -83,6 +90,7 @@ class _DashboardAppBar extends HookConsumerWidget
       backgroundColor: theme.scaffoldBackgroundColor,
       elevation: 0,
       scrolledUnderElevation: 0,
+      // leadingWidth: 38,
       title: Row(
         children: [
           !currentUser.hasError &&
