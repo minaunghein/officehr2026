@@ -4,13 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/router/app_router.dart';
-import 'package:office_hr/core/widgets/image_widget.dart';
 import 'package:office_hr/features/auth/domain/entities/auth_session.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/address/address.dart';
+import 'package:office_hr/features/user_profile/presentation/widgets/profile_image_avatar.dart';
 import 'package:office_hr/features/user_profile/presentation/widgets/record_header.dart';
 import 'package:office_hr/features/user_profile/presentation/widgets/user_profile_section.dart';
 import 'package:office_hr/shared/date_formatter.dart';
-import 'package:office_hr/shared/global.dart';
 
 enum _ProfileTab { employment, personal, account }
 
@@ -37,30 +36,7 @@ class ProfileContent extends HookConsumerWidget {
           label: 'Employee profile',
           title: session.displayName,
           subtitle: session.positionTitle,
-          avatar: ClipRRect(
-            borderRadius: BorderRadius.circular(AppSizes.borderRadiusLg),
-            child: SizedBox(
-              width: 64,
-              height: 64,
-              child: ImageWidget(
-                imageUrl: session.profileUrl,
-                width: 64,
-                height: 64,
-                placeholder: ColoredBox(
-                  color: theme.colorScheme.onPrimary.withValues(alpha: 0.2),
-                  child: Center(
-                    child: Text(
-                      initials(session.displayName) ?? '?',
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: theme.colorScheme.onPrimary,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          avatar: ProfileImageAvatar(session: session),
           tags: [
             if (session.employeeCode != null)
               RecordTag(

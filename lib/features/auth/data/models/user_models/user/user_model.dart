@@ -13,6 +13,7 @@ abstract class UserModel with _$UserModel {
     @JsonKey(readValue: _readId) @Default('') String id,
     @Default('') String username,
     @Default('') String email,
+    @JsonKey(name: 'profile_img_id') @Default('') String profileImgId,
     EmployeeModel? employee,
   }) = _UserModel;
 
@@ -23,6 +24,7 @@ abstract class UserModel with _$UserModel {
     id: id,
     username: username,
     email: email,
+    profileImgId: profileImgId,
     employee: employee?.toEntity(),
   );
 }

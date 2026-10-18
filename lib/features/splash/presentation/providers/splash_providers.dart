@@ -6,7 +6,7 @@ part 'splash_providers.g.dart';
 
 enum SplashState { needsCompanySetup, unauthenticated, authenticated }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class SplashInitialization extends _$SplashInitialization {
   @override
   Future<SplashState> build() async {

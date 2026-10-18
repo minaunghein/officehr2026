@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserModel {
 
-@JsonKey(readValue: _readId) String get id; String get username; String get email; EmployeeModel? get employee;
+@JsonKey(readValue: _readId) String get id; String get username; String get email;@JsonKey(name: 'profile_img_id') String get profileImgId; EmployeeModel? get employee;
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserModelCopyWith<UserModel> get copyWith => _$UserModelCopyWithImpl<UserModel>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.email, email) || other.email == email)&&(identical(other.employee, employee) || other.employee == employee));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.email, email) || other.email == email)&&(identical(other.profileImgId, profileImgId) || other.profileImgId == profileImgId)&&(identical(other.employee, employee) || other.employee == employee));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,username,email,employee);
+int get hashCode => Object.hash(runtimeType,id,username,email,profileImgId,employee);
 
 @override
 String toString() {
-  return 'UserModel(id: $id, username: $username, email: $email, employee: $employee)';
+  return 'UserModel(id: $id, username: $username, email: $email, profileImgId: $profileImgId, employee: $employee)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserModelCopyWith<$Res>  {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) _then) = _$UserModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(readValue: _readId) String id, String username, String email, EmployeeModel? employee
+@JsonKey(readValue: _readId) String id, String username, String email,@JsonKey(name: 'profile_img_id') String profileImgId, EmployeeModel? employee
 });
 
 
@@ -65,11 +65,12 @@ class _$UserModelCopyWithImpl<$Res>
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? username = null,Object? email = null,Object? employee = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? username = null,Object? email = null,Object? profileImgId = null,Object? employee = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,profileImgId: null == profileImgId ? _self.profileImgId : profileImgId // ignore: cast_nullable_to_non_nullable
 as String,employee: freezed == employee ? _self.employee : employee // ignore: cast_nullable_to_non_nullable
 as EmployeeModel?,
   ));
@@ -168,10 +169,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id,  String username,  String email,  EmployeeModel? employee)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id,  String username,  String email, @JsonKey(name: 'profile_img_id')  String profileImgId,  EmployeeModel? employee)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
-return $default(_that.id,_that.username,_that.email,_that.employee);case _:
+return $default(_that.id,_that.username,_that.email,_that.profileImgId,_that.employee);case _:
   return orElse();
 
 }
@@ -189,10 +190,10 @@ return $default(_that.id,_that.username,_that.email,_that.employee);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id,  String username,  String email,  EmployeeModel? employee)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id,  String username,  String email, @JsonKey(name: 'profile_img_id')  String profileImgId,  EmployeeModel? employee)  $default,) {final _that = this;
 switch (_that) {
 case _UserModel():
-return $default(_that.id,_that.username,_that.email,_that.employee);case _:
+return $default(_that.id,_that.username,_that.email,_that.profileImgId,_that.employee);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -209,10 +210,10 @@ return $default(_that.id,_that.username,_that.email,_that.employee);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(readValue: _readId)  String id,  String username,  String email,  EmployeeModel? employee)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(readValue: _readId)  String id,  String username,  String email, @JsonKey(name: 'profile_img_id')  String profileImgId,  EmployeeModel? employee)?  $default,) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
-return $default(_that.id,_that.username,_that.email,_that.employee);case _:
+return $default(_that.id,_that.username,_that.email,_that.profileImgId,_that.employee);case _:
   return null;
 
 }
@@ -224,12 +225,13 @@ return $default(_that.id,_that.username,_that.email,_that.employee);case _:
 @JsonSerializable()
 
 class _UserModel extends UserModel {
-  const _UserModel({@JsonKey(readValue: _readId) this.id = '', this.username = '', this.email = '', this.employee}): super._();
+  const _UserModel({@JsonKey(readValue: _readId) this.id = '', this.username = '', this.email = '', @JsonKey(name: 'profile_img_id') this.profileImgId = '', this.employee}): super._();
   factory _UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
 @override@JsonKey(readValue: _readId) final  String id;
 @override@JsonKey() final  String username;
 @override@JsonKey() final  String email;
+@override@JsonKey(name: 'profile_img_id') final  String profileImgId;
 @override final  EmployeeModel? employee;
 
 /// Create a copy of UserModel
@@ -245,16 +247,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.email, email) || other.email == email)&&(identical(other.employee, employee) || other.employee == employee));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.email, email) || other.email == email)&&(identical(other.profileImgId, profileImgId) || other.profileImgId == profileImgId)&&(identical(other.employee, employee) || other.employee == employee));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,username,email,employee);
+int get hashCode => Object.hash(runtimeType,id,username,email,profileImgId,employee);
 
 @override
 String toString() {
-  return 'UserModel(id: $id, username: $username, email: $email, employee: $employee)';
+  return 'UserModel(id: $id, username: $username, email: $email, profileImgId: $profileImgId, employee: $employee)';
 }
 
 
@@ -265,7 +267,7 @@ abstract mixin class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Re
   factory _$UserModelCopyWith(_UserModel value, $Res Function(_UserModel) _then) = __$UserModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(readValue: _readId) String id, String username, String email, EmployeeModel? employee
+@JsonKey(readValue: _readId) String id, String username, String email,@JsonKey(name: 'profile_img_id') String profileImgId, EmployeeModel? employee
 });
 
 
@@ -282,11 +284,12 @@ class __$UserModelCopyWithImpl<$Res>
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? username = null,Object? email = null,Object? employee = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? username = null,Object? email = null,Object? profileImgId = null,Object? employee = freezed,}) {
   return _then(_UserModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,profileImgId: null == profileImgId ? _self.profileImgId : profileImgId // ignore: cast_nullable_to_non_nullable
 as String,employee: freezed == employee ? _self.employee : employee // ignore: cast_nullable_to_non_nullable
 as EmployeeModel?,
   ));

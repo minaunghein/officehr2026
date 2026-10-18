@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/features/leave/domain/entities/leave_request.dart';
+import 'package:office_hr/shared/date_formatter.dart';
 
 const _shortMonths = [
   'Jan',
@@ -24,6 +25,12 @@ String formatLeaveDate(DateTime? date) {
 
 String formatLeaveDateFromIso(String? iso) {
   return formatLeaveDate(parseLocalDateTime(iso));
+}
+
+String formatLeaveDateTimeFromIso(String? iso) {
+  final date = parseLocalDateTime(iso);
+  if (date == null) return '-';
+  return formatDateTime(date);
 }
 
 String formatLeaveDateRange(String? startIso, String? endIso) {

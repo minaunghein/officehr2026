@@ -243,6 +243,33 @@ class _CreateLeaveRequestScreenState
         centerTitle: true,
       ),
       body: _buildForm(context, theme),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+            AppSizes.xxl,
+            AppSizes.md,
+            AppSizes.xxl,
+            0,
+          ),
+          child: FilledButton.icon(
+            onPressed: _submitting ? null : _submit,
+            icon: _submitting
+                ? const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.send_rounded),
+            label: Text(_submitting ? 'Submitting...' : 'Submit Request'),
+            style: FilledButton.styleFrom(
+              minimumSize: const Size.fromHeight(52),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppSizes.borderRadiusLg),
+              ),
+            ),
+          ),
+        ),
+      ),
       // typesState.when(
       //   data: (types) => _buildForm(context, theme, types),
       //   loading: () => const Center(child: CircularProgressIndicator()),
@@ -417,23 +444,6 @@ class _CreateLeaveRequestScreenState
           _InfoBanner(type: _selectedType!),
         ],
         const SizedBox(height: 24),
-        FilledButton.icon(
-          onPressed: _submitting ? null : _submit,
-          icon: _submitting
-              ? const SizedBox(
-                  width: 18,
-                  height: 18,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : const Icon(Icons.send_rounded),
-          label: Text(_submitting ? 'Submitting...' : 'Submit Request'),
-          style: FilledButton.styleFrom(
-            minimumSize: const Size.fromHeight(52),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppSizes.borderRadiusLg),
-            ),
-          ),
-        ),
       ],
     );
   }

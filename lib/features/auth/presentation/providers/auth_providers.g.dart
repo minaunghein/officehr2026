@@ -295,7 +295,7 @@ final class GetSessionProvider
         argument: null,
         retry: null,
         name: r'getSessionProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -315,7 +315,7 @@ final class GetSessionProvider
   }
 }
 
-String _$getSessionHash() => r'fafcaf8308ca4c1eb3ca9dce9243917415e1e102';
+String _$getSessionHash() => r'c731415be80ae776f6c731e295f689547ddff890';
 
 @ProviderFor(LoginNotifier)
 final loginProvider = LoginNotifierProvider._();

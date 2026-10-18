@@ -284,6 +284,137 @@ final class GetMyAttendanceUsecaseProvider
 String _$getMyAttendanceUsecaseHash() =>
     r'cde7de7468a858118567b0fdc40011523668d405';
 
+@ProviderFor(getDepartmentTodayAttendanceUsecase)
+final getDepartmentTodayAttendanceUsecaseProvider =
+    GetDepartmentTodayAttendanceUsecaseProvider._();
+
+final class GetDepartmentTodayAttendanceUsecaseProvider
+    extends
+        $FunctionalProvider<
+          GetDepartmentTodayAttendanceUsecase,
+          GetDepartmentTodayAttendanceUsecase,
+          GetDepartmentTodayAttendanceUsecase
+        >
+    with $Provider<GetDepartmentTodayAttendanceUsecase> {
+  GetDepartmentTodayAttendanceUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getDepartmentTodayAttendanceUsecaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() =>
+      _$getDepartmentTodayAttendanceUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetDepartmentTodayAttendanceUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetDepartmentTodayAttendanceUsecase create(Ref ref) {
+    return getDepartmentTodayAttendanceUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetDepartmentTodayAttendanceUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetDepartmentTodayAttendanceUsecase>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$getDepartmentTodayAttendanceUsecaseHash() =>
+    r'c23b2c91c8592ffd2c1fff50451ef280d508f953';
+
+@ProviderFor(departmentTodayAttendance)
+final departmentTodayAttendanceProvider = DepartmentTodayAttendanceFamily._();
+
+final class DepartmentTodayAttendanceProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<TeamAttendance>>,
+          List<TeamAttendance>,
+          FutureOr<List<TeamAttendance>>
+        >
+    with
+        $FutureModifier<List<TeamAttendance>>,
+        $FutureProvider<List<TeamAttendance>> {
+  DepartmentTodayAttendanceProvider._({
+    required DepartmentTodayAttendanceFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'departmentTodayAttendanceProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$departmentTodayAttendanceHash();
+
+  @override
+  String toString() {
+    return r'departmentTodayAttendanceProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<TeamAttendance>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<TeamAttendance>> create(Ref ref) {
+    final argument = this.argument as String;
+    return departmentTodayAttendance(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is DepartmentTodayAttendanceProvider &&
+        other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$departmentTodayAttendanceHash() =>
+    r'6cb8c9431a94627f5e08691b3a9c0d0256c30e69';
+
+final class DepartmentTodayAttendanceFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<TeamAttendance>>, String> {
+  DepartmentTodayAttendanceFamily._()
+    : super(
+        retry: null,
+        name: r'departmentTodayAttendanceProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  DepartmentTodayAttendanceProvider call(String departmentId) =>
+      DepartmentTodayAttendanceProvider._(argument: departmentId, from: this);
+
+  @override
+  String toString() => r'departmentTodayAttendanceProvider';
+}
+
 @ProviderFor(attendanceHistory)
 final attendanceHistoryProvider = AttendanceHistoryFamily._();
 

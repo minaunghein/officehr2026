@@ -6,6 +6,7 @@ import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/core/theme/app_theme.dart';
 import 'package:office_hr/core/theme/theme_notifier.dart';
+import 'package:office_hr/core/widgets/container_shimmer.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/shared/global.dart';
 
@@ -51,18 +52,15 @@ class DashboardDrawer extends ConsumerWidget {
                             child: CachedNetworkImage(
                               imageUrl: userDetails.value!.profileUrl,
                               fit: BoxFit.cover,
-                              placeholder: (context, url) => Center(
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: theme.colorScheme.primary,
-                                ),
-                              ),
+                              placeholder: (context, url) => ContainerShimmer(),
                               errorWidget: (context, url, error) => Container(
-                                color: theme.colorScheme.onPrimary,
+                                color: theme.colorScheme.onPrimary.withValues(
+                                  alpha: 0.2,
+                                ),
                                 alignment: Alignment.center,
                                 child: Icon(
                                   Icons.person,
-                                  color: theme.colorScheme.onSecondaryContainer,
+                                  color: theme.colorScheme.onSurface,
                                   size: 30,
                                 ),
                               ),

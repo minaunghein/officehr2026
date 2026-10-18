@@ -4,12 +4,14 @@ import 'package:office_hr/features/home/data/datasources/attendance_remote_datas
 import 'package:office_hr/features/home/data/repositories/attendance_repository_impl.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_stats.dart';
 import 'package:office_hr/features/home/domain/entities/clock_attendance_response.dart';
+import 'package:office_hr/features/home/domain/entities/team_attendance.dart';
 import 'package:office_hr/features/home/domain/entities/today_attendance.dart';
 import 'package:office_hr/features/home/domain/params/attendance_history_query.dart';
 import 'package:office_hr/features/home/domain/params/clock_attendance_params.dart';
 import 'package:office_hr/features/home/domain/repositories/attendance_repository.dart';
 import 'package:office_hr/features/home/domain/usecases/clockin_usecase.dart';
 import 'package:office_hr/features/home/domain/usecases/clockout_usecase.dart';
+import 'package:office_hr/features/home/domain/usecases/get_department_today_attendance_usecase.dart';
 import 'package:office_hr/features/home/domain/usecases/get_my_attendance_usecase.dart';
 import 'package:office_hr/features/home/domain/usecases/get_today_attendance_usecase.dart';
 import 'package:office_hr/features/home/presentation/state/attendance_state.dart';
@@ -56,7 +58,23 @@ GetMyAttendanceUsecase getMyAttendanceUsecase(Ref ref) {
   return GetMyAttendanceUsecase(attendanceRepository: repository);
 }
 
+@riverpod
+GetDepartmentTodayAttendanceUsecase getDepartmentTodayAttendanceUsecase(
+  Ref ref,
+) {
+  final repository = ref.watch(attendanceRepositoryProvider);
+  return GetDepartmentTodayAttendanceUsecase(attendanceRepository: repository);
+}
+
 // ==================== Function Providers ====================
+
+@riverpod
+Future<List<TeamAttendance>> departmentTodayAttendance(
+  Ref ref,
+  String departmentId,
+) {
+  return ref.watch(getDepartmentTodayAttendanceUsecaseProvider)(departmentId);
+}
 
 @riverpod
 Future<List<TodayAttendance>> attendanceHistory(

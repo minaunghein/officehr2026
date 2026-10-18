@@ -87,7 +87,7 @@ class CurrentUser extends _$CurrentUser {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<AuthSession> getSession(Ref ref) async {
   return ref.read(currentUserProvider.notifier).loadSession();
 }

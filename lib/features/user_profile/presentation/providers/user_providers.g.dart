@@ -173,6 +173,51 @@ final class UserByIdFamily extends $Family
   String toString() => r'userByIdProvider';
 }
 
+@ProviderFor(UpdateProfileImageNotifier)
+final updateProfileImageProvider = UpdateProfileImageNotifierProvider._();
+
+final class UpdateProfileImageNotifierProvider
+    extends $AsyncNotifierProvider<UpdateProfileImageNotifier, void> {
+  UpdateProfileImageNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'updateProfileImageProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$updateProfileImageNotifierHash();
+
+  @$internal
+  @override
+  UpdateProfileImageNotifier create() => UpdateProfileImageNotifier();
+}
+
+String _$updateProfileImageNotifierHash() =>
+    r'bac3be495951daff9fb453f0f47dd59a065467e6';
+
+abstract class _$UpdateProfileImageNotifier extends $AsyncNotifier<void> {
+  FutureOr<void> build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<AsyncValue<void>, void>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<void>, void>,
+              AsyncValue<void>,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
+
 @ProviderFor(UserDetailsNotifier)
 final userDetailsProvider = UserDetailsNotifierProvider._();
 

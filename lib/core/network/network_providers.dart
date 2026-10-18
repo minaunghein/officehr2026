@@ -201,15 +201,15 @@ class _RefreshTokenInterceptor extends QueuedInterceptor {
     final requestOptions = err.requestOptions;
     final isRefreshRequest = requestOptions.path == '/api/v1/auth/refresh';
     final isLoginRequest = requestOptions.path == '/api/v1/auth/login';
-    // final isChangePasswordRequest =
-    //     requestOptions.method.toUpperCase() == 'PATCH' &&
-    //     requestOptions.path == '/api/v1/auth/password';
+    final isChangePasswordRequest =
+        requestOptions.method.toUpperCase() == 'PATCH' &&
+        requestOptions.path == '/api/v1/auth/password';
     final alreadyRetried = requestOptions.extra['tokenRetried'] == true;
 
     if (statusCode != 401 ||
         isRefreshRequest ||
         isLoginRequest ||
-        // isChangePasswordRequest ||
+        isChangePasswordRequest ||
         alreadyRetried) {
       handler.next(err);
       return;

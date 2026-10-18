@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:office_hr/core/config/api_config.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/assignment/assignment.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/company/company.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/employee/employee.dart';
@@ -25,7 +26,12 @@ abstract class AuthSession with _$AuthSession {
   String get userId => user.id;
   String get username => user.username;
   String get email => user.email;
-  String get profileUrl => '';
+  String get profileUrl {
+    final imageId = user.profileImgId?.trim() ?? '';
+    if (imageId.isEmpty) return '';
+    return '${const ApiConfig().baseUrl}/api/v1/files/${Uri.encodeComponent(imageId)}';
+  }
+
   String get companyId => activeCompany.id;
   String get companyName => activeCompany.name;
   Employee? get employee => user.employee;

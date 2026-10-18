@@ -34,7 +34,8 @@ class AppConfig {
       final configJson = json.decode(configString) as Map<String, dynamic>;
 
       _instance = AppConfig._(
-        environment: configJson['environment']?.toString() ??
+        environment:
+            configJson['environment']?.toString() ??
             (kReleaseMode ? 'production' : 'development'),
         features: FeatureFlags.fromJson(_asMap(configJson['features'])),
         firebase: FirebaseConfig.fromJson(_asMap(configJson['firebase'])),
@@ -232,7 +233,8 @@ class FirebaseConfig {
   static void _ensureConfigured(String value, String key) {
     final normalized = value.trim();
     final upper = normalized.toUpperCase();
-    final isPlaceholder = normalized.isEmpty ||
+    final isPlaceholder =
+        normalized.isEmpty ||
         upper.startsWith('YOUR_') ||
         upper.startsWith('REPLACE_') ||
         upper.startsWith('CHANGE_ME') ||

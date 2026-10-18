@@ -14,6 +14,17 @@ This Flutter project uses feature-first clean architecture. Keep changes small, 
 - Keep domain entities independent from networking/UI details.
 - Keep API parsing in data models/datasources, business flow in repositories/usecases/providers, and rendering in widgets.
 
+## File Separation
+
+Always split code into the smallest sensible file. Prefer many focused files over one large file.
+
+- One screen per file in `presentation/screens/`; screens should compose widgets, not define them inline.
+- One reusable widget per file in `presentation/widgets/` (for example `LeaveRequestCard`, `LeaveStatusChip`, `LeaveEmptyState`, `LeaveErrorState`). Never bundle multiple public widgets in one file.
+- Tabs, sections, cards, rows, chips, headers, and empty/error states each get their own file instead of private `_Foo` classes inside a screen.
+- One notifier/usecase/model/entity per file, following the existing feature layout.
+- Extract helpers/formatters into their own file (e.g. `presentation/utils/`) instead of keeping them private in a screen.
+- Only keep a private class in a screen file when it is truly tiny and used exactly once there; when in doubt, extract it.
+
 ## Reuse Before Creating
 
 Always search for and reuse existing code before adding new classes, models, helpers, or widgets. Duplicating models/entities/formatters is not acceptable.
@@ -21,7 +32,9 @@ Always search for and reuse existing code before adding new classes, models, hel
 - **Entities/models**: reuse `features/home/domain/entities/today_attendance.dart`, `attendance_record.dart`, `attendance_punch.dart`, `attendance_stats.dart` and their data models. Never define a parallel attendance model.
 - **Date/time helpers**: reuse `lib/core/utils/date_time_utils.dart` (`parseLocalDateTime`, `normalizeLocalDateTimeString`, `formatApiDate`) and `lib/shared/date_formatter.dart` (`formatAttendanceTime`, `formatDurationText`, `formatDateString`, `formatMonthYear`, `formatTime`, shift helpers). Do not re-implement time parsing/formatting.
 - **Network**: reuse `ApiService` via `apiServiceProvider` and the existing feature datasources/repositories/usecases/providers. Extend the existing attendance datasource/repository rather than adding a new stack for the same endpoint.
-- **UI**: reuse shared widgets in `lib/core/widgets` (`ContainerShimmer`) and feature widgets (`features/home/presentation/widgets/`) such as `AttendancePunchTimeline`, `AttendancePunchTile`, `AttendanceStatusChip`, `AttendanceRecordStatusChip`, `attendanceStatusColor`, `AttendanceCalendar`, `AttendanceDayDetail`, `AttendanceRangeList`, `AttendanceAmendmentCard`, `AmendmentStatusChip`, `amendmentTypeIcon`, `amendmentTypeColor`, `AttendanceAmendmentDetailScreen`, and `showAttendanceAmendmentForm`. Extract reusable pieces into `presentation/widgets/` instead of duplicating.
+- **UI**: reuse shared widgets in `lib/core/widgets` (`ContainerShimmer`, `EmptyStateWidget`, `ErrorStateWidget`, `ImageWidget`, `DetailSectionCard`, `DetailRow`) and feature widgets (`features/home/presentation/widgets/`) such as `AttendancePunchTimeline`, `AttendancePunchTile`, `AttendanceStatusChip`, `AttendanceRecordStatusChip`, `attendanceStatusColor`, `AttendanceCalendar`, `AttendanceDayDetail`, `AttendanceRangeList`, `AttendanceAmendmentCard`, `AmendmentStatusChip`, `amendmentTypeIcon`, `amendmentTypeColor`, `AttendanceAmendmentDetailScreen`, and `showAttendanceAmendmentForm`. Extract reusable pieces into `presentation/widgets/` instead of duplicating.
+- **Leave UI**: reuse `features/leave/presentation/widgets/` (`LeaveBalanceCard`, `LeaveSummaryHeader`, `LeaveRequestCard`, `LeaveStatusChip`, `LeaveAttachmentPreview`, `LeaveRequestDetailHeader`, `LeaveBalancesTab`, `LeaveRequestsTab`) and `features/leave/presentation/utils/leave_formatters.dart`.
+- **Team UI**: reuse `features/home/presentation/widgets/` (`TeamAttendanceSummary`, `TeamMemberCard`, `TeamMemberAvatar`, `TeamMemberAttendanceHeader`, `TeamQuickActions`, `TeamBody`) and `TeamMemberAttendanceDetailScreen`, plus the `departmentTodayAttendanceProvider` / `getDepartmentTodayAttendanceUsecase` for `/api/v1/attendance/today/department/{departmentId}`. Do not create a second attendance stack.
 - **Snackbars/errors**: use `SnackbarUtils` (`lib/core/utils/snackbar_utils.dart`) and `getUserFriendlyError` (`lib/core/network/api_error_message.dart`) instead of ad-hoc `ScaffoldMessenger`/`toString()` handling.
 - **Theme/constants**: reuse `AppColors`, `AppSizes`, and `Theme.of(context)` tokens. Avoid hardcoded paddings/radii when an `AppSizes` constant exists.
 - **Loading UI**: use `ContainerShimmer` (theme-aware) for content/skeleton loading placeholders. Do not use `ShimmerHelper` (hardcoded light-mode greys). Keep `CircularProgressIndicator` only for action feedback inside buttons/dialogs, not for full content sections.

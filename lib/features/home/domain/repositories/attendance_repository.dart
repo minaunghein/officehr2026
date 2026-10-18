@@ -1,5 +1,6 @@
 import 'package:office_hr/features/home/domain/entities/clock_attendance_response.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_stats.dart';
+import 'package:office_hr/features/home/domain/entities/team_attendance.dart';
 import 'package:office_hr/features/home/domain/entities/today_attendance.dart';
 import 'package:office_hr/features/home/domain/params/clock_attendance_params.dart';
 
@@ -18,4 +19,7 @@ abstract class AttendanceRepository {
     required DateTime start,
     required DateTime end,
   });
+  Future<List<TeamAttendance>> getDepartmentTodayAttendance(
+    String departmentId,
+  );
 }

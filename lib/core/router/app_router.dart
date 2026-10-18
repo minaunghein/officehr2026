@@ -5,8 +5,10 @@ import 'package:office_hr/core/services/dialog_service.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/features/dashboard/presentation/views/dashboard.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_amendment.dart';
+import 'package:office_hr/features/home/domain/entities/team_attendance.dart';
 import 'package:office_hr/features/home/presentation/screens/attendance_amendment_detail.dart';
 import 'package:office_hr/features/home/presentation/screens/attendance_requests.dart';
+import 'package:office_hr/features/home/presentation/screens/team_member_attendance_detail.dart';
 import 'package:office_hr/features/payslip/presentation/screens/payslip_screen.dart';
 import 'package:office_hr/features/public_holiday/presentation/screens/public_holiday_screen.dart';
 import 'package:office_hr/features/splash/presentation/screens/splash_screen.dart';
@@ -15,7 +17,9 @@ import 'package:office_hr/features/auth/presentation/screens/login_screen.dart';
 import 'package:office_hr/features/user_profile/presentation/screens/change_password_screen.dart';
 import 'package:office_hr/features/user_profile/presentation/screens/company_screen.dart';
 import 'package:office_hr/features/user_profile/presentation/screens/staff_id_card_screen.dart';
+import 'package:office_hr/features/leave/domain/entities/leave_request.dart';
 import 'package:office_hr/features/leave/presentation/screens/create_leave_request_screen.dart';
+import 'package:office_hr/features/leave/presentation/screens/leave_request_detail_screen.dart';
 import 'package:office_hr/features/leave/presentation/screens/leave_screen.dart';
 import 'package:office_hr/features/user_profile/presentation/screens/profile_screen.dart';
 import 'package:office_hr/features/user_profile/presentation/screens/qr_scanner_screen.dart';
@@ -34,6 +38,8 @@ abstract final class AppRoutes {
   static const attendanceAmendmentDetail = '/attendance/requests/detail';
   static const leave = '/leave';
   static const createLeave = '/leave/new';
+  static const leaveDetail = '/leave/detail';
+  static const teamMemberAttendance = '/team/attendance';
   static const company = '/company';
   static const changePassword = '/change-password';
   static const staffIdCard = '/staff-id-card';
@@ -101,6 +107,30 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.createLeave,
         builder: (_, _) => const CreateLeaveRequestScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.leaveDetail,
+        builder: (_, state) {
+          final request = state.extra;
+          if (request is! LeaveRequest) {
+            return const Scaffold(
+              body: Center(child: Text('Leave request not found')),
+            );
+          }
+          return LeaveRequestDetailScreen(initial: request);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.teamMemberAttendance,
+        builder: (_, state) {
+          final attendance = state.extra;
+          if (attendance is! TeamAttendance) {
+            return const Scaffold(
+              body: Center(child: Text('Attendance not found')),
+            );
+          }
+          return TeamMemberAttendanceDetailScreen(attendance: attendance);
+        },
       ),
       GoRoute(
         path: AppRoutes.company,

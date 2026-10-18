@@ -64,9 +64,9 @@ class LeaveRemoteDataSourceImpl implements LeaveRemoteDataSource {
   Future<List<LeaveTypeModel>> getLeaveTypes() async {
     return _apiService.get<List<LeaveTypeModel>>(
       '/api/v1/leave/types',
-      parser: (data) => readListEnvelope(data)
-          .map((e) => LeaveTypeModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      parser: (data) => readListEnvelope(
+        data,
+      ).map((e) => LeaveTypeModel.fromJson(e as Map<String, dynamic>)).toList(),
     );
   }
 
@@ -85,14 +85,14 @@ class LeaveRemoteDataSourceImpl implements LeaveRemoteDataSource {
       '/api/v1/leave-requests',
       data: {
         'leave_type_id': leaveTypeId,
-        'employee_id': employeeId,
+        // 'employee_id': employeeId,
         'start_date': startDate,
         'end_date': endDate,
         'is_half_day': isHalfDay,
         'half_day_period': halfDayPeriod.value,
         'reason': reason,
-        if (attachmentUrl != null && attachmentUrl.isNotEmpty)
-          'attachment_url': attachmentUrl,
+        // if (attachmentUrl != null && attachmentUrl.isNotEmpty)
+        //   'attachment_url': attachmentUrl,
       },
       parser: (data) => readEnvelope(data),
     );
