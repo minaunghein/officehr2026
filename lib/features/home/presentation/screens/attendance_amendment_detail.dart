@@ -11,11 +11,6 @@ import 'package:office_hr/features/home/presentation/widgets/attendance_amendmen
 import 'package:office_hr/features/home/presentation/widgets/attendance_status.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
-/// Shows a single attendance amendment.
-///
-/// The [initial] value (usually the tapped list item) is rendered immediately
-/// for a fast first paint, then the freshest copy is fetched from the API and
-/// swapped in.
 class AttendanceAmendmentDetailScreen extends HookConsumerWidget {
   const AttendanceAmendmentDetailScreen({super.key, required this.initial});
 

@@ -57,6 +57,31 @@ void main() {
   }
 
   testWidgets(
+    'profile image edit offers camera and gallery and can be dismissed',
+    (tester) async {
+      await _pump(
+        tester,
+        ProfileContent(session: _session()),
+        Brightness.light,
+      );
+      expect(find.byType(ClipOval), findsOneWidget);
+      await tester.tap(find.byTooltip('Change profile image'));
+      await tester.pumpAndSettle();
+      expect(find.text('Camera'), findsOneWidget);
+      expect(find.text('Gallery'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+
+      final sheetContext = tester.element(find.text('Camera'));
+      Navigator.pop(sheetContext);
+      await tester.pumpAndSettle();
+      final button = tester.widget<IconButton>(
+        find.widgetWithIcon(IconButton, Icons.edit_outlined),
+      );
+      expect(button.onPressed, isNotNull);
+    },
+  );
+
+  testWidgets(
     'an account without an employee record still exposes contact and account details',
     (tester) async {
       final session = _session();

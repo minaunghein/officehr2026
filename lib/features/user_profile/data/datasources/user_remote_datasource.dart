@@ -8,12 +8,30 @@ abstract class UserRemoteDataSource {
   Future<AuthSessionModel> getSession();
 
   Future<UserDetails> getUserById(String id);
+
+  Future<void> updateProfileImage({
+    required String userId,
+    required String email,
+    required String profileImgId,
+  });
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   final ApiService _apiService;
 
   UserRemoteDataSourceImpl(this._apiService);
+
+  @override
+  Future<void> updateProfileImage({
+    required String userId,
+    required String email,
+    required String profileImgId,
+  }) async {
+    await _apiService.patch<dynamic>(
+      '/api/v1/users/${Uri.encodeComponent(userId)}',
+      data: {'email': email, 'profile_img_id': profileImgId},
+    );
+  }
 
   @override
   Future<AuthSessionModel> getSession() {

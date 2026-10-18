@@ -87,10 +87,7 @@ class LeaveBalanceCard extends StatelessWidget {
                       label: 'Allocated',
                       value: _formatNumber(balance.totalGranted),
                     ),
-                    _Metric(
-                      label: 'Used',
-                      value: _formatNumber(balance.used),
-                    ),
+                    _Metric(label: 'Used', value: _formatNumber(balance.used)),
                     _Metric(
                       label: 'Pending',
                       value: _formatNumber(balance.pending),

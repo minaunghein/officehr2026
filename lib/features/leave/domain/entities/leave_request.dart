@@ -32,12 +32,15 @@ enum HalfDayPeriod {
   pm;
 
   static HalfDayPeriod fromValue(String? value) {
-    return value?.trim().toUpperCase() == 'PM' ? HalfDayPeriod.pm : HalfDayPeriod.am;
+    return value?.trim().toUpperCase() == 'PM'
+        ? HalfDayPeriod.pm
+        : HalfDayPeriod.am;
   }
 
   String get value => this == HalfDayPeriod.pm ? 'PM' : 'AM';
 
-  String get label => this == HalfDayPeriod.pm ? 'Afternoon (PM)' : 'Morning (AM)';
+  String get label =>
+      this == HalfDayPeriod.pm ? 'Afternoon (PM)' : 'Morning (AM)';
 }
 
 @freezed

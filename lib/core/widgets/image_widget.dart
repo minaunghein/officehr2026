@@ -6,7 +6,7 @@ import 'package:office_hr/core/constants/app_colors.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/constants/durations.dart';
 import 'package:office_hr/core/extensions/str_extension.dart';
-import 'package:office_hr/core/helpers/shimmer_helper.dart';
+import 'package:office_hr/core/widgets/container_shimmer.dart';
 
 class ImageWidget extends StatelessWidget {
   const ImageWidget({
@@ -156,11 +156,8 @@ class ImageWidget extends StatelessWidget {
       fit: boxFit,
       color: color,
       fadeInDuration: AppDurs.k100MLS,
-      progressIndicatorBuilder: (_, _, _) => ShimmerHelper.showShimmer(
-        width: width,
-        height: height,
-        radius: radius,
-      ),
+      progressIndicatorBuilder: (_, _, _) =>
+          ContainerShimmer(width: width, height: height),
       errorWidget: (_, _, _) => _buildErrorFallback(),
     );
   }

@@ -3,6 +3,7 @@ import 'package:office_hr/core/services/app_logger.dart';
 import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/features/home/data/models/attendance_stats_model.dart';
 import 'package:office_hr/features/home/data/models/clock_attendance_response_model.dart';
+import 'package:office_hr/features/home/data/models/team_attendance_model.dart';
 import 'package:office_hr/features/home/data/models/today_attendance_model.dart';
 import 'package:office_hr/features/home/domain/params/clock_attendance_params.dart';
 
@@ -31,6 +32,11 @@ abstract class AttendanceRemoteDatasource {
     required DateTime start,
     required DateTime end,
   });
+
+  /// Fetches every department member's attendance for today.
+  Future<List<TeamAttendanceModel>> getDepartmentTodayAttendance(
+    String departmentId,
+  );
 }
 
 class AttendanceRemoteDatasourceImpl implements AttendanceRemoteDatasource {
@@ -161,5 +167,29 @@ class AttendanceRemoteDatasourceImpl implements AttendanceRemoteDatasource {
     );
 
     return AttendanceStatsModel.fromJson(response);
+  }
+
+  @override
+  Future<List<TeamAttendanceModel>> getDepartmentTodayAttendance(
+    String departmentId,
+  ) async {
+    return _apiService.get<List<TeamAttendanceModel>>(
+      '/api/v1/attendance/today/department/$departmentId',
+      parser: _parseTeamAttendanceList,
+    );
+  }
+
+  List<TeamAttendanceModel> _parseTeamAttendanceList(dynamic data) {
+    final payload = data is Map<String, dynamic> ? data['data'] ?? data : data;
+    if (payload is List) {
+      return payload
+          .whereType<Map<String, dynamic>>()
+          .map(TeamAttendanceModel.fromJson)
+          .toList();
+    }
+    if (payload is Map<String, dynamic>) {
+      return [TeamAttendanceModel.fromJson(payload)];
+    }
+    return const [];
   }
 }

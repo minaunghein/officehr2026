@@ -5,4 +5,10 @@ abstract class UserRepository {
   Future<AuthSession> getSession();
 
   Future<UserDetails> getUserById(String id);
+
+  Future<void> updateProfileImage({
+    required String userId,
+    required String email,
+    required String profileImgId,
+  });
 }

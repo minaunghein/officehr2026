@@ -9,6 +9,19 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl(this._userRemoteDataSource);
 
   @override
+  Future<void> updateProfileImage({
+    required String userId,
+    required String email,
+    required String profileImgId,
+  }) {
+    return _userRemoteDataSource.updateProfileImage(
+      userId: userId,
+      email: email,
+      profileImgId: profileImgId,
+    );
+  }
+
+  @override
   Future<AuthSession> getSession() async {
     final model = await _userRemoteDataSource.getSession();
     return model.toEntity();

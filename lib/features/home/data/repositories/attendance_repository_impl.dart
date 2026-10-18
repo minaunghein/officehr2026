@@ -1,6 +1,7 @@
 import 'package:office_hr/features/home/data/datasources/attendance_remote_datasource.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_stats.dart';
 import 'package:office_hr/features/home/domain/entities/clock_attendance_response.dart';
+import 'package:office_hr/features/home/domain/entities/team_attendance.dart';
 import 'package:office_hr/features/home/domain/entities/today_attendance.dart';
 import 'package:office_hr/features/home/domain/params/clock_attendance_params.dart';
 import 'package:office_hr/features/home/domain/repositories/attendance_repository.dart';
@@ -71,5 +72,13 @@ class AttendanceRepositoryImpl implements AttendanceRepository {
       end: end,
     );
     return response.toEntity();
+  }
+
+  @override
+  Future<List<TeamAttendance>> getDepartmentTodayAttendance(
+    String departmentId,
+  ) async {
+    final models = await datasource.getDepartmentTodayAttendance(departmentId);
+    return models.map((model) => model.toEntity()).toList();
   }
 }

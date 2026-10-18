@@ -12,10 +12,20 @@ class SnackbarUtils {
     _showSnackbar(message, isError: true, isTop: isTop);
   }
 
+  static void showInfo(String message, {bool isTop = false}) {
+    _showSnackbar(
+      message,
+      isError: false,
+      isTop: isTop,
+      background: Colors.blueGrey.shade700,
+    );
+  }
+
   static void _showSnackbar(
     String message, {
     required bool isError,
     bool isTop = false,
+    Color? background,
   }) {
     final messenger = rootScaffoldMessengerKey.currentState;
     final context = rootScaffoldMessengerKey.currentContext;
@@ -37,9 +47,14 @@ class SnackbarUtils {
       SnackBar(
         content: Text(
           message,
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
         ),
-        backgroundColor: isError ? Colors.red.shade700 : Colors.green.shade700,
+        backgroundColor:
+            background ??
+            (isError ? Colors.red.shade700 : Colors.green.shade700),
         behavior: SnackBarBehavior.floating,
         margin: margin,
         dismissDirection: dismissDirection,
