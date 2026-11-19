@@ -20,6 +20,7 @@ abstract class AttendanceAmendment with _$AttendanceAmendment {
   const factory AttendanceAmendment({
     required String id,
     required String userId,
+    @Default('') String requesterName,
     required String companyId,
     required String dateId,
     required String amendmentType,

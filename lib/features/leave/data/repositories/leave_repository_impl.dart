@@ -23,6 +23,26 @@ class LeaveRepositoryImpl implements LeaveRepository {
   }
 
   @override
+  Future<List<LeaveRequest>> getAllLeaveRequests() async {
+    final models = await _remoteDataSource.getAllLeaveRequests();
+    return models.map((e) => e.toEntity()).toList();
+  }
+
+  @override
+  Future<LeaveRequest> updateLeaveRequestStatus(
+    String id, {
+    required LeaveDecision decision,
+    String? reason,
+  }) async {
+    final model = await _remoteDataSource.updateLeaveRequestStatus(
+      id,
+      decision: decision,
+      reason: reason,
+    );
+    return model.toEntity();
+  }
+
+  @override
   Future<List<LeaveType>> getLeaveTypes() async {
     final models = await _remoteDataSource.getLeaveTypes();
     return models.map((e) => e.toEntity()).toList();

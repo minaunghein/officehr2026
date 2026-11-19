@@ -35,6 +35,21 @@ String attendanceStatusLabel(String? status) {
 
 bool _hasValue(String? value) => value != null && value.trim().isNotEmpty;
 
+/// Only Present, Late, Absent and Leave show a calendar dot. All other
+/// statuses (No Record / Not Clocked In / Clocked In / Half Day / Holiday /
+/// Rest Day) render no dot.
+bool showCalendarDotForStatus(String? status) {
+  switch (status?.toUpperCase()) {
+    case 'PRESENT':
+    case 'LATE':
+    case 'ABSENT':
+    case 'ON_LEAVE':
+      return true;
+    default:
+      return false;
+  }
+}
+
 bool _isInProgress(TodayAttendance attendance) {
   final status = attendance.status.toUpperCase();
   final statusSaysNotClockedIn = status.isEmpty || status == 'NOT_CLOCKED_IN';

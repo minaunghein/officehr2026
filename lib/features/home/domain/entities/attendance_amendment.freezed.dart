@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AttendanceAmendment {
 
- String get id; String get userId; String get companyId; String get dateId; String get amendmentType; String? get requestedClockIn; String? get requestedClockOut; String get reason; String get status; String? get approvedBy; bool get deleted; DateTime? get createdAt; DateTime? get updatedAt; DateTime? get approvedAt;
+ String get id; String get userId; String get requesterName; String get companyId; String get dateId; String get amendmentType; String? get requestedClockIn; String? get requestedClockOut; String get reason; String get status; String? get approvedBy; bool get deleted; DateTime? get createdAt; DateTime? get updatedAt; DateTime? get approvedAt;
 /// Create a copy of AttendanceAmendment
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $AttendanceAmendmentCopyWith<AttendanceAmendment> get copyWith => _$AttendanceAm
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AttendanceAmendment&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.dateId, dateId) || other.dateId == dateId)&&(identical(other.amendmentType, amendmentType) || other.amendmentType == amendmentType)&&(identical(other.requestedClockIn, requestedClockIn) || other.requestedClockIn == requestedClockIn)&&(identical(other.requestedClockOut, requestedClockOut) || other.requestedClockOut == requestedClockOut)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.status, status) || other.status == status)&&(identical(other.approvedBy, approvedBy) || other.approvedBy == approvedBy)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AttendanceAmendment&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.requesterName, requesterName) || other.requesterName == requesterName)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.dateId, dateId) || other.dateId == dateId)&&(identical(other.amendmentType, amendmentType) || other.amendmentType == amendmentType)&&(identical(other.requestedClockIn, requestedClockIn) || other.requestedClockIn == requestedClockIn)&&(identical(other.requestedClockOut, requestedClockOut) || other.requestedClockOut == requestedClockOut)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.status, status) || other.status == status)&&(identical(other.approvedBy, approvedBy) || other.approvedBy == approvedBy)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,companyId,dateId,amendmentType,requestedClockIn,requestedClockOut,reason,status,approvedBy,deleted,createdAt,updatedAt,approvedAt);
+int get hashCode => Object.hash(runtimeType,id,userId,requesterName,companyId,dateId,amendmentType,requestedClockIn,requestedClockOut,reason,status,approvedBy,deleted,createdAt,updatedAt,approvedAt);
 
 @override
 String toString() {
-  return 'AttendanceAmendment(id: $id, userId: $userId, companyId: $companyId, dateId: $dateId, amendmentType: $amendmentType, requestedClockIn: $requestedClockIn, requestedClockOut: $requestedClockOut, reason: $reason, status: $status, approvedBy: $approvedBy, deleted: $deleted, createdAt: $createdAt, updatedAt: $updatedAt, approvedAt: $approvedAt)';
+  return 'AttendanceAmendment(id: $id, userId: $userId, requesterName: $requesterName, companyId: $companyId, dateId: $dateId, amendmentType: $amendmentType, requestedClockIn: $requestedClockIn, requestedClockOut: $requestedClockOut, reason: $reason, status: $status, approvedBy: $approvedBy, deleted: $deleted, createdAt: $createdAt, updatedAt: $updatedAt, approvedAt: $approvedAt)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $AttendanceAmendmentCopyWith<$Res>  {
   factory $AttendanceAmendmentCopyWith(AttendanceAmendment value, $Res Function(AttendanceAmendment) _then) = _$AttendanceAmendmentCopyWithImpl;
 @useResult
 $Res call({
- String id, String userId, String companyId, String dateId, String amendmentType, String? requestedClockIn, String? requestedClockOut, String reason, String status, String? approvedBy, bool deleted, DateTime? createdAt, DateTime? updatedAt, DateTime? approvedAt
+ String id, String userId, String requesterName, String companyId, String dateId, String amendmentType, String? requestedClockIn, String? requestedClockOut, String reason, String status, String? approvedBy, bool deleted, DateTime? createdAt, DateTime? updatedAt, DateTime? approvedAt
 });
 
 
@@ -62,10 +62,11 @@ class _$AttendanceAmendmentCopyWithImpl<$Res>
 
 /// Create a copy of AttendanceAmendment
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? companyId = null,Object? dateId = null,Object? amendmentType = null,Object? requestedClockIn = freezed,Object? requestedClockOut = freezed,Object? reason = null,Object? status = null,Object? approvedBy = freezed,Object? deleted = null,Object? createdAt = freezed,Object? updatedAt = freezed,Object? approvedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? requesterName = null,Object? companyId = null,Object? dateId = null,Object? amendmentType = null,Object? requestedClockIn = freezed,Object? requestedClockOut = freezed,Object? reason = null,Object? status = null,Object? approvedBy = freezed,Object? deleted = null,Object? createdAt = freezed,Object? updatedAt = freezed,Object? approvedAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String,requesterName: null == requesterName ? _self.requesterName : requesterName // ignore: cast_nullable_to_non_nullable
 as String,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
 as String,dateId: null == dateId ? _self.dateId : dateId // ignore: cast_nullable_to_non_nullable
 as String,amendmentType: null == amendmentType ? _self.amendmentType : amendmentType // ignore: cast_nullable_to_non_nullable
@@ -163,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String userId,  String companyId,  String dateId,  String amendmentType,  String? requestedClockIn,  String? requestedClockOut,  String reason,  String status,  String? approvedBy,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt,  DateTime? approvedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String userId,  String requesterName,  String companyId,  String dateId,  String amendmentType,  String? requestedClockIn,  String? requestedClockOut,  String reason,  String status,  String? approvedBy,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt,  DateTime? approvedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AttendanceAmendment() when $default != null:
-return $default(_that.id,_that.userId,_that.companyId,_that.dateId,_that.amendmentType,_that.requestedClockIn,_that.requestedClockOut,_that.reason,_that.status,_that.approvedBy,_that.deleted,_that.createdAt,_that.updatedAt,_that.approvedAt);case _:
+return $default(_that.id,_that.userId,_that.requesterName,_that.companyId,_that.dateId,_that.amendmentType,_that.requestedClockIn,_that.requestedClockOut,_that.reason,_that.status,_that.approvedBy,_that.deleted,_that.createdAt,_that.updatedAt,_that.approvedAt);case _:
   return orElse();
 
 }
@@ -184,10 +185,10 @@ return $default(_that.id,_that.userId,_that.companyId,_that.dateId,_that.amendme
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String userId,  String companyId,  String dateId,  String amendmentType,  String? requestedClockIn,  String? requestedClockOut,  String reason,  String status,  String? approvedBy,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt,  DateTime? approvedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String userId,  String requesterName,  String companyId,  String dateId,  String amendmentType,  String? requestedClockIn,  String? requestedClockOut,  String reason,  String status,  String? approvedBy,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt,  DateTime? approvedAt)  $default,) {final _that = this;
 switch (_that) {
 case _AttendanceAmendment():
-return $default(_that.id,_that.userId,_that.companyId,_that.dateId,_that.amendmentType,_that.requestedClockIn,_that.requestedClockOut,_that.reason,_that.status,_that.approvedBy,_that.deleted,_that.createdAt,_that.updatedAt,_that.approvedAt);case _:
+return $default(_that.id,_that.userId,_that.requesterName,_that.companyId,_that.dateId,_that.amendmentType,_that.requestedClockIn,_that.requestedClockOut,_that.reason,_that.status,_that.approvedBy,_that.deleted,_that.createdAt,_that.updatedAt,_that.approvedAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -204,10 +205,10 @@ return $default(_that.id,_that.userId,_that.companyId,_that.dateId,_that.amendme
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String userId,  String companyId,  String dateId,  String amendmentType,  String? requestedClockIn,  String? requestedClockOut,  String reason,  String status,  String? approvedBy,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt,  DateTime? approvedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String userId,  String requesterName,  String companyId,  String dateId,  String amendmentType,  String? requestedClockIn,  String? requestedClockOut,  String reason,  String status,  String? approvedBy,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt,  DateTime? approvedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _AttendanceAmendment() when $default != null:
-return $default(_that.id,_that.userId,_that.companyId,_that.dateId,_that.amendmentType,_that.requestedClockIn,_that.requestedClockOut,_that.reason,_that.status,_that.approvedBy,_that.deleted,_that.createdAt,_that.updatedAt,_that.approvedAt);case _:
+return $default(_that.id,_that.userId,_that.requesterName,_that.companyId,_that.dateId,_that.amendmentType,_that.requestedClockIn,_that.requestedClockOut,_that.reason,_that.status,_that.approvedBy,_that.deleted,_that.createdAt,_that.updatedAt,_that.approvedAt);case _:
   return null;
 
 }
@@ -219,11 +220,12 @@ return $default(_that.id,_that.userId,_that.companyId,_that.dateId,_that.amendme
 
 
 class _AttendanceAmendment implements AttendanceAmendment {
-  const _AttendanceAmendment({required this.id, required this.userId, required this.companyId, required this.dateId, required this.amendmentType, this.requestedClockIn, this.requestedClockOut, required this.reason, required this.status, this.approvedBy, required this.deleted, this.createdAt, this.updatedAt, this.approvedAt});
+  const _AttendanceAmendment({required this.id, required this.userId, this.requesterName = '', required this.companyId, required this.dateId, required this.amendmentType, this.requestedClockIn, this.requestedClockOut, required this.reason, required this.status, this.approvedBy, required this.deleted, this.createdAt, this.updatedAt, this.approvedAt});
   
 
 @override final  String id;
 @override final  String userId;
+@override@JsonKey() final  String requesterName;
 @override final  String companyId;
 @override final  String dateId;
 @override final  String amendmentType;
@@ -247,16 +249,16 @@ _$AttendanceAmendmentCopyWith<_AttendanceAmendment> get copyWith => __$Attendanc
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AttendanceAmendment&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.dateId, dateId) || other.dateId == dateId)&&(identical(other.amendmentType, amendmentType) || other.amendmentType == amendmentType)&&(identical(other.requestedClockIn, requestedClockIn) || other.requestedClockIn == requestedClockIn)&&(identical(other.requestedClockOut, requestedClockOut) || other.requestedClockOut == requestedClockOut)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.status, status) || other.status == status)&&(identical(other.approvedBy, approvedBy) || other.approvedBy == approvedBy)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AttendanceAmendment&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.requesterName, requesterName) || other.requesterName == requesterName)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.dateId, dateId) || other.dateId == dateId)&&(identical(other.amendmentType, amendmentType) || other.amendmentType == amendmentType)&&(identical(other.requestedClockIn, requestedClockIn) || other.requestedClockIn == requestedClockIn)&&(identical(other.requestedClockOut, requestedClockOut) || other.requestedClockOut == requestedClockOut)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.status, status) || other.status == status)&&(identical(other.approvedBy, approvedBy) || other.approvedBy == approvedBy)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,companyId,dateId,amendmentType,requestedClockIn,requestedClockOut,reason,status,approvedBy,deleted,createdAt,updatedAt,approvedAt);
+int get hashCode => Object.hash(runtimeType,id,userId,requesterName,companyId,dateId,amendmentType,requestedClockIn,requestedClockOut,reason,status,approvedBy,deleted,createdAt,updatedAt,approvedAt);
 
 @override
 String toString() {
-  return 'AttendanceAmendment(id: $id, userId: $userId, companyId: $companyId, dateId: $dateId, amendmentType: $amendmentType, requestedClockIn: $requestedClockIn, requestedClockOut: $requestedClockOut, reason: $reason, status: $status, approvedBy: $approvedBy, deleted: $deleted, createdAt: $createdAt, updatedAt: $updatedAt, approvedAt: $approvedAt)';
+  return 'AttendanceAmendment(id: $id, userId: $userId, requesterName: $requesterName, companyId: $companyId, dateId: $dateId, amendmentType: $amendmentType, requestedClockIn: $requestedClockIn, requestedClockOut: $requestedClockOut, reason: $reason, status: $status, approvedBy: $approvedBy, deleted: $deleted, createdAt: $createdAt, updatedAt: $updatedAt, approvedAt: $approvedAt)';
 }
 
 
@@ -267,7 +269,7 @@ abstract mixin class _$AttendanceAmendmentCopyWith<$Res> implements $AttendanceA
   factory _$AttendanceAmendmentCopyWith(_AttendanceAmendment value, $Res Function(_AttendanceAmendment) _then) = __$AttendanceAmendmentCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String userId, String companyId, String dateId, String amendmentType, String? requestedClockIn, String? requestedClockOut, String reason, String status, String? approvedBy, bool deleted, DateTime? createdAt, DateTime? updatedAt, DateTime? approvedAt
+ String id, String userId, String requesterName, String companyId, String dateId, String amendmentType, String? requestedClockIn, String? requestedClockOut, String reason, String status, String? approvedBy, bool deleted, DateTime? createdAt, DateTime? updatedAt, DateTime? approvedAt
 });
 
 
@@ -284,10 +286,11 @@ class __$AttendanceAmendmentCopyWithImpl<$Res>
 
 /// Create a copy of AttendanceAmendment
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? companyId = null,Object? dateId = null,Object? amendmentType = null,Object? requestedClockIn = freezed,Object? requestedClockOut = freezed,Object? reason = null,Object? status = null,Object? approvedBy = freezed,Object? deleted = null,Object? createdAt = freezed,Object? updatedAt = freezed,Object? approvedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? requesterName = null,Object? companyId = null,Object? dateId = null,Object? amendmentType = null,Object? requestedClockIn = freezed,Object? requestedClockOut = freezed,Object? reason = null,Object? status = null,Object? approvedBy = freezed,Object? deleted = null,Object? createdAt = freezed,Object? updatedAt = freezed,Object? approvedAt = freezed,}) {
   return _then(_AttendanceAmendment(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String,requesterName: null == requesterName ? _self.requesterName : requesterName // ignore: cast_nullable_to_non_nullable
 as String,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
 as String,dateId: null == dateId ? _self.dateId : dateId // ignore: cast_nullable_to_non_nullable
 as String,amendmentType: null == amendmentType ? _self.amendmentType : amendmentType // ignore: cast_nullable_to_non_nullable

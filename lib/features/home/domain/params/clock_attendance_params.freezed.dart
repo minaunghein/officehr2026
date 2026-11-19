@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ClockAttendanceParams {
 
-@JsonKey(fromJson: _locationFromJson, toJson: _locationToJson) AttendanceLocation? get location;@JsonKey(fromJson: _deviceFromJson, toJson: _deviceToJson) AttendanceDevice? get device;@JsonKey(name: 'qr_code') String? get qrCode; String? get notes;
+@JsonKey(fromJson: _locationFromJson, toJson: _locationToJson) AttendanceLocation? get location;@JsonKey(fromJson: _deviceFromJson, toJson: _deviceToJson) AttendanceDevice? get device;@JsonKey(name: 'img_id') String? get imgId; String? get notes;
 /// Create a copy of ClockAttendanceParams
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ClockAttendanceParamsCopyWith<ClockAttendanceParams> get copyWith => _$ClockAtt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClockAttendanceParams&&(identical(other.location, location) || other.location == location)&&(identical(other.device, device) || other.device == device)&&(identical(other.qrCode, qrCode) || other.qrCode == qrCode)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClockAttendanceParams&&(identical(other.location, location) || other.location == location)&&(identical(other.device, device) || other.device == device)&&(identical(other.imgId, imgId) || other.imgId == imgId)&&(identical(other.notes, notes) || other.notes == notes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,location,device,qrCode,notes);
+int get hashCode => Object.hash(runtimeType,location,device,imgId,notes);
 
 @override
 String toString() {
-  return 'ClockAttendanceParams(location: $location, device: $device, qrCode: $qrCode, notes: $notes)';
+  return 'ClockAttendanceParams(location: $location, device: $device, imgId: $imgId, notes: $notes)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ClockAttendanceParamsCopyWith<$Res>  {
   factory $ClockAttendanceParamsCopyWith(ClockAttendanceParams value, $Res Function(ClockAttendanceParams) _then) = _$ClockAttendanceParamsCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(fromJson: _locationFromJson, toJson: _locationToJson) AttendanceLocation? location,@JsonKey(fromJson: _deviceFromJson, toJson: _deviceToJson) AttendanceDevice? device,@JsonKey(name: 'qr_code') String? qrCode, String? notes
+@JsonKey(fromJson: _locationFromJson, toJson: _locationToJson) AttendanceLocation? location,@JsonKey(fromJson: _deviceFromJson, toJson: _deviceToJson) AttendanceDevice? device,@JsonKey(name: 'img_id') String? imgId, String? notes
 });
 
 
@@ -65,11 +65,11 @@ class _$ClockAttendanceParamsCopyWithImpl<$Res>
 
 /// Create a copy of ClockAttendanceParams
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? location = freezed,Object? device = freezed,Object? qrCode = freezed,Object? notes = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? location = freezed,Object? device = freezed,Object? imgId = freezed,Object? notes = freezed,}) {
   return _then(_self.copyWith(
 location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as AttendanceLocation?,device: freezed == device ? _self.device : device // ignore: cast_nullable_to_non_nullable
-as AttendanceDevice?,qrCode: freezed == qrCode ? _self.qrCode : qrCode // ignore: cast_nullable_to_non_nullable
+as AttendanceDevice?,imgId: freezed == imgId ? _self.imgId : imgId // ignore: cast_nullable_to_non_nullable
 as String?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -180,10 +180,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _locationFromJson, toJson: _locationToJson)  AttendanceLocation? location, @JsonKey(fromJson: _deviceFromJson, toJson: _deviceToJson)  AttendanceDevice? device, @JsonKey(name: 'qr_code')  String? qrCode,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _locationFromJson, toJson: _locationToJson)  AttendanceLocation? location, @JsonKey(fromJson: _deviceFromJson, toJson: _deviceToJson)  AttendanceDevice? device, @JsonKey(name: 'img_id')  String? imgId,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ClockAttendanceParams() when $default != null:
-return $default(_that.location,_that.device,_that.qrCode,_that.notes);case _:
+return $default(_that.location,_that.device,_that.imgId,_that.notes);case _:
   return orElse();
 
 }
@@ -201,10 +201,10 @@ return $default(_that.location,_that.device,_that.qrCode,_that.notes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _locationFromJson, toJson: _locationToJson)  AttendanceLocation? location, @JsonKey(fromJson: _deviceFromJson, toJson: _deviceToJson)  AttendanceDevice? device, @JsonKey(name: 'qr_code')  String? qrCode,  String? notes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _locationFromJson, toJson: _locationToJson)  AttendanceLocation? location, @JsonKey(fromJson: _deviceFromJson, toJson: _deviceToJson)  AttendanceDevice? device, @JsonKey(name: 'img_id')  String? imgId,  String? notes)  $default,) {final _that = this;
 switch (_that) {
 case _ClockAttendanceParams():
-return $default(_that.location,_that.device,_that.qrCode,_that.notes);case _:
+return $default(_that.location,_that.device,_that.imgId,_that.notes);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -221,10 +221,10 @@ return $default(_that.location,_that.device,_that.qrCode,_that.notes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: _locationFromJson, toJson: _locationToJson)  AttendanceLocation? location, @JsonKey(fromJson: _deviceFromJson, toJson: _deviceToJson)  AttendanceDevice? device, @JsonKey(name: 'qr_code')  String? qrCode,  String? notes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: _locationFromJson, toJson: _locationToJson)  AttendanceLocation? location, @JsonKey(fromJson: _deviceFromJson, toJson: _deviceToJson)  AttendanceDevice? device, @JsonKey(name: 'img_id')  String? imgId,  String? notes)?  $default,) {final _that = this;
 switch (_that) {
 case _ClockAttendanceParams() when $default != null:
-return $default(_that.location,_that.device,_that.qrCode,_that.notes);case _:
+return $default(_that.location,_that.device,_that.imgId,_that.notes);case _:
   return null;
 
 }
@@ -236,12 +236,12 @@ return $default(_that.location,_that.device,_that.qrCode,_that.notes);case _:
 @JsonSerializable()
 
 class _ClockAttendanceParams implements ClockAttendanceParams {
-  const _ClockAttendanceParams({@JsonKey(fromJson: _locationFromJson, toJson: _locationToJson) this.location, @JsonKey(fromJson: _deviceFromJson, toJson: _deviceToJson) this.device, @JsonKey(name: 'qr_code') this.qrCode, this.notes});
+  const _ClockAttendanceParams({@JsonKey(fromJson: _locationFromJson, toJson: _locationToJson) this.location, @JsonKey(fromJson: _deviceFromJson, toJson: _deviceToJson) this.device, @JsonKey(name: 'img_id') this.imgId, this.notes});
   factory _ClockAttendanceParams.fromJson(Map<String, dynamic> json) => _$ClockAttendanceParamsFromJson(json);
 
 @override@JsonKey(fromJson: _locationFromJson, toJson: _locationToJson) final  AttendanceLocation? location;
 @override@JsonKey(fromJson: _deviceFromJson, toJson: _deviceToJson) final  AttendanceDevice? device;
-@override@JsonKey(name: 'qr_code') final  String? qrCode;
+@override@JsonKey(name: 'img_id') final  String? imgId;
 @override final  String? notes;
 
 /// Create a copy of ClockAttendanceParams
@@ -257,16 +257,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ClockAttendanceParams&&(identical(other.location, location) || other.location == location)&&(identical(other.device, device) || other.device == device)&&(identical(other.qrCode, qrCode) || other.qrCode == qrCode)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ClockAttendanceParams&&(identical(other.location, location) || other.location == location)&&(identical(other.device, device) || other.device == device)&&(identical(other.imgId, imgId) || other.imgId == imgId)&&(identical(other.notes, notes) || other.notes == notes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,location,device,qrCode,notes);
+int get hashCode => Object.hash(runtimeType,location,device,imgId,notes);
 
 @override
 String toString() {
-  return 'ClockAttendanceParams(location: $location, device: $device, qrCode: $qrCode, notes: $notes)';
+  return 'ClockAttendanceParams(location: $location, device: $device, imgId: $imgId, notes: $notes)';
 }
 
 
@@ -277,7 +277,7 @@ abstract mixin class _$ClockAttendanceParamsCopyWith<$Res> implements $ClockAtte
   factory _$ClockAttendanceParamsCopyWith(_ClockAttendanceParams value, $Res Function(_ClockAttendanceParams) _then) = __$ClockAttendanceParamsCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(fromJson: _locationFromJson, toJson: _locationToJson) AttendanceLocation? location,@JsonKey(fromJson: _deviceFromJson, toJson: _deviceToJson) AttendanceDevice? device,@JsonKey(name: 'qr_code') String? qrCode, String? notes
+@JsonKey(fromJson: _locationFromJson, toJson: _locationToJson) AttendanceLocation? location,@JsonKey(fromJson: _deviceFromJson, toJson: _deviceToJson) AttendanceDevice? device,@JsonKey(name: 'img_id') String? imgId, String? notes
 });
 
 
@@ -294,11 +294,11 @@ class __$ClockAttendanceParamsCopyWithImpl<$Res>
 
 /// Create a copy of ClockAttendanceParams
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? location = freezed,Object? device = freezed,Object? qrCode = freezed,Object? notes = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? location = freezed,Object? device = freezed,Object? imgId = freezed,Object? notes = freezed,}) {
   return _then(_ClockAttendanceParams(
 location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as AttendanceLocation?,device: freezed == device ? _self.device : device // ignore: cast_nullable_to_non_nullable
-as AttendanceDevice?,qrCode: freezed == qrCode ? _self.qrCode : qrCode // ignore: cast_nullable_to_non_nullable
+as AttendanceDevice?,imgId: freezed == imgId ? _self.imgId : imgId // ignore: cast_nullable_to_non_nullable
 as String?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
 as String?,
   ));

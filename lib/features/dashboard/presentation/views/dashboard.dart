@@ -1,9 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:office_hr/core/network/network_providers.dart';
+import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/features/dashboard/presentation/providers/dashboard_provider.dart';
 import 'package:office_hr/features/dashboard/presentation/widgets/dashboard_drawer.dart';
+import 'package:office_hr/features/home/presentation/providers/clock_request_provider.dart';
 import 'package:office_hr/features/home/presentation/screens/attendance.dart';
 import 'package:office_hr/features/home/presentation/screens/home.dart';
 import 'package:office_hr/features/home/presentation/screens/team.dart';
@@ -86,6 +90,16 @@ class _DashboardAppBar extends HookConsumerWidget
     final fullName = currentUser.value?.displayName;
     // buildFullName(bio?.basicInfo) ?? userDetails.value?.username;
 
+    final dashboardIndex = ref.watch(dashboardIndexProvider);
+    final roleName = currentUser.value?.role.name.trim().toLowerCase() ?? '';
+    final canScan = roleName.isNotEmpty && roleName != 'employee';
+    final isTeamTab = dashboardIndex == 2;
+
+    // The bell badge only surfaces items awaiting action.
+    final totalBadgeCount = canScan
+        ? ref.watch(pendingClockRequestsBadgeCountProvider).value ?? 0
+        : 0;
+
     return AppBar(
       backgroundColor: theme.scaffoldBackgroundColor,
       elevation: 0,
@@ -102,6 +116,7 @@ class _DashboardAppBar extends HookConsumerWidget
                     height: 40,
                     child: CachedNetworkImage(
                       imageUrl: currentUser.value!.profileUrl,
+                      httpHeaders: ref.watch(authImageHeadersProvider),
                       fit: BoxFit.cover,
                       placeholder: (context, url) => Center(
                         child: CircularProgressIndicator(
@@ -160,12 +175,25 @@ class _DashboardAppBar extends HookConsumerWidget
         ],
       ),
       actions: [
-        IconButton(
-          icon: Icon(
-            Icons.notifications_none_rounded,
-            color: theme.colorScheme.primary,
+        if (isTeamTab && canScan)
+          IconButton(
+            tooltip: 'Scan Staff ID Card',
+            icon: Icon(
+              Icons.qr_code_scanner_rounded,
+              color: theme.colorScheme.primary,
+            ),
+            onPressed: () => context.push(AppRoutes.qrScanner),
           ),
-          onPressed: () {},
+        IconButton(
+          icon: Badge.count(
+            count: totalBadgeCount,
+            isLabelVisible: totalBadgeCount > 0,
+            child: Icon(
+              Icons.notifications_none_rounded,
+              color: theme.colorScheme.primary,
+            ),
+          ),
+          onPressed: () => context.push(AppRoutes.announcements),
         ),
         // IconButton(
         //   icon: Icon(

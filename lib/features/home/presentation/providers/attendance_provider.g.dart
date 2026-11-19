@@ -534,7 +534,7 @@ final class MonthlyAttendanceStatsProvider
 }
 
 String _$monthlyAttendanceStatsHash() =>
-    r'cf885a365461538351728a417bd62042f00fb3ac';
+    r'6d2d92080b1d58d33060e885df17d777aa6750bb';
 
 @ProviderFor(AttendanceNotifier)
 final attendanceProvider = AttendanceNotifierProvider._();
@@ -561,7 +561,7 @@ final class AttendanceNotifierProvider
 }
 
 String _$attendanceNotifierHash() =>
-    r'6d3ea40fb2296dcb7a12da973d6d9a0cbd14699e';
+    r'0ce6948344b1a24f8853767cc433f7041fedaea9';
 
 abstract class _$AttendanceNotifier extends $AsyncNotifier<AttendanceState> {
   FutureOr<AttendanceState> build();

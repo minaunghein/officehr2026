@@ -230,3 +230,15 @@ bool isAuthenticated(Ref ref) {
   final token = ref.watch(authTokenProvider).value;
   return token != null && token.isNotEmpty;
 }
+
+/// The signed-in user's id, or `null` when logged out.
+///
+/// Per-user data providers (keepAlive caches such as leave balances/requests
+/// or monthly attendance stats) MUST `ref.watch` this inside their `build()`
+/// so their cache is discarded and refetched when a different account logs in.
+/// Without it, a keepAlive provider returns the previous user's data after a
+/// logout/login until the user manually refreshes.
+@riverpod
+String? currentUserId(Ref ref) {
+  return ref.watch(currentUserProvider).value?.userId;
+}

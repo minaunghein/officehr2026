@@ -8,9 +8,11 @@ import 'package:office_hr/features/leave/domain/entities/leave_type.dart';
 import 'package:office_hr/features/leave/domain/entities/uploaded_file.dart';
 import 'package:office_hr/features/leave/domain/repositories/leave_repository.dart';
 import 'package:office_hr/features/leave/domain/usecases/create_leave_request_usecase.dart';
+import 'package:office_hr/features/leave/domain/usecases/get_all_leave_requests_usecase.dart';
 import 'package:office_hr/features/leave/domain/usecases/get_leave_balances_usecase.dart';
 import 'package:office_hr/features/leave/domain/usecases/get_leave_requests_usecase.dart';
 import 'package:office_hr/features/leave/domain/usecases/get_leave_types_usecase.dart';
+import 'package:office_hr/features/leave/domain/usecases/update_leave_request_status_usecase.dart';
 import 'package:office_hr/features/leave/domain/usecases/upload_file_usecase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -42,6 +44,16 @@ GetLeaveRequestsUsecase getLeaveRequestsUsecase(Ref ref) {
 }
 
 @riverpod
+GetAllLeaveRequestsUsecase getAllLeaveRequestsUsecase(Ref ref) {
+  return GetAllLeaveRequestsUsecase(ref.watch(leaveRepositoryProvider));
+}
+
+@riverpod
+UpdateLeaveRequestStatusUsecase updateLeaveRequestStatusUsecase(Ref ref) {
+  return UpdateLeaveRequestStatusUsecase(ref.watch(leaveRepositoryProvider));
+}
+
+@riverpod
 GetLeaveTypesUsecase getLeaveTypesUsecase(Ref ref) {
   return GetLeaveTypesUsecase(ref.watch(leaveRepositoryProvider));
 }
@@ -67,6 +79,7 @@ String _currentEmployeeId(Ref ref) {
 class LeaveBalancesNotifier extends _$LeaveBalancesNotifier {
   @override
   Future<List<LeaveBalance>> build() async {
+    ref.watch(currentUserIdProvider);
     return _fetch();
   }
 
@@ -85,6 +98,7 @@ class LeaveBalancesNotifier extends _$LeaveBalancesNotifier {
 class LeaveRequestsNotifier extends _$LeaveRequestsNotifier {
   @override
   Future<List<LeaveRequest>> build() async {
+    ref.watch(currentUserIdProvider);
     return _fetch();
   }
 
@@ -99,9 +113,78 @@ class LeaveRequestsNotifier extends _$LeaveRequestsNotifier {
   }
 }
 
+@Riverpod(keepAlive: true)
+class AllLeaveRequestsNotifier extends _$AllLeaveRequestsNotifier {
+  @override
+  Future<List<LeaveRequest>> build() async {
+    ref.watch(currentUserIdProvider);
+    return _fetch();
+  }
+
+  Future<List<LeaveRequest>> _fetch() async {
+    final usecase = ref.read(getAllLeaveRequestsUsecaseProvider);
+    return usecase();
+  }
+
+  Future<void> refresh() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(_fetch);
+  }
+}
+
+@riverpod
+class UpdateLeaveRequestStatusNotifier
+    extends _$UpdateLeaveRequestStatusNotifier {
+  @override
+  FutureOr<void> build() {}
+
+  /// Approves or rejects [id] and returns the updated request. Throws on
+  /// failure. The caller refreshes the leave lists (a transient autoDispose
+  /// provider may dispose while awaiting, so it never touches provider state
+  /// after the await).
+  Future<LeaveRequest> act(
+    String id, {
+    required LeaveDecision decision,
+    String? reason,
+  }) async {
+    if (ref.mounted) state = const AsyncValue.loading();
+    final usecase = ref.read(updateLeaveRequestStatusUsecaseProvider);
+    final result = await AsyncValue.guard(
+      () => usecase(id, decision: decision, reason: reason),
+    );
+
+    if (result.hasError) {
+      final trace = result.stackTrace ?? StackTrace.current;
+      if (ref.mounted) state = AsyncValue.error(result.error!, trace);
+      Error.throwWithStackTrace(result.error!, trace);
+    }
+
+    if (ref.mounted) state = const AsyncValue.data(null);
+    return result.value!;
+  }
+}
+
 @riverpod
 Future<List<LeaveType>> leaveTypes(Ref ref) {
   return ref.read(getLeaveTypesUsecaseProvider)();
+}
+
+/// Number of pending leave requests awaiting the current user's approval,
+/// for badges. Own requests are excluded because they can't be approved or
+/// rejected by the requester. Derived from the keep-alive approvals list so
+/// it stays in sync after decisions and refreshes without an extra endpoint
+/// call.
+@riverpod
+int pendingLeaveRequestsCount(Ref ref) {
+  final requests = ref.watch(allLeaveRequestsProvider).value;
+  if (requests == null) return 0;
+  final currentUserId = ref.watch(currentUserProvider).value?.userId ?? '';
+  if (currentUserId.isEmpty) return 0;
+  return requests
+      .where(
+        (request) => request.isPending && request.requesterId != currentUserId,
+      )
+      .length;
 }
 
 @riverpod

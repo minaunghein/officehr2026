@@ -500,6 +500,19 @@ ApiService apiService(Ref ref) {
   return DioApiService(ref.watch(dioProvider));
 }
 
+/// Headers for authenticated image loading (e.g. `/api/v1/files/{id}`) used
+/// by `CachedNetworkImage`, which does not go through the Dio client and
+/// therefore misses its auth interceptor.
+@riverpod
+Map<String, String> authImageHeaders(Ref ref) {
+  final token = ref.watch(authTokenProvider).value;
+  final companyId = ref.watch(currentUserProvider).value?.activeCompany.id;
+  return {
+    if (token != null && token.isNotEmpty) 'Authorization': 'Bearer $token',
+    if (companyId != null && companyId.isNotEmpty) 'X-Company-Id': companyId,
+  };
+}
+
 bool _validateStatus(int? status) {
   return status != null && status >= 200 && status < 300;
 }

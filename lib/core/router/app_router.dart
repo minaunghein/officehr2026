@@ -2,13 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/services/dialog_service.dart';
+import 'package:office_hr/features/announcement/presentation/screens/announcement_screen.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/features/dashboard/presentation/views/dashboard.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_amendment.dart';
+import 'package:office_hr/features/home/domain/entities/clock_request.dart';
 import 'package:office_hr/features/home/domain/entities/team_attendance.dart';
+import 'package:office_hr/features/home/presentation/screens/amendment_approvals_screen.dart';
 import 'package:office_hr/features/home/presentation/screens/attendance_amendment_detail.dart';
 import 'package:office_hr/features/home/presentation/screens/attendance_requests.dart';
+import 'package:office_hr/features/home/presentation/screens/clock_request_detail_screen.dart';
+import 'package:office_hr/features/home/presentation/screens/clock_requests_screen.dart';
 import 'package:office_hr/features/home/presentation/screens/team_member_attendance_detail.dart';
+import 'package:office_hr/features/payslip/domain/entities/payslip.dart';
+import 'package:office_hr/features/payslip/presentation/screens/payslip_detail_screen.dart';
 import 'package:office_hr/features/payslip/presentation/screens/payslip_screen.dart';
 import 'package:office_hr/features/public_holiday/presentation/screens/public_holiday_screen.dart';
 import 'package:office_hr/features/splash/presentation/screens/splash_screen.dart';
@@ -19,8 +26,12 @@ import 'package:office_hr/features/user_profile/presentation/screens/company_scr
 import 'package:office_hr/features/user_profile/presentation/screens/staff_id_card_screen.dart';
 import 'package:office_hr/features/leave/domain/entities/leave_request.dart';
 import 'package:office_hr/features/leave/presentation/screens/create_leave_request_screen.dart';
+import 'package:office_hr/features/leave/presentation/screens/leave_approvals_screen.dart';
 import 'package:office_hr/features/leave/presentation/screens/leave_request_detail_screen.dart';
 import 'package:office_hr/features/leave/presentation/screens/leave_screen.dart';
+import 'package:office_hr/features/overtime/presentation/screens/create_overtime_request_screen.dart';
+import 'package:office_hr/features/overtime/presentation/screens/overtime_approvals_screen.dart';
+import 'package:office_hr/features/overtime/presentation/screens/overtime_screen.dart';
 import 'package:office_hr/features/user_profile/presentation/screens/profile_screen.dart';
 import 'package:office_hr/features/user_profile/presentation/screens/qr_scanner_screen.dart';
 import 'package:office_hr/features/user_profile/presentation/screens/user_details_screen.dart';
@@ -33,12 +44,21 @@ abstract final class AppRoutes {
   static const login = '/login';
   static const profile = '/profile';
   static const payslip = '/payslip';
+  static const payslipDetail = '/payslip/detail';
   static const publicHoliday = '/public-holidays';
+  static const announcements = '/announcements';
+  static const clockRequests = '/clock-requests';
+  static const clockRequestDetail = '/clock-requests/detail';
   static const attendanceRequests = '/attendance/requests';
   static const attendanceAmendmentDetail = '/attendance/requests/detail';
+  static const amendmentRequests = '/attendance/amendments';
   static const leave = '/leave';
   static const createLeave = '/leave/new';
+  static const leaveRequests = '/leave/requests';
   static const leaveDetail = '/leave/detail';
+  static const overtime = '/overtime';
+  static const createOvertime = '/overtime/new';
+  static const overtimeRequests = '/overtime/requests';
   static const teamMemberAttendance = '/team/attendance';
   static const company = '/company';
   static const changePassword = '/change-password';
@@ -84,8 +104,44 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (_, _) => const PayslipScreen(),
       ),
       GoRoute(
+        path: AppRoutes.payslipDetail,
+        builder: (_, state) {
+          final payslip = state.extra;
+          if (payslip is! Payslip) {
+            return const Scaffold(
+              body: Center(child: Text('Payslip not found')),
+            );
+          }
+          return PayslipDetailScreen(initial: payslip);
+        },
+      ),
+      GoRoute(
         path: AppRoutes.publicHoliday,
         builder: (_, _) => const PublicHolidayScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.announcements,
+        builder: (_, _) => const AnnouncementScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.clockRequests,
+        builder: (_, _) => const ClockRequestsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.clockRequestDetail,
+        builder: (_, state) {
+          final extra = state.extra;
+          if (extra is ClockRequestRouteArgs) {
+            return ClockRequestDetailScreen(
+              initial: extra.request,
+              canDecide: extra.canDecide,
+            );
+          }
+          if (extra is ClockRequest) {
+            return ClockRequestDetailScreen(initial: extra);
+          }
+          return const Scaffold(body: Center(child: Text('Request not found')));
+        },
       ),
       GoRoute(
         path: AppRoutes.attendanceRequests,
@@ -94,14 +150,24 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.attendanceAmendmentDetail,
         builder: (_, state) {
-          final amendment = state.extra;
-          if (amendment is! AttendanceAmendment) {
-            return const Scaffold(
-              body: Center(child: Text('Request not found')),
+          final extra = state.extra;
+          if (extra is AttendanceAmendmentRouteArgs) {
+            return AttendanceAmendmentDetailScreen(
+              initial: extra.amendment,
+              canApprove: extra.canApprove,
             );
           }
-          return AttendanceAmendmentDetailScreen(initial: amendment);
+          if (extra is AttendanceAmendment) {
+            return AttendanceAmendmentDetailScreen(initial: extra);
+          }
+          return const Scaffold(
+            body: Center(child: Text('Request not found')),
+          );
         },
+      ),
+      GoRoute(
+        path: AppRoutes.amendmentRequests,
+        builder: (_, _) => const AmendmentApprovalsScreen(),
       ),
       GoRoute(path: AppRoutes.leave, builder: (_, _) => const LeaveScreen()),
       GoRoute(
@@ -109,15 +175,37 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (_, _) => const CreateLeaveRequestScreen(),
       ),
       GoRoute(
+        path: AppRoutes.overtime,
+        builder: (_, _) => const OvertimeScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.createOvertime,
+        builder: (_, _) => const CreateOvertimeRequestScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.overtimeRequests,
+        builder: (_, _) => const OvertimeApprovalsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.leaveRequests,
+        builder: (_, _) => const LeaveApprovalsScreen(),
+      ),
+      GoRoute(
         path: AppRoutes.leaveDetail,
         builder: (_, state) {
-          final request = state.extra;
-          if (request is! LeaveRequest) {
-            return const Scaffold(
-              body: Center(child: Text('Leave request not found')),
+          final extra = state.extra;
+          if (extra is LeaveRequestRouteArgs) {
+            return LeaveRequestDetailScreen(
+              initial: extra.request,
+              canApprove: extra.canApprove,
             );
           }
-          return LeaveRequestDetailScreen(initial: request);
+          if (extra is LeaveRequest) {
+            return LeaveRequestDetailScreen(initial: extra);
+          }
+          return const Scaffold(
+            body: Center(child: Text('Leave request not found')),
+          );
         },
       ),
       GoRoute(

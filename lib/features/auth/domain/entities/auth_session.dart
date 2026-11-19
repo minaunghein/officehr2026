@@ -26,6 +26,7 @@ abstract class AuthSession with _$AuthSession {
   String get userId => user.id;
   String get username => user.username;
   String get email => user.email;
+  bool get optionalLocation => user.optionalLocation;
   String get profileUrl {
     final imageId = user.profileImgId?.trim() ?? '';
     if (imageId.isEmpty) return '';

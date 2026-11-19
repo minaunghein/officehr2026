@@ -11,10 +11,12 @@ abstract class GeofenceModel with _$GeofenceModel {
   const factory GeofenceModel({
     @Default(0.0) double latitude,
     @Default(0.0) double longitude,
+    @JsonKey(name: 'radius_km') @Default(0.0) double radiusKm,
   }) = _GeofenceModel;
 
   factory GeofenceModel.fromJson(Map<String, dynamic> json) =>
       _$GeofenceModelFromJson(json);
 
-  Geofence toEntity() => Geofence(latitude: latitude, longitude: longitude);
+  Geofence toEntity() =>
+      Geofence(latitude: latitude, longitude: longitude, radiusKm: radiusKm);
 }

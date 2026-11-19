@@ -7,5 +7,6 @@ abstract class Geofence with _$Geofence {
   const factory Geofence({
     required double latitude,
     required double longitude,
+    @Default(0.0) double radiusKm,
   }) = _Geofence;
 }

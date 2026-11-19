@@ -3,24 +3,51 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
+import 'package:office_hr/core/utils/snackbar_utils.dart';
 import 'package:office_hr/core/widgets/container_shimmer.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_amendment.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_amendment_provider.dart';
+import 'package:office_hr/features/home/presentation/widgets/amendment_decision_dialog.dart';
 import 'package:office_hr/features/home/presentation/widgets/attendance_amendment_card.dart';
 import 'package:office_hr/features/home/presentation/widgets/attendance_amendment_status.dart';
 import 'package:office_hr/features/home/presentation/widgets/attendance_status.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
+/// Navigation args for the amendment detail screen. `canApprove` is set when
+/// the screen is opened from the approvals queue.
+class AttendanceAmendmentRouteArgs {
+  const AttendanceAmendmentRouteArgs({
+    required this.amendment,
+    this.canApprove = false,
+  });
+
+  final AttendanceAmendment amendment;
+  final bool canApprove;
+}
+
 class AttendanceAmendmentDetailScreen extends HookConsumerWidget {
-  const AttendanceAmendmentDetailScreen({super.key, required this.initial});
+  const AttendanceAmendmentDetailScreen({
+    super.key,
+    required this.initial,
+    this.canApprove = false,
+  });
 
   final AttendanceAmendment initial;
+  final bool canApprove;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final amendment = useState(initial);
+    // The by-id endpoint may not embed the requester, so keep the name that
+    // came with the list payload.
+    AttendanceAmendment keepRequester(AttendanceAmendment value) =>
+        value.requesterName.isEmpty && initial.requesterName.isNotEmpty
+        ? value.copyWith(requesterName: initial.requesterName)
+        : value;
+
+    final amendment = useState(keepRequester(initial));
     final refreshing = useState(false);
     final error = useState<String?>(null);
+    final pendingDecision = useState<String?>(null);
 
     Future<void> load() async {
       refreshing.value = true;
@@ -29,7 +56,7 @@ class AttendanceAmendmentDetailScreen extends HookConsumerWidget {
         final fresh = await ref.read(getAmendmentByIdUsecaseProvider)(
           initial.id,
         );
-        amendment.value = fresh;
+        amendment.value = keepRequester(fresh);
       } catch (e) {
         error.value = getUserFriendlyError(e);
       } finally {
@@ -43,9 +70,63 @@ class AttendanceAmendmentDetailScreen extends HookConsumerWidget {
     }, [initial.id]);
 
     final current = amendment.value;
+    final canAct = canApprove && current.status.toUpperCase() == 'PENDING';
+
+    Future<void> decide(bool approve) async {
+      final requesterLabel = current.requesterName.trim().isEmpty
+          ? 'this employee'
+          : current.requesterName.trim();
+      final result = await showAmendmentDecisionDialog(
+        context,
+        isApprove: approve,
+        requesterLabel: requesterLabel,
+        typeLabel: attendanceStatusLabel(current.amendmentType),
+      );
+      if (result == null) return;
+
+      pendingDecision.value = result.status;
+      try {
+        final updated = await ref.read(updateAmendmentStatusUsecaseProvider)(
+          current.id,
+          status: result.status,
+          rejectionReason: result.reason,
+        );
+        amendment.value = keepRequester(updated);
+        ref.invalidate(attendanceAmendmentsProvider);
+        ref.invalidate(amendmentApprovalsProvider);
+        ref.invalidate(pendingAmendmentsBadgeCountProvider);
+        SnackbarUtils.showSuccess(
+          approve ? 'Request approved' : 'Request rejected',
+        );
+      } catch (e) {
+        if (context.mounted) {
+          SnackbarUtils.showError(getUserFriendlyError(e));
+        }
+      } finally {
+        if (context.mounted) pendingDecision.value = null;
+      }
+    }
+
+    final requesterName = current.requesterName.trim();
 
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: const Text('Request Details')),
+      appBar: AppBar(
+        centerTitle: true,
+        title: requesterName.isNotEmpty
+            ? Text(
+                requesterName,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              )
+            : const Text('Request Details'),
+      ),
+      bottomNavigationBar: canAct
+          ? _ApprovalBar(
+              pendingDecision: pendingDecision.value,
+              onReject: () => decide(false),
+              onApprove: () => decide(true),
+            )
+          : null,
       body: RefreshIndicator(
         onRefresh: load,
         child: ListView(
@@ -63,6 +144,91 @@ class AttendanceAmendmentDetailScreen extends HookConsumerWidget {
             _DetailsCard(amendment: current),
             const SizedBox(height: 16),
             _TimelineCard(amendment: current),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ApprovalBar extends StatelessWidget {
+  const _ApprovalBar({
+    required this.pendingDecision,
+    required this.onReject,
+    required this.onApprove,
+  });
+
+  final String? pendingDecision;
+  final VoidCallback onReject;
+  final VoidCallback onApprove;
+
+  bool get _anyBusy => pendingDecision != null;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+        child: Row(
+          children: [
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: _anyBusy ? null : onReject,
+                icon: pendingDecision == 'REJECTED'
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Color(0xFFDC2626),
+                        ),
+                      )
+                    : const Icon(Icons.close_rounded, size: 18),
+                label: const Text('Reject'),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: const Color(0xFFDC2626),
+                  disabledForegroundColor: const Color(
+                    0xFFDC2626,
+                  ).withValues(alpha: 0.5),
+                  side: const BorderSide(color: Color(0xFFDC2626), width: 1.2),
+                  minimumSize: const Size.fromHeight(48),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                      AppSizes.borderRadiusMd,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: FilledButton.icon(
+                onPressed: _anyBusy ? null : onApprove,
+                style: FilledButton.styleFrom(
+                  backgroundColor: const Color(0xFF16A34A),
+                  disabledBackgroundColor: const Color(
+                    0xFF16A34A,
+                  ).withValues(alpha: 0.5),
+                  minimumSize: const Size.fromHeight(48),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                      AppSizes.borderRadiusMd,
+                    ),
+                  ),
+                ),
+                icon: pendingDecision == 'APPROVED'
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Icon(Icons.check_rounded, size: 18),
+                label: const Text('Approve'),
+              ),
+            ),
           ],
         ),
       ),

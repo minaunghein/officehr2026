@@ -9,6 +9,8 @@ import 'package:office_hr/core/widgets/error_state_widget.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_provider.dart';
 import 'package:office_hr/features/home/presentation/widgets/team_attendance_summary.dart';
 import 'package:office_hr/features/home/presentation/widgets/team_member_card.dart';
+import 'package:office_hr/features/home/presentation/widgets/team_quick_action.dart';
+import 'package:office_hr/features/home/presentation/widgets/team_quick_actions.dart';
 
 class TeamBody extends ConsumerWidget {
   const TeamBody({
@@ -17,12 +19,14 @@ class TeamBody extends ConsumerWidget {
     required this.departmentTitle,
     required this.currentUserId,
     required this.canViewDetails,
+    this.quickActions = const [],
   });
 
   final String departmentId;
   final String departmentTitle;
   final String currentUserId;
   final bool canViewDetails;
+  final List<TeamQuickAction> quickActions;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,7 +35,8 @@ class TeamBody extends ConsumerWidget {
         icon: Icons.groups_2_outlined,
         title: 'No department assigned',
         message: 'Your department information is not available yet.',
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 96),
+        centered: true,
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       );
     }
 
@@ -52,12 +57,27 @@ class TeamBody extends ConsumerWidget {
                   .where((record) => record.userId != currentUserId)
                   .toList();
         if (visibleRecords.isEmpty) {
-          return EmptyStateWidget(
-            icon: Icons.groups_2_outlined,
-            title: 'No attendance yet',
-            message: 'Today\'s team attendance has not been recorded yet.',
-            onRefresh: refresh,
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 96),
+          return Column(
+            children: [
+              if (quickActions.isNotEmpty) ...[
+                TeamQuickActions(actions: quickActions),
+                const SizedBox(height: 8),
+              ],
+              Expanded(
+                child: EmptyStateWidget(
+                  icon: Icons.groups_2_outlined,
+                  title: 'No attendance yet',
+                  message:
+                      'Today\'s team attendance has not been recorded yet.',
+                  onRefresh: refresh,
+                  centered: true,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 24,
+                  ),
+                ),
+              ),
+            ],
           );
         }
         return RefreshIndicator(
@@ -69,6 +89,10 @@ class TeamBody extends ConsumerWidget {
                 records: visibleRecords,
                 departmentTitle: departmentTitle,
               ),
+              if (quickActions.isNotEmpty) ...[
+                const SizedBox(height: 12),
+                TeamQuickActions(actions: quickActions),
+              ],
               const SizedBox(height: 20),
               Text(
                 'Members',
@@ -95,6 +119,10 @@ class TeamBody extends ConsumerWidget {
         padding: const EdgeInsets.only(bottom: 24),
         children: [
           const ContainerShimmer(height: 150),
+          if (quickActions.isNotEmpty) ...[
+            const SizedBox(height: 12),
+            const ContainerShimmer(height: 92),
+          ],
           const SizedBox(height: 20),
           for (int i = 0; i < 4; i++) ...[
             const ContainerShimmer(height: 120),

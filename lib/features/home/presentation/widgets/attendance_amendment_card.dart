@@ -9,11 +9,15 @@ class AttendanceAmendmentCard extends StatelessWidget {
   const AttendanceAmendmentCard({
     super.key,
     required this.amendment,
+    this.showRequester = false,
     this.onTap,
+    this.trailing,
   });
 
   final AttendanceAmendment amendment;
+  final bool showRequester;
   final VoidCallback? onTap;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +43,25 @@ class AttendanceAmendmentCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (showRequester && _hasValue(amendment.requesterName)) ...[
+                Row(
+                  children: [
+                    _RequesterAvatar(label: amendment.requesterName),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        amendment.requesterName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+              ],
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -120,6 +143,10 @@ class AttendanceAmendmentCard extends StatelessWidget {
                   ),
                 ),
               ],
+              if (trailing != null) ...[
+                const SizedBox(height: 12),
+                trailing!,
+              ],
             ],
           ),
         ),
@@ -170,6 +197,28 @@ class _TimePill extends StatelessWidget {
 }
 
 bool _hasValue(String? value) => value != null && value.trim().isNotEmpty;
+
+class _RequesterAvatar extends StatelessWidget {
+  const _RequesterAvatar({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return CircleAvatar(
+      radius: 16,
+      backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.12),
+      child: Text(
+        label.trim().isEmpty ? '?' : label.trim()[0].toUpperCase(),
+        style: theme.textTheme.titleSmall?.copyWith(
+          color: theme.colorScheme.primary,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+    );
+  }
+}
 
 IconData amendmentTypeIcon(String type) {
   switch (type.toUpperCase()) {

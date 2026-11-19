@@ -187,7 +187,7 @@ class MapSliverAppBar extends HookConsumerWidget {
                           branch.geofence.latitude,
                           branch.geofence.longitude,
                         ),
-                        radius: 200,
+                        radius: branch.geofence.radiusKm * 1000,
                         useRadiusInMeter: true,
                         color: const Color(0xFF0052CC).withValues(alpha: 0.2),
                         borderColor: const Color(

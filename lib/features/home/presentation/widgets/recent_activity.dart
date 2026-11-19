@@ -4,6 +4,7 @@ import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/widgets/container_shimmer.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_punch.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_provider.dart';
+import 'package:office_hr/features/home/presentation/widgets/punch_photo_thumb.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
 class RecentActivity extends ConsumerWidget {
@@ -252,6 +253,10 @@ class _AttendanceActivityTile extends StatelessWidget {
               ],
             ),
           ),
+          if (attendance.imgId != null && attendance.imgId!.isNotEmpty) ...[
+            const SizedBox(width: 10),
+            PunchPhotoThumb(imgId: attendance.imgId!),
+          ],
         ],
       ),
     );

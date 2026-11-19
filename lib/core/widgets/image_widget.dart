@@ -2,13 +2,15 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_colors.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/constants/durations.dart';
 import 'package:office_hr/core/extensions/str_extension.dart';
+import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/core/widgets/container_shimmer.dart';
 
-class ImageWidget extends StatelessWidget {
+class ImageWidget extends ConsumerWidget {
   const ImageWidget({
     super.key,
     required this.imageUrl,
@@ -48,7 +50,7 @@ class ImageWidget extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     if (imageUrl.isNotAvailable) return _buildPlaceholder();
 
     return ClipRRect(
@@ -58,6 +60,7 @@ class ImageWidget extends StatelessWidget {
           final cacheSize = _resolveCacheSize(context, constraints);
 
           return _resolveImageSource(
+            ref,
             cacheWidth: cacheSize.width,
             cacheHeight: cacheSize.height,
           );
@@ -66,9 +69,14 @@ class ImageWidget extends StatelessWidget {
     );
   }
 
-  Widget _resolveImageSource({int? cacheWidth, int? cacheHeight}) {
+  Widget _resolveImageSource(
+    WidgetRef ref, {
+    int? cacheWidth,
+    int? cacheHeight,
+  }) {
     if (imageUrl.isNetworkImage) {
       return _buildNetworkImage(
+        ref,
         imageUrl!,
         cacheWidth: cacheWidth,
         cacheHeight: cacheHeight,
@@ -143,12 +151,14 @@ class ImageWidget extends StatelessWidget {
   }
 
   Widget _buildNetworkImage(
+    WidgetRef ref,
     String imageUrl, {
     int? cacheWidth,
     int? cacheHeight,
   }) {
     return CachedNetworkImage(
       imageUrl: imageUrl,
+      httpHeaders: ref.watch(authImageHeadersProvider),
       width: width,
       height: height,
       memCacheWidth: cacheWidth,

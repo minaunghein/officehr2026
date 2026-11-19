@@ -40,7 +40,10 @@ class _QrScannerScreenState extends ConsumerState<QrScannerScreen> {
     if (_handling) return;
     final raw = capture.barcodes
         .map((barcode) => barcode.rawValue)
-        .firstWhere((value) => value != null && value.trim().isNotEmpty, orElse: () => null);
+        .firstWhere(
+          (value) => value != null && value.trim().isNotEmpty,
+          orElse: () => null,
+        );
     if (raw == null) return;
 
     final userId = _extractUserId(raw);
@@ -284,7 +287,8 @@ class _ScannerOverlayState extends State<_ScannerOverlay>
           return AnimatedBuilder(
             animation: _animation,
             builder: (context, _) {
-              final lineY = rect.top + 12 + (rect.height - 24) * _animation.value;
+              final lineY =
+                  rect.top + 12 + (rect.height - 24) * _animation.value;
               return Stack(
                 children: [
                   Positioned.fill(
@@ -381,8 +385,7 @@ class _ScannerError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final denied =
-        error.errorCode == MobileScannerErrorCode.permissionDenied;
+    final denied = error.errorCode == MobileScannerErrorCode.permissionDenied;
     return ColoredBox(
       color: Colors.black,
       child: Center(
@@ -437,4 +440,5 @@ String? _extractUserId(String raw) {
   return _isValidId(value) ? value : null;
 }
 
-bool _isValidId(String value) => RegExp(r'^[A-Za-z0-9_-]{6,64}$').hasMatch(value);
+bool _isValidId(String value) =>
+    RegExp(r'^[A-Za-z0-9_-]{6,64}$').hasMatch(value);

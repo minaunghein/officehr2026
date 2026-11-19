@@ -43,8 +43,8 @@ class AttendanceRepositoryImpl implements AttendanceRepository {
   }
 
   @override
-  Future<TodayAttendance> getTodayAttendance() async {
-    final response = await datasource.getTodayAttendance();
+  Future<TodayAttendance> getTodayAttendance({DateTime? date}) async {
+    final response = await datasource.getTodayAttendance(date: date);
     return response.toEntity();
   }
 

@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:office_hr/features/leave/data/models/leave_json.dart';
+import 'package:office_hr/features/leave/data/models/leave_request_user_model.dart';
 import 'package:office_hr/features/leave/data/models/leave_type_model.dart';
 import 'package:office_hr/features/leave/domain/entities/leave_request.dart';
 
@@ -13,6 +14,7 @@ abstract class LeaveRequestModel with _$LeaveRequestModel {
   const factory LeaveRequestModel({
     @JsonKey(readValue: readMongoId) @Default('') String id,
     @JsonKey(name: 'employee_id') @Default('') String employeeId,
+    @JsonKey(name: 'user_id') @Default('') String userId,
     @JsonKey(name: 'leave_type_id') @Default('') String leaveTypeId,
     @JsonKey(name: 'company_id') @Default('') String companyId,
     @JsonKey(name: 'start_date') String? startDate,
@@ -21,12 +23,17 @@ abstract class LeaveRequestModel with _$LeaveRequestModel {
     @JsonKey(name: 'half_day_period') @Default('AM') String halfDayPeriod,
     @JsonKey(name: 'total_days') @Default(0) double totalDays,
     @Default('') String reason,
-    @JsonKey(name: 'attachment_url') @Default('') String attachmentUrl,
+    @JsonKey(name: 'attachment_url', readValue: _readAttachment)
+    @Default('')
+    String attachmentUrl,
     @Default('PENDING') String status,
     @JsonKey(name: 'approved_by') String? approvedBy,
+    @JsonKey(name: 'approved_at') String? approvedAt,
+    @JsonKey(name: 'rejection_reason') String? rejectionReason,
     String? createdAt,
     String? updatedAt,
     @JsonKey(name: 'leave_type') LeaveTypeModel? leaveType,
+    @JsonKey(name: 'user') LeaveRequestUserModel? user,
   }) = _LeaveRequestModel;
 
   factory LeaveRequestModel.fromJson(Map<String, dynamic> json) =>
@@ -35,6 +42,9 @@ abstract class LeaveRequestModel with _$LeaveRequestModel {
   LeaveRequest toEntity() => LeaveRequest(
     id: id,
     employeeId: employeeId,
+    requesterId: userId.isNotEmpty ? userId : (user?.id ?? ''),
+    requesterName: user?.username ?? '',
+    requesterEmail: user?.email ?? '',
     leaveTypeId: leaveTypeId,
     companyId: companyId,
     startDate: startDate,
@@ -46,8 +56,15 @@ abstract class LeaveRequestModel with _$LeaveRequestModel {
     attachmentUrl: attachmentUrl,
     status: LeaveStatus.fromValue(status),
     approvedBy: approvedBy,
+    approvedAt: approvedAt,
+    rejectionReason: rejectionReason,
     createdAt: createdAt,
     updatedAt: updatedAt,
     leaveType: leaveType?.toEntity(),
   );
 }
+
+/// The attachment may arrive as a full URL or a bare file id under a few
+/// different keys depending on the endpoint.
+Object? _readAttachment(Map<dynamic, dynamic> json, String key) =>
+    json['attachment_url'] ?? json['attachment'] ?? json['attachment_id'];

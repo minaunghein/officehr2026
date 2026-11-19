@@ -362,3 +362,115 @@ abstract class _$AttendanceAmendments
     return element.handleCreate(ref, build);
   }
 }
+
+/// Pending amendment count awaiting a decision, excluding the current user's
+/// own requests. Used for the team screen badge.
+
+@ProviderFor(pendingAmendmentsBadgeCount)
+final pendingAmendmentsBadgeCountProvider =
+    PendingAmendmentsBadgeCountProvider._();
+
+/// Pending amendment count awaiting a decision, excluding the current user's
+/// own requests. Used for the team screen badge.
+
+final class PendingAmendmentsBadgeCountProvider
+    extends $FunctionalProvider<AsyncValue<int>, int, FutureOr<int>>
+    with $FutureModifier<int>, $FutureProvider<int> {
+  /// Pending amendment count awaiting a decision, excluding the current user's
+  /// own requests. Used for the team screen badge.
+  PendingAmendmentsBadgeCountProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pendingAmendmentsBadgeCountProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$pendingAmendmentsBadgeCountHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<int> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<int> create(Ref ref) {
+    return pendingAmendmentsBadgeCount(ref);
+  }
+}
+
+String _$pendingAmendmentsBadgeCountHash() =>
+    r'ada6b39cda150fd76f1200f773e4a36543526182';
+
+/// Reviewer-facing amendment list. The current user's own requests are hidden
+/// (they can't approve/reject themselves) and pending items sort first so
+/// they surface at the top of the list.
+
+@ProviderFor(AmendmentApprovals)
+final amendmentApprovalsProvider = AmendmentApprovalsProvider._();
+
+/// Reviewer-facing amendment list. The current user's own requests are hidden
+/// (they can't approve/reject themselves) and pending items sort first so
+/// they surface at the top of the list.
+final class AmendmentApprovalsProvider
+    extends
+        $AsyncNotifierProvider<AmendmentApprovals, List<AttendanceAmendment>> {
+  /// Reviewer-facing amendment list. The current user's own requests are hidden
+  /// (they can't approve/reject themselves) and pending items sort first so
+  /// they surface at the top of the list.
+  AmendmentApprovalsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'amendmentApprovalsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$amendmentApprovalsHash();
+
+  @$internal
+  @override
+  AmendmentApprovals create() => AmendmentApprovals();
+}
+
+String _$amendmentApprovalsHash() =>
+    r'b7c21ea4a27925379781b649d6be721cb358269f';
+
+/// Reviewer-facing amendment list. The current user's own requests are hidden
+/// (they can't approve/reject themselves) and pending items sort first so
+/// they surface at the top of the list.
+
+abstract class _$AmendmentApprovals
+    extends $AsyncNotifier<List<AttendanceAmendment>> {
+  FutureOr<List<AttendanceAmendment>> build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref =
+        this.ref
+            as $Ref<
+              AsyncValue<List<AttendanceAmendment>>,
+              List<AttendanceAmendment>
+            >;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                AsyncValue<List<AttendanceAmendment>>,
+                List<AttendanceAmendment>
+              >,
+              AsyncValue<List<AttendanceAmendment>>,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}

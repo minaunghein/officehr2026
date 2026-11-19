@@ -13,6 +13,14 @@ abstract class LeaveRemoteDataSource {
 
   Future<List<LeaveRequestModel>> getLeaveRequests();
 
+  Future<List<LeaveRequestModel>> getAllLeaveRequests();
+
+  Future<LeaveRequestModel> updateLeaveRequestStatus(
+    String id, {
+    required LeaveDecision decision,
+    String? reason,
+  });
+
   Future<List<LeaveTypeModel>> getLeaveTypes();
 
   Future<LeaveRequestModel> createLeaveRequest({
@@ -58,6 +66,32 @@ class LeaveRemoteDataSourceImpl implements LeaveRemoteDataSource {
           .map((e) => LeaveRequestModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
+  }
+
+  @override
+  Future<List<LeaveRequestModel>> getAllLeaveRequests() async {
+    return _apiService.get<List<LeaveRequestModel>>(
+      '/api/v1/leave-requests/all',
+      parser: (data) => readListEnvelope(data)
+          .map((e) => LeaveRequestModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+
+  @override
+  Future<LeaveRequestModel> updateLeaveRequestStatus(
+    String id, {
+    required LeaveDecision decision,
+    String? reason,
+  }) async {
+    final trimmedReason = reason?.trim();
+    final response = await _apiService.patch<Map<String, dynamic>>(
+      '/api/v1/leave-requests/$id/status',
+      data: {'action': decision.value, 'reason': trimmedReason ?? ''},
+      parser: (data) => readEnvelope(data),
+    );
+
+    return LeaveRequestModel.fromJson(response);
   }
 
   @override

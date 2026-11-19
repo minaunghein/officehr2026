@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
+import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/core/theme/app_theme.dart';
 import 'package:office_hr/core/theme/theme_notifier.dart';
@@ -51,6 +52,7 @@ class DashboardDrawer extends ConsumerWidget {
                             height: 80,
                             child: CachedNetworkImage(
                               imageUrl: userDetails.value!.profileUrl,
+                              httpHeaders: ref.watch(authImageHeadersProvider),
                               fit: BoxFit.cover,
                               placeholder: (context, url) => ContainerShimmer(),
                               errorWidget: (context, url, error) => Container(
@@ -199,6 +201,14 @@ class DashboardDrawer extends ConsumerWidget {
                 title: 'Leave',
                 subtitle: 'Manage your leave balance',
                 onTap: () => context.push(AppRoutes.leave),
+              ),
+              const _Divider(),
+              _NavTile(
+                icon: Icons.timer_outlined,
+                iconBg: const Color(0xFFFFFBEB),
+                title: 'Overtime',
+                subtitle: 'Track your overtime requests',
+                onTap: () => context.push(AppRoutes.overtime),
               ),
               const _Divider(),
               _NavTile(

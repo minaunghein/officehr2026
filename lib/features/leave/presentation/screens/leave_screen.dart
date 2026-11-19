@@ -24,7 +24,7 @@ class LeaveScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Leave', style: theme.textTheme.headlineMedium),
+        title: Text('Leave'),
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48),
@@ -34,9 +34,16 @@ class LeaveScreen extends HookConsumerWidget {
               Tab(text: 'Balances'),
               Tab(text: 'My Requests'),
             ],
+
             labelColor: theme.colorScheme.primary,
             unselectedLabelColor: theme.colorScheme.onSurface.withValues(
               alpha: 0.5,
+            ),
+            labelStyle: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+            unselectedLabelStyle: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w700,
             ),
             enableFeedback: true,
             padding: const EdgeInsets.all(8),

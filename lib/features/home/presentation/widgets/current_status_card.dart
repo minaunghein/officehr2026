@@ -25,7 +25,7 @@ class CurrentStatusCard extends ConsumerWidget {
       branch.geofence.latitude,
       branch.geofence.longitude,
     );
-    return distance <= 200;
+    return distance <= branch.geofence.radiusKm * 1000;
   }
 
   String _getDistance(Position? currentLocation, Branch? branch) {

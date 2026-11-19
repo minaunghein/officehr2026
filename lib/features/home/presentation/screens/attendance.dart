@@ -64,8 +64,9 @@ class AttendanceScreen extends HookConsumerWidget {
     for (final record in monthAsync.value ?? const <TodayAttendance>[]) {
       final date = record.date;
       if (date == null) continue;
-      markers[formatApiDate(date)] = resolvedAttendanceStatusColor(
-        record,
+      if (!showCalendarDotForStatus(record.status)) continue;
+      markers[formatApiDate(date)] = attendanceStatusColor(
+        record.status,
         theme,
       );
     }

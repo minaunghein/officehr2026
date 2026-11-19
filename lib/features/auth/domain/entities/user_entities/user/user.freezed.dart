@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$User {
 
- String get id; String get username; String get email; String? get profileImgId; Employee? get employee;
+ String get id; String get username; String get email; String? get profileImgId; bool get optionalLocation; Employee? get employee;
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $UserCopyWith<User> get copyWith => _$UserCopyWithImpl<User>(this as User, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.email, email) || other.email == email)&&(identical(other.profileImgId, profileImgId) || other.profileImgId == profileImgId)&&(identical(other.employee, employee) || other.employee == employee));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.email, email) || other.email == email)&&(identical(other.profileImgId, profileImgId) || other.profileImgId == profileImgId)&&(identical(other.optionalLocation, optionalLocation) || other.optionalLocation == optionalLocation)&&(identical(other.employee, employee) || other.employee == employee));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,username,email,profileImgId,employee);
+int get hashCode => Object.hash(runtimeType,id,username,email,profileImgId,optionalLocation,employee);
 
 @override
 String toString() {
-  return 'User(id: $id, username: $username, email: $email, profileImgId: $profileImgId, employee: $employee)';
+  return 'User(id: $id, username: $username, email: $email, profileImgId: $profileImgId, optionalLocation: $optionalLocation, employee: $employee)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $UserCopyWith<$Res>  {
   factory $UserCopyWith(User value, $Res Function(User) _then) = _$UserCopyWithImpl;
 @useResult
 $Res call({
- String id, String username, String email, String? profileImgId, Employee? employee
+ String id, String username, String email, String? profileImgId, bool optionalLocation, Employee? employee
 });
 
 
@@ -62,13 +62,14 @@ class _$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? username = null,Object? email = null,Object? profileImgId = freezed,Object? employee = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? username = null,Object? email = null,Object? profileImgId = freezed,Object? optionalLocation = null,Object? employee = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,profileImgId: freezed == profileImgId ? _self.profileImgId : profileImgId // ignore: cast_nullable_to_non_nullable
-as String?,employee: freezed == employee ? _self.employee : employee // ignore: cast_nullable_to_non_nullable
+as String?,optionalLocation: null == optionalLocation ? _self.optionalLocation : optionalLocation // ignore: cast_nullable_to_non_nullable
+as bool,employee: freezed == employee ? _self.employee : employee // ignore: cast_nullable_to_non_nullable
 as Employee?,
   ));
 }
@@ -166,10 +167,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String username,  String email,  String? profileImgId,  Employee? employee)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String username,  String email,  String? profileImgId,  bool optionalLocation,  Employee? employee)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.id,_that.username,_that.email,_that.profileImgId,_that.employee);case _:
+return $default(_that.id,_that.username,_that.email,_that.profileImgId,_that.optionalLocation,_that.employee);case _:
   return orElse();
 
 }
@@ -187,10 +188,10 @@ return $default(_that.id,_that.username,_that.email,_that.profileImgId,_that.emp
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String username,  String email,  String? profileImgId,  Employee? employee)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String username,  String email,  String? profileImgId,  bool optionalLocation,  Employee? employee)  $default,) {final _that = this;
 switch (_that) {
 case _User():
-return $default(_that.id,_that.username,_that.email,_that.profileImgId,_that.employee);case _:
+return $default(_that.id,_that.username,_that.email,_that.profileImgId,_that.optionalLocation,_that.employee);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -207,10 +208,10 @@ return $default(_that.id,_that.username,_that.email,_that.profileImgId,_that.emp
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String username,  String email,  String? profileImgId,  Employee? employee)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String username,  String email,  String? profileImgId,  bool optionalLocation,  Employee? employee)?  $default,) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.id,_that.username,_that.email,_that.profileImgId,_that.employee);case _:
+return $default(_that.id,_that.username,_that.email,_that.profileImgId,_that.optionalLocation,_that.employee);case _:
   return null;
 
 }
@@ -222,13 +223,14 @@ return $default(_that.id,_that.username,_that.email,_that.profileImgId,_that.emp
 
 
 class _User implements User {
-  const _User({required this.id, required this.username, required this.email, this.profileImgId, this.employee});
+  const _User({required this.id, required this.username, required this.email, this.profileImgId, this.optionalLocation = false, this.employee});
   
 
 @override final  String id;
 @override final  String username;
 @override final  String email;
 @override final  String? profileImgId;
+@override@JsonKey() final  bool optionalLocation;
 @override final  Employee? employee;
 
 /// Create a copy of User
@@ -241,16 +243,16 @@ _$UserCopyWith<_User> get copyWith => __$UserCopyWithImpl<_User>(this, _$identit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.email, email) || other.email == email)&&(identical(other.profileImgId, profileImgId) || other.profileImgId == profileImgId)&&(identical(other.employee, employee) || other.employee == employee));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.email, email) || other.email == email)&&(identical(other.profileImgId, profileImgId) || other.profileImgId == profileImgId)&&(identical(other.optionalLocation, optionalLocation) || other.optionalLocation == optionalLocation)&&(identical(other.employee, employee) || other.employee == employee));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,username,email,profileImgId,employee);
+int get hashCode => Object.hash(runtimeType,id,username,email,profileImgId,optionalLocation,employee);
 
 @override
 String toString() {
-  return 'User(id: $id, username: $username, email: $email, profileImgId: $profileImgId, employee: $employee)';
+  return 'User(id: $id, username: $username, email: $email, profileImgId: $profileImgId, optionalLocation: $optionalLocation, employee: $employee)';
 }
 
 
@@ -261,7 +263,7 @@ abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$UserCopyWith(_User value, $Res Function(_User) _then) = __$UserCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String username, String email, String? profileImgId, Employee? employee
+ String id, String username, String email, String? profileImgId, bool optionalLocation, Employee? employee
 });
 
 
@@ -278,13 +280,14 @@ class __$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? username = null,Object? email = null,Object? profileImgId = freezed,Object? employee = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? username = null,Object? email = null,Object? profileImgId = freezed,Object? optionalLocation = null,Object? employee = freezed,}) {
   return _then(_User(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,profileImgId: freezed == profileImgId ? _self.profileImgId : profileImgId // ignore: cast_nullable_to_non_nullable
-as String?,employee: freezed == employee ? _self.employee : employee // ignore: cast_nullable_to_non_nullable
+as String?,optionalLocation: null == optionalLocation ? _self.optionalLocation : optionalLocation // ignore: cast_nullable_to_non_nullable
+as bool,employee: freezed == employee ? _self.employee : employee // ignore: cast_nullable_to_non_nullable
 as Employee?,
   ));
 }

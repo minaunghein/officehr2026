@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/features/auth/domain/entities/auth_session.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/shared/date_formatter.dart';
@@ -443,7 +444,7 @@ class _FooterField extends StatelessWidget {
   }
 }
 
-class _Avatar extends StatelessWidget {
+class _Avatar extends ConsumerWidget {
   const _Avatar({
     required this.profileUrl,
     required this.initials,
@@ -455,7 +456,7 @@ class _Avatar extends StatelessWidget {
   final String status;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isActive =
         status.trim().isEmpty || status.toLowerCase() != 'inactive';
 
@@ -487,6 +488,7 @@ class _Avatar extends StatelessWidget {
               child: profileUrl.isNotEmpty
                   ? CachedNetworkImage(
                       imageUrl: profileUrl,
+                      httpHeaders: ref.watch(authImageHeadersProvider),
                       fit: BoxFit.cover,
                       placeholder: (context, url) => _initialsLabel(),
                       errorWidget: (context, url, error) => _initialsLabel(),

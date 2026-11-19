@@ -66,7 +66,7 @@ class TeamAttendanceSummary extends StatelessWidget {
                   departmentTitle.isEmpty ? 'Department' : departmentTitle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.titleMedium?.copyWith(
+                  style: theme.textTheme.titleLarge?.copyWith(
                     color: theme.colorScheme.onPrimary,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.2,
@@ -75,14 +75,14 @@ class TeamAttendanceSummary extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 2),
-          Text(
-            'Today at a glance',
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onPrimary.withValues(alpha: 0.8),
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          // const SizedBox(height: 2),
+          // Text(
+          //   'Today at a glance',
+          //   style: theme.textTheme.bodySmall?.copyWith(
+          //     color: theme.colorScheme.onPrimary.withValues(alpha: 0.8),
+          //     fontWeight: FontWeight.w600,
+          //   ),
+          // ),
           const SizedBox(height: 16),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -100,7 +100,7 @@ class TeamAttendanceSummary extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
                   records.length == 1 ? 'team member' : 'team members',
-                  style: theme.textTheme.bodySmall?.copyWith(
+                  style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onPrimary.withValues(alpha: 0.85),
                     fontWeight: FontWeight.w600,
                   ),

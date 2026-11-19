@@ -23,6 +23,9 @@ _AttendanceAmendmentModel _$AttendanceAmendmentModelFromJson(
   createdAt: parseLocalDateTime(json['createdAt'] as String?),
   updatedAt: parseLocalDateTime(json['updatedAt'] as String?),
   approvedAt: parseLocalDateTime(json['approved_at'] as String?),
+  user: json['user'] == null
+      ? null
+      : AmendmentUserModel.fromJson(json['user'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$AttendanceAmendmentModelToJson(
@@ -42,4 +45,19 @@ Map<String, dynamic> _$AttendanceAmendmentModelToJson(
   'createdAt': instance.createdAt?.toIso8601String(),
   'updatedAt': instance.updatedAt?.toIso8601String(),
   'approved_at': instance.approvedAt?.toIso8601String(),
+  'user': instance.user,
 };
+
+_AmendmentUserModel _$AmendmentUserModelFromJson(Map<String, dynamic> json) =>
+    _AmendmentUserModel(
+      id: _readId(json, 'id') as String? ?? '',
+      username: json['username'] as String? ?? '',
+      email: json['email'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$AmendmentUserModelToJson(_AmendmentUserModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'username': instance.username,
+      'email': instance.email,
+    };

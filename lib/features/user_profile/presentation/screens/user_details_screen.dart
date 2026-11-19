@@ -234,7 +234,10 @@ class _EmploymentSection extends StatelessWidget {
       children: [
         UserProfileFieldGrid(
           children: [
-            UserProfileInfoRow(label: 'Employee Code', value: info.employeeCode),
+            UserProfileInfoRow(
+              label: 'Employee Code',
+              value: info.employeeCode,
+            ),
             UserProfileInfoRow(
               label: 'Employment Status',
               value: info.employmentStatus,
@@ -468,10 +471,7 @@ class _DetailsSkeleton extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        ContainerShimmer(
-          height: 120,
-          borderRadius: BorderRadius.circular(16),
-        ),
+        ContainerShimmer(height: 120, borderRadius: BorderRadius.circular(16)),
         const SizedBox(height: 14),
         for (var i = 0; i < 3; i++) ...[
           ContainerShimmer(
@@ -578,15 +578,15 @@ String _displayName(UserDetails details) {
 }
 
 String _fullName(BasicInfo info) {
-  final name = [info.firstName, info.lastName]
-      .map((part) => part.trim())
-      .where((part) => part.isNotEmpty)
-      .join(' ');
+  final name = [
+    info.firstName,
+    info.lastName,
+  ].map((part) => part.trim()).where((part) => part.isNotEmpty).join(' ');
   if (name.isNotEmpty) return name;
-  final mm = [info.firstNameMm, info.lastNameMm]
-      .map((part) => part.trim())
-      .where((part) => part.isNotEmpty)
-      .join(' ');
+  final mm = [
+    info.firstNameMm,
+    info.lastNameMm,
+  ].map((part) => part.trim()).where((part) => part.isNotEmpty).join(' ');
   return mm.isEmpty ? 'Employee' : mm;
 }
 

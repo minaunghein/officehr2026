@@ -305,3 +305,61 @@ final class ApiServiceProvider
 }
 
 String _$apiServiceHash() => r'3a7eaa7b5c5ca6934d45550d0605c233b410bc45';
+
+/// Headers for authenticated image loading (e.g. `/api/v1/files/{id}`) used
+/// by `CachedNetworkImage`, which does not go through the Dio client and
+/// therefore misses its auth interceptor.
+
+@ProviderFor(authImageHeaders)
+final authImageHeadersProvider = AuthImageHeadersProvider._();
+
+/// Headers for authenticated image loading (e.g. `/api/v1/files/{id}`) used
+/// by `CachedNetworkImage`, which does not go through the Dio client and
+/// therefore misses its auth interceptor.
+
+final class AuthImageHeadersProvider
+    extends
+        $FunctionalProvider<
+          Map<String, String>,
+          Map<String, String>,
+          Map<String, String>
+        >
+    with $Provider<Map<String, String>> {
+  /// Headers for authenticated image loading (e.g. `/api/v1/files/{id}`) used
+  /// by `CachedNetworkImage`, which does not go through the Dio client and
+  /// therefore misses its auth interceptor.
+  AuthImageHeadersProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'authImageHeadersProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$authImageHeadersHash();
+
+  @$internal
+  @override
+  $ProviderElement<Map<String, String>> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  Map<String, String> create(Ref ref) {
+    return authImageHeaders(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Map<String, String> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Map<String, String>>(value),
+    );
+  }
+}
+
+String _$authImageHeadersHash() => r'9ce6724d0c309ab55d568f423fa52e0391ac4208';

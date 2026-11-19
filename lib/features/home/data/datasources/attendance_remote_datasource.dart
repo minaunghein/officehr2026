@@ -18,7 +18,7 @@ abstract class AttendanceRemoteDatasource {
   Future<ClockAttendanceResponseModel> breakEnd([
     ClockAttendanceParams? params,
   ]);
-  Future<TodayAttendanceModel> getTodayAttendance();
+  Future<TodayAttendanceModel> getTodayAttendance({DateTime? date});
 
   /// Fetches attendance for a single [date] or a [start]/[end] range.
   /// All dates are sent as `YYYY-MM-DD` query parameters.
@@ -96,9 +96,10 @@ class AttendanceRemoteDatasourceImpl implements AttendanceRemoteDatasource {
   }
 
   @override
-  Future<TodayAttendanceModel> getTodayAttendance() async {
+  Future<TodayAttendanceModel> getTodayAttendance({DateTime? date}) async {
     final response = await _apiService.get<Map<String, dynamic>>(
       '/api/v1/attendance/my-attendance',
+      queryParameters: date == null ? null : {'date': formatApiDate(date)},
       parser: (data) => data as Map<String, dynamic>,
     );
 

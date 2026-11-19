@@ -1,5 +1,6 @@
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/network/network_providers.dart';
+import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/features/home/data/datasources/attendance_remote_datasource.dart';
 import 'package:office_hr/features/home/data/repositories/attendance_repository_impl.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_stats.dart';
@@ -90,6 +91,7 @@ Future<List<TodayAttendance>> attendanceHistory(
 
 @Riverpod(keepAlive: true)
 Future<AttendanceStats> monthlyAttendanceStats(Ref ref) {
+  ref.watch(currentUserIdProvider);
   final now = DateTime.now();
   final start = DateTime(now.year, now.month);
   final end = DateTime(now.year, now.month, now.day);
@@ -122,6 +124,7 @@ class AttendanceNotifier extends _$AttendanceNotifier {
           clearError: true,
         ),
       );
+      ref.invalidate(attendanceHistoryProvider);
     } catch (error, stackTrace) {
       state = AsyncData(
         previousState.copyWith(
@@ -157,9 +160,7 @@ class AttendanceNotifier extends _$AttendanceNotifier {
         isClockInLoading: false,
         error: getUserFriendlyError(error),
       ),
-      action: () => ref.read(
-        clockInUsecaseProvider,
-      )(), // TODO: Add params in the clockInUsecaseProvider read after backend ready
+      action: () => ref.read(clockInUsecaseProvider)(params),
     );
   }
 
@@ -178,9 +179,7 @@ class AttendanceNotifier extends _$AttendanceNotifier {
         isClockOutLoading: false,
         error: getUserFriendlyError(error),
       ),
-      action: () => ref.read(
-        clockOutUsecaseProvider,
-      )(), // TODO: Add params in the clockOutUsecaseProvider read after backend ready
+      action: () => ref.read(clockOutUsecaseProvider)(params),
     );
   }
 
@@ -223,7 +222,10 @@ class AttendanceNotifier extends _$AttendanceNotifier {
   }
 
   Future<TodayAttendance> _fetchTodayAttendance() {
-    return ref.read(getTodayAttendanceUsecaseProvider)();
+    final now = DateTime.now();
+    return ref.read(getTodayAttendanceUsecaseProvider)(
+      date: DateTime(now.year, now.month, now.day),
+    );
   }
 
   Future<ClockAttendanceResponse> _clockAction({
@@ -243,6 +245,7 @@ class AttendanceNotifier extends _$AttendanceNotifier {
       final response = await action();
       final todayAttendance = await _fetchTodayAttendance();
       state = AsyncData(complete(previousState, todayAttendance));
+      ref.invalidate(attendanceHistoryProvider);
       return response;
     } catch (error) {
       state = AsyncData(fail(previousState, error));

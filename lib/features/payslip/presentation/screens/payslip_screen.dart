@@ -1,5 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:office_hr/core/network/api_error_message.dart';
+import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/core/security/widgets/biometric_gate.dart';
+import 'package:office_hr/core/widgets/container_shimmer.dart';
+import 'package:office_hr/core/widgets/empty_state_widget.dart';
+import 'package:office_hr/core/widgets/error_state_widget.dart';
+import 'package:office_hr/features/payslip/domain/entities/payslip.dart';
+import 'package:office_hr/features/payslip/domain/params/payslip_query.dart';
+import 'package:office_hr/features/payslip/presentation/providers/payslip_providers.dart';
+import 'package:office_hr/features/payslip/presentation/utils/payslip_formatters.dart';
+import 'package:office_hr/features/payslip/presentation/widgets/payslip_card.dart';
+import 'package:office_hr/features/payslip/presentation/widgets/payslip_period_filter.dart';
 
 class PayslipScreen extends StatelessWidget {
   const PayslipScreen({super.key});
@@ -7,7 +21,7 @@ class PayslipScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Payslip'), centerTitle: true),
+      appBar: AppBar(title: const Text('Payslips'), centerTitle: true),
       body: const BiometricGate(
         reason: 'Authenticate to view your payslips',
         title: 'Payslips are protected',
@@ -19,41 +33,204 @@ class PayslipScreen extends StatelessWidget {
   }
 }
 
-class _PayslipContent extends StatelessWidget {
+class _PayslipContent extends HookConsumerWidget {
   const _PayslipContent();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final now = DateTime.now();
+    final range = useState<DateTimeRange?>(null);
+    final firstDate = useMemoized(() => DateTime(now.year - 2));
+    final lastDate = useMemoized(
+      () => DateTime(now.year + 1, now.month, now.day),
+    );
+
+    final query = PayslipQuery(
+      start: range.value?.start,
+      end: range.value?.end,
+    );
+    final payslipsAsync = ref.watch(payslipsProvider(query));
+
+    Future<void> refresh() async {
+      ref.invalidate(payslipsProvider(query));
+      await ref.read(payslipsProvider(query).future);
+    }
+
+    Future<void> pickRange() async {
+      final picked = await showDateRangePicker(
+        context: context,
+        firstDate: firstDate,
+        lastDate: lastDate,
+        initialDateRange: range.value,
+        helpText: 'Filter payslips',
+      );
+      if (picked != null) range.value = picked;
+    }
+
+    return RefreshIndicator(
+      onRefresh: refresh,
+      child: CustomScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                PayslipPeriodFilter(
+                  range: range.value,
+                  onTap: pickRange,
+                  onClear: () => range.value = null,
+                ),
+                const SizedBox(height: 14),
+                payslipsAsync.maybeWhen(
+                  data: (payslips) => payslips.isEmpty
+                      ? const SizedBox.shrink()
+                      : _TotalBanner(payslips: payslips),
+                  loading: () => const Padding(
+                    padding: EdgeInsets.only(bottom: 2),
+                    child: Column(
+                      children: [
+                        ContainerShimmer(height: 56),
+                        SizedBox(height: 14),
+                      ],
+                    ),
+                  ),
+                  orElse: () => const SizedBox.shrink(),
+                ),
+              ]),
+            ),
+          ),
+          ..._buildListBody(context, ref, payslipsAsync, refresh, query),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _buildListBody(
+    BuildContext context,
+    WidgetRef ref,
+    AsyncValue<List<Payslip>> async,
+    Future<void> Function() refresh,
+    PayslipQuery query,
+  ) {
+    return async.when(
+      data: (payslips) {
+        if (payslips.isEmpty) {
+          return [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: EmptyStateWidget(
+                icon: Icons.receipt_long_rounded,
+                title: 'No payslips yet',
+                message:
+                    'Payslips appear here once payroll is processed for '
+                    'your salary period.',
+              ),
+            ),
+          ];
+        }
+        return [
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(16, 6, 16, 32),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate((context, index) {
+                final payslip = payslips[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: PayslipCard(
+                    payslip: payslip,
+                    onTap: () =>
+                        context.push(AppRoutes.payslipDetail, extra: payslip),
+                  ),
+                );
+              }, childCount: payslips.length),
+            ),
+          ),
+        ];
+      },
+      loading: () => [
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(16, 6, 16, 32),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => const Padding(
+                padding: EdgeInsets.only(bottom: 12),
+                child: ContainerShimmer(height: 92),
+              ),
+              childCount: 5,
+            ),
+          ),
+        ),
+      ],
+      error: (error, _) => [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: ErrorStateWidget(
+            message: getUserFriendlyError(error),
+            onRetry: () => ref.invalidate(payslipsProvider(query)),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _TotalBanner extends StatelessWidget {
+  const _TotalBanner({required this.payslips});
+
+  final List<Payslip> payslips;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.receipt_long_rounded,
-              size: 56,
-              color: theme.colorScheme.primary,
+    final totalNet = payslips.fold<double>(0, (sum, p) => sum + p.netSalary);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Total net pay',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  formatMoney(totalNet),
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: const Color(0xFF16A34A),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            Text(
-              'Payslips will appear here',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.titleMedium?.copyWith(
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              '${payslips.length} ${payslips.length == 1 ? 'month' : 'months'}',
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: theme.colorScheme.primary,
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 8),
-            Text(
-              'This content is only visible after a successful biometric check.',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

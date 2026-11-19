@@ -14,6 +14,7 @@ abstract class UserModel with _$UserModel {
     @Default('') String username,
     @Default('') String email,
     @JsonKey(name: 'profile_img_id') @Default('') String profileImgId,
+    @JsonKey(name: 'optional_location') @Default(false) bool optionalLocation,
     EmployeeModel? employee,
   }) = _UserModel;
 
@@ -25,6 +26,7 @@ abstract class UserModel with _$UserModel {
     username: username,
     email: email,
     profileImgId: profileImgId,
+    optionalLocation: optionalLocation,
     employee: employee?.toEntity(),
   );
 }

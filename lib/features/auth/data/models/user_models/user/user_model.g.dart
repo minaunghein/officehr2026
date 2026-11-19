@@ -11,6 +11,7 @@ _UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel(
   username: json['username'] as String? ?? '',
   email: json['email'] as String? ?? '',
   profileImgId: json['profile_img_id'] as String? ?? '',
+  optionalLocation: json['optional_location'] as bool? ?? false,
   employee: json['employee'] == null
       ? null
       : EmployeeModel.fromJson(json['employee'] as Map<String, dynamic>),
@@ -22,5 +23,6 @@ Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
       'username': instance.username,
       'email': instance.email,
       'profile_img_id': instance.profileImgId,
+      'optional_location': instance.optionalLocation,
       'employee': instance.employee,
     };
