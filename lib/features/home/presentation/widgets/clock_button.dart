@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/utils/snackbar_utils.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/branch/branch.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_location.dart';
 import 'package:office_hr/features/home/domain/params/clock_attendance_params.dart';
@@ -17,14 +18,17 @@ import 'package:office_hr/features/home/presentation/widgets/out_of_range_clock_
 import 'package:easy_localization/easy_localization.dart';
 
 class ClockButton extends HookConsumerWidget {
-  const ClockButton({super.key});
+  const ClockButton({super.key, this.clockOut});
+
+  final bool? clockOut;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final attendanceAsync = ref.watch(attendanceProvider);
     final attendanceState = attendanceAsync.value;
     final currentUser = ref.watch(currentUserProvider);
-    final isClockedIn = attendanceState?.isClockedIn ?? false;
+    final access = ref.watch(sessionAccessProvider);
+    final isClockedIn = clockOut ?? attendanceState?.isClockedIn ?? false;
     final isUploadingPhoto = useState(false);
     final isLoading =
         attendanceAsync.isLoading ||
@@ -41,6 +45,7 @@ class ClockButton extends HookConsumerWidget {
         distanceToBranch != null &&
         branch != null &&
         distanceToBranch <= branch.geofence.radiusKm * 1000;
+    final directPunch = access.createPunch && (inRange || optionalLocation);
 
     return SizedBox(
       width: double.infinity,
@@ -53,7 +58,8 @@ class ClockButton extends HookConsumerWidget {
 
                 // Inside the geofence, or location is optional for this user:
                 // capture the mandatory punch photo, then clock directly.
-                if (inRange || optionalLocation) {
+                if (directPunch &&
+                    ref.read(sessionAccessProvider).createPunch) {
                   final photoPath = await captureClockPhoto(context);
                   if (photoPath == null || !context.mounted) return;
 
@@ -71,7 +77,7 @@ class ClockButton extends HookConsumerWidget {
                   isUploadingPhoto.value = false;
 
                   if (context.mounted) {
-                    await _clock(context, ref, location, imgId);
+                    await _clock(context, ref, location, imgId, isClockedIn);
                   }
                   return;
                 }
@@ -79,6 +85,12 @@ class ClockButton extends HookConsumerWidget {
                 // Location is mandatory and the user is outside the branch
                 // radius: a location fix is required before a request can be
                 // submitted for approval.
+                if (!ref.read(sessionAccessProvider).requestClock) {
+                  SnackbarUtils.showInfo(
+                    'You do not have permission to perform this action.'.tr(),
+                  );
+                  return;
+                }
                 if (location == null) {
                   SnackbarUtils.showInfo(
                     'Please wait for location to be available'.tr(),
@@ -142,9 +154,9 @@ class ClockButton extends HookConsumerWidget {
     WidgetRef ref,
     Position? location,
     String? imgId,
+    bool isClockedIn,
   ) async {
-    final attendanceState = ref.read(attendanceProvider).value;
-    final isClockedIn = attendanceState?.isClockedIn ?? false;
+    if (!ref.read(sessionAccessProvider).createPunch) return;
     final params = ClockAttendanceParams(
       location: location == null
           ? null

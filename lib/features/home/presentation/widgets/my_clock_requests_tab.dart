@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/core/utils/snackbar_utils.dart';
@@ -25,6 +26,7 @@ class MyClockRequestsTab extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final requestsAsync = ref.watch(myClockRequestsProvider);
+    final access = ref.watch(sessionAccessProvider);
     final selectedStatus = useState<ClockRequestStatus?>(null);
     final rangeStart = useState<DateTime?>(null);
     final rangeEnd = useState<DateTime?>(null);
@@ -104,7 +106,10 @@ class MyClockRequestsTab extends HookConsumerWidget {
                           canDecide: false,
                         ),
                       ),
-                      trailing: request.isPending
+                      trailing:
+                          request.isPending &&
+                              access.requestClock &&
+                              access.isOwnUser(request.userId)
                           ? _CancelButton(request: request)
                           : null,
                     );
@@ -134,6 +139,8 @@ class _CancelButton extends HookConsumerWidget {
         punchLabel: request.punchType.label.tr().toLowerCase(),
       );
       if (result == null || !context.mounted) return;
+      final access = ref.read(sessionAccessProvider);
+      if (!access.requestClock || !access.isOwnUser(request.userId)) return;
 
       isCancelling.value = true;
       try {

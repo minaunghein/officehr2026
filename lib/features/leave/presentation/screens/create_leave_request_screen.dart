@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
@@ -53,6 +54,7 @@ class _CreateLeaveRequestScreenState
   }
 
   LeaveBalance? _balanceFor(String leaveTypeId) {
+    if (!ref.read(sessionAccessProvider).viewLeave) return null;
     final balances = ref.read(leaveBalancesProvider).value;
     if (balances == null) return null;
     for (final balance in balances) {
@@ -168,6 +170,7 @@ class _CreateLeaveRequestScreenState
 
   Future<void> _submit() async {
     FocusScope.of(context).unfocus();
+    if (!ref.read(sessionAccessProvider).createLeave) return;
 
     final type = _selectedType;
     if (type == null) {
@@ -204,6 +207,7 @@ class _CreateLeaveRequestScreenState
         attachmentUrl = uploaded.url;
       }
 
+      if (!mounted || !ref.read(sessionAccessProvider).createLeave) return;
       await ref
           .read(createLeaveRequestProvider.notifier)
           .submit(
@@ -216,12 +220,9 @@ class _CreateLeaveRequestScreenState
             attachmentUrl: attachmentUrl,
           );
 
-      await Future.wait([
-        ref.read(leaveRequestsProvider.notifier).refresh(),
-        ref.read(leaveBalancesProvider.notifier).refresh(),
-      ]);
-
       if (!mounted) return;
+      ref.invalidate(leaveRequestsProvider);
+      ref.invalidate(leaveBalancesProvider);
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(

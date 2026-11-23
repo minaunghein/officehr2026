@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/dashboard/presentation/providers/dashboard_provider.dart';
 import 'package:office_hr/features/dashboard/presentation/widgets/dashboard_drawer.dart';
 import 'package:office_hr/features/home/presentation/providers/clock_request_provider.dart';
@@ -15,58 +16,67 @@ import 'package:office_hr/features/home/presentation/screens/team.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class Dashboard extends ConsumerWidget {
-  Dashboard({super.key});
-
-  final _pages = <Widget>[
-    const HomeScreen(),
-    const AttendanceScreen(),
-    const TeamScreen(),
-  ];
+  const Dashboard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(dashboardIndexProvider);
-    final safeIndex = currentIndex >= _pages.length ? 0 : currentIndex;
+    final access = ref.watch(sessionAccessProvider);
+    final destinations = [0, if (access.viewPunches) 1, if (access.team) 2];
+    final selected = destinations.contains(currentIndex) ? currentIndex : 0;
 
     return Scaffold(
-      appBar: _DashboardAppBar(ref: ref),
+      appBar: _DashboardAppBar(isTeamTab: selected == 2),
       drawer: const DashboardDrawer(),
-      body: IndexedStack(index: safeIndex, children: _pages),
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        type: BottomNavigationBarType.fixed,
-        selectedFontSize: 11,
-        unselectedFontSize: 11,
-        iconSize: 22,
-        currentIndex: safeIndex,
-        onTap: (i) => ref.read(dashboardIndexProvider.notifier).select(i),
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard_outlined),
-            activeIcon: Icon(Icons.dashboard_rounded),
-            label: 'Home'.tr(),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined),
-            activeIcon: Icon(Icons.calendar_month),
-            label: 'Attendance'.tr(),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.groups_2_outlined),
-            activeIcon: Icon(Icons.groups_2_rounded),
-            label: 'Team'.tr(),
-          ),
+      body: IndexedStack(
+        index: destinations.indexOf(selected),
+        children: [
+          const HomeScreen(),
+          if (access.viewPunches) const AttendanceScreen(),
+          if (access.team) const TeamScreen(),
         ],
       ),
+      bottomNavigationBar: destinations.length < 2
+          ? null
+          : BottomNavigationBar(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              type: BottomNavigationBarType.fixed,
+              selectedFontSize: 11,
+              unselectedFontSize: 11,
+              iconSize: 22,
+              currentIndex: destinations.indexOf(selected),
+              onTap: (i) => ref
+                  .read(dashboardIndexProvider.notifier)
+                  .select(destinations[i]),
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.dashboard_outlined),
+                  activeIcon: Icon(Icons.dashboard_rounded),
+                  label: 'Home'.tr(),
+                ),
+                if (access.viewPunches)
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.calendar_month_outlined),
+                    activeIcon: Icon(Icons.calendar_month),
+                    label: 'Attendance'.tr(),
+                  ),
+                if (access.team)
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.groups_2_outlined),
+                    activeIcon: Icon(Icons.groups_2_rounded),
+                    label: 'Team'.tr(),
+                  ),
+              ],
+            ),
     );
   }
 }
 
 class _DashboardAppBar extends HookConsumerWidget
     implements PreferredSizeWidget {
-  const _DashboardAppBar({required this.ref});
-  final WidgetRef ref;
+  const _DashboardAppBar({required this.isTeamTab});
+  final bool isTeamTab;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight + 8);
@@ -92,13 +102,10 @@ class _DashboardAppBar extends HookConsumerWidget
     final fullName = currentUser.value?.displayName;
     // buildFullName(bio?.basicInfo) ?? userDetails.value?.username;
 
-    final dashboardIndex = ref.watch(dashboardIndexProvider);
-    final roleName = currentUser.value?.role.name.trim().toLowerCase() ?? '';
-    final canScan = roleName.isNotEmpty && roleName != 'employee';
-    final isTeamTab = dashboardIndex == 2;
+    final access = ref.watch(sessionAccessProvider);
 
     // The bell badge only surfaces items awaiting action.
-    final totalBadgeCount = canScan
+    final totalBadgeCount = access.viewAnnouncements && access.reviewClock
         ? ref.watch(pendingClockRequestsBadgeCountProvider).value ?? 0
         : 0;
 
@@ -177,7 +184,7 @@ class _DashboardAppBar extends HookConsumerWidget
         ],
       ),
       actions: [
-        if (isTeamTab && canScan)
+        if (isTeamTab && access.viewOtherEmployees)
           IconButton(
             tooltip: 'Scan Staff ID Card'.tr(),
             icon: Icon(
@@ -186,17 +193,18 @@ class _DashboardAppBar extends HookConsumerWidget
             ),
             onPressed: () => context.push(AppRoutes.qrScanner),
           ),
-        IconButton(
-          icon: Badge.count(
-            count: totalBadgeCount,
-            isLabelVisible: totalBadgeCount > 0,
-            child: Icon(
-              Icons.notifications_none_rounded,
-              color: theme.colorScheme.primary,
+        if (access.viewAnnouncements)
+          IconButton(
+            icon: Badge.count(
+              count: totalBadgeCount,
+              isLabelVisible: totalBadgeCount > 0,
+              child: Icon(
+                Icons.notifications_none_rounded,
+                color: theme.colorScheme.primary,
+              ),
             ),
+            onPressed: () => context.push(AppRoutes.announcements),
           ),
-          onPressed: () => context.push(AppRoutes.announcements),
-        ),
         // IconButton(
         //   icon: Icon(
         //     themeStyle == OfficeHrTheme.dark

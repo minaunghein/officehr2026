@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/services/dialog_service.dart';
 import 'package:office_hr/features/announcement/presentation/screens/announcement_screen.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
+import 'package:office_hr/features/auth/domain/session_access.dart';
 import 'package:office_hr/features/dashboard/presentation/views/dashboard.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_amendment.dart';
 import 'package:office_hr/features/home/domain/entities/clock_request.dart';
@@ -71,7 +72,62 @@ abstract final class AppRoutes {
   static const staffIdCard = '/staff-id-card';
   static const qrScanner = '/scan';
   static const userDetails = '/users';
+  static const accessDenied = '/access-denied';
 }
+
+bool canOpenAppRoute(
+  SessionAccess access,
+  String path, {
+  String? userId,
+  Object? extra,
+}) => switch (path) {
+  AppRoutes.profile || AppRoutes.staffIdCard => access.viewProfile,
+  AppRoutes.payslip || AppRoutes.payslipDetail => access.viewPayslips,
+  AppRoutes.announcements => access.viewAnnouncements,
+  AppRoutes.company => access.viewCompany,
+  AppRoutes.attendanceRequests => access.attendanceRequests,
+  AppRoutes.teamMemberAttendance => access.viewTeamAttendance,
+  AppRoutes.amendmentRequests => access.reviewAmendments,
+  AppRoutes.clockRequests => access.reviewClock,
+  AppRoutes.leave => access.viewLeave || access.createLeave,
+  AppRoutes.createLeave => access.createLeave,
+  AppRoutes.leaveRequests => access.reviewLeave,
+  AppRoutes.overtime => access.viewOvertime || access.createOvertime,
+  AppRoutes.createOvertime => access.createOvertime,
+  AppRoutes.overtimeRequests => access.reviewOvertime,
+  AppRoutes.qrScanner => access.viewOtherEmployees,
+  '${AppRoutes.userDetails}/:id' => access.canViewUser(userId ?? ''),
+  AppRoutes.clockRequestDetail => switch (extra) {
+    ClockRequestRouteArgs(:final canDecide, :final request) =>
+      canDecide
+          ? access.reviewClock
+          : access.viewOwnClockRequests && access.isOwnUser(request.userId),
+    ClockRequest(:final userId) =>
+      access.viewOwnClockRequests && access.isOwnUser(userId),
+    _ => access.viewOwnClockRequests || access.reviewClock,
+  },
+  AppRoutes.attendanceAmendmentDetail => switch (extra) {
+    AttendanceAmendmentRouteArgs(:final canApprove, :final amendment) =>
+      canApprove
+          ? access.reviewAmendments
+          : access.viewPunches && access.isOwnUser(amendment.userId),
+    AttendanceAmendment(:final userId) =>
+      access.viewPunches && access.isOwnUser(userId),
+    _ => access.viewPunches,
+  },
+  AppRoutes.leaveDetail => switch (extra) {
+    LeaveRequestRouteArgs(:final canApprove, :final request) =>
+      canApprove ? access.reviewLeave : _canViewOwnLeave(access, request),
+    LeaveRequest request => _canViewOwnLeave(access, request),
+    _ => access.viewLeave,
+  },
+  _ => true,
+};
+
+bool _canViewOwnLeave(SessionAccess access, LeaveRequest request) =>
+    access.viewLeave &&
+    (access.isOwnUser(request.requesterId) ||
+        access.isOwnEmployee(request.employeeId));
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
@@ -91,6 +147,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         return AppRoutes.dashboard;
       }
 
+      if (isAuthenticated &&
+          !canOpenAppRoute(
+            SessionAccess(ref.read(currentUserProvider).value),
+            state.fullPath ?? state.matchedLocation,
+            userId: state.pathParameters['id'],
+            extra: state.extra,
+          )) {
+        return AppRoutes.accessDenied;
+      }
+
       return null;
     },
     routes: [
@@ -101,6 +167,33 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: AppRoutes.login, builder: (_, _) => const LoginScreen()),
       GoRoute(path: AppRoutes.dashboard, builder: (_, _) => Dashboard()),
+      GoRoute(
+        path: AppRoutes.accessDenied,
+        builder: (context, _) => Scaffold(
+          appBar: AppBar(),
+          body: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.lock_outline, size: 32),
+                  const SizedBox(height: 16),
+                  Text(
+                    'You do not have permission to perform this action.'.tr(),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 12),
+                  TextButton(
+                    onPressed: () => context.go(AppRoutes.dashboard),
+                    child: Text('Home'.tr()),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
       GoRoute(
         path: AppRoutes.profile,
         builder: (_, _) => const ProfileScreen(),
@@ -256,6 +349,28 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   ref.listen(isAuthenticatedProvider, (previous, next) {
     router.refresh();
   });
+  ref.listen(currentUserProvider, (previous, next) {
+    if (previous?.value == next.value) return;
+    final access = SessionAccess(next.value);
+    // Refresh redirects the base URL, but pushed pages are kept separately.
+    // Clear the stack if any of those pages no longer has a matching grant.
+    final pushedRoutes = router.routerDelegate.currentConfiguration.matches
+        .whereType<ImperativeRouteMatch>();
+    if (pushedRoutes.any((route) {
+      final matches = route.matches;
+      return !canOpenAppRoute(
+        access,
+        matches.fullPath,
+        userId: matches.pathParameters['id'],
+        extra: matches.extra,
+      );
+    })) {
+      router.go(AppRoutes.accessDenied);
+      return;
+    }
+    router.refresh();
+  });
+  ref.onDispose(router.dispose);
 
   return router;
 });

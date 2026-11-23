@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/core/utils/snackbar_utils.dart';
@@ -165,7 +166,11 @@ class _DecisionButtons extends HookConsumerWidget {
         requesterLabel: requesterLabel,
         typeLabel: attendanceStatusLabel(amendment.amendmentType),
       );
-      if (result == null || !context.mounted) return;
+      if (result == null ||
+          !context.mounted ||
+          !ref.read(sessionAccessProvider).reviewAmendments) {
+        return;
+      }
 
       pendingStatus.value = result.status;
       try {

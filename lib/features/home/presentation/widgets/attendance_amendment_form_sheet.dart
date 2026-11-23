@@ -6,6 +6,7 @@ import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/core/utils/snackbar_utils.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_amendment.dart';
 import 'package:office_hr/features/home/domain/params/create_amendment_params.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_amendment_provider.dart';
@@ -53,6 +54,11 @@ class AttendanceAmendmentFormSheet extends HookConsumerWidget {
       final session = ref.read(currentUserProvider).value;
       if (session == null) {
         errorMessage.value = 'Your session has expired. Please log in.'.tr();
+        return;
+      }
+      if (!ref.read(sessionAccessProvider).amendPunch) {
+        errorMessage.value =
+            'You do not have permission to perform this action.'.tr();
         return;
       }
       if (reason.text.trim().isEmpty) {

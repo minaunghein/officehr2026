@@ -2,6 +2,7 @@ import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/home/data/datasources/attendance_remote_datasource.dart';
 import 'package:office_hr/features/home/data/repositories/attendance_repository_impl.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_stats.dart';
@@ -107,11 +108,15 @@ Future<AttendanceStats> monthlyAttendanceStats(Ref ref) {
 class AttendanceNotifier extends _$AttendanceNotifier {
   @override
   Future<AttendanceState> build() async {
+    if (!ref.watch(canViewPunchesProvider)) {
+      return const AttendanceState();
+    }
     final todayAttendance = await _fetchTodayAttendance();
     return AttendanceState(todayAttendance: todayAttendance);
   }
 
   Future<void> refresh() async {
+    if (!ref.read(sessionAccessProvider).viewPunches) return;
     final previousState = state.value ?? const AttendanceState();
     state = AsyncData(
       previousState.copyWith(isRefreshing: true, clearError: true),
@@ -233,7 +238,7 @@ class AttendanceNotifier extends _$AttendanceNotifier {
     required AttendanceState Function(AttendanceState state) loading,
     required AttendanceState Function(
       AttendanceState state,
-      TodayAttendance todayAttendance,
+      TodayAttendance? todayAttendance,
     )
     complete,
     required AttendanceState Function(AttendanceState state, Object error) fail,
@@ -244,7 +249,9 @@ class AttendanceNotifier extends _$AttendanceNotifier {
 
     try {
       final response = await action();
-      final todayAttendance = await _fetchTodayAttendance();
+      final todayAttendance = ref.read(sessionAccessProvider).viewPunches
+          ? await _fetchTodayAttendance()
+          : null;
       state = AsyncData(complete(previousState, todayAttendance));
       ref.invalidate(attendanceHistoryProvider);
       return response;

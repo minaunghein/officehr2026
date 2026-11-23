@@ -32,6 +32,13 @@ class TeamBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (!canViewDetails || departmentId.isEmpty && quickActions.isNotEmpty) {
+      return ListView(
+        children: [
+          if (quickActions.isNotEmpty) TeamQuickActions(actions: quickActions),
+        ],
+      );
+    }
     if (departmentId.isEmpty) {
       return EmptyStateWidget(
         icon: Icons.groups_2_outlined,
@@ -132,9 +139,16 @@ class TeamBody extends ConsumerWidget {
           ],
         ],
       ),
-      error: (error, _) => ErrorStateWidget(
-        message: getUserFriendlyError(error),
-        onRetry: refresh,
+      error: (error, _) => Column(
+        children: [
+          if (quickActions.isNotEmpty) TeamQuickActions(actions: quickActions),
+          Expanded(
+            child: ErrorStateWidget(
+              message: getUserFriendlyError(error),
+              onRetry: refresh,
+            ),
+          ),
+        ],
       ),
     );
   }

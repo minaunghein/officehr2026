@@ -11,6 +11,8 @@ import 'package:office_hr/core/utils/snackbar_utils.dart';
 import 'package:office_hr/core/widgets/detail_page_style.dart';
 import 'package:office_hr/core/widgets/image_widget.dart';
 import 'package:office_hr/features/auth/domain/entities/auth_session.dart';
+import 'package:office_hr/features/auth/domain/session_access.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/user_profile/presentation/providers/user_providers.dart';
 import 'package:office_hr/shared/global.dart';
 
@@ -29,9 +31,12 @@ class ProfileImageAvatar extends HookConsumerWidget {
     final choosing = useState(false);
     final uploading = ref.watch(updateProfileImageProvider).isLoading;
     final busy = choosing.value || uploading;
+    final canEdit = SessionAccess(session).editProfile;
 
     Future<void> changeImage() async {
-      if (choosing.value || ref.read(updateProfileImageProvider).isLoading) {
+      if (!canEdit ||
+          choosing.value ||
+          ref.read(updateProfileImageProvider).isLoading) {
         return;
       }
       choosing.value = true;
@@ -118,7 +123,11 @@ class ProfileImageAvatar extends HookConsumerWidget {
             ),
           ],
         );
-        if (cropped == null || !context.mounted) return;
+        if (cropped == null ||
+            !context.mounted ||
+            !ref.read(sessionAccessProvider).editProfile) {
+          return;
+        }
 
         saving = true;
         await ref
@@ -204,27 +213,28 @@ class ProfileImageAvatar extends HookConsumerWidget {
                 ),
               ),
             ),
-          PositionedDirectional(
-            end: 0,
-            bottom: 0,
-            child: IconButton.filled(
-              tooltip: 'Change profile image'.tr(),
-              onPressed: busy ? null : changeImage,
-              style: IconButton.styleFrom(
-                backgroundColor: colors.surface,
-                foregroundColor: colors.primary,
-                disabledBackgroundColor: colors.surface,
-                disabledForegroundColor: theme.disabledColor,
-                fixedSize: const Size.square(36),
-                minimumSize: const Size.square(36),
-                tapTargetSize: MaterialTapTargetSize.padded,
-                visualDensity: VisualDensity.standard,
-                padding: EdgeInsets.zero,
-                side: BorderSide(color: theme.detailRule),
+          if (canEdit)
+            PositionedDirectional(
+              end: 0,
+              bottom: 0,
+              child: IconButton.filled(
+                tooltip: 'Change profile image'.tr(),
+                onPressed: busy ? null : changeImage,
+                style: IconButton.styleFrom(
+                  backgroundColor: colors.surface,
+                  foregroundColor: colors.primary,
+                  disabledBackgroundColor: colors.surface,
+                  disabledForegroundColor: theme.disabledColor,
+                  fixedSize: const Size.square(36),
+                  minimumSize: const Size.square(36),
+                  tapTargetSize: MaterialTapTargetSize.padded,
+                  visualDensity: VisualDensity.standard,
+                  padding: EdgeInsets.zero,
+                  side: BorderSide(color: theme.detailRule),
+                ),
+                icon: const Icon(Icons.edit_outlined, size: AppSizes.iconSm),
               ),
-              icon: const Icon(Icons.edit_outlined, size: AppSizes.iconSm),
             ),
-          ),
         ],
       ),
     );

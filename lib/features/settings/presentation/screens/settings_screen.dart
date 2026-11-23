@@ -6,6 +6,7 @@ import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/core/widgets/detail_page_style.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/settings/presentation/providers/app_info_providers.dart';
 import 'package:office_hr/features/settings/presentation/widgets/appearance_settings_group.dart';
 import 'package:office_hr/features/settings/presentation/widgets/reminders_settings_group.dart';
@@ -22,6 +23,7 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final appInfo = ref.watch(appInfoProvider).value;
+    final access = ref.watch(sessionAccessProvider);
 
     return Scaffold(
       backgroundColor: theme.detailCanvas,
@@ -62,16 +64,18 @@ class SettingsScreen extends ConsumerWidget {
                     title: 'Change Password'.tr(),
                     onTap: () => context.push(AppRoutes.changePassword),
                   ),
-                  SettingsTile(
-                    icon: Icons.badge_outlined,
-                    title: 'Digital ID Card'.tr(),
-                    onTap: () => context.push(AppRoutes.staffIdCard),
-                  ),
-                  SettingsTile(
-                    icon: Icons.business_outlined,
-                    title: 'Company Information'.tr(),
-                    onTap: () => context.push(AppRoutes.company),
-                  ),
+                  if (access.viewProfile)
+                    SettingsTile(
+                      icon: Icons.badge_outlined,
+                      title: 'Digital ID Card'.tr(),
+                      onTap: () => context.push(AppRoutes.staffIdCard),
+                    ),
+                  if (access.viewCompany)
+                    SettingsTile(
+                      icon: Icons.business_outlined,
+                      title: 'Company Information'.tr(),
+                      onTap: () => context.push(AppRoutes.company),
+                    ),
                 ],
               ),
               const SizedBox(height: AppSizes.lg),

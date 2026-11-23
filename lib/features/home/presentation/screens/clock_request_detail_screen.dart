@@ -5,6 +5,7 @@ import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/utils/snackbar_utils.dart';
 import 'package:office_hr/core/widgets/detail_row.dart';
 import 'package:office_hr/core/widgets/detail_section_card.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/home/domain/entities/clock_request.dart';
 import 'package:office_hr/features/home/presentation/providers/clock_request_provider.dart';
 import 'package:office_hr/features/home/presentation/utils/clock_request_formatters.dart';
@@ -23,7 +24,7 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
   const ClockRequestDetailScreen({
     super.key,
     required this.initial,
-    this.canDecide = true,
+    this.canDecide = false,
   });
 
   final ClockRequest initial;
@@ -34,6 +35,7 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
     final theme = Theme.of(context);
     final request = useState(initial);
     final isSubmitting = useState(false);
+    final access = ref.watch(sessionAccessProvider);
 
     Future<void> decide(ClockRequestDecision decision) async {
       final requesterLabel = request.value.userName.trim().isEmpty
@@ -45,7 +47,11 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
         requesterLabel: requesterLabel,
         punchLabel: request.value.punchType.label.tr().toLowerCase(),
       );
-      if (result == null || !context.mounted) return;
+      if (result == null ||
+          !context.mounted ||
+          !ref.read(sessionAccessProvider).reviewClock) {
+        return;
+      }
 
       isSubmitting.value = true;
       try {
@@ -77,6 +83,11 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
         punchLabel: request.value.punchType.label.tr().toLowerCase(),
       );
       if (result == null || !context.mounted) return;
+      final latestAccess = ref.read(sessionAccessProvider);
+      if (!latestAccess.requestClock ||
+          !latestAccess.isOwnUser(request.value.userId)) {
+        return;
+      }
 
       isSubmitting.value = true;
       try {
@@ -95,6 +106,10 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
     }
 
     final current = request.value;
+    final canReview =
+        canDecide && access.reviewClock && !access.isOwnUser(current.userId);
+    final canCancel =
+        !canDecide && access.requestClock && access.isOwnUser(current.userId);
     final hasCoordinates =
         current.latitude != null && current.longitude != null;
 
@@ -254,7 +269,7 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
           ],
         ],
       ),
-      bottomNavigationBar: !current.isPending
+      bottomNavigationBar: !current.isPending || !(canReview || canCancel)
           ? null
           : Container(
               decoration: BoxDecoration(
@@ -268,7 +283,7 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
               child: SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.all(16),
-                  child: canDecide
+                  child: canReview
                       ? Row(
                           children: [
                             Expanded(

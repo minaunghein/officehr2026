@@ -5,6 +5,7 @@ import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/utils/snackbar_utils.dart';
 import 'package:office_hr/core/widgets/container_shimmer.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_amendment.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_amendment_provider.dart';
 import 'package:office_hr/features/home/presentation/widgets/amendment_decision_dialog.dart';
@@ -72,7 +73,12 @@ class AttendanceAmendmentDetailScreen extends HookConsumerWidget {
     }, [initial.id]);
 
     final current = amendment.value;
-    final canAct = canApprove && current.status.toUpperCase() == 'PENDING';
+    final access = ref.watch(sessionAccessProvider);
+    final canAct =
+        canApprove &&
+        access.reviewAmendments &&
+        !access.isOwnUser(current.userId) &&
+        current.status.toUpperCase() == 'PENDING';
 
     Future<void> decide(bool approve) async {
       final requesterLabel = current.requesterName.trim().isEmpty
@@ -84,7 +90,11 @@ class AttendanceAmendmentDetailScreen extends HookConsumerWidget {
         requesterLabel: requesterLabel,
         typeLabel: attendanceStatusLabel(current.amendmentType),
       );
-      if (result == null) return;
+      if (result == null ||
+          !context.mounted ||
+          !ref.read(sessionAccessProvider).reviewAmendments) {
+        return;
+      }
 
       pendingDecision.value = result.status;
       try {

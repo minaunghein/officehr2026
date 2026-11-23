@@ -6,6 +6,7 @@ import 'package:office_hr/core/widgets/container_shimmer.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/branch/branch.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/shift/shift.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_provider.dart';
 import 'package:office_hr/features/home/presentation/providers/location_provider.dart';
 import 'package:office_hr/features/home/presentation/state/attendance_state.dart';
@@ -80,13 +81,15 @@ class CurrentStatusCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final access = ref.watch(sessionAccessProvider);
     final attendanceAsync = ref.watch(attendanceProvider);
-    final locationAsync = ref.watch(currentLocationProvider);
+    final location = access.createPunch || access.requestClock
+        ? ref.watch(currentLocationProvider).value
+        : null;
     final currentUser = ref.watch(currentUserProvider);
 
     final attendanceState = attendanceAsync.value ?? const AttendanceState();
     final isClockedIn = attendanceState.isClockedIn;
-    final location = locationAsync.hasValue ? locationAsync.value : null;
     final branch = currentUser.value?.employee?.workInfo.branch;
     final shift = currentUser.value?.employee?.workInfo.shift;
     final inRange = _isWithinRange(location, branch);
@@ -133,43 +136,45 @@ class CurrentStatusCard extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 12),
-          attendanceState.isRefreshing
-              ? Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ContainerShimmer(width: 12, height: 12),
-                    const SizedBox(width: 8),
-                    ContainerShimmer(width: 140, height: 14),
-                  ],
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 10,
-                      height: 10,
-                      decoration: BoxDecoration(
-                        color: attendanceState.isClockedIn
-                            ? const Color(0xFF4CAF50)
-                            : const Color.fromARGB(255, 255, 0, 0),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      attendanceState.statusText,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(
-                          alpha: 0.6,
+          if (access.viewPunches) ...[
+            attendanceState.isRefreshing
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ContainerShimmer(width: 12, height: 12),
+                      const SizedBox(width: 8),
+                      ContainerShimmer(width: 140, height: 14),
+                    ],
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 10,
+                        height: 10,
+                        decoration: BoxDecoration(
+                          color: attendanceState.isClockedIn
+                              ? const Color(0xFF4CAF50)
+                              : const Color.fromARGB(255, 255, 0, 0),
+                          shape: BoxShape.circle,
                         ),
-                        fontWeight: FontWeight.w500,
                       ),
-                    ),
-                  ],
-                ),
+                      const SizedBox(width: 8),
+                      Text(
+                        attendanceState.statusText,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurface.withValues(
+                            alpha: 0.6,
+                          ),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
 
-          const SizedBox(height: 8),
+            const SizedBox(height: 8),
+          ],
 
           attendanceState.isRefreshing
               ? ContainerShimmer(width: 100, height: 14)
@@ -183,33 +188,45 @@ class CurrentStatusCard extends ConsumerWidget {
           const SizedBox(height: AppSizes.spaceBtwItems),
           Column(
             children: [
-              attendanceState.isRefreshing
-                  ? ContainerShimmer(width: 100, height: 22)
-                  : Text(
-                      _getPrimaryClockTimeText(attendanceState),
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(
-                          alpha: 0.8,
+              if (access.viewPunches) ...[
+                attendanceState.isRefreshing
+                    ? ContainerShimmer(width: 100, height: 22)
+                    : Text(
+                        _getPrimaryClockTimeText(attendanceState),
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          color: theme.colorScheme.onSurface.withValues(
+                            alpha: 0.8,
+                          ),
+                          fontWeight: FontWeight.w700,
                         ),
-                        fontWeight: FontWeight.w700,
                       ),
-                    ),
 
-              const SizedBox(height: 4),
-              if (isClockedIn && isLate)
-                Text(
-                  'Late ({duration})'.tr(
-                    namedArgs: {'duration': lateDurationText},
+                const SizedBox(height: 4),
+                if (isClockedIn && isLate)
+                  Text(
+                    'Late ({duration})'.tr(
+                      namedArgs: {'duration': lateDurationText},
+                    ),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFFD32F2F),
+                    ),
                   ),
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: const Color(0xFFD32F2F),
-                  ),
-                ),
-              const SizedBox(height: AppSizes.spaceBtwItems),
-              const ClockButton(),
-              const SizedBox(height: AppSizes.spaceBtwItems),
-              BreakActions(shift: shift),
+              ],
+              if (access.createPunch || access.requestClock) ...[
+                const SizedBox(height: AppSizes.spaceBtwItems),
+                if (access.viewPunches)
+                  const ClockButton()
+                else ...[
+                  const ClockButton(clockOut: false),
+                  const SizedBox(height: AppSizes.spaceBtwItems),
+                  const ClockButton(clockOut: true),
+                ],
+              ],
+              if (access.createPunch && access.viewPunches) ...[
+                const SizedBox(height: AppSizes.spaceBtwItems),
+                BreakActions(shift: shift),
+              ],
               if (attendanceState.error != null) ...[
                 const SizedBox(height: AppSizes.spaceBtwItems),
                 Text(

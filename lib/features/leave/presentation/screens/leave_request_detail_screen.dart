@@ -7,6 +7,7 @@ import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/utils/snackbar_utils.dart';
 import 'package:office_hr/core/widgets/detail_row.dart';
 import 'package:office_hr/core/widgets/detail_section_card.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/leave/domain/entities/leave_request.dart';
 import 'package:office_hr/features/leave/presentation/providers/leave_providers.dart';
 import 'package:office_hr/features/leave/presentation/utils/leave_formatters.dart';
@@ -37,15 +38,22 @@ class LeaveRequestDetailScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final requests = ref.watch(leaveRequestsProvider).value;
-    final allRequests = ref.watch(allLeaveRequestsProvider).value;
+    final access = ref.watch(sessionAccessProvider);
+    final isReview = canApprove && access.reviewLeave;
+    final requests = isReview
+        ? ref.watch(allLeaveRequestsProvider).value
+        : access.viewLeave
+        ? ref.watch(leaveRequestsProvider).value
+        : null;
     final pendingDecision = useState<LeaveDecision?>(null);
 
-    final request = canApprove
-        ? _resolveLatest(allRequests, initial)
-        : _resolveLatest(requests, initial);
+    final request = _resolveLatest(requests, initial);
 
-    final canAct = canApprove && request.isPending;
+    final canAct =
+        isReview &&
+        request.isPending &&
+        !access.isOwnUser(request.requesterId) &&
+        !access.isOwnEmployee(request.employeeId);
 
     Future<void> decide(LeaveDecision decision) async {
       final result = await showLeaveDecisionDialog(
@@ -53,7 +61,11 @@ class LeaveRequestDetailScreen extends HookConsumerWidget {
         decision: decision,
         requesterLabel: request.requesterLabel,
       );
-      if (result == null) return;
+      if (result == null ||
+          !context.mounted ||
+          !ref.read(sessionAccessProvider).reviewLeave) {
+        return;
+      }
 
       pendingDecision.value = decision;
       try {
@@ -63,11 +75,11 @@ class LeaveRequestDetailScreen extends HookConsumerWidget {
 
         // Refresh the leave lists from here (the action provider is a
         // transient autoDispose that may already be disposed by now).
-        await Future.wait([
-          ref.read(allLeaveRequestsProvider.notifier).refresh(),
-          ref.read(leaveRequestsProvider.notifier).refresh(),
-          ref.read(leaveBalancesProvider.notifier).refresh(),
-        ]);
+        if (context.mounted) {
+          ref.invalidate(allLeaveRequestsProvider);
+          ref.invalidate(leaveRequestsProvider);
+          ref.invalidate(leaveBalancesProvider);
+        }
 
         if (context.mounted) {
           SnackbarUtils.showSuccess(
@@ -81,7 +93,9 @@ class LeaveRequestDetailScreen extends HookConsumerWidget {
           SnackbarUtils.showError(getUserFriendlyError(error));
         }
       } finally {
-        if (pendingDecision.value == decision) pendingDecision.value = null;
+        if (context.mounted && pendingDecision.value == decision) {
+          pendingDecision.value = null;
+        }
       }
     }
 

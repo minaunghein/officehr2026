@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/router/app_router.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/core/utils/snackbar_utils.dart';
 import 'package:office_hr/core/widgets/error_state_widget.dart';
 import 'package:office_hr/features/settings/presentation/providers/app_info_providers.dart';
@@ -103,12 +104,13 @@ class AboutScreen extends ConsumerWidget {
             SettingsGroup(
               title: 'Support'.tr(),
               children: [
-                SettingsTile(
-                  icon: Icons.business_rounded,
-                  title: 'Company Information'.tr(),
-                  subtitle: 'Organisation details and contacts.'.tr(),
-                  onTap: () => context.push(AppRoutes.company),
-                ),
+                if (ref.watch(sessionAccessProvider).viewCompany)
+                  SettingsTile(
+                    icon: Icons.business_rounded,
+                    title: 'Company Information'.tr(),
+                    subtitle: 'Organisation details and contacts.'.tr(),
+                    onTap: () => context.push(AppRoutes.company),
+                  ),
                 SettingsTile(
                   icon: Icons.help_outline_rounded,
                   title: 'Frequently asked questions'.tr(),

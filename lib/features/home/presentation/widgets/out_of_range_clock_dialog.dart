@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/utils/snackbar_utils.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_location.dart';
 import 'package:office_hr/features/home/domain/params/clock_attendance_params.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_provider.dart';
@@ -49,6 +50,7 @@ class _OutOfRangeClockRequestDialog extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final canRequest = ref.watch(sessionAccessProvider).requestClock;
     final attendanceState = ref.watch(attendanceProvider).value;
     final isUploading = useState(false);
     final isSubmitting =
@@ -65,13 +67,14 @@ class _OutOfRangeClockRequestDialog extends HookConsumerWidget {
     Future<void> takePhoto() async {
       FocusScope.of(context).unfocus();
       final path = await captureClockPhoto(context);
-      if (path != null) {
+      if (context.mounted && path != null) {
         photoPath.value = path;
         showPhotoError.value = false;
       }
     }
 
     Future<void> submit() async {
+      if (!ref.read(sessionAccessProvider).requestClock) return;
       final hasPhoto = photoPath.value != null;
       showPhotoError.value = !hasPhoto;
       final reasonValid = formKey.currentState?.validate() ?? false;
@@ -88,7 +91,9 @@ class _OutOfRangeClockRequestDialog extends HookConsumerWidget {
         }
         return;
       }
+      if (!context.mounted) return;
       isUploading.value = false;
+      if (!ref.read(sessionAccessProvider).requestClock) return;
 
       final params = ClockAttendanceParams(
         location: AttendanceLocation(
@@ -176,7 +181,7 @@ class _OutOfRangeClockRequestDialog extends HookConsumerWidget {
                   ],
                   const SizedBox(height: 16),
                   InkWell(
-                    onTap: isSubmitting ? null : takePhoto,
+                    onTap: isSubmitting || !canRequest ? null : takePhoto,
                     borderRadius: BorderRadius.circular(8),
                     child: Row(
                       children: [
@@ -284,7 +289,7 @@ class _OutOfRangeClockRequestDialog extends HookConsumerWidget {
               child: Text('Cancel'.tr()),
             ),
             FilledButton(
-              onPressed: isSubmitting ? null : submit,
+              onPressed: isSubmitting || !canRequest ? null : submit,
               child: isSubmitting
                   ? const SizedBox(
                       width: 18,

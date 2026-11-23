@@ -227,4 +227,8 @@ AuthSession _session() => AuthSessionModel.fromJson({
     },
   ],
   'role': {'name': 'Employee'},
+  'permissions': [
+    {'resource': 'employee', 'action': 'view', 'scope': 'own'},
+    {'resource': 'employee', 'action': 'update', 'scope': 'own'},
+  ],
 }).toEntity();

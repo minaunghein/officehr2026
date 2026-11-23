@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_amendment_provider.dart';
 import 'package:office_hr/features/home/presentation/providers/clock_request_provider.dart';
 import 'package:office_hr/features/home/presentation/widgets/team_body.dart';
@@ -21,48 +22,38 @@ class TeamScreen extends ConsumerWidget {
     final departmentId = session?.workInfo?.departmentId ?? '';
     final departmentTitle = session?.departmentTitle.trim() ?? '';
     final currentUserId = session?.userId ?? '';
-    final roleName = session?.role.name.trim().toLowerCase() ?? '';
-    final canScan = roleName.isNotEmpty && roleName != 'employee';
-    final canViewDetails = canScan;
-
-    final pendingLeaveCount = canScan
-        ? ref.watch(pendingLeaveRequestsCountProvider)
-        : 0;
-    final pendingAmendmentCount = canScan
-        ? ref.watch(pendingAmendmentsBadgeCountProvider).value ?? 0
-        : 0;
-    final pendingClockCount = canScan
-        ? ref.watch(pendingClockRequestsBadgeCountProvider).value ?? 0
-        : 0;
-    final pendingOvertimeCount = canScan
-        ? ref.watch(pendingOvertimeRequestsCountProvider)
-        : 0;
+    final access = ref.watch(sessionAccessProvider);
 
     final quickActions = <TeamQuickAction>[
-      TeamQuickAction(
-        icon: Icons.beach_access_outlined,
-        label: 'Leave Requests'.tr(),
-        badgeCount: pendingLeaveCount,
-        onTap: () => context.push(AppRoutes.leaveRequests),
-      ),
-      TeamQuickAction(
-        icon: Icons.edit_calendar_outlined,
-        label: 'Attendance Requests'.tr(),
-        badgeCount: pendingAmendmentCount,
-        onTap: () => context.push(AppRoutes.amendmentRequests),
-      ),
-      TeamQuickAction(
-        icon: Icons.gps_fixed_rounded,
-        label: 'Clock Requests'.tr(),
-        badgeCount: pendingClockCount,
-        onTap: () => context.push(AppRoutes.clockRequests),
-      ),
-      TeamQuickAction(
-        icon: Icons.timer_outlined,
-        label: 'Overtime Requests'.tr(),
-        badgeCount: pendingOvertimeCount,
-        onTap: () => context.push(AppRoutes.overtimeRequests),
-      ),
+      if (access.reviewLeave)
+        TeamQuickAction(
+          icon: Icons.beach_access_outlined,
+          label: 'Leave Requests'.tr(),
+          badgeCount: ref.watch(pendingLeaveRequestsCountProvider),
+          onTap: () => context.push(AppRoutes.leaveRequests),
+        ),
+      if (access.reviewAmendments)
+        TeamQuickAction(
+          icon: Icons.edit_calendar_outlined,
+          label: 'Attendance Requests'.tr(),
+          badgeCount: ref.watch(pendingAmendmentsBadgeCountProvider).value ?? 0,
+          onTap: () => context.push(AppRoutes.amendmentRequests),
+        ),
+      if (access.reviewClock)
+        TeamQuickAction(
+          icon: Icons.gps_fixed_rounded,
+          label: 'Clock Requests'.tr(),
+          badgeCount:
+              ref.watch(pendingClockRequestsBadgeCountProvider).value ?? 0,
+          onTap: () => context.push(AppRoutes.clockRequests),
+        ),
+      if (access.reviewOvertime)
+        TeamQuickAction(
+          icon: Icons.timer_outlined,
+          label: 'Overtime Requests'.tr(),
+          badgeCount: ref.watch(pendingOvertimeRequestsCountProvider),
+          onTap: () => context.push(AppRoutes.overtimeRequests),
+        ),
     ];
 
     return Scaffold(
@@ -73,8 +64,8 @@ class TeamScreen extends ConsumerWidget {
             departmentId: departmentId,
             departmentTitle: departmentTitle,
             currentUserId: currentUserId,
-            canViewDetails: canViewDetails,
-            quickActions: canScan ? quickActions : const [],
+            canViewDetails: access.viewTeamAttendance,
+            quickActions: quickActions,
           ),
         ),
       ),
