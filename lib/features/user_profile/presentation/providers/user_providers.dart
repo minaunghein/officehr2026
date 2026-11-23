@@ -1,4 +1,5 @@
 import 'package:office_hr/core/network/network_providers.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:office_hr/features/auth/domain/entities/auth_session.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/features/leave/presentation/providers/leave_providers.dart';
@@ -37,7 +38,7 @@ class UpdateProfileImageNotifier extends _$UpdateProfileImageNotifier {
     if (state.isLoading) return;
     final session = ref.read(currentUserProvider).value;
     if (session == null) {
-      throw StateError('No signed-in user is available.');
+      throw StateError('No signed-in user is available.'.tr());
     }
     final upload = ref.read(uploadFileUsecaseProvider);
     final repository = ref.read(userRepositoryProvider);

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:office_hr/core/network/api_service.dart';
 import 'package:office_hr/core/services/app_logger.dart';
 import 'package:office_hr/features/leave/data/models/leave_balance_model.dart';
@@ -153,7 +154,7 @@ class LeaveRemoteDataSourceImpl implements LeaveRemoteDataSource {
 
       final model = UploadedFileModel.fromJson(response);
       if (model.id.isEmpty) {
-        throw StateError('Upload response did not contain a file id.');
+        throw StateError('Upload response did not contain a file id.'.tr());
       }
       return model;
     } catch (error, stack) {

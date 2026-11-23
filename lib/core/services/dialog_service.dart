@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class DialogService {
   DialogService._();
 
@@ -20,12 +22,12 @@ class DialogService {
         barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
-            title: const Text('Session expired'),
-            content: const Text('Please sign in again to continue.'),
+            title: Text('Session expired'.tr()),
+            content: Text('Please sign in again to continue.'.tr()),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK'),
+                child: Text('OK'.tr()),
               ),
             ],
           );

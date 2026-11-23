@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/shift/shift.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/shift_day/shift_day.dart';
@@ -110,11 +111,11 @@ String formatShiftWorkHours(Shift? shift) {
 
   if (todayWorkingDay != null) {
     if (todayWorkingDay.isHalfDay) {
-      return 'Half Day';
+      return 'Half Day'.tr();
     }
 
     if (todayWorkingDay.isOffDay || !todayWorkingDay.isWorkingDay) {
-      return 'Off Day';
+      return 'Off Day'.tr();
     }
 
     final start = todayWorkingDay.workStart ?? shift.defaultStart;

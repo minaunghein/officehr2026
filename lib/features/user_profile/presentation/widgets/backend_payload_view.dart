@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
-import 'package:office_hr/features/user_profile/presentation/widgets/user_profile_section.dart';
+import 'package:office_hr/core/widgets/detail_page_style.dart';
+import 'package:office_hr/features/user_profile/presentation/widgets/record_section.dart';
 import 'package:office_hr/shared/date_formatter.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 
 class CompanyPayloadView extends StatelessWidget {
   const CompanyPayloadView({
     super.key,
     required this.title,
-    required this.icon,
     required this.payload,
   });
 
   final String title;
-  final IconData icon;
   final Map<String, dynamic> payload;
 
   @override
@@ -20,13 +21,12 @@ class CompanyPayloadView extends StatelessWidget {
     final entries = payload.entries
         .where((entry) => _hasValue(entry.value))
         .toList();
-    return UserProfileSection(
+    return RecordSection(
       title: title,
-      icon: icon,
       children: entries.isEmpty
           ? [
               Text(
-                'No information provided.',
+                'No information provided.'.tr(),
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ]
@@ -52,60 +52,45 @@ class _PayloadField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (value is Map) {
-      final map = Map<String, dynamic>.from(value as Map);
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 10),
-        child: ExpansionTile(
-          shape: const Border(),
-          collapsedShape: const Border(),
-          tilePadding: EdgeInsets.zero,
-          childrenPadding: const EdgeInsets.only(
-            left: AppSizes.lg,
-            bottom: AppSizes.xxxs,
-          ),
-          initiallyExpanded: false,
-          title: Text(
-            label,
-            style: const TextStyle(fontWeight: FontWeight.w600),
-          ),
-          children: map.entries
-              .where((entry) => _hasValue(entry.value))
-              .map(
-                (entry) => _PayloadField(
-                  label: _payloadLabel(entry.key),
-                  keyName: entry.key,
-                  value: entry.value,
-                ),
-              )
-              .toList(),
-        ),
-      );
-    }
-    if (value is List) {
-      final list = value as List;
+    final theme = Theme.of(context);
+    if (value is Map || value is List) {
+      final children = switch (value) {
+        final Map map => [
+          for (final entry in map.entries)
+            if (_hasValue(entry.value))
+              _PayloadField(
+                label: _payloadLabel(entry.key.toString()),
+                keyName: entry.key.toString(),
+                value: entry.value,
+              ),
+        ],
+        final List list => [
+          for (final (index, item) in list.indexed)
+            _PayloadField(label: '${index + 1}', value: item),
+        ],
+        _ => <Widget>[],
+      };
       return ExpansionTile(
         shape: const Border(),
         collapsedShape: const Border(),
         tilePadding: EdgeInsets.zero,
-        childrenPadding: const EdgeInsets.only(
-          left: AppSizes.lg,
+        expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
+        iconColor: theme.detailMuted,
+        collapsedIconColor: theme.detailMuted,
+        childrenPadding: const EdgeInsetsDirectional.only(
+          start: AppSizes.md,
           bottom: AppSizes.xxxs,
         ),
-        title: Text('$label (${list.length})'),
-        children: list
-            .asMap()
-            .entries
-            .map(
-              (entry) => _PayloadField(
-                label: 'Entry ${entry.key + 1}',
-                value: entry.value,
-              ),
-            )
-            .toList(),
+        title: Text(
+          value is List ? '$label (${children.length})' : label,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        children: children,
       );
     }
-    return UserProfileInfoRow(
+    return RecordField(
       label: label,
       value: _displayPayloadValue(value, keyName),
     );

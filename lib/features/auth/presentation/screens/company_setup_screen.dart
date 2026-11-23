@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class CompanySetupScreen extends HookConsumerWidget {
   const CompanySetupScreen({super.key});
 
@@ -54,7 +56,7 @@ class CompanySetupScreen extends HookConsumerWidget {
 
                   // Welcome Text
                   Text(
-                    'Welcome to Office HR',
+                    'Welcome to Office HR'.tr(),
                     style: textTheme.headlineLarge?.copyWith(
                       color: colorScheme.primary,
                       fontWeight: FontWeight.w700,
@@ -63,7 +65,8 @@ class CompanySetupScreen extends HookConsumerWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Enter your organization details to begin your\nprofessional journey.',
+                    'Enter your organization details to begin your\nprofessional journey.'
+                        .tr(),
                     style: textTheme.bodyMedium?.copyWith(
                       color: colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
@@ -86,7 +89,7 @@ class CompanySetupScreen extends HookConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            'Company Name or ID',
+                            'Company Name or ID'.tr(),
                             style: textTheme.labelLarge?.copyWith(
                               color: colorScheme.onSurface.withValues(
                                 alpha: 0.8,
@@ -96,14 +99,15 @@ class CompanySetupScreen extends HookConsumerWidget {
                           const SizedBox(height: 8),
                           TextField(
                             decoration: InputDecoration(
-                              hintText: 'e.g. AcmeCorp or ACME-123',
+                              hintText: 'e.g. AcmeCorp or ACME-123'.tr(),
                               prefixIcon: const Icon(Icons.business),
                               filled: false,
                             ),
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Contact your HR department if you\'re unsure of your ID.',
+                            'Contact your HR department if you\'re unsure of your ID.'
+                                .tr(),
                             style: textTheme.bodySmall?.copyWith(
                               color: colorScheme.onSurface.withValues(
                                 alpha: 0.6,
@@ -125,8 +129,8 @@ class CompanySetupScreen extends HookConsumerWidget {
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text('Continue'),
+                              children: [
+                                Text('Continue'.tr()),
                                 SizedBox(width: 8),
                                 Icon(Icons.arrow_forward, size: 18),
                               ],
@@ -136,7 +140,7 @@ class CompanySetupScreen extends HookConsumerWidget {
                           const Divider(),
                           const SizedBox(height: 16),
                           Text(
-                            "Don't have an account yet?",
+                            "Don't have an account yet?".tr(),
                             style: textTheme.bodySmall?.copyWith(
                               color: colorScheme.onSurface.withValues(
                                 alpha: 0.6,
@@ -147,7 +151,7 @@ class CompanySetupScreen extends HookConsumerWidget {
                           TextButton(
                             onPressed: () {},
                             child: Text(
-                              'Register your organization',
+                              'Register your organization'.tr(),
                               style: textTheme.labelLarge?.copyWith(
                                 color: colorScheme.primary,
                               ),
@@ -182,7 +186,7 @@ class CompanySetupScreen extends HookConsumerWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        'Need help setting up?',
+                        'Need help setting up?'.tr(),
                         style: textTheme.bodySmall?.copyWith(
                           color: colorScheme.onSurface.withValues(alpha: 0.6),
                         ),

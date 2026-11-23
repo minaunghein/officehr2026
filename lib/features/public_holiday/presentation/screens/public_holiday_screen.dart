@@ -7,6 +7,8 @@ import 'package:office_hr/core/widgets/container_shimmer.dart';
 import 'package:office_hr/features/public_holiday/domain/entities/public_holiday.dart';
 import 'package:office_hr/features/public_holiday/presentation/providers/public_holiday_providers.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class PublicHolidayScreen extends ConsumerWidget {
   const PublicHolidayScreen({super.key});
 
@@ -18,7 +20,7 @@ class PublicHolidayScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Public Holidays'),
+        title: Text('Public Holidays'.tr()),
         backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
       ),
@@ -36,7 +38,7 @@ class PublicHolidayScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'No public holidays found',
+                    'No public holidays found'.tr(),
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                     ),
@@ -82,7 +84,7 @@ class PublicHolidayScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Failed to load public holidays',
+                  'Failed to load public holidays'.tr(),
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -100,7 +102,7 @@ class PublicHolidayScreen extends ConsumerWidget {
                   onPressed: () =>
                       ref.read(publicHolidayProvider.notifier).fetch(),
                   icon: const Icon(Icons.refresh_rounded),
-                  label: const Text('Retry'),
+                  label: Text('Retry'.tr()),
                 ),
               ],
             ),
@@ -119,7 +121,7 @@ class _PublicHolidayCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final title = holiday.displayTitle;
+    final title = holiday.displayTitle.tr();
     final subtitle = holiday.hasMyanmarTitle ? holiday.titleMm : null;
 
     return Card(
@@ -223,7 +225,7 @@ class _TypeChip extends StatelessWidget {
 }
 
 String _formatHolidayDate(String? value) {
-  if (value == null || value.isEmpty) return 'No date';
+  if (value == null || value.isEmpty) return 'No date'.tr();
 
   final date = parseLocalDateTime(value);
   if (date == null) return value;

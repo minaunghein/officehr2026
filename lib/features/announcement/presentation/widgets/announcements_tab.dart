@@ -8,10 +8,12 @@ import 'package:office_hr/core/widgets/error_state_widget.dart';
 import 'package:office_hr/features/announcement/presentation/providers/announcement_providers.dart';
 import 'package:office_hr/features/announcement/presentation/widgets/announcement_card.dart';
 
-const _statusFilters = <({String value, String label})>[
-  (value: 'ALL', label: 'All'),
-  (value: 'PUBLISHED', label: 'Published'),
-  (value: 'DRAFT', label: 'Drafts'),
+import 'package:easy_localization/easy_localization.dart';
+
+List<({String value, String label})> _statusFilters() => [
+  (value: 'ALL', label: 'All'.tr()),
+  (value: 'PUBLISHED', label: 'Published'.tr()),
+  (value: 'DRAFT', label: 'Drafts'.tr()),
 ];
 
 /// Published-announcement feed with a status filter and pull-to-refresh.
@@ -30,10 +32,10 @@ class AnnouncementsTab extends HookConsumerWidget {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            itemCount: _statusFilters.length,
+            itemCount: _statusFilters().length,
             separatorBuilder: (_, _) => const SizedBox(width: 8),
             itemBuilder: (context, index) {
-              final filter = _statusFilters[index];
+              final filter = _statusFilters()[index];
               return ChoiceChip(
                 label: Text(filter.label),
                 selected: filter.value == selectedStatus.value,
@@ -67,8 +69,8 @@ class AnnouncementsTab extends HookConsumerWidget {
               if (announcements.isEmpty) {
                 return EmptyStateWidget(
                   icon: Icons.campaign_outlined,
-                  title: 'No announcements',
-                  message: 'Company announcements will appear here.',
+                  title: 'No announcements'.tr(),
+                  message: 'Company announcements will appear here.'.tr(),
                   onRefresh: () =>
                       ref.read(announcementsProvider.notifier).refresh(),
                   centered: true,

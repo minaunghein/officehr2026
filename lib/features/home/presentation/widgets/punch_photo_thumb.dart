@@ -3,6 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/core/widgets/image_widget.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Square thumbnail of a punch photo (`/api/v1/files/{img_id}`). Tapping it
 /// opens a larger preview.
 class PunchPhotoThumb extends ConsumerWidget {
@@ -18,7 +20,7 @@ class PunchPhotoThumb extends ConsumerWidget {
     final imageUrl = '$baseUrl/api/v1/files/$imgId';
 
     return Tooltip(
-      message: 'View punch photo',
+      message: 'View punch photo'.tr(),
       child: InkWell(
         onTap: () => showPunchPhotoPreview(context, imageUrl: imageUrl),
         borderRadius: BorderRadius.circular(8),

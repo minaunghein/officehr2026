@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:office_hr/core/network/api_exception.dart';
 import 'package:office_hr/core/network/api_service.dart';
 
@@ -132,7 +133,7 @@ class DioApiService implements ApiService {
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
         ApiException(
-          message: 'Something went wrong. Please try again.',
+          message: 'Something went wrong. Please try again.'.tr(),
           type: ApiErrorType.unknown,
           endpoint: path,
           responseBody: error.toString(),
@@ -155,7 +156,7 @@ class DioApiService implements ApiService {
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
         ApiException(
-          message: 'Something went wrong. Please try again.',
+          message: 'Something went wrong. Please try again.'.tr(),
           type: ApiErrorType.parsingError,
           responseBody: data,
         ),

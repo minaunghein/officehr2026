@@ -481,7 +481,7 @@ final class ClockRequestsReviewProvider
 }
 
 String _$clockRequestsReviewHash() =>
-    r'155eb49b1739d9e0a0567d5495fb812e4bc211fd';
+    r'f4029108d23b02e5e514ab1c8fef62f451310fa8';
 
 /// Approver-facing review list, defaulting to the current month. The current
 /// user's own requests are hidden (they can't approve/reject themselves) and
@@ -538,7 +538,7 @@ final class MyClockRequestsProvider
   MyClockRequests create() => MyClockRequests();
 }
 
-String _$myClockRequestsHash() => r'3612a094eeba60e74340b5e94c52ba3eec79d53b';
+String _$myClockRequestsHash() => r'b0ca9f03fb3dffaac5fb68db600aa785e314483e';
 
 /// The signed-in user's own clock requests (`/api/v1/clock-requests`),
 /// supporting status and date-range filters plus owner cancellation.

@@ -15,6 +15,8 @@ import 'package:office_hr/features/home/presentation/widgets/clock_request_card.
 import 'package:office_hr/features/home/presentation/widgets/clock_request_status_filter_bar.dart';
 import 'package:office_hr/features/home/presentation/widgets/date_range_filter_bar.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// The signed-in user's own remote clock in/out requests with status and
 /// date-range filters. Pending requests can be cancelled by their owner.
 class MyClockRequestsTab extends HookConsumerWidget {
@@ -73,9 +75,9 @@ class MyClockRequestsTab extends HookConsumerWidget {
               if (requests.isEmpty) {
                 return EmptyStateWidget(
                   icon: Icons.fact_check_outlined,
-                  title: 'No clock requests',
-                  message:
-                      'Your remote clock in/out requests will appear here.',
+                  title: 'No clock requests'.tr(),
+                  message: 'Your remote clock in/out requests will appear here.'
+                      .tr(),
                   onRefresh: refresh,
                   centered: true,
                   padding: const EdgeInsets.symmetric(
@@ -129,7 +131,7 @@ class _CancelButton extends HookConsumerWidget {
     Future<void> cancel() async {
       final result = await showClockRequestCancelDialog(
         context,
-        punchLabel: request.punchType.label.toLowerCase(),
+        punchLabel: request.punchType.label.tr().toLowerCase(),
       );
       if (result == null || !context.mounted) return;
 
@@ -138,7 +140,7 @@ class _CancelButton extends HookConsumerWidget {
         await ref
             .read(myClockRequestsProvider.notifier)
             .cancel(request.id, note: result.note);
-        SnackbarUtils.showSuccess('Request cancelled');
+        SnackbarUtils.showSuccess('Request cancelled'.tr());
       } catch (error) {
         if (context.mounted) {
           SnackbarUtils.showError(getUserFriendlyError(error));
@@ -170,7 +172,7 @@ class _CancelButton extends HookConsumerWidget {
                 ),
               )
             : const Icon(Icons.cancel_outlined, size: 16),
-        label: const Text('Cancel Request'),
+        label: Text('Cancel Request'.tr()),
       ),
     );
   }

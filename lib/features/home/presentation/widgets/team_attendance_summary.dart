@@ -3,6 +3,8 @@ import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/theme/app_theme.dart';
 import 'package:office_hr/features/home/domain/entities/team_attendance.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class TeamAttendanceSummary extends StatelessWidget {
   const TeamAttendanceSummary({
     super.key,
@@ -63,7 +65,7 @@ class TeamAttendanceSummary extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  departmentTitle.isEmpty ? 'Department' : departmentTitle,
+                  departmentTitle.isEmpty ? 'Department'.tr() : departmentTitle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.titleLarge?.copyWith(
@@ -99,7 +101,9 @@ class TeamAttendanceSummary extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
-                  records.length == 1 ? 'team member' : 'team members',
+                  records.length == 1
+                      ? 'team member'.tr()
+                      : 'team members'.tr(),
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onPrimary.withValues(alpha: 0.85),
                     fontWeight: FontWeight.w600,
@@ -112,17 +116,17 @@ class TeamAttendanceSummary extends StatelessWidget {
           Row(
             children: [
               _Stat(
-                label: 'Present',
+                label: 'Present'.tr(),
                 value: present,
                 color: theme.colorScheme.onPrimary,
               ),
               _Stat(
-                label: 'On Leave',
+                label: 'On Leave'.tr(),
                 value: onLeave,
                 color: theme.colorScheme.onPrimary,
               ),
               _Stat(
-                label: 'Absent',
+                label: 'Absent'.tr(),
                 value: absent,
                 color: theme.colorScheme.onPrimary,
               ),

@@ -3,6 +3,8 @@ import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/features/payslip/domain/entities/payslip.dart';
 import 'package:office_hr/features/payslip/presentation/utils/payslip_formatters.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Employee identity block plus the net pay hero shown at the top of a payslip.
 class PayslipDetailHeader extends StatelessWidget {
   const PayslipDetailHeader({super.key, required this.payslip});
@@ -83,7 +85,7 @@ class PayslipDetailHeader extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'Net pay',
+                  'Net pay'.tr(),
                   style: theme.textTheme.bodyLarge?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.65),
                     fontWeight: FontWeight.w600,
@@ -111,7 +113,14 @@ class PayslipDetailHeader extends StatelessWidget {
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
-                  'Period · ${formatPayslipPeriod(payslip.startDate, payslip.endDate)}',
+                  'Period · {period}'.tr(
+                    namedArgs: {
+                      'period': formatPayslipPeriod(
+                        payslip.startDate,
+                        payslip.endDate,
+                      ),
+                    },
+                  ),
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.75),
                     fontWeight: FontWeight.w600,

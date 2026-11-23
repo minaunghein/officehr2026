@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:office_hr/features/overtime/domain/entities/overtime_request.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Bottom sheet to choose an overtime type (OT1 / OT2 / OT3).
 class OvertimeTypeSelectorSheet extends StatelessWidget {
   const OvertimeTypeSelectorSheet({super.key, this.selected});
@@ -27,7 +29,7 @@ class OvertimeTypeSelectorSheet extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  'Select Overtime Type',
+                  'Select Overtime Type'.tr(),
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -42,7 +44,7 @@ class OvertimeTypeSelectorSheet extends StatelessWidget {
                 color: theme.colorScheme.primary,
               ),
               title: Text(
-                _labels[type] ?? type.value,
+                (_labels[type] ?? type.value).tr(),
                 style: theme.textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),

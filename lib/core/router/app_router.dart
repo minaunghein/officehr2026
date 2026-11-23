@@ -18,6 +18,8 @@ import 'package:office_hr/features/payslip/domain/entities/payslip.dart';
 import 'package:office_hr/features/payslip/presentation/screens/payslip_detail_screen.dart';
 import 'package:office_hr/features/payslip/presentation/screens/payslip_screen.dart';
 import 'package:office_hr/features/public_holiday/presentation/screens/public_holiday_screen.dart';
+import 'package:office_hr/features/settings/presentation/screens/about_screen.dart';
+import 'package:office_hr/features/settings/presentation/screens/settings_screen.dart';
 import 'package:office_hr/features/splash/presentation/screens/splash_screen.dart';
 import 'package:office_hr/features/auth/presentation/screens/company_setup_screen.dart';
 import 'package:office_hr/features/auth/presentation/screens/login_screen.dart';
@@ -35,6 +37,8 @@ import 'package:office_hr/features/overtime/presentation/screens/overtime_screen
 import 'package:office_hr/features/user_profile/presentation/screens/profile_screen.dart';
 import 'package:office_hr/features/user_profile/presentation/screens/qr_scanner_screen.dart';
 import 'package:office_hr/features/user_profile/presentation/screens/user_details_screen.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 
 abstract final class AppRoutes {
   static const splash = '/';
@@ -62,6 +66,8 @@ abstract final class AppRoutes {
   static const teamMemberAttendance = '/team/attendance';
   static const company = '/company';
   static const changePassword = '/change-password';
+  static const settings = '/settings';
+  static const about = '/about';
   static const staffIdCard = '/staff-id-card';
   static const qrScanner = '/scan';
   static const userDetails = '/users';
@@ -108,8 +114,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (_, state) {
           final payslip = state.extra;
           if (payslip is! Payslip) {
-            return const Scaffold(
-              body: Center(child: Text('Payslip not found')),
+            return Scaffold(
+              body: Center(child: Text('Payslip not found'.tr())),
             );
           }
           return PayslipDetailScreen(initial: payslip);
@@ -140,7 +146,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           if (extra is ClockRequest) {
             return ClockRequestDetailScreen(initial: extra);
           }
-          return const Scaffold(body: Center(child: Text('Request not found')));
+          return Scaffold(body: Center(child: Text('Request not found'.tr())));
         },
       ),
       GoRoute(
@@ -160,9 +166,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           if (extra is AttendanceAmendment) {
             return AttendanceAmendmentDetailScreen(initial: extra);
           }
-          return const Scaffold(
-            body: Center(child: Text('Request not found')),
-          );
+          return Scaffold(body: Center(child: Text('Request not found'.tr())));
         },
       ),
       GoRoute(
@@ -203,8 +207,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           if (extra is LeaveRequest) {
             return LeaveRequestDetailScreen(initial: extra);
           }
-          return const Scaffold(
-            body: Center(child: Text('Leave request not found')),
+          return Scaffold(
+            body: Center(child: Text('Leave request not found'.tr())),
           );
         },
       ),
@@ -213,8 +217,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (_, state) {
           final attendance = state.extra;
           if (attendance is! TeamAttendance) {
-            return const Scaffold(
-              body: Center(child: Text('Attendance not found')),
+            return Scaffold(
+              body: Center(child: Text('Attendance not found'.tr())),
             );
           }
           return TeamMemberAttendanceDetailScreen(attendance: attendance);
@@ -223,6 +227,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.company,
         builder: (_, _) => const CompanyScreen(),
+      ),
+      GoRoute(path: AppRoutes.about, builder: (_, _) => const AboutScreen()),
+      GoRoute(
+        path: AppRoutes.settings,
+        builder: (_, _) => const SettingsScreen(),
       ),
       GoRoute(
         path: AppRoutes.changePassword,

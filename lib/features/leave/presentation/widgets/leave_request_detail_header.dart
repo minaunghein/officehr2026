@@ -4,6 +4,8 @@ import 'package:office_hr/features/leave/domain/entities/leave_request.dart';
 import 'package:office_hr/features/leave/presentation/utils/leave_formatters.dart';
 import 'package:office_hr/features/leave/presentation/widgets/leave_status_chip.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class LeaveRequestDetailHeader extends StatelessWidget {
   const LeaveRequestDetailHeader({super.key, required this.request});
 
@@ -45,7 +47,7 @@ class LeaveRequestDetailHeader extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           Text(
-            type?.displayTitle ?? 'Leave',
+            type?.displayTitle ?? 'Leave'.tr(),
             textAlign: TextAlign.center,
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.w800,

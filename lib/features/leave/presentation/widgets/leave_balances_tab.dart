@@ -8,6 +8,8 @@ import 'package:office_hr/features/leave/presentation/providers/leave_providers.
 import 'package:office_hr/features/leave/presentation/widgets/leave_balance_card.dart';
 import 'package:office_hr/features/leave/presentation/widgets/leave_summary_header.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class LeaveBalancesTab extends ConsumerWidget {
   const LeaveBalancesTab({super.key, required this.onRefresh});
 
@@ -22,9 +24,10 @@ class LeaveBalancesTab extends ConsumerWidget {
         if (balances.isEmpty) {
           return EmptyStateWidget(
             icon: Icons.beach_access_outlined,
-            title: 'No leave balance yet',
+            title: 'No leave balance yet'.tr(),
             message:
-                'Your leave entitlement will appear here once it is assigned.',
+                'Your leave entitlement will appear here once it is assigned.'
+                    .tr(),
             onRefresh: onRefresh,
           );
         }
@@ -36,7 +39,7 @@ class LeaveBalancesTab extends ConsumerWidget {
               LeaveSummaryHeader(balances: balances),
               const SizedBox(height: 20),
               Text(
-                'Your Entitlements',
+                'Your Entitlements'.tr(),
                 style: Theme.of(
                   context,
                 ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),

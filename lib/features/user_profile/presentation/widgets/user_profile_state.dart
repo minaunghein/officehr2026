@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class UserProfileEmptyState extends StatelessWidget {
   const UserProfileEmptyState({super.key, required this.message});
 
@@ -59,7 +61,7 @@ class UserProfileErrorState extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              'Unable to load information',
+              'Unable to load information'.tr(),
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
@@ -76,7 +78,7 @@ class UserProfileErrorState extends StatelessWidget {
             FilledButton.icon(
               onPressed: onRetry,
               icon: const Icon(Icons.refresh_rounded),
-              label: const Text('Try again'),
+              label: Text('Try again'.tr()),
             ),
           ],
         ),

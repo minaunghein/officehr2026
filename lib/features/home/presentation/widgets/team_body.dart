@@ -12,6 +12,8 @@ import 'package:office_hr/features/home/presentation/widgets/team_member_card.da
 import 'package:office_hr/features/home/presentation/widgets/team_quick_action.dart';
 import 'package:office_hr/features/home/presentation/widgets/team_quick_actions.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class TeamBody extends ConsumerWidget {
   const TeamBody({
     super.key,
@@ -31,10 +33,10 @@ class TeamBody extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (departmentId.isEmpty) {
-      return const EmptyStateWidget(
+      return EmptyStateWidget(
         icon: Icons.groups_2_outlined,
-        title: 'No department assigned',
-        message: 'Your department information is not available yet.',
+        title: 'No department assigned'.tr(),
+        message: 'Your department information is not available yet.'.tr(),
         centered: true,
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       );
@@ -66,9 +68,9 @@ class TeamBody extends ConsumerWidget {
               Expanded(
                 child: EmptyStateWidget(
                   icon: Icons.groups_2_outlined,
-                  title: 'No attendance yet',
-                  message:
-                      'Today\'s team attendance has not been recorded yet.',
+                  title: 'No attendance yet'.tr(),
+                  message: 'Today\'s team attendance has not been recorded yet.'
+                      .tr(),
                   onRefresh: refresh,
                   centered: true,
                   padding: const EdgeInsets.symmetric(
@@ -95,7 +97,7 @@ class TeamBody extends ConsumerWidget {
               ],
               const SizedBox(height: 20),
               Text(
-                'Members',
+                'Members'.tr(),
                 style: Theme.of(
                   context,
                 ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),

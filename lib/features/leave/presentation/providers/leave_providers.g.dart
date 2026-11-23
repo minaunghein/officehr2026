@@ -463,7 +463,7 @@ final class LeaveBalancesNotifierProvider
 }
 
 String _$leaveBalancesNotifierHash() =>
-    r'3084b8902aeed5cd372dd136406f17e5657360bb';
+    r'e13efedd96ff67885e90b31ebfcd9e48f72a9dd5';
 
 abstract class _$LeaveBalancesNotifier
     extends $AsyncNotifier<List<LeaveBalance>> {
@@ -510,7 +510,7 @@ final class LeaveRequestsNotifierProvider
 }
 
 String _$leaveRequestsNotifierHash() =>
-    r'85d4a71987fd7d4f2ebfc89a392e4acd5b961283';
+    r'c83a8d03e786f901a462dfe3424d4c841f48e7e3';
 
 abstract class _$LeaveRequestsNotifier
     extends $AsyncNotifier<List<LeaveRequest>> {
@@ -558,7 +558,7 @@ final class AllLeaveRequestsNotifierProvider
 }
 
 String _$allLeaveRequestsNotifierHash() =>
-    r'02997b0a9305df3695f60e9a4f26c53752c8259d';
+    r'c31af565a93050a1a1c0d934304ebbc6284102df';
 
 abstract class _$AllLeaveRequestsNotifier
     extends $AsyncNotifier<List<LeaveRequest>> {

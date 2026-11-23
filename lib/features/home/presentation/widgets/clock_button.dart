@@ -14,6 +14,8 @@ import 'package:office_hr/features/home/presentation/utils/clock_photo_upload.da
 import 'package:office_hr/features/home/presentation/widgets/clock_photo_preview_dialog.dart';
 import 'package:office_hr/features/home/presentation/widgets/out_of_range_clock_dialog.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class ClockButton extends HookConsumerWidget {
   const ClockButton({super.key});
 
@@ -79,7 +81,7 @@ class ClockButton extends HookConsumerWidget {
                 // submitted for approval.
                 if (location == null) {
                   SnackbarUtils.showInfo(
-                    'Please wait for location to be available',
+                    'Please wait for location to be available'.tr(),
                   );
                   return;
                 }
@@ -107,7 +109,7 @@ class ClockButton extends HookConsumerWidget {
                 color: Colors.white,
               ),
         label: Text(
-          isClockedIn ? 'Clock Out Now' : 'Clock In Now',
+          isClockedIn ? 'Clock Out Now'.tr() : 'Clock In Now'.tr(),
           style: const TextStyle(
             fontWeight: FontWeight.w600,
             color: Colors.white,

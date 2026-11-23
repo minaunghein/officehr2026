@@ -13,6 +13,8 @@ import 'package:office_hr/features/home/presentation/widgets/attendance_amendmen
 import 'package:office_hr/features/home/presentation/widgets/attendance_status.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Navigation args for the amendment detail screen. `canApprove` is set when
 /// the screen is opened from the approvals queue.
 class AttendanceAmendmentRouteArgs {
@@ -74,7 +76,7 @@ class AttendanceAmendmentDetailScreen extends HookConsumerWidget {
 
     Future<void> decide(bool approve) async {
       final requesterLabel = current.requesterName.trim().isEmpty
-          ? 'this employee'
+          ? 'this employee'.tr()
           : current.requesterName.trim();
       final result = await showAmendmentDecisionDialog(
         context,
@@ -96,7 +98,7 @@ class AttendanceAmendmentDetailScreen extends HookConsumerWidget {
         ref.invalidate(amendmentApprovalsProvider);
         ref.invalidate(pendingAmendmentsBadgeCountProvider);
         SnackbarUtils.showSuccess(
-          approve ? 'Request approved' : 'Request rejected',
+          approve ? 'Request approved'.tr() : 'Request rejected'.tr(),
         );
       } catch (e) {
         if (context.mounted) {
@@ -113,12 +115,8 @@ class AttendanceAmendmentDetailScreen extends HookConsumerWidget {
       appBar: AppBar(
         centerTitle: true,
         title: requesterName.isNotEmpty
-            ? Text(
-                requesterName,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              )
-            : const Text('Request Details'),
+            ? Text(requesterName, maxLines: 1, overflow: TextOverflow.ellipsis)
+            : Text('Request Details'.tr()),
       ),
       bottomNavigationBar: canAct
           ? _ApprovalBar(
@@ -184,7 +182,7 @@ class _ApprovalBar extends StatelessWidget {
                         ),
                       )
                     : const Icon(Icons.close_rounded, size: 18),
-                label: const Text('Reject'),
+                label: Text('Reject'.tr()),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: const Color(0xFFDC2626),
                   disabledForegroundColor: const Color(
@@ -226,7 +224,7 @@ class _ApprovalBar extends StatelessWidget {
                         ),
                       )
                     : const Icon(Icons.check_rounded, size: 18),
-                label: const Text('Approve'),
+                label: Text('Approve'.tr()),
               ),
             ),
           ],
@@ -304,21 +302,21 @@ class _DetailsCard extends StatelessWidget {
     final hasOut = _hasValue(amendment.requestedClockOut);
 
     return _SectionCard(
-      title: 'Request',
+      title: 'Request'.tr(),
       icon: Icons.description_outlined,
       children: [
         if (hasIn)
           _DetailRow(
-            label: 'Requested clock in',
+            label: 'Requested clock in'.tr(),
             value: formatAttendanceTime(amendment.requestedClockIn),
           ),
         if (hasOut)
           _DetailRow(
-            label: 'Requested clock out',
+            label: 'Requested clock out'.tr(),
             value: formatAttendanceTime(amendment.requestedClockOut),
           ),
         _DetailRow(
-          label: 'Reason',
+          label: 'Reason'.tr(),
           value: amendment.reason.isEmpty ? '-' : amendment.reason,
           multiline: true,
         ),
@@ -335,22 +333,22 @@ class _TimelineCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _SectionCard(
-      title: 'Timeline',
+      title: 'Timeline'.tr(),
       icon: Icons.timeline_rounded,
       children: [
         if (amendment.createdAt != null)
           _DetailRow(
-            label: 'Requested',
+            label: 'Requested'.tr(),
             value: formatDateTime(amendment.createdAt!),
           ),
         if (amendment.updatedAt != null)
           _DetailRow(
-            label: 'Last updated',
+            label: 'Last updated'.tr(),
             value: formatDateTime(amendment.updatedAt!),
           ),
         if (amendment.approvedAt != null)
           _DetailRow(
-            label: 'Approved',
+            label: 'Approved'.tr(),
             value: formatDateTime(amendment.approvedAt!),
           ),
       ],
@@ -483,7 +481,7 @@ class _ErrorBanner extends StatelessWidget {
               ),
             ),
           ),
-          TextButton(onPressed: onRetry, child: const Text('Retry')),
+          TextButton(onPressed: onRetry, child: Text('Retry'.tr())),
         ],
       ),
     );

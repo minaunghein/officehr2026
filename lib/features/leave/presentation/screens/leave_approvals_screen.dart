@@ -12,6 +12,8 @@ import 'package:office_hr/features/leave/presentation/providers/leave_providers.
 import 'package:office_hr/features/leave/presentation/screens/leave_request_detail_screen.dart';
 import 'package:office_hr/features/leave/presentation/widgets/leave_approval_card.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 enum _Filter {
   all('All'),
   pending('Pending'),
@@ -51,7 +53,7 @@ class LeaveApprovalsScreen extends HookConsumerWidget {
         ref.read(allLeaveRequestsProvider.notifier).refresh();
 
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: const Text('Leave Requests')),
+      appBar: AppBar(centerTitle: true, title: Text('Leave Requests'.tr())),
       body: Column(
         children: [
           SizedBox(
@@ -64,7 +66,7 @@ class LeaveApprovalsScreen extends HookConsumerWidget {
               itemBuilder: (context, index) {
                 final option = _Filter.values[index];
                 return ChoiceChip(
-                  label: Text(option.label),
+                  label: Text(option.label.tr()),
                   selected: option == filter.value,
                   onSelected: (_) => filter.value = option,
                 );
@@ -159,7 +161,9 @@ class _EmptyView extends StatelessWidget {
               ),
               const SizedBox(height: 14),
               Text(
-                'No ${filter.label.toLowerCase()} requests',
+                'No {filter} requests'.tr(
+                  namedArgs: {'filter': filter.label.tr().toLowerCase()},
+                ),
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
@@ -167,8 +171,8 @@ class _EmptyView extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 hasAny
-                    ? 'Try a different filter.'
-                    : 'New leave requests will show up here.',
+                    ? 'Try a different filter.'.tr()
+                    : 'New leave requests will show up here.'.tr(),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
                 ),

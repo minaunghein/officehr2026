@@ -10,6 +10,8 @@ import 'package:office_hr/features/home/presentation/providers/attendance_amendm
 import 'package:office_hr/features/home/presentation/widgets/attendance_amendment_card.dart';
 import 'package:office_hr/features/home/presentation/widgets/date_range_filter_bar.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 enum _StatusFilter { all, pending, approved, rejected }
 
 extension on _StatusFilter {
@@ -116,7 +118,7 @@ class _FilterBar extends StatelessWidget {
         itemBuilder: (context, index) {
           final filter = _StatusFilter.values[index];
           return ChoiceChip(
-            label: Text(filter.label),
+            label: Text(filter.label.tr()),
             selected: filter == selected,
             onSelected: (_) => onChanged(filter),
           );
@@ -152,14 +154,14 @@ class _AmendmentList extends StatelessWidget {
                 ),
                 const SizedBox(height: 14),
                 Text(
-                  'No attendance requests',
+                  'No attendance requests'.tr(),
                   style: theme.textTheme.titleLarge?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
                   ),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Tap "New Request" to submit a correction.',
+                  'Tap "New Request" to submit a correction.'.tr(),
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
                   ),
@@ -247,7 +249,7 @@ class _ErrorView extends StatelessWidget {
                 ElevatedButton.icon(
                   onPressed: onRetry,
                   icon: const Icon(Icons.refresh_rounded),
-                  label: const Text('Retry'),
+                  label: Text('Retry'.tr()),
                 ),
               ],
             ),

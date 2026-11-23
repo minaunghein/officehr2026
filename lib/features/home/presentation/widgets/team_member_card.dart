@@ -5,6 +5,8 @@ import 'package:office_hr/features/home/presentation/widgets/attendance_status.d
 import 'package:office_hr/features/home/presentation/widgets/team_member_avatar.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class TeamMemberCard extends StatelessWidget {
   const TeamMemberCard({super.key, required this.attendance, this.onTap});
 
@@ -75,11 +77,11 @@ class TeamMemberCard extends StatelessWidget {
                 Row(
                   children: [
                     _TimeBlock(
-                      label: 'Scheduled',
+                      label: 'Scheduled'.tr(),
                       value: _range(scheduled?.clockIn, scheduled?.clockOut),
                     ),
                     _TimeBlock(
-                      label: 'Actual',
+                      label: 'Actual'.tr(),
                       value: _range(actual?.clockIn, actual?.clockOut),
                     ),
                   ],

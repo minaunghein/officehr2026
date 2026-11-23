@@ -3,16 +3,18 @@ import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_punch.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// A reusable, carded timeline of attendance punches.
 class AttendancePunchTimeline extends StatelessWidget {
   const AttendancePunchTimeline({
     super.key,
     required this.punches,
-    this.emptyMessage = 'No punches recorded',
+    this.emptyMessage,
   });
 
   final List<AttendancePunch> punches;
-  final String emptyMessage;
+  final String? emptyMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class AttendancePunchTimeline extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              emptyMessage,
+              emptyMessage ?? 'No punches recorded'.tr(),
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
               ),
@@ -99,12 +101,12 @@ class AttendancePunchTile extends StatelessWidget {
         ? Icons.free_breakfast_rounded
         : Icons.done_rounded;
     final label = isClockIn
-        ? 'Clock In'
+        ? 'Clock In'.tr()
         : isClockOut
-        ? 'Clock Out'
+        ? 'Clock Out'.tr()
         : isBreakStart
-        ? 'Break Start'
-        : 'Break End';
+        ? 'Break Start'.tr()
+        : 'Break End'.tr();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -132,7 +134,9 @@ class AttendancePunchTile extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  punch.isManual ? 'Manual entry' : 'Recorded by device',
+                  punch.isManual
+                      ? 'Manual entry'.tr()
+                      : 'Recorded by device'.tr(),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                   ),

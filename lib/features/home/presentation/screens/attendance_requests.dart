@@ -5,6 +5,8 @@ import 'package:office_hr/features/home/presentation/widgets/attendance_amendmen
 import 'package:office_hr/features/home/presentation/widgets/attendance_amendments_tab.dart';
 import 'package:office_hr/features/home/presentation/widgets/my_clock_requests_tab.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Attendance requests hub: the user's amendment requests and their own
 /// remote clock in/out requests, one per tab.
 class AttendanceRequestsScreen extends HookConsumerWidget {
@@ -27,7 +29,7 @@ class AttendanceRequestsScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Attendance Requests'),
+        title: Text('Attendance Requests'.tr()),
         bottom: TabBar(
           controller: tabController,
           dividerColor: Colors.transparent,
@@ -44,9 +46,9 @@ class AttendanceRequestsScreen extends HookConsumerWidget {
           unselectedLabelStyle: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w700,
           ),
-          tabs: const [
-            Tab(text: 'Amendments'),
-            Tab(text: 'Clock Requests'),
+          tabs: [
+            Tab(text: 'Amendments'.tr()),
+            Tab(text: 'Clock Requests'.tr()),
           ],
         ),
       ),
@@ -54,7 +56,7 @@ class AttendanceRequestsScreen extends HookConsumerWidget {
           ? FloatingActionButton.extended(
               onPressed: () => showAttendanceAmendmentForm(context),
               icon: const Icon(Icons.add_rounded),
-              label: const Text('New Request'),
+              label: Text('New Request'.tr()),
             )
           : null,
       body: TabBarView(

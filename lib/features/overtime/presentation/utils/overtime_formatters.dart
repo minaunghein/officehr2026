@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:office_hr/features/overtime/domain/entities/overtime_request.dart';
 
@@ -16,7 +17,7 @@ const _shortMonths = [
   'Dec',
 ];
 
-String overtimeStatusLabel(OvertimeStatus status) => status.label;
+String overtimeStatusLabel(OvertimeStatus status) => status.label.tr();
 
 Color overtimeStatusColor(OvertimeStatus status) {
   return switch (status) {
@@ -83,7 +84,9 @@ String formatOvertimeHours(double? hours) {
   final trimmed = hours == hours.roundToDouble()
       ? hours.toInt().toString()
       : hours.toStringAsFixed(1);
-  return '$trimmed ${trimmed == '1' ? 'hour' : 'hours'}';
+  return trimmed == '1'
+      ? '1 hour'.tr()
+      : '{count} hours'.tr(namedArgs: {'count': trimmed});
 }
 
 /// `HH:mm` from a [TimeOfDay], for API payloads.

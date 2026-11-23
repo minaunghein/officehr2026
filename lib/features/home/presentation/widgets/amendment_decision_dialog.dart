@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Result of a reviewer's decision on an attendance amendment request.
 class AmendmentDecisionResult {
   const AmendmentDecisionResult(this.status, this.reason);
@@ -46,7 +48,9 @@ class _AmendmentDecisionDialog extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final accent = isApprove ? const Color(0xFF16A34A) : const Color(0xFFDC2626);
+    final accent = isApprove
+        ? const Color(0xFF16A34A)
+        : const Color(0xFFDC2626);
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final controller = useTextEditingController();
 
@@ -72,7 +76,7 @@ class _AmendmentDecisionDialog extends HookWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            isApprove ? 'Approve request' : 'Reject request',
+            isApprove ? 'Approve request'.tr() : 'Reject request'.tr(),
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w800,
             ),
@@ -87,8 +91,20 @@ class _AmendmentDecisionDialog extends HookWidget {
           children: [
             Text(
               isApprove
-                  ? 'Approve the "$typeLabel" amendment from $requesterLabel? The attendance record will be updated.'
-                  : 'Reject the "$typeLabel" amendment from $requesterLabel? This cannot be undone.',
+                  ? 'Approve the "{type}" amendment from {requester}? The attendance record will be updated.'
+                        .tr(
+                          namedArgs: {
+                            'type': typeLabel,
+                            'requester': requesterLabel,
+                          },
+                        )
+                  : 'Reject the "{type}" amendment from {requester}? This cannot be undone.'
+                        .tr(
+                          namedArgs: {
+                            'type': typeLabel,
+                            'requester': requesterLabel,
+                          },
+                        ),
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.75),
               ),
@@ -101,8 +117,8 @@ class _AmendmentDecisionDialog extends HookWidget {
                 minLines: 2,
                 autofocus: true,
                 decoration: InputDecoration(
-                  labelText: 'Reason (required)',
-                  hintText: 'Explain why this request is rejected',
+                  labelText: 'Reason (required)'.tr(),
+                  hintText: 'Explain why this request is rejected'.tr(),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -110,7 +126,7 @@ class _AmendmentDecisionDialog extends HookWidget {
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'A reason is required to reject';
+                    return 'A reason is required to reject'.tr();
                   }
                   return null;
                 },
@@ -122,13 +138,13 @@ class _AmendmentDecisionDialog extends HookWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text('Cancel'.tr()),
         ),
         FilledButton.icon(
           onPressed: submit,
           style: FilledButton.styleFrom(backgroundColor: accent),
           icon: Icon(isApprove ? Icons.check_rounded : Icons.close_rounded),
-          label: Text(isApprove ? 'Approve' : 'Reject'),
+          label: Text(isApprove ? 'Approve'.tr() : 'Reject'.tr()),
         ),
       ],
     );

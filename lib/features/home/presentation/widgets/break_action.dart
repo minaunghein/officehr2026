@@ -10,6 +10,8 @@ import 'package:office_hr/features/home/presentation/providers/location_provider
 import 'package:office_hr/features/home/presentation/state/attendance_state.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class BreakActions extends ConsumerWidget {
   const BreakActions({super.key, required this.shift});
 
@@ -37,7 +39,9 @@ class BreakActions extends ConsumerWidget {
         if (breakLateDurationText.isNotEmpty) ...[
           const SizedBox(height: 4),
           Text(
-            'Break late ($breakLateDurationText)',
+            'Break late ({duration})'.tr(
+              namedArgs: {'duration': breakLateDurationText},
+            ),
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w700,
@@ -77,7 +81,7 @@ class BreakActions extends ConsumerWidget {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Icon(Icons.free_breakfast_rounded),
-                label: const Text('Break Start'),
+                label: Text('Break Start'.tr()),
                 style: OutlinedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -105,7 +109,7 @@ class BreakActions extends ConsumerWidget {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Icon(Icons.done_rounded),
-                label: const Text('Break End'),
+                label: Text('Break End'.tr()),
                 style: OutlinedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -125,12 +129,19 @@ class BreakActions extends ConsumerWidget {
     final breakEndTime = attendanceState.breakEndTime;
 
     if (attendanceState.isBreakInProgress) {
-      return 'Break started at ${formatAttendanceTime(breakStartTime)}';
+      return 'Break started at {time}'.tr(
+        namedArgs: {'time': formatAttendanceTime(breakStartTime)},
+      );
     }
     if (breakStartTime != null && breakStartTime.isNotEmpty) {
-      return 'Last break: ${formatAttendanceTime(breakStartTime)} - ${formatAttendanceTime(breakEndTime)}';
+      return 'Last break: {start} - {end}'.tr(
+        namedArgs: {
+          'start': formatAttendanceTime(breakStartTime),
+          'end': formatAttendanceTime(breakEndTime),
+        },
+      );
     }
-    return 'No break started yet';
+    return 'No break started yet'.tr();
   }
 
   String _getBreakLateDurationText(AttendanceState attendanceState) {
@@ -157,7 +168,9 @@ class BreakActions extends ConsumerWidget {
     final duration = breakEnd.difference(breakStart);
     if (duration.isNegative) return null;
 
-    return 'Total break: ${formatDurationText(duration)}';
+    return 'Total break: {duration}'.tr(
+      namedArgs: {'duration': formatDurationText(duration)},
+    );
   }
 
   Future<void> _runBreakAction(
@@ -168,8 +181,8 @@ class BreakActions extends ConsumerWidget {
     final location = ref.read(currentLocationProvider).value;
     if (location == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please wait for location to be available'),
+        SnackBar(
+          content: Text('Please wait for location to be available'.tr()),
         ),
       );
       return;

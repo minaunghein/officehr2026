@@ -14,6 +14,8 @@ import 'package:office_hr/features/home/presentation/widgets/clock_button.dart';
 import 'package:office_hr/features/home/presentation/widgets/live_clock.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class CurrentStatusCard extends ConsumerWidget {
   const CurrentStatusCard({super.key});
 
@@ -60,12 +62,16 @@ class CurrentStatusCard extends ConsumerWidget {
 
   String _getPrimaryClockTimeText(AttendanceState attendanceState) {
     if (attendanceState.isClockedIn) {
-      return 'Clocked in at ${formatAttendanceTime(attendanceState.clockInTime)}';
+      return 'Clocked in at {time}'.tr(
+        namedArgs: {'time': formatAttendanceTime(attendanceState.clockInTime)},
+      );
     }
 
     if (attendanceState.clockOutTime != null &&
         attendanceState.clockOutTime!.isNotEmpty) {
-      return 'Clocked out at ${formatAttendanceTime(attendanceState.clockOutTime)}';
+      return 'Clocked out at {time}'.tr(
+        namedArgs: {'time': formatAttendanceTime(attendanceState.clockOutTime)},
+      );
     }
 
     return '--:--';
@@ -90,6 +96,15 @@ class CurrentStatusCard extends ConsumerWidget {
       attendanceState.clockInTime,
       shift,
     );
+    final branchTitle = branch?.title.trim();
+    final branchLabel = (branchTitle?.isNotEmpty ?? false)
+        ? branchTitle!
+        : 'No Branch'.tr();
+    final distanceSuffix = hasDistance && !inRange
+        ? ' | {distance}m away'.tr(
+            namedArgs: {'distance': _getDistance(location, branch)},
+          )
+        : '';
 
     return Container(
       decoration: BoxDecoration(
@@ -112,7 +127,7 @@ class CurrentStatusCard extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Current Status',
+            'Current Status'.tr(),
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.w700,
             ),
@@ -159,7 +174,7 @@ class CurrentStatusCard extends ConsumerWidget {
           attendanceState.isRefreshing
               ? ContainerShimmer(width: 100, height: 14)
               : Text(
-                  '${branch?.title ?? 'No Branch'}${hasDistance && !inRange ? ' | ${_getDistance(location, branch)}m away' : ''}',
+                  '$branchLabel$distanceSuffix',
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: hasDistance && inRange ? Colors.green : Colors.red,
                     fontWeight: FontWeight.bold,
@@ -183,7 +198,9 @@ class CurrentStatusCard extends ConsumerWidget {
               const SizedBox(height: 4),
               if (isClockedIn && isLate)
                 Text(
-                  'Late ($lateDurationText)',
+                  'Late ({duration})'.tr(
+                    namedArgs: {'duration': lateDurationText},
+                  ),
                   style: theme.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: const Color(0xFFD32F2F),
@@ -196,7 +213,9 @@ class CurrentStatusCard extends ConsumerWidget {
               if (attendanceState.error != null) ...[
                 const SizedBox(height: AppSizes.spaceBtwItems),
                 Text(
-                  'Error: ${attendanceState.error}',
+                  'Error: {error}'.tr(
+                    namedArgs: {'error': '${attendanceState.error}'},
+                  ),
                   style: const TextStyle(color: Colors.red, fontSize: 12),
                   textAlign: TextAlign.center,
                 ),

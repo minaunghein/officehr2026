@@ -10,6 +10,33 @@ enum OfficeHrTheme {
   bool get isDark => this == dark;
 }
 
+/// What the user picked in Settings: follow the device or force a brightness.
+enum OfficeHrThemeMode {
+  system('system'),
+  light('light'),
+  dark('dark');
+
+  const OfficeHrThemeMode(this.key);
+
+  final String key;
+
+  ThemeMode get themeMode => switch (this) {
+    OfficeHrThemeMode.system => ThemeMode.system,
+    OfficeHrThemeMode.light => ThemeMode.light,
+    OfficeHrThemeMode.dark => ThemeMode.dark,
+  };
+
+  /// Untranslated label; callers apply `.tr()`.
+  String get displayName => switch (this) {
+    OfficeHrThemeMode.system => 'System default',
+    OfficeHrThemeMode.light => 'Light',
+    OfficeHrThemeMode.dark => 'Dark',
+  };
+
+  static OfficeHrThemeMode fromKey(String key) => OfficeHrThemeMode.values
+      .firstWhere((e) => e.key == key, orElse: () => system);
+}
+
 extension OfficeHrThemeExt on OfficeHrTheme {
   String get displayName {
     switch (this) {
@@ -40,12 +67,16 @@ extension OfficeHrThemeExt on OfficeHrTheme {
 class AppTheme {
   AppTheme._();
 
+  /// Built once so Flutter can keep the same ThemeData instance across rebuilds.
+  static final ThemeData light = _lightTheme();
+  static final ThemeData dark = _darkTheme();
+
   static ThemeData getTheme(OfficeHrTheme officeHrTheme) {
     switch (officeHrTheme) {
       case OfficeHrTheme.light:
-        return _lightTheme();
+        return light;
       case OfficeHrTheme.dark:
-        return _darkTheme();
+        return dark;
     }
   }
 

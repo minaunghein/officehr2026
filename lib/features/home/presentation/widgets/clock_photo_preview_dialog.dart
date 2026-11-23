@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Opens the camera (camera source only) and previews the taken photo with
 /// Retake / Use Photo actions at the bottom. Returns the confirmed photo
 /// path, or `null` when the user cancels the camera or closes the preview.
@@ -86,7 +88,7 @@ class _ClockPhotoPreviewDialog extends HookWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text('Retake'),
+                    child: Text('Retake'.tr()),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -99,7 +101,7 @@ class _ClockPhotoPreviewDialog extends HookWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text('Use Photo'),
+                    child: Text('Use Photo'.tr()),
                   ),
                 ),
               ],

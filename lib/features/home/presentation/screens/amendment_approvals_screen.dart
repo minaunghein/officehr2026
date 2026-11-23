@@ -15,6 +15,8 @@ import 'package:office_hr/features/home/presentation/widgets/amendment_decision_
 import 'package:office_hr/features/home/presentation/widgets/attendance_amendment_card.dart';
 import 'package:office_hr/features/home/presentation/widgets/attendance_status.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 enum _Filter {
   all('All', []),
   pending('Pending', ['PENDING']),
@@ -45,7 +47,7 @@ class AmendmentApprovalsScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Attendance Requests'),
+        title: Text('Attendance Requests'.tr()),
       ),
       body: Column(
         children: [
@@ -59,7 +61,7 @@ class AmendmentApprovalsScreen extends HookConsumerWidget {
               itemBuilder: (context, index) {
                 final option = _Filter.values[index];
                 return ChoiceChip(
-                  label: Text(option.label),
+                  label: Text(option.label.tr()),
                   selected: option == filter.value,
                   onSelected: (_) {
                     filter.value = option;
@@ -89,9 +91,14 @@ class AmendmentApprovalsScreen extends HookConsumerWidget {
                 if (amendments.isEmpty) {
                   return EmptyStateWidget(
                     icon: Icons.edit_calendar_outlined,
-                    title: 'No ${filter.value.label.toLowerCase()} requests',
+                    title: 'No {filter} requests'.tr(
+                      namedArgs: {
+                        'filter': filter.value.label.tr().toLowerCase(),
+                      },
+                    ),
                     message:
-                        'Attendance amendment requests from your team will appear here.',
+                        'Attendance amendment requests from your team will appear here.'
+                            .tr(),
                     onRefresh: onRefresh,
                     centered: true,
                     padding: const EdgeInsets.symmetric(
@@ -110,8 +117,8 @@ class AmendmentApprovalsScreen extends HookConsumerWidget {
                     separatorBuilder: (_, _) => const SizedBox(height: 12),
                     itemBuilder: (context, index) {
                       final amendment = amendments[index];
-                      final isPending = amendment.status.toUpperCase() ==
-                          'PENDING';
+                      final isPending =
+                          amendment.status.toUpperCase() == 'PENDING';
                       return AttendanceAmendmentCard(
                         amendment: amendment,
                         showRequester: true,
@@ -150,7 +157,7 @@ class _DecisionButtons extends HookConsumerWidget {
 
     Future<void> decide(bool approve) async {
       final requesterLabel = amendment.requesterName.trim().isEmpty
-          ? 'this employee'
+          ? 'this employee'.tr()
           : amendment.requesterName.trim();
       final result = await showAmendmentDecisionDialog(
         context,
@@ -170,7 +177,7 @@ class _DecisionButtons extends HookConsumerWidget {
               rejectionReason: result.reason,
             );
         SnackbarUtils.showSuccess(
-          approve ? 'Request approved' : 'Request rejected',
+          approve ? 'Request approved'.tr() : 'Request rejected'.tr(),
         );
       } catch (error) {
         if (context.mounted) {
@@ -192,54 +199,54 @@ class _DecisionButtons extends HookConsumerWidget {
       );
     }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        OutlinedButton.icon(
-          onPressed: isDeciding ? null : () => decide(false),
-          style: OutlinedButton.styleFrom(
-            foregroundColor: const Color(0xFFB91C1C),
-            disabledForegroundColor: const Color(
-              0xFFB91C1C,
-            ).withValues(alpha: 0.5),
-            side: BorderSide(
-              color: const Color(0xFFB91C1C).withValues(alpha: 0.4),
+    // IntrinsicWidth forces both buttons to the width of the wider label, so
+    // Reject and Approve always render at the same size.
+    return IntrinsicWidth(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          OutlinedButton.icon(
+            onPressed: isDeciding ? null : () => decide(false),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: const Color(0xFFB91C1C),
+              disabledForegroundColor: const Color(
+                0xFFB91C1C,
+              ).withValues(alpha: 0.5),
+              side: BorderSide(
+                color: const Color(0xFFB91C1C).withValues(alpha: 0.4),
+              ),
+              visualDensity: VisualDensity.compact,
+              minimumSize: const Size(108, 40),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
-            visualDensity: VisualDensity.compact,
-            minimumSize: const Size(108, 40),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+            icon: buttonIcon(
+              'REJECTED',
+              Icons.close_rounded,
+              const Color(0xFFB91C1C).withValues(alpha: isDeciding ? 0.5 : 1),
             ),
+            label: Text('Reject'.tr()),
           ),
-          icon: buttonIcon(
-            'REJECTED',
-            Icons.close_rounded,
-            const Color(0xFFB91C1C).withValues(alpha: isDeciding ? 0.5 : 1),
-          ),
-          label: const Text('Reject'),
-        ),
-        const SizedBox(width: 8),
-        FilledButton.icon(
-          onPressed: isDeciding ? null : () => decide(true),
-          style: FilledButton.styleFrom(
-            backgroundColor: const Color(0xFF15803D),
-            disabledBackgroundColor: const Color(
-              0xFF15803D,
-            ).withValues(alpha: 0.6),
-            visualDensity: VisualDensity.compact,
-            minimumSize: const Size(108, 40),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+          const SizedBox(width: 8),
+          FilledButton.icon(
+            onPressed: isDeciding ? null : () => decide(true),
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFF15803D),
+              disabledBackgroundColor: const Color(
+                0xFF15803D,
+              ).withValues(alpha: 0.6),
+              visualDensity: VisualDensity.compact,
+              minimumSize: const Size(108, 40),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
+            icon: buttonIcon('APPROVED', Icons.check_rounded, Colors.white),
+            label: Text('Approve'.tr(), style: TextStyle(color: Colors.white)),
           ),
-          icon: buttonIcon(
-            'APPROVED',
-            Icons.check_rounded,
-            Colors.white,
-          ),
-          label: const Text('Approve', style: TextStyle(color: Colors.white)),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

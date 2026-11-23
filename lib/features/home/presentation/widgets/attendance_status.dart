@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:office_hr/features/home/domain/entities/today_attendance.dart';
 
@@ -25,12 +26,27 @@ Color attendanceStatusColor(String? status, ThemeData theme) {
 
 /// Turns a backend status such as `HALF_DAY` into a readable `Half Day`.
 String attendanceStatusLabel(String? status) {
-  if (status == null || status.trim().isEmpty) return 'No Record';
-  return status
+  final normalized = status?.trim().toUpperCase() ?? '';
+  final known = switch (normalized) {
+    'PRESENT' => 'Present',
+    'LATE' => 'Late',
+    'ABSENT' => 'Absent',
+    'HALF_DAY' => 'Half Day',
+    'ON_LEAVE' => 'On Leave',
+    'HOLIDAY' => 'Holiday',
+    'REST_DAY' => 'Rest Day',
+    'NOT_CLOCKED_IN' => 'Not Clocked In',
+    'CLOCKED_IN' => 'Clocked In',
+    _ => null,
+  };
+  if (known != null) return known.tr();
+  if (normalized.isEmpty) return 'No Record'.tr();
+  return normalized
       .split('_')
       .where((word) => word.isNotEmpty)
       .map((word) => '${word[0]}${word.substring(1).toLowerCase()}')
-      .join(' ');
+      .join(' ')
+      .tr();
 }
 
 bool _hasValue(String? value) => value != null && value.trim().isNotEmpty;
@@ -61,8 +77,8 @@ bool _isInProgress(TodayAttendance attendance) {
 /// Resolves the label for a day, correcting backend `NOT_CLOCKED_IN` statuses
 /// for days that already have a clock-in but no clock-out yet.
 String resolvedAttendanceStatusLabel(TodayAttendance? attendance) {
-  if (attendance == null) return 'No Record';
-  if (_isInProgress(attendance)) return 'Clocked In';
+  if (attendance == null) return 'No Record'.tr();
+  if (_isInProgress(attendance)) return 'Clocked In'.tr();
   return attendanceStatusLabel(attendance.status);
 }
 

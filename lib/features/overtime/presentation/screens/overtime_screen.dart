@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/features/overtime/presentation/widgets/overtime_requests_tab.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// The user's overtime requests with a shortcut to submit a new one.
 class OvertimeScreen extends ConsumerWidget {
   const OvertimeScreen({super.key});
@@ -11,12 +13,12 @@ class OvertimeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: const Text('Overtime')),
+      appBar: AppBar(centerTitle: true, title: Text('Overtime'.tr())),
       body: const OvertimeRequestsTab(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push(AppRoutes.createOvertime),
         icon: const Icon(Icons.add_rounded),
-        label: const Text('Request'),
+        label: Text('Request'.tr()),
       ),
     );
   }

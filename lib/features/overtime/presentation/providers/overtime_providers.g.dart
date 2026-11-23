@@ -331,7 +331,7 @@ final class OvertimeRequestsProvider
   OvertimeRequests create() => OvertimeRequests();
 }
 
-String _$overtimeRequestsHash() => r'8890d15b95eecc7159d1ecf6f1ee822996ad3cdb';
+String _$overtimeRequestsHash() => r'bdd6ad9329130800cb7525ea081469962803d802';
 
 /// The signed-in user's own overtime requests.
 
@@ -388,7 +388,7 @@ final class AllOvertimeRequestsProvider
 }
 
 String _$allOvertimeRequestsHash() =>
-    r'516617096359dbfc3b17996cbe09ff83d493bc8f';
+    r'e1f5f4a2519f91034debca059df62531b07015fe';
 
 /// Every submitted overtime request, for the approver view.
 

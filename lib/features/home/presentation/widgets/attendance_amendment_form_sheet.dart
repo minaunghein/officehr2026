@@ -11,6 +11,8 @@ import 'package:office_hr/features/home/domain/params/create_amendment_params.da
 import 'package:office_hr/features/home/presentation/providers/attendance_amendment_provider.dart';
 import 'package:office_hr/features/home/presentation/widgets/attendance_status.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 Future<bool> showAttendanceAmendmentForm(BuildContext context) async {
   final submitted = await showModalBottomSheet<bool>(
     context: context,
@@ -50,19 +52,19 @@ class AttendanceAmendmentFormSheet extends HookConsumerWidget {
 
       final session = ref.read(currentUserProvider).value;
       if (session == null) {
-        errorMessage.value = 'Your session has expired. Please log in.';
+        errorMessage.value = 'Your session has expired. Please log in.'.tr();
         return;
       }
       if (reason.text.trim().isEmpty) {
-        errorMessage.value = 'Please provide a reason for the request.';
+        errorMessage.value = 'Please provide a reason for the request.'.tr();
         return;
       }
       if (showClockIn && clockIn.value == null) {
-        errorMessage.value = 'Please select the requested clock in time.';
+        errorMessage.value = 'Please select the requested clock in time.'.tr();
         return;
       }
       if (showClockOut && clockOut.value == null) {
-        errorMessage.value = 'Please select the requested clock out time.';
+        errorMessage.value = 'Please select the requested clock out time.'.tr();
         return;
       }
 
@@ -86,7 +88,7 @@ class AttendanceAmendmentFormSheet extends HookConsumerWidget {
               ),
             );
         if (context.mounted) Navigator.of(context).pop(true);
-        SnackbarUtils.showSuccess('Attendance request submitted.');
+        SnackbarUtils.showSuccess('Attendance request submitted.'.tr());
       } catch (error) {
         errorMessage.value = getUserFriendlyError(error);
       } finally {
@@ -109,20 +111,20 @@ class AttendanceAmendmentFormSheet extends HookConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'New Attendance Request',
+                'New Attendance Request'.tr(),
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w800,
                 ),
               ),
               const SizedBox(height: 4),
               Text(
-                'Request a correction for a missed or incorrect punch.',
+                'Request a correction for a missed or incorrect punch.'.tr(),
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
                 ),
               ),
               const SizedBox(height: 20),
-              _FieldLabel(label: 'Request type'),
+              _FieldLabel(label: 'Request type'.tr()),
               const SizedBox(height: 8),
               DropdownButtonFormField<String>(
                 initialValue: type.value,
@@ -149,7 +151,7 @@ class AttendanceAmendmentFormSheet extends HookConsumerWidget {
                       },
               ),
               const SizedBox(height: 16),
-              _FieldLabel(label: 'Date'),
+              _FieldLabel(label: 'Date'.tr()),
               const SizedBox(height: 8),
               _TapField(
                 icon: Icons.calendar_month_rounded,
@@ -168,14 +170,14 @@ class AttendanceAmendmentFormSheet extends HookConsumerWidget {
               ),
               if (showClockIn || showClockOut) ...[
                 const SizedBox(height: 16),
-                _FieldLabel(label: 'Requested time'),
+                _FieldLabel(label: 'Requested time'.tr()),
                 const SizedBox(height: 8),
                 Row(
                   children: [
                     if (showClockIn)
                       Expanded(
                         child: _TimeField(
-                          label: 'Clock in',
+                          label: 'Clock in'.tr(),
                           value: clockIn.value,
                           enabled: !submitting.value,
                           onPick: (value) => clockIn.value = value,
@@ -185,7 +187,7 @@ class AttendanceAmendmentFormSheet extends HookConsumerWidget {
                     if (showClockOut)
                       Expanded(
                         child: _TimeField(
-                          label: 'Clock out',
+                          label: 'Clock out'.tr(),
                           value: clockOut.value,
                           enabled: !submitting.value,
                           onPick: (value) => clockOut.value = value,
@@ -195,7 +197,7 @@ class AttendanceAmendmentFormSheet extends HookConsumerWidget {
                 ),
               ],
               const SizedBox(height: 16),
-              _FieldLabel(label: 'Reason'),
+              _FieldLabel(label: 'Reason'.tr()),
               const SizedBox(height: 8),
               TextFormField(
                 controller: reason,
@@ -203,8 +205,8 @@ class AttendanceAmendmentFormSheet extends HookConsumerWidget {
                 minLines: 3,
                 enabled: !submitting.value,
                 textCapitalization: TextCapitalization.sentences,
-                decoration: const InputDecoration(
-                  hintText: 'Explain why this correction is needed...',
+                decoration: InputDecoration(
+                  hintText: 'Explain why this correction is needed...'.tr(),
                 ),
               ),
               if (errorMessage.value != null) ...[
@@ -222,7 +224,9 @@ class AttendanceAmendmentFormSheet extends HookConsumerWidget {
                       )
                     : const Icon(Icons.send_rounded),
                 label: Text(
-                  submitting.value ? 'Submitting...' : 'Submit Request',
+                  submitting.value
+                      ? 'Submitting...'.tr()
+                      : 'Submit Request'.tr(),
                 ),
                 style: FilledButton.styleFrom(
                   minimumSize: const Size.fromHeight(52),
@@ -414,7 +418,7 @@ class _TimeField extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  hasValue ? value!.format(context) : 'Select time',
+                  hasValue ? value!.format(context) : 'Select time'.tr(),
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: hasValue

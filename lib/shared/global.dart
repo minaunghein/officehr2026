@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:office_hr/features/auth/domain/entities/auth_session.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/basic_info/basic_info.dart';
@@ -44,7 +45,7 @@ String userDisplayName(Object? user) {
   final email = legacyUser?.email.trim() ?? '';
   if (email.isNotEmpty) return email;
 
-  return 'Unknown User';
+  return 'Unknown User'.tr();
 }
 
 String valueOrDash(String? value) {

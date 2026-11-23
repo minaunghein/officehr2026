@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/features/payslip/domain/entities/payslip.dart';
@@ -17,7 +18,7 @@ class PayslipCard extends StatelessWidget {
     final theme = Theme.of(context);
     final name = payslip.employeeName.trim().isEmpty
         ? (payslip.employeeCode.trim().isEmpty
-              ? 'Employee'
+              ? 'Employee'.tr()
               : payslip.employeeCode)
         : payslip.employeeName;
 
@@ -150,9 +151,10 @@ class PayslipCard extends StatelessWidget {
   String _subtitle(Payslip payslip) {
     final parts = <String>[
       if (payslip.positionTitle.trim().isNotEmpty) payslip.positionTitle,
-      if (payslip.employeeCode.trim().isNotEmpty) 'ID ${payslip.employeeCode}',
+      if (payslip.employeeCode.trim().isNotEmpty)
+        'ID {id}'.tr(namedArgs: {'id': payslip.employeeCode}),
     ];
-    return parts.isEmpty ? 'Employee' : parts.join(' · ');
+    return parts.isEmpty ? 'Employee'.tr() : parts.join(' · ');
   }
 }
 

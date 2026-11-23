@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:office_hr/core/config/api_config.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/assignment/assignment.dart';
@@ -48,19 +49,19 @@ abstract class AuthSession with _$AuthSession {
     if (fullName.isNotEmpty) return fullName;
     if (username.trim().isNotEmpty) return username;
     if (email.trim().isNotEmpty) return email;
-    return 'Unknown User';
+    return 'Unknown User'.tr();
   }
 
   String get positionTitle {
     final title = workInfo?.position?.title.trim() ?? '';
     if (title.isNotEmpty) return title;
     if (role.name.trim().isNotEmpty) return role.name;
-    return 'No Position';
+    return 'No Position'.tr();
   }
 
   String get departmentTitle {
     final title = workInfo?.department?.title.trim() ?? '';
-    return title.isEmpty ? 'No Department' : title;
+    return title.isEmpty ? 'No Department'.tr() : title;
   }
 
   String? get employeeCode {

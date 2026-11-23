@@ -11,6 +11,8 @@ import 'package:office_hr/features/payslip/presentation/widgets/payslip_breakdow
 import 'package:office_hr/features/payslip/presentation/widgets/payslip_detail_header.dart';
 import 'package:office_hr/features/payslip/presentation/widgets/payslip_summary_row.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class PayslipDetailScreen extends ConsumerWidget {
   const PayslipDetailScreen({super.key, required this.initial});
 
@@ -22,26 +24,26 @@ class PayslipDetailScreen extends ConsumerWidget {
     final payslip = _resolveLatest(payslips, initial);
 
     final earnings = <Widget>[
-      _row('Basic salary', payslip.basicSalary),
-      _row('Attendance', payslip.attendanceAmount),
-      _row('In time', payslip.inTimeAmount),
-      _row('Overtime', payslip.overtimeTotal),
-      _row('Off day', payslip.offDayAmount),
-      _row('Meal', payslip.mealAmount),
-      _row('Phone bill', payslip.phoneBillAmount),
-      _row('Travelling', payslip.travellingAmount),
-      _row('Benefits', payslip.benefitAmount),
-      _row('Bonus', payslip.bonusAmount),
+      _row('Basic salary'.tr(), payslip.basicSalary),
+      _row('Attendance'.tr(), payslip.attendanceAmount),
+      _row('In time'.tr(), payslip.inTimeAmount),
+      _row('Overtime'.tr(), payslip.overtimeTotal),
+      _row('Off day'.tr(), payslip.offDayAmount),
+      _row('Meal'.tr(), payslip.mealAmount),
+      _row('Phone bill'.tr(), payslip.phoneBillAmount),
+      _row('Travelling'.tr(), payslip.travellingAmount),
+      _row('Benefits'.tr(), payslip.benefitAmount),
+      _row('Bonus'.tr(), payslip.bonusAmount),
     ];
 
     final deductions = <Widget>[
-      _row('Income tax', payslip.taxAmount),
-      _row('SSB', payslip.ssbAmount),
-      _row('Late fine', payslip.lateAmount),
-      _row('Shortage', payslip.underAmount),
-      _row('Unpaid leave', payslip.unpaidLeaveAmount),
-      _row('Unpaid deduction', payslip.unpaidDeductionAmount),
-      _row('Loan', payslip.loanAmount),
+      _row('Income tax'.tr(), payslip.taxAmount),
+      _row('SSB'.tr(), payslip.ssbAmount),
+      _row('Late fine'.tr(), payslip.lateAmount),
+      _row('Shortage'.tr(), payslip.underAmount),
+      _row('Unpaid leave'.tr(), payslip.unpaidLeaveAmount),
+      _row('Unpaid deduction'.tr(), payslip.unpaidDeductionAmount),
+      _row('Loan'.tr(), payslip.loanAmount),
     ];
 
     return Scaffold(
@@ -55,13 +57,13 @@ class PayslipDetailScreen extends ConsumerWidget {
           PayslipDetailHeader(payslip: payslip),
           const SizedBox(height: 16),
           PayslipBreakdownCard(
-            title: 'Earnings',
+            title: 'Earnings'.tr(),
             icon: Icons.trending_up_rounded,
             accent: const Color(0xFF16A34A),
             items: earnings,
             totals: [
               PayslipSummaryRow(
-                label: 'Gross earnings',
+                label: 'Gross earnings'.tr(),
                 value: formatMoney(payslip.totalEarnings),
                 highlight: true,
               ),
@@ -69,13 +71,13 @@ class PayslipDetailScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 16),
           PayslipBreakdownCard(
-            title: 'Deductions',
+            title: 'Deductions'.tr(),
             icon: Icons.trending_down_rounded,
             accent: const Color(0xFFDC2626),
             items: deductions,
             totals: [
               PayslipSummaryRow(
-                label: 'Total deductions',
+                label: 'Total deductions'.tr(),
                 value: formatMoney(payslip.totalDeductions),
                 highlight: true,
               ),
@@ -83,23 +85,23 @@ class PayslipDetailScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 16),
           DetailSectionCard(
-            title: 'Summary',
+            title: 'Summary'.tr(),
             icon: Icons.receipt_long_outlined,
             children: [
               DetailRow(
-                label: 'Taxable income',
+                label: 'Taxable income'.tr(),
                 value: formatMoney(payslip.taxableIncome),
               ),
               DetailRow(
-                label: 'Gross earnings',
+                label: 'Gross earnings'.tr(),
                 value: formatMoney(payslip.totalEarnings),
               ),
               DetailRow(
-                label: 'Total deductions',
+                label: 'Total deductions'.tr(),
                 value: formatMoney(payslip.totalDeductions),
               ),
               PayslipSummaryRow(
-                label: 'Net pay',
+                label: 'Net pay'.tr(),
                 value: formatMoney(payslip.netSalary),
                 highlight: true,
                 emphasize: true,
@@ -108,17 +110,20 @@ class PayslipDetailScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 16),
           DetailSectionCard(
-            title: 'Period',
+            title: 'Period'.tr(),
             icon: Icons.event_outlined,
             children: [
               DetailRow(
-                label: 'From',
+                label: 'From'.tr(),
                 value: formatPayslipDate(payslip.startDate),
               ),
-              DetailRow(label: 'To', value: formatPayslipDate(payslip.endDate)),
+              DetailRow(
+                label: 'To'.tr(),
+                value: formatPayslipDate(payslip.endDate),
+              ),
               if (payslip.createdAt != null)
                 DetailRow(
-                  label: 'Issued',
+                  label: 'Issued'.tr(),
                   value: formatPayslipDate(payslip.createdAt),
                 ),
             ],

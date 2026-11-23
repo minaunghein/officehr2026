@@ -4,12 +4,16 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/router/app_router.dart';
+import 'package:office_hr/core/widgets/detail_page_style.dart';
 import 'package:office_hr/features/auth/domain/entities/auth_session.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/address/address.dart';
 import 'package:office_hr/features/user_profile/presentation/widgets/profile_image_avatar.dart';
 import 'package:office_hr/features/user_profile/presentation/widgets/record_header.dart';
+import 'package:office_hr/features/user_profile/presentation/widgets/record_section.dart';
 import 'package:office_hr/features/user_profile/presentation/widgets/user_profile_section.dart';
 import 'package:office_hr/shared/date_formatter.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 
 enum _ProfileTab { employment, personal, account }
 
@@ -21,7 +25,8 @@ class ProfileContent extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final selected = useState(_ProfileTab.employment);
+    final tabs = useTabController(initialLength: _ProfileTab.values.length);
+    final selected = _ProfileTab.values[useListenable(tabs).index];
     final employee = session.employee;
     final work = employee?.workInfo;
     final personal = employee?.basicInfo;
@@ -32,262 +37,189 @@ class ProfileContent extends HookConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        RecordHeader(
-          label: 'Employee profile',
-          title: session.displayName,
-          subtitle: session.positionTitle,
-          avatar: ProfileImageAvatar(session: session),
-          tags: [
-            if (session.employeeCode != null)
-              RecordTag(
-                label: session.employeeCode!,
-                icon: Icons.badge_outlined,
-              ),
-            RecordTag(
-              label: session.companyName,
-              icon: Icons.business_outlined,
-            ),
-            if (work?.employmentStatus.trim().isNotEmpty == true)
-              RecordTag(label: _readable(work!.employmentStatus)),
-          ],
-          footer: Align(
-            alignment: Alignment.centerLeft,
-            child: TextButton.icon(
-              onPressed: () => context.push(AppRoutes.staffIdCard),
-              icon: Icon(
-                Icons.badge_outlined,
-                size: AppSizes.iconMd,
-                color: theme.colorScheme.onPrimary,
-              ),
-              label: Text(
-                'View digital staff ID',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onPrimary,
-                ),
-              ),
-            ),
-          ),
-        ),
+        _ProfileIdentity(session: session),
         const SizedBox(height: AppSizes.lg),
-        Wrap(
-          spacing: AppSizes.xs,
-          runSpacing: AppSizes.xs,
-          children: _ProfileTab.values.map((tab) {
-            final label = switch (tab) {
-              _ProfileTab.employment => 'Employment',
-              _ProfileTab.personal => 'Personal',
-              _ProfileTab.account => 'Account',
-            };
-            return ChoiceChip(
-              label: Text(label),
-              selected: selected.value == tab,
-              showCheckmark: false,
-              selectedColor: theme.colorScheme.primary.withValues(alpha: 0.10),
-              backgroundColor: theme.colorScheme.surface,
-              labelStyle: theme.textTheme.labelLarge?.copyWith(
-                color: selected.value == tab
-                    ? theme.colorScheme.primary
-                    : theme.colorScheme.onSurfaceVariant,
-                fontWeight: FontWeight.w600,
-              ),
-              side: BorderSide(
-                color: selected.value == tab
-                    ? theme.colorScheme.primary.withValues(alpha: 0.3)
-                    : theme.colorScheme.onSurface.withValues(alpha: 0.12),
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppSizes.borderRadiusMd),
-              ),
-              onSelected: (_) => selected.value = tab,
-            );
-          }).toList(),
-        ),
+        _ProfileTabs(controller: tabs),
         const SizedBox(height: AppSizes.lg),
-        if (selected.value == _ProfileTab.employment) ...[
-          if (work != null)
-            UserProfileSection(
-              title: 'Employment details',
-              icon: Icons.work_outline_rounded,
+        if (selected == _ProfileTab.employment)
+          RecordColumns(
+            dividerOnStack: true,
+            primary: work != null
+                ? RecordSection(
+                    title: 'Employment details'.tr(),
+                    showRule: false,
+                    children: [
+                      RecordFields(
+                        children: [
+                          RecordField(
+                            label: 'Department'.tr(),
+                            value: work.department?.title,
+                          ),
+                          RecordField(
+                            label: 'Branch'.tr(),
+                            value: work.branch?.title,
+                          ),
+                          RecordField(
+                            label: 'Shift'.tr(),
+                            value: work.shift?.title,
+                          ),
+                          RecordField(
+                            label: 'Employment status'.tr(),
+                            value: _readable(work.employmentStatus),
+                          ),
+                          RecordField(
+                            label: 'Employment type'.tr(),
+                            value: _readable(work.employmentType),
+                          ),
+                          RecordField(
+                            label: 'Work mode'.tr(),
+                            value: _readable(work.workMode),
+                          ),
+                          RecordField(
+                            label: 'Start date'.tr(),
+                            value: formatDateString(work.employmentDate),
+                          ),
+                          RecordField(
+                            label: 'Probation end'.tr(),
+                            value: formatDateString(work.probationEndDate),
+                          ),
+                          RecordField(label: 'Grade'.tr(), value: work.grade),
+                          RecordField(
+                            label: 'Card ID'.tr(),
+                            value: work.cardId,
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                : RecordSection(
+                    title: 'Employment details'.tr(),
+                    showRule: false,
+                    children: [
+                      Text(
+                        'No employment record is linked to this account.'.tr(),
+                      ),
+                    ],
+                  ),
+            secondary: RecordSection(
+              title: 'Contact information'.tr(),
+              showRule: false,
               children: [
-                UserProfileFieldGrid(
+                RecordFields(
+                  singleColumn: true,
                   children: [
-                    UserProfileInfoRow(
-                      label: 'Employee code',
-                      value: work.employeeCode,
+                    RecordField(
+                      label: 'Email'.tr(),
+                      value: contact?.email.trim().isNotEmpty == true
+                          ? contact!.email
+                          : session.email,
                     ),
-                    UserProfileInfoRow(
-                      label: 'Department',
-                      value: work.department?.title,
+                    RecordField(label: 'Phone'.tr(), value: contact?.phone),
+                    RecordField(
+                      label: 'Current address'.tr(),
+                      value: _address(contact?.currentAddress),
                     ),
-                    UserProfileInfoRow(
-                      label: 'Position',
-                      value: work.position?.title,
+                    RecordField(
+                      label: 'Permanent address'.tr(),
+                      value: _address(contact?.permanentAddress),
                     ),
-                    UserProfileInfoRow(
-                      label: 'Branch',
-                      value: work.branch?.title,
-                    ),
-                    UserProfileInfoRow(
-                      label: 'Shift',
-                      value: work.shift?.title,
-                    ),
-                    UserProfileInfoRow(
-                      label: 'Employment status',
-                      value: _readable(work.employmentStatus),
-                    ),
-                    UserProfileInfoRow(
-                      label: 'Employment type',
-                      value: _readable(work.employmentType),
-                    ),
-                    UserProfileInfoRow(
-                      label: 'Work mode',
-                      value: _readable(work.workMode),
-                    ),
-                    UserProfileInfoRow(
-                      label: 'Start date',
-                      value: formatDateString(work.employmentDate),
-                    ),
-                    UserProfileInfoRow(
-                      label: 'Probation end',
-                      value: formatDateString(work.probationEndDate),
-                    ),
-                    UserProfileInfoRow(label: 'Grade', value: work.grade),
-                    UserProfileInfoRow(label: 'Card ID', value: work.cardId),
                   ],
                 ),
               ],
-            )
-          else
-            const UserProfileSection(
-              title: 'Employment details',
-              icon: Icons.work_outline_rounded,
-              children: [
-                Text('No employment record is linked to this account.'),
-              ],
             ),
-          const SizedBox(height: AppSizes.md),
-          UserProfileSection(
-            title: 'Contact information',
-            icon: Icons.contact_mail_outlined,
-            children: [
-              UserProfileFieldGrid(
-                children: [
-                  UserProfileInfoRow(
-                    label: 'Email',
-                    value: contact?.email.trim().isNotEmpty == true
-                        ? contact!.email
-                        : session.email,
-                  ),
-                  UserProfileInfoRow(label: 'Phone', value: contact?.phone),
-                ],
-              ),
-              if (contact != null) ...[
-                const Divider(height: AppSizes.lg),
-                UserProfileInfoRow(
-                  label: 'Current address',
-                  value: _address(contact.currentAddress),
-                ),
-                UserProfileInfoRow(
-                  label: 'Permanent address',
-                  value: _address(contact.permanentAddress),
-                ),
-              ],
-            ],
           ),
-        ],
-        if (selected.value == _ProfileTab.personal) ...[
-          UserProfileSection(
-            title: 'Personal information',
-            icon: Icons.person_outline_rounded,
+        if (selected == _ProfileTab.personal) ...[
+          RecordSection(
+            title: 'Personal information'.tr(),
+            showRule: false,
             children: personal == null
-                ? [const Text('No personal information is available.')]
+                ? [Text('No personal information is available.'.tr())]
                 : [
-                    UserProfileFieldGrid(
+                    RecordFields(
                       children: [
-                        UserProfileInfoRow(
-                          label: 'First name',
+                        RecordField(
+                          label: 'First name'.tr(),
                           value: personal.firstName,
                         ),
-                        UserProfileInfoRow(
-                          label: 'Last name',
+                        RecordField(
+                          label: 'Last name'.tr(),
                           value: personal.lastName,
                         ),
-                        UserProfileInfoRow(
-                          label: 'Gender',
+                        RecordField(
+                          label: 'Gender'.tr(),
                           value: _readable(personal.gender),
                         ),
-                        UserProfileInfoRow(
-                          label: 'Date of birth',
+                        RecordField(
+                          label: 'Date of birth'.tr(),
                           value: formatDateString(personal.dateOfBirth),
                         ),
-                        UserProfileInfoRow(
-                          label: 'Marital status',
+                        RecordField(
+                          label: 'Marital status'.tr(),
                           value: _readable(personal.maritalStatus),
                         ),
-                        UserProfileInfoRow(
-                          label: 'Nationality',
+                        RecordField(
+                          label: 'Nationality'.tr(),
                           value: personal.nationality,
                         ),
-                        UserProfileInfoRow(
-                          label: 'Religion',
+                        RecordField(
+                          label: 'Religion'.tr(),
                           value: personal.religion,
                         ),
-                        UserProfileInfoRow(
-                          label: 'Ethnicity',
+                        RecordField(
+                          label: 'Ethnicity'.tr(),
                           value: personal.ethnicity,
                         ),
-                        UserProfileInfoRow(
-                          label: 'Blood type',
+                        RecordField(
+                          label: 'Blood type'.tr(),
                           value: personal.bloodType,
                         ),
-                        UserProfileInfoRow(
-                          label: 'Height',
+                        RecordField(
+                          label: 'Height'.tr(),
                           value: personal.height == null
                               ? null
                               : '${personal.height} cm',
                         ),
-                        UserProfileInfoRow(
-                          label: 'Weight',
+                        RecordField(
+                          label: 'Weight'.tr(),
                           value: personal.weight == null
                               ? null
                               : '${personal.weight} kg',
                         ),
                       ],
                     ),
-                    UserProfileInfoRow(
-                      label: 'NRC',
-                      value: nrc == null
-                          ? null
-                          : '${nrc.region}/${nrc.township}(${nrc.type})${nrc.numbers}',
-                    ),
+                    if (nrc != null)
+                      RecordField(
+                        label: 'NRC'.tr(),
+                        value:
+                            '${nrc.region}/${nrc.township}(${nrc.type})${nrc.numbers}',
+                      ),
                   ],
           ),
           if (family != null) ...[
-            const SizedBox(height: AppSizes.md),
-            UserProfileSection(
-              title: 'Family and background',
-              icon: Icons.family_restroom_outlined,
+            const SizedBox(height: AppSizes.xl),
+            RecordSection(
+              title: 'Family and background'.tr(),
               children: [
-                UserProfileFieldGrid(
+                RecordFields(
                   children: [
-                    UserProfileInfoRow(
-                      label: 'Father’s name',
+                    RecordField(
+                      label: 'Father’s name'.tr(),
                       value: family.fatherName,
                     ),
-                    UserProfileInfoRow(
-                      label: 'Mother’s name',
+                    RecordField(
+                      label: 'Mother’s name'.tr(),
                       value: family.motherName,
                     ),
-                    UserProfileInfoRow(
-                      label: 'Family members',
+                    RecordField(
+                      label: 'Family members'.tr(),
                       value: family.numberOfFamilyNumber.toString(),
                     ),
-                    UserProfileInfoRow(
-                      label: 'Education records',
+                    RecordField(
+                      label: 'Education records'.tr(),
                       value: employee!.education.length.toString(),
                     ),
-                    UserProfileInfoRow(
-                      label: 'Work experience records',
+                    RecordField(
+                      label: 'Work experience records'.tr(),
                       value: employee.workExperience.length.toString(),
                     ),
                   ],
@@ -296,37 +228,159 @@ class ProfileContent extends HookConsumerWidget {
             ),
           ],
         ],
-        if (selected.value == _ProfileTab.account)
-          UserProfileSection(
-            title: 'Account details',
-            icon: Icons.manage_accounts_outlined,
+        if (selected == _ProfileTab.account)
+          RecordSection(
+            title: 'Account details'.tr(),
+            showRule: false,
             children: [
-              UserProfileFieldGrid(
+              RecordFields(
                 children: [
-                  UserProfileInfoRow(
-                    label: 'Username',
-                    value: session.username,
-                  ),
-                  UserProfileInfoRow(label: 'Role', value: session.role.name),
-                  UserProfileInfoRow(label: 'Email', value: session.email),
-                  UserProfileInfoRow(
-                    label: 'Company',
+                  RecordField(label: 'Username'.tr(), value: session.username),
+                  RecordField(label: 'Role'.tr(), value: session.role.name),
+                  RecordField(label: 'Email'.tr(), value: session.email),
+                  RecordField(
+                    label: 'Company'.tr(),
                     value: session.companyName,
                   ),
                 ],
               ),
-              const Divider(height: AppSizes.xxl),
+              const SizedBox(height: AppSizes.md),
+              Divider(height: 1, color: theme.detailRule),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.lock_outline_rounded),
-                title: const Text('Change password'),
-                subtitle: const Text('Update your account password'),
-                trailing: const Icon(Icons.chevron_right_rounded),
+                title: Text('Change password'.tr()),
+                trailing: const Icon(
+                  Icons.chevron_right_rounded,
+                  size: AppSizes.iconMd,
+                ),
                 onTap: () => context.push(AppRoutes.changePassword),
               ),
             ],
           ),
       ],
+    );
+  }
+}
+
+class _ProfileIdentity extends StatelessWidget {
+  const _ProfileIdentity({required this.session});
+
+  final AuthSession session;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final position = session.workInfo?.position?.title.trim();
+    final code = session.employeeCode?.trim();
+    final meta = [
+      if (session.companyName.trim().isNotEmpty) session.companyName,
+      if (code != null && code.isNotEmpty)
+        'ID: {id}'.tr(namedArgs: {'id': code}),
+    ].join(' · ');
+    final avatar = ProfileImageAvatar(session: session);
+    final identity = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        RecordHeading(session.displayName),
+        if (position != null && position.isNotEmpty) ...[
+          const SizedBox(height: AppSizes.xxxs),
+          Text(position, style: theme.textTheme.bodyMedium),
+        ],
+        if (meta.isNotEmpty) ...[
+          const SizedBox(height: AppSizes.xxxs),
+          Text(
+            meta,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.detailMuted,
+              fontSize: 12,
+              height: 1.4,
+              letterSpacing: 0,
+            ),
+          ),
+        ],
+        TextButton.icon(
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            alignment: AlignmentDirectional.centerStart,
+          ),
+          onPressed: () => context.push(AppRoutes.staffIdCard),
+          icon: const Icon(Icons.badge_outlined, size: AppSizes.iconSm),
+          label: Text('View digital staff ID'.tr()),
+        ),
+      ],
+    );
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final scale = MediaQuery.textScalerOf(context).scale(16) / 16;
+        if (constraints.maxWidth < 108 + 160 * scale) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              avatar,
+              const SizedBox(height: AppSizes.sm),
+              identity,
+            ],
+          );
+        }
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            avatar,
+            const SizedBox(width: AppSizes.md),
+            Expanded(child: identity),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _ProfileTabs extends StatelessWidget {
+  const _ProfileTabs({required this.controller});
+
+  final TabController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final labels = ['Employment'.tr(), 'Personal'.tr(), 'Account'.tr()];
+    final style = theme.textTheme.bodyMedium?.copyWith(
+      fontWeight: FontWeight.w600,
+      letterSpacing: 0,
+    );
+    const horizontalPadding = AppSizes.xs;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final painter = TextPainter(
+          textDirection: Directionality.of(context),
+          textScaler: MediaQuery.textScalerOf(context),
+        );
+        var scrollable = false;
+        for (final label in labels) {
+          painter.text = TextSpan(text: label, style: style);
+          painter.layout();
+          if (painter.width + 2 * horizontalPadding >
+              constraints.maxWidth / labels.length) {
+            scrollable = true;
+            break;
+          }
+        }
+        painter.dispose();
+        return TabBar(
+          controller: controller,
+          isScrollable: scrollable,
+          tabAlignment: scrollable ? TabAlignment.start : TabAlignment.fill,
+          labelPadding: const EdgeInsets.symmetric(
+            horizontal: horizontalPadding,
+          ),
+          labelColor: theme.colorScheme.primary,
+          unselectedLabelColor: theme.detailMuted,
+          labelStyle: style,
+          indicatorSize: TabBarIndicatorSize.label,
+          dividerColor: theme.detailRule,
+          tabs: [for (final label in labels) Tab(text: label)],
+        );
+      },
     );
   }
 }
@@ -340,11 +394,12 @@ String _readable(String value) => value
 
 String? _address(Address? address) {
   if (address == null) return null;
-  return [
+  final value = [
     address.street,
     address.city,
     address.state,
     address.country,
     address.postalCode,
   ].where((part) => part.trim().isNotEmpty).join(', ');
+  return value.isEmpty ? null : value;
 }

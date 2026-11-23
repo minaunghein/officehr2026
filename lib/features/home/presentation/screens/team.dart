@@ -10,6 +10,8 @@ import 'package:office_hr/features/home/presentation/widgets/team_quick_action.d
 import 'package:office_hr/features/leave/presentation/providers/leave_providers.dart';
 import 'package:office_hr/features/overtime/presentation/providers/overtime_providers.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class TeamScreen extends ConsumerWidget {
   const TeamScreen({super.key});
 
@@ -39,25 +41,25 @@ class TeamScreen extends ConsumerWidget {
     final quickActions = <TeamQuickAction>[
       TeamQuickAction(
         icon: Icons.beach_access_outlined,
-        label: 'Leave Requests',
+        label: 'Leave Requests'.tr(),
         badgeCount: pendingLeaveCount,
         onTap: () => context.push(AppRoutes.leaveRequests),
       ),
       TeamQuickAction(
         icon: Icons.edit_calendar_outlined,
-        label: 'Attendance Requests',
+        label: 'Attendance Requests'.tr(),
         badgeCount: pendingAmendmentCount,
         onTap: () => context.push(AppRoutes.amendmentRequests),
       ),
       TeamQuickAction(
         icon: Icons.gps_fixed_rounded,
-        label: 'Clock Requests',
+        label: 'Clock Requests'.tr(),
         badgeCount: pendingClockCount,
         onTap: () => context.push(AppRoutes.clockRequests),
       ),
       TeamQuickAction(
         icon: Icons.timer_outlined,
-        label: 'Overtime Requests',
+        label: 'Overtime Requests'.tr(),
         badgeCount: pendingOvertimeCount,
         onTap: () => context.push(AppRoutes.overtimeRequests),
       ),

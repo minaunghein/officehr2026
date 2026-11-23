@@ -7,6 +7,8 @@ import 'package:office_hr/features/leave/presentation/providers/leave_providers.
 import 'package:office_hr/features/leave/presentation/widgets/leave_balances_tab.dart';
 import 'package:office_hr/features/leave/presentation/widgets/leave_requests_tab.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class LeaveScreen extends HookConsumerWidget {
   const LeaveScreen({super.key});
 
@@ -24,15 +26,15 @@ class LeaveScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Leave'),
+        title: Text('Leave'.tr()),
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48),
           child: TabBar(
             controller: tabController,
-            tabs: const [
-              Tab(text: 'Balances'),
-              Tab(text: 'My Requests'),
+            tabs: [
+              Tab(text: 'Balances'.tr()),
+              Tab(text: 'My Requests'.tr()),
             ],
 
             labelColor: theme.colorScheme.primary,
@@ -63,7 +65,7 @@ class LeaveScreen extends HookConsumerWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push(AppRoutes.createLeave),
         icon: const Icon(Icons.add_rounded),
-        label: const Text('Request'),
+        label: Text('Request'.tr()),
       ),
     );
   }

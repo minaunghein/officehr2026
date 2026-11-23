@@ -1,4 +1,5 @@
 import 'package:office_hr/core/network/network_providers.dart';
+import 'package:office_hr/core/utils/async_reload.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/features/home/data/datasources/clock_request_remote_datasource.dart';
 import 'package:office_hr/features/home/data/repositories/clock_request_repository_impl.dart';
@@ -150,19 +151,21 @@ class ClockRequestsReview extends _$ClockRequestsReview {
 
   Future<void> setStatusFilter(List<ClockRequestStatus> statuses) async {
     _statuses = statuses;
-    await refresh();
+    await _reload(filterChanged: true);
   }
 
   Future<void> setDateFilter({DateTime? start, DateTime? end}) async {
     _start = start;
     _end = end;
-    await refresh();
+    await _reload(filterChanged: true);
   }
 
-  Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(_fetch);
-    ref.invalidate(pendingClockRequestsBadgeCountProvider);
+  Future<void> refresh() => _reload();
+
+  Future<void> _reload({bool filterChanged = false}) async {
+    ref.invalidateSelf(asReload: filterChanged);
+    await settleReload(future);
+    if (ref.mounted) ref.invalidate(pendingClockRequestsBadgeCountProvider);
   }
 
   Future<ClockRequest> decide(
@@ -210,19 +213,21 @@ class MyClockRequests extends _$MyClockRequests {
 
   Future<void> setStatusFilter(List<ClockRequestStatus> statuses) async {
     _statuses = statuses;
-    await refresh();
+    await _reload(filterChanged: true);
   }
 
   Future<void> setDateFilter({DateTime? start, DateTime? end}) async {
     _start = start;
     _end = end;
-    await refresh();
+    await _reload(filterChanged: true);
   }
 
-  Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(_fetch);
-    ref.invalidate(pendingClockRequestsBadgeCountProvider);
+  Future<void> refresh() => _reload();
+
+  Future<void> _reload({bool filterChanged = false}) async {
+    ref.invalidateSelf(asReload: filterChanged);
+    await settleReload(future);
+    if (ref.mounted) ref.invalidate(pendingClockRequestsBadgeCountProvider);
   }
 
   Future<ClockRequest> cancel(String id, {String? note}) async {

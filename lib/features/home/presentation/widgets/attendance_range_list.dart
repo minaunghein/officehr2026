@@ -5,6 +5,8 @@ import 'package:office_hr/features/home/presentation/widgets/attendance_punch_ti
 import 'package:office_hr/features/home/presentation/widgets/attendance_status.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Renders attendance records for a selected date range.
 class AttendanceRangeList extends StatelessWidget {
   const AttendanceRangeList({super.key, required this.records});
@@ -35,7 +37,7 @@ class AttendanceRangeList extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              'No attendance in this range',
+              'No attendance in this range'.tr(),
               style: theme.textTheme.titleSmall?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
@@ -65,19 +67,19 @@ class AttendanceRangeList extends StatelessWidget {
           child: Row(
             children: [
               _SummaryItem(
-                label: 'PRESENT',
+                label: 'PRESENT'.tr(),
                 value: '$presentDays',
                 theme: theme,
               ),
               _divider(theme),
               _SummaryItem(
-                label: 'TOTAL HOURS',
+                label: 'TOTAL HOURS'.tr(),
                 value: _duration(totalWorkMinutes),
                 theme: theme,
               ),
               _divider(theme),
               _SummaryItem(
-                label: 'DAYS',
+                label: 'DAYS'.tr(),
                 value: '${records.length}',
                 theme: theme,
               ),
@@ -171,7 +173,7 @@ class _RangeRecordCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   record.date == null
-                      ? 'Unknown date'
+                      ? 'Unknown date'.tr()
                       : formatDateString(record.date!.toIso8601String()),
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w800,
@@ -212,7 +214,7 @@ class _RangeRecordCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: Text(
-                  'No punches recorded',
+                  'No punches recorded'.tr(),
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.5),

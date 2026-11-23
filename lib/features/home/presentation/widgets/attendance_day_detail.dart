@@ -6,6 +6,8 @@ import 'package:office_hr/features/home/presentation/widgets/attendance_punch_ti
 import 'package:office_hr/features/home/presentation/widgets/attendance_status.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Renders the attendance summary for a single selected [date].
 class AttendanceDayDetail extends StatelessWidget {
   const AttendanceDayDetail({
@@ -61,7 +63,7 @@ class AttendanceDayDetail extends StatelessWidget {
         ],
         const SizedBox(height: 20),
         Text(
-          'PUNCH TIMELINE',
+          'PUNCH TIMELINE'.tr(),
           style: theme.textTheme.labelSmall?.copyWith(
             fontWeight: FontWeight.w800,
             letterSpacing: 0.6,
@@ -100,14 +102,14 @@ class _SummaryGrid extends StatelessWidget {
               _InfoTile(
                 icon: Icons.login_rounded,
                 color: const Color(0xFF16A34A),
-                label: 'Clock In',
+                label: 'Clock In'.tr(),
                 value: formatAttendanceTime(attendance?.clockIn),
               ),
               _verticalDivider(theme),
               _InfoTile(
                 icon: Icons.logout_rounded,
                 color: const Color(0xFFDC2626),
-                label: 'Clock Out',
+                label: 'Clock Out'.tr(),
                 value: formatAttendanceTime(attendance?.clockOut),
               ),
             ],
@@ -121,14 +123,14 @@ class _SummaryGrid extends StatelessWidget {
               _InfoTile(
                 icon: Icons.timer_outlined,
                 color: const Color(0xFF2563EB),
-                label: 'Work',
+                label: 'Work'.tr(),
                 value: _duration(attendance?.workDuration),
               ),
               _verticalDivider(theme),
               _InfoTile(
                 icon: Icons.free_breakfast_outlined,
                 color: const Color(0xFFD97706),
-                label: 'Break',
+                label: 'Break'.tr(),
                 value: _duration(attendance?.breakDuration),
               ),
             ],
@@ -233,7 +235,7 @@ class _ScheduleBreakdown extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'SCHEDULE',
+            'SCHEDULE'.tr(),
             style: theme.textTheme.labelSmall?.copyWith(
               fontWeight: FontWeight.w800,
               letterSpacing: 0.6,
@@ -243,19 +245,19 @@ class _ScheduleBreakdown extends StatelessWidget {
           const SizedBox(height: 12),
           _row(
             context,
-            'Scheduled',
+            'Scheduled'.tr(),
             '${formatAttendanceTime(record.scheduled?.clockIn)} - ${formatAttendanceTime(record.scheduled?.clockOut)}',
           ),
           _row(
             context,
-            'Actual',
+            'Actual'.tr(),
             '${formatAttendanceTime(record.actual?.clockIn)} - ${formatAttendanceTime(record.actual?.clockOut)}',
           ),
           if (record.adjustment?.clockIn != null ||
               record.adjustment?.clockOut != null)
             _row(
               context,
-              'Adjustment',
+              'Adjustment'.tr(),
               '${formatAttendanceTime(record.adjustment?.clockIn)} - ${formatAttendanceTime(record.adjustment?.clockOut)}',
             ),
           const SizedBox(height: 6),
@@ -263,9 +265,12 @@ class _ScheduleBreakdown extends StatelessWidget {
             spacing: 8,
             runSpacing: 8,
             children: [
-              _Pill(label: 'Late', minutes: record.lateMinutes),
-              _Pill(label: 'Early leave', minutes: record.earlyLeaveMinutes),
-              _Pill(label: 'Overtime', minutes: record.overtimeMinutes),
+              _Pill(label: 'Late'.tr(), minutes: record.lateMinutes),
+              _Pill(
+                label: 'Early leave'.tr(),
+                minutes: record.earlyLeaveMinutes,
+              ),
+              _Pill(label: 'Overtime'.tr(), minutes: record.overtimeMinutes),
             ],
           ),
         ],
@@ -324,7 +329,9 @@ class _Pill extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
-        '$label: ${minutes}m',
+        '{label}: {minutes}m'.tr(
+          namedArgs: {'label': label, 'minutes': '$minutes'},
+        ),
         style: theme.textTheme.labelSmall?.copyWith(
           color: color,
           fontWeight: FontWeight.w700,

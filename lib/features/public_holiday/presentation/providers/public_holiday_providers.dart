@@ -1,4 +1,5 @@
 import 'package:office_hr/core/network/network_providers.dart';
+import 'package:office_hr/core/utils/async_reload.dart';
 import 'package:office_hr/features/public_holiday/data/datasources/public_holiday_remote_datasource.dart';
 import 'package:office_hr/features/public_holiday/data/repositories/public_holiday_repository_impl.dart';
 import 'package:office_hr/features/public_holiday/domain/entities/public_holiday.dart';
@@ -29,18 +30,16 @@ GetPublicHolidaysUsecase getPublicHolidaysUsecase(Ref ref) {
 @riverpod
 class PublicHolidayNotifier extends _$PublicHolidayNotifier {
   @override
-  FutureOr<List<PublicHoliday>> build() async {
-    return await fetch();
+  FutureOr<List<PublicHoliday>> build() {
+    return ref.read(getPublicHolidaysUsecaseProvider)();
   }
 
-  Future<List<PublicHoliday>> fetch() async {
-    state = const AsyncValue.loading();
-    final result = await AsyncValue.guard(() async {
-      final usecase = ref.read(getPublicHolidaysUsecaseProvider);
-      return await usecase();
-    });
-    state = result;
-    return result.value ?? [];
+  Future<void> fetch() async {
+    // Reload through `build` so Riverpod owns the request lifecycle: the
+    // previous list stays readable while the newest response loads, and a
+    // slow response from an earlier pull can never overwrite a newer one.
+    ref.invalidateSelf();
+    await settleReload(future);
   }
 
   void clear() {

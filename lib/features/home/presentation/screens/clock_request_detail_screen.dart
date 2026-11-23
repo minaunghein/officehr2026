@@ -14,6 +14,8 @@ import 'package:office_hr/features/home/presentation/widgets/clock_request_locat
 import 'package:office_hr/features/home/presentation/widgets/clock_request_status_chip.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Details for a remote clock in/out request: punch location on a map,
 /// request/location/reason details, and approve/reject actions for reviewers
 /// or a cancel action for the owner while the request is pending.
@@ -35,13 +37,13 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
 
     Future<void> decide(ClockRequestDecision decision) async {
       final requesterLabel = request.value.userName.trim().isEmpty
-          ? 'this employee'
+          ? 'this employee'.tr()
           : request.value.userName.trim();
       final result = await showClockRequestDecisionDialog(
         context,
         decision: decision,
         requesterLabel: requesterLabel,
-        punchLabel: request.value.punchType.label.toLowerCase(),
+        punchLabel: request.value.punchType.label.tr().toLowerCase(),
       );
       if (result == null || !context.mounted) return;
 
@@ -57,8 +59,8 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
         ref.invalidate(pendingClockRequestsBadgeCountProvider);
         SnackbarUtils.showSuccess(
           result.decision == ClockRequestDecision.approved
-              ? 'Request approved'
-              : 'Request rejected',
+              ? 'Request approved'.tr()
+              : 'Request rejected'.tr(),
         );
       } catch (error) {
         if (context.mounted) {
@@ -72,7 +74,7 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
     Future<void> cancel() async {
       final result = await showClockRequestCancelDialog(
         context,
-        punchLabel: request.value.punchType.label.toLowerCase(),
+        punchLabel: request.value.punchType.label.tr().toLowerCase(),
       );
       if (result == null || !context.mounted) return;
 
@@ -82,7 +84,7 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
             .read(myClockRequestsProvider.notifier)
             .cancel(request.value.id, note: result.note);
         request.value = cancelled;
-        SnackbarUtils.showSuccess('Request cancelled');
+        SnackbarUtils.showSuccess('Request cancelled'.tr());
       } catch (error) {
         if (context.mounted) {
           SnackbarUtils.showError(getUserFriendlyError(error));
@@ -97,7 +99,7 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
         current.latitude != null && current.longitude != null;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Request Details'), centerTitle: true),
+      appBar: AppBar(title: Text('Request Details'.tr()), centerTitle: true),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -109,7 +111,7 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
                   children: [
                     Text(
                       current.userName.trim().isEmpty
-                          ? 'Employee'
+                          ? 'Employee'.tr()
                           : current.userName.trim(),
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
@@ -117,7 +119,7 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${current.punchType.label} · ${formatDateId(current.dateId)} · ${formatPunchTime(current.punchTime)}',
+                      '${current.punchType.label.tr()} · ${formatDateId(current.dateId)} · ${formatPunchTime(current.punchTime)}',
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.onSurface.withValues(
                           alpha: 0.6,
@@ -135,58 +137,74 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
           ClockRequestLocationMap(request: current),
           const SizedBox(height: 16),
           DetailSectionCard(
-            title: 'REQUEST',
+            title: 'REQUEST'.tr(),
             icon: Icons.fact_check_outlined,
             children: [
               if (current.branchTitle.isNotEmpty)
-                DetailRow(label: 'Branch', value: current.branchTitle),
-              DetailRow(label: 'Punch type', value: current.punchType.label),
-              DetailRow(label: 'Date', value: formatDateId(current.dateId)),
+                DetailRow(label: 'Branch'.tr(), value: current.branchTitle),
               DetailRow(
-                label: 'Punch time',
+                label: 'Punch type'.tr(),
+                value: current.punchType.label.tr(),
+              ),
+              DetailRow(
+                label: 'Date'.tr(),
+                value: formatDateId(current.dateId),
+              ),
+              DetailRow(
+                label: 'Punch time'.tr(),
                 value: formatPunchTime(current.punchTime),
               ),
-              DetailRow(label: 'Status', value: current.status.label),
+              DetailRow(label: 'Status'.tr(), value: current.status.label.tr()),
               if (current.createdAt != null)
                 DetailRow(
-                  label: 'Submitted',
+                  label: 'Submitted'.tr(),
                   value: formatDateTime(current.createdAt!),
                 ),
               if (current.autoFlagged)
-                DetailRow(label: 'Auto-flagged', value: 'Yes'),
+                DetailRow(label: 'Auto-flagged'.tr(), value: 'Yes'.tr()),
             ],
           ),
           const SizedBox(height: 12),
           DetailSectionCard(
-            title: 'LOCATION',
+            title: 'LOCATION'.tr(),
             icon: Icons.place_outlined,
             children: [
               DetailRow(
-                label: 'Label',
+                label: 'Label'.tr(),
                 value: current.locationLabel?.trim().isNotEmpty == true
                     ? current.locationLabel!.trim()
                     : '-',
               ),
               DetailRow(
-                label: 'Distance',
+                label: 'Distance'.tr(),
                 value: current.distanceKm != null
-                    ? '${current.distanceKm!.toStringAsFixed(2)} km from branch'
+                    ? '{distance} km from branch'.tr(
+                        namedArgs: {
+                          'distance': current.distanceKm!.toStringAsFixed(2),
+                        },
+                      )
                     : '-',
               ),
               DetailRow(
-                label: 'Branch radius',
+                label: 'Branch radius'.tr(),
                 value: current.branchRadiusKm != null
-                    ? '${current.branchRadiusKm!.toStringAsFixed(2)} km'
+                    ? '{distance} km'.tr(
+                        namedArgs: {
+                          'distance': current.branchRadiusKm!.toStringAsFixed(
+                            2,
+                          ),
+                        },
+                      )
                     : '-',
               ),
               DetailRow(
-                label: 'GPS accuracy',
+                label: 'GPS accuracy'.tr(),
                 value: current.accuracy != null
                     ? '${current.accuracy!.toStringAsFixed(0)} m'
                     : '-',
               ),
               DetailRow(
-                label: 'Coordinates',
+                label: 'Coordinates'.tr(),
                 value: hasCoordinates
                     ? '${current.latitude!.toStringAsFixed(5)}, ${current.longitude!.toStringAsFixed(5)}'
                     : '-',
@@ -195,7 +213,7 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
           ),
           const SizedBox(height: 12),
           DetailSectionCard(
-            title: 'REASON',
+            title: 'REASON'.tr(),
             icon: Icons.notes_rounded,
             children: [
               Text(
@@ -207,22 +225,25 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
           if (!current.isPending) ...[
             const SizedBox(height: 12),
             DetailSectionCard(
-              title: 'DECISION',
+              title: 'DECISION'.tr(),
               icon: Icons.gavel_rounded,
               children: [
-                DetailRow(label: 'Decision', value: current.status.label),
+                DetailRow(
+                  label: 'Decision'.tr(),
+                  value: current.status.label.tr(),
+                ),
                 if (current.deciderName.trim().isNotEmpty)
                   DetailRow(
-                    label: 'Decided by',
+                    label: 'Decided by'.tr(),
                     value: current.deciderName.trim(),
                   ),
                 if (current.decidedAt != null)
                   DetailRow(
-                    label: 'Decided at',
+                    label: 'Decided at'.tr(),
                     value: formatDateTime(current.decidedAt!),
                   ),
                 DetailRow(
-                  label: 'Note',
+                  label: 'Note'.tr(),
                   value: current.decisionNote?.trim().isNotEmpty == true
                       ? current.decisionNote!.trim()
                       : '-',
@@ -271,7 +292,7 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
                                   ),
                                 ),
                                 icon: const Icon(Icons.close_rounded, size: 18),
-                                label: const Text('Reject'),
+                                label: Text('Reject'.tr()),
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -300,7 +321,7 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
                                         ),
                                       )
                                     : const Icon(Icons.check_rounded, size: 18),
-                                label: const Text('Approve'),
+                                label: Text('Approve'.tr()),
                               ),
                             ),
                           ],
@@ -331,7 +352,7 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
                                     ),
                                   )
                                 : const Icon(Icons.cancel_outlined, size: 18),
-                            label: const Text('Cancel Request'),
+                            label: Text('Cancel Request'.tr()),
                           ),
                         ),
                 ),

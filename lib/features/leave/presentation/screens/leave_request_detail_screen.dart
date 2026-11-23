@@ -14,6 +14,8 @@ import 'package:office_hr/features/leave/presentation/widgets/leave_attachment_p
 import 'package:office_hr/features/leave/presentation/widgets/leave_decision_dialog.dart';
 import 'package:office_hr/features/leave/presentation/widgets/leave_request_detail_header.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Navigation args for the leave detail screen. `canApprove` is set when the
 /// screen is opened from the manager approvals queue.
 class LeaveRequestRouteArgs {
@@ -70,8 +72,8 @@ class LeaveRequestDetailScreen extends HookConsumerWidget {
         if (context.mounted) {
           SnackbarUtils.showSuccess(
             decision == LeaveDecision.approved
-                ? 'Leave request approved'
-                : 'Leave request rejected',
+                ? 'Leave request approved'.tr()
+                : 'Leave request rejected'.tr(),
           );
         }
       } catch (error) {
@@ -100,7 +102,7 @@ class LeaveRequestDetailScreen extends HookConsumerWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               )
-            : const Text('Leave Details'),
+            : Text('Leave Details'.tr()),
       ),
       bottomNavigationBar: canAct
           ? _ApprovalBar(
@@ -115,33 +117,35 @@ class LeaveRequestDetailScreen extends HookConsumerWidget {
           LeaveRequestDetailHeader(request: request),
           const SizedBox(height: 16),
           DetailSectionCard(
-            title: 'Request',
+            title: 'Request'.tr(),
             icon: Icons.description_outlined,
             children: [
               DetailRow(
-                label: 'Leave type',
+                label: 'Leave type'.tr(),
                 value: request.leaveType?.displayTitle ?? '-',
               ),
               DetailRow(
-                label: 'Start date',
+                label: 'Start date'.tr(),
                 value: formatLeaveDateFromIso(request.startDate),
               ),
               DetailRow(
-                label: 'End date',
+                label: 'End date'.tr(),
                 value: formatLeaveDateFromIso(request.endDate),
               ),
               DetailRow(
-                label: 'Half day',
+                label: 'Half day'.tr(),
                 value: request.isHalfDay
-                    ? 'Yes · ${request.halfDayPeriod.label}'
-                    : 'No',
+                    ? 'Yes · {period}'.tr(
+                        namedArgs: {'period': request.halfDayPeriod.label.tr()},
+                      )
+                    : 'No'.tr(),
               ),
               DetailRow(
-                label: 'Total days',
+                label: 'Total days'.tr(),
                 value: formatDays(request.totalDays),
               ),
               DetailRow(
-                label: 'Reason',
+                label: 'Reason'.tr(),
                 value: request.reason.trim().isEmpty ? '-' : request.reason,
                 multiline: true,
               ),
@@ -150,7 +154,7 @@ class LeaveRequestDetailScreen extends HookConsumerWidget {
           if (request.hasAttachment) ...[
             const SizedBox(height: 16),
             DetailSectionCard(
-              title: 'Attachment',
+              title: 'Attachment'.tr(),
               icon: Icons.attach_file_rounded,
               children: [
                 LeaveAttachmentPreview(
@@ -164,23 +168,26 @@ class LeaveRequestDetailScreen extends HookConsumerWidget {
           if (isDecisioned) ...[
             const SizedBox(height: 16),
             DetailSectionCard(
-              title: 'Decision',
+              title: 'Decision'.tr(),
               icon: Icons.fact_check_outlined,
               children: [
                 DetailRow(
-                  label: 'Status',
+                  label: 'Status'.tr(),
                   value: leaveStatusLabel(request.status),
                 ),
                 if (request.approvedBy?.trim().isNotEmpty ?? false)
-                  DetailRow(label: 'Approved by', value: request.approvedBy!),
+                  DetailRow(
+                    label: 'Approved by'.tr(),
+                    value: request.approvedBy!,
+                  ),
                 if (request.approvedAt != null)
                   DetailRow(
-                    label: 'Decided on',
+                    label: 'Decided on'.tr(),
                     value: formatLeaveDateTimeFromIso(request.approvedAt),
                   ),
                 if ((request.rejectionReason?.trim().isNotEmpty ?? false))
                   DetailRow(
-                    label: 'Rejection reason',
+                    label: 'Rejection reason'.tr(),
                     value: request.rejectionReason!,
                     multiline: true,
                   ),
@@ -190,17 +197,17 @@ class LeaveRequestDetailScreen extends HookConsumerWidget {
           if (hasTimeline) ...[
             const SizedBox(height: 16),
             DetailSectionCard(
-              title: 'Timeline',
+              title: 'Timeline'.tr(),
               icon: Icons.timeline_rounded,
               children: [
                 if (request.createdAt != null)
                   DetailRow(
-                    label: 'Requested',
+                    label: 'Requested'.tr(),
                     value: formatLeaveDateTimeFromIso(request.createdAt),
                   ),
                 if (request.updatedAt != null)
                   DetailRow(
-                    label: 'Last updated',
+                    label: 'Last updated'.tr(),
                     value: formatLeaveDateTimeFromIso(request.updatedAt),
                   ),
               ],
@@ -245,7 +252,7 @@ class _ApprovalBar extends StatelessWidget {
                         ),
                       )
                     : const Icon(Icons.close_rounded, size: 18),
-                label: const Text('Reject'),
+                label: Text('Reject'.tr()),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: const Color(0xFFDC2626),
                   disabledForegroundColor: const Color(
@@ -284,7 +291,7 @@ class _ApprovalBar extends StatelessWidget {
                         ),
                       )
                     : const Icon(Icons.check_rounded, size: 18),
-                label: const Text('Approve'),
+                label: Text('Approve'.tr()),
               ),
             ),
           ],

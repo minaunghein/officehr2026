@@ -1,4 +1,5 @@
 import 'package:office_hr/core/network/network_providers.dart';
+import 'package:office_hr/core/utils/async_reload.dart';
 import 'package:office_hr/features/announcement/data/datasources/announcement_remote_datasource.dart';
 import 'package:office_hr/features/announcement/data/repositories/announcement_repository_impl.dart';
 import 'package:office_hr/features/announcement/domain/entities/announcement.dart';
@@ -59,13 +60,15 @@ class Announcements extends _$Announcements {
   Future<void> setStatusFilter(String status) async {
     if (_status == status) return;
     _status = status;
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(_fetch);
+    await _reload(filterChanged: true);
   }
 
-  Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(_fetch);
-    ref.invalidate(announcementsBadgeCountProvider);
+  Future<void> refresh() => _reload();
+
+  Future<void> _reload({bool filterChanged = false}) async {
+    // Filter changes show loading; ordinary refreshes retain the visible list.
+    ref.invalidateSelf(asReload: filterChanged);
+    await settleReload(future);
+    if (ref.mounted) ref.invalidate(announcementsBadgeCountProvider);
   }
 }

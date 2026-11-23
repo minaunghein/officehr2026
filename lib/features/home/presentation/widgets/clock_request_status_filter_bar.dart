@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:office_hr/features/home/domain/entities/clock_request.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Horizontal choice chips filtering clock requests by status.
 /// `null` selects all statuses.
 class ClockRequestStatusFilterBar extends StatelessWidget {
@@ -27,7 +29,7 @@ class ClockRequestStatusFilterBar extends StatelessWidget {
         itemBuilder: (context, index) {
           final filter = filters[index];
           return ChoiceChip(
-            label: Text(filter?.label ?? 'All'),
+            label: Text(filter?.label.tr() ?? 'All'.tr()),
             selected: filter == selected,
             onSelected: (_) => onChanged(filter),
           );

@@ -12,6 +12,8 @@ import 'package:office_hr/features/home/presentation/providers/attendance_provid
 import 'package:office_hr/features/home/presentation/utils/clock_photo_upload.dart';
 import 'package:office_hr/features/home/presentation/widgets/clock_photo_preview_dialog.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Shown when the user punches outside the branch geofence and location is
 /// mandatory (`optional_location = false`). Collects a mandatory photo and a
 /// reason, then records the punch through the regular clock in/out API with
@@ -106,8 +108,8 @@ class _OutOfRangeClockRequestDialog extends HookConsumerWidget {
         }
         SnackbarUtils.showSuccess(
           isClockIn
-              ? 'Clock in request submitted for approval'
-              : 'Clock out request submitted for approval',
+              ? 'Clock in request submitted for approval'.tr()
+              : 'Clock out request submitted for approval'.tr(),
         );
         if (context.mounted) Navigator.of(context).pop();
       } catch (error) {
@@ -132,8 +134,8 @@ class _OutOfRangeClockRequestDialog extends HookConsumerWidget {
               Expanded(
                 child: Text(
                   isClockIn
-                      ? 'Outside Clock In Area'
-                      : 'Outside Clock Out Area',
+                      ? 'Outside Clock In Area'.tr()
+                      : 'Outside Clock Out Area'.tr(),
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -149,8 +151,8 @@ class _OutOfRangeClockRequestDialog extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'You are outside your branch area, so this punch needs '
-                    'manager approval. Attach a photo and provide a reason.',
+                    'You are outside your branch area, so this punch needs manager approval. Attach a photo and provide a reason.'
+                        .tr(),
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.colorScheme.onSurface.withValues(
                         alpha: 0.75,
@@ -161,7 +163,11 @@ class _OutOfRangeClockRequestDialog extends HookConsumerWidget {
                   if (distance != null) ...[
                     const SizedBox(height: 10),
                     Text(
-                      'Distance to branch: ${(distance! / 1000).toStringAsFixed(2)} km',
+                      'Distance to branch: {distance} km'.tr(
+                        namedArgs: {
+                          'distance': (distance! / 1000).toStringAsFixed(2),
+                        },
+                      ),
                       style: theme.textTheme.bodySmall?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: theme.colorScheme.error,
@@ -213,7 +219,7 @@ class _OutOfRangeClockRequestDialog extends HookConsumerWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Take Photo',
+                                'Take Photo'.tr(),
                                 style: theme.textTheme.bodyMedium?.copyWith(
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -221,8 +227,8 @@ class _OutOfRangeClockRequestDialog extends HookConsumerWidget {
                               const SizedBox(height: 2),
                               Text(
                                 photoPath.value == null
-                                    ? 'Required for this punch'
-                                    : 'Tap to retake',
+                                    ? 'Required for this punch'.tr()
+                                    : 'Tap to retake'.tr(),
                                 style: theme.textTheme.bodySmall?.copyWith(
                                   color: theme.colorScheme.onSurface.withValues(
                                     alpha: 0.55,
@@ -232,7 +238,7 @@ class _OutOfRangeClockRequestDialog extends HookConsumerWidget {
                               if (showPhotoError.value) ...[
                                 const SizedBox(height: 2),
                                 Text(
-                                  'Photo is required',
+                                  'Photo is required'.tr(),
                                   style: theme.textTheme.bodySmall?.copyWith(
                                     color: theme.colorScheme.error,
                                     fontWeight: FontWeight.w600,
@@ -252,8 +258,8 @@ class _OutOfRangeClockRequestDialog extends HookConsumerWidget {
                     maxLines: 3,
                     minLines: 2,
                     decoration: InputDecoration(
-                      labelText: 'Reason',
-                      hintText: 'e.g. On client site visit',
+                      labelText: 'Reason'.tr(),
+                      hintText: 'e.g. On client site visit'.tr(),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -261,7 +267,7 @@ class _OutOfRangeClockRequestDialog extends HookConsumerWidget {
                     ),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return 'Please enter a reason';
+                        return 'Please enter a reason'.tr();
                       }
                       return null;
                     },
@@ -275,7 +281,7 @@ class _OutOfRangeClockRequestDialog extends HookConsumerWidget {
               onPressed: isSubmitting
                   ? null
                   : () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text('Cancel'.tr()),
             ),
             FilledButton(
               onPressed: isSubmitting ? null : submit,
@@ -288,7 +294,7 @@ class _OutOfRangeClockRequestDialog extends HookConsumerWidget {
                         strokeWidth: 2,
                       ),
                     )
-                  : const Text('Submit Request'),
+                  : Text('Submit Request'.tr()),
             ),
           ],
         ),

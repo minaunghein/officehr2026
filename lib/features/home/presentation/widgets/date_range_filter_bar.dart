@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Card-styled date range filter control: a soft calendar badge, a
 /// `DATE RANGE` caption with the selected range (or `All dates`), and an
 /// inline clear button. Tapping opens the platform date range picker.
@@ -22,7 +24,7 @@ class DateRangeFilterBar extends StatelessWidget {
       context: context,
       firstDate: DateTime(now.year - 2),
       lastDate: now,
-      helpText: 'Filter by date range',
+      helpText: 'Filter by date range'.tr(),
       initialDateRange: start != null && end != null
           ? DateTimeRange(start: start!, end: end!)
           : null,
@@ -75,7 +77,7 @@ class DateRangeFilterBar extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'DATE RANGE',
+                      'DATE RANGE'.tr(),
                       style: theme.textTheme.labelLarge?.copyWith(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
@@ -87,7 +89,7 @@ class DateRangeFilterBar extends StatelessWidget {
                     ),
                     const SizedBox(height: 1),
                     Text(
-                      hasRange ? _formatRange(start!, end!) : 'All dates',
+                      hasRange ? _formatRange(start!, end!) : 'All dates'.tr(),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.bodyMedium?.copyWith(
@@ -104,7 +106,7 @@ class DateRangeFilterBar extends StatelessWidget {
               ),
               if (hasRange)
                 IconButton(
-                  tooltip: 'Clear date filter',
+                  tooltip: 'Clear date filter'.tr(),
                   visualDensity: VisualDensity.compact,
                   onPressed: () => onChanged(null, null),
                   icon: Icon(

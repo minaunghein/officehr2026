@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Result of the owner's cancellation confirmation.
 class ClockRequestCancelResult {
   const ClockRequestCancelResult(this.note);
@@ -44,7 +46,7 @@ class _ClockRequestCancelDialog extends HookWidget {
           const Icon(Icons.cancel_outlined, color: accent),
           const SizedBox(width: 8),
           Text(
-            'Cancel request',
+            'Cancel request'.tr(),
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w800,
             ),
@@ -56,7 +58,9 @@ class _ClockRequestCancelDialog extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Cancel your pending $punchLabel request? This cannot be undone.',
+            'Cancel your pending {punch} request? This cannot be undone.'.tr(
+              namedArgs: {'punch': punchLabel},
+            ),
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurface.withValues(alpha: 0.75),
             ),
@@ -67,8 +71,8 @@ class _ClockRequestCancelDialog extends HookWidget {
             maxLines: 2,
             minLines: 2,
             decoration: InputDecoration(
-              labelText: 'Note (optional)',
-              hintText: 'Add a note for your manager',
+              labelText: 'Note (optional)'.tr(),
+              hintText: 'Add a note for your manager'.tr(),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -80,12 +84,12 @@ class _ClockRequestCancelDialog extends HookWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Keep It'),
+          child: Text('Keep It'.tr()),
         ),
         FilledButton(
           onPressed: submit,
           style: FilledButton.styleFrom(backgroundColor: accent),
-          child: const Text('Cancel Request'),
+          child: Text('Cancel Request'.tr()),
         ),
       ],
     );

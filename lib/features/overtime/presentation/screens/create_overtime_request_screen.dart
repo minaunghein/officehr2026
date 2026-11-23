@@ -9,6 +9,8 @@ import 'package:office_hr/features/overtime/presentation/providers/overtime_prov
 import 'package:office_hr/features/overtime/presentation/utils/overtime_formatters.dart';
 import 'package:office_hr/features/overtime/presentation/widgets/overtime_type_selector_sheet.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Submit a new overtime request: date, start/end time, OT type and reason.
 class CreateOvertimeRequestScreen extends HookConsumerWidget {
   const CreateOvertimeRequestScreen({super.key});
@@ -62,16 +64,16 @@ class CreateOvertimeRequestScreen extends HookConsumerWidget {
     void submit() async {
       FocusScope.of(context).unfocus();
       if (date.value == null) {
-        SnackbarUtils.showError('Please select the overtime date.');
+        SnackbarUtils.showError('Please select the overtime date.'.tr());
         return;
       }
       if (startTime.value == null || endTime.value == null) {
-        SnackbarUtils.showError('Please select the start and end times.');
+        SnackbarUtils.showError('Please select the start and end times.'.tr());
         return;
       }
       final type = otType.value;
       if (type == null) {
-        SnackbarUtils.showError('Please select an overtime type.');
+        SnackbarUtils.showError('Please select an overtime type.'.tr());
         return;
       }
       final hours = overtimeRequestedHours(
@@ -79,7 +81,9 @@ class CreateOvertimeRequestScreen extends HookConsumerWidget {
         formatTimeOfDay(endTime.value!),
       );
       if (hours <= 0) {
-        SnackbarUtils.showError('The end time must be after the start time.');
+        SnackbarUtils.showError(
+          'The end time must be after the start time.'.tr(),
+        );
         return;
       }
 
@@ -96,7 +100,7 @@ class CreateOvertimeRequestScreen extends HookConsumerWidget {
             );
         await ref.read(overtimeRequestsProvider.notifier).refresh();
         if (!context.mounted) return;
-        SnackbarUtils.showSuccess('Overtime request submitted.');
+        SnackbarUtils.showSuccess('Overtime request submitted.'.tr());
         Navigator.of(context).pop();
       } catch (error) {
         if (context.mounted) {
@@ -108,16 +112,16 @@ class CreateOvertimeRequestScreen extends HookConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: const Text('Request Overtime')),
+      appBar: AppBar(centerTitle: true, title: Text('Request Overtime'.tr())),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
         children: [
           _FieldCard(
-            title: 'Date',
+            title: 'Date'.tr(),
             icon: Icons.calendar_month_rounded,
             child: _PickerField(
-              label: 'Overtime date',
-              value: date.value == null ? 'Select date' : null,
+              label: 'Overtime date'.tr(),
+              value: date.value == null ? 'Select date'.tr() : null,
               displayValue: formatOvertimeDate(date.value),
               leadingIcon: Icons.event_rounded,
               onTap: pickDate,
@@ -125,13 +129,15 @@ class CreateOvertimeRequestScreen extends HookConsumerWidget {
           ),
           const SizedBox(height: 16),
           _FieldCard(
-            title: 'Time',
+            title: 'Time'.tr(),
             icon: Icons.schedule_rounded,
             child: Column(
               children: [
                 _PickerField(
-                  label: 'Start time',
-                  value: startTime.value == null ? 'Select start time' : null,
+                  label: 'Start time'.tr(),
+                  value: startTime.value == null
+                      ? 'Select start time'.tr()
+                      : null,
                   displayValue: startTime.value == null
                       ? ''
                       : formatOvertimeClock(formatTimeOfDay(startTime.value!)),
@@ -140,8 +146,8 @@ class CreateOvertimeRequestScreen extends HookConsumerWidget {
                 ),
                 const SizedBox(height: 12),
                 _PickerField(
-                  label: 'End time',
-                  value: endTime.value == null ? 'Select end time' : null,
+                  label: 'End time'.tr(),
+                  value: endTime.value == null ? 'Select end time'.tr() : null,
                   displayValue: endTime.value == null
                       ? ''
                       : formatOvertimeClock(formatTimeOfDay(endTime.value!)),
@@ -153,11 +159,11 @@ class CreateOvertimeRequestScreen extends HookConsumerWidget {
           ),
           const SizedBox(height: 16),
           _FieldCard(
-            title: 'Type',
+            title: 'Type'.tr(),
             icon: Icons.bolt_rounded,
             child: _PickerField(
-              label: 'Overtime type',
-              value: otType.value == null ? 'Select type' : null,
+              label: 'Overtime type'.tr(),
+              value: otType.value == null ? 'Select type'.tr() : null,
               displayValue: otType.value?.value ?? '',
               leadingIcon: Icons.category_outlined,
               onTap: pickType,
@@ -165,15 +171,15 @@ class CreateOvertimeRequestScreen extends HookConsumerWidget {
           ),
           const SizedBox(height: 16),
           _FieldCard(
-            title: 'Reason',
+            title: 'Reason'.tr(),
             icon: Icons.notes_rounded,
             child: TextFormField(
               controller: reasonController,
               maxLines: 4,
               minLines: 3,
               textCapitalization: TextCapitalization.sentences,
-              decoration: const InputDecoration(
-                hintText: 'Describe why overtime is needed...',
+              decoration: InputDecoration(
+                hintText: 'Describe why overtime is needed...'.tr(),
               ),
             ),
           ),
@@ -197,7 +203,9 @@ class CreateOvertimeRequestScreen extends HookConsumerWidget {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 : const Icon(Icons.send_rounded),
-            label: Text(submitting.value ? 'Submitting...' : 'Submit Request'),
+            label: Text(
+              submitting.value ? 'Submitting...'.tr() : 'Submit Request'.tr(),
+            ),
             style: FilledButton.styleFrom(
               minimumSize: const Size.fromHeight(52),
               shape: RoundedRectangleBorder(

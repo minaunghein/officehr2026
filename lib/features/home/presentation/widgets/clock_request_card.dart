@@ -4,6 +4,8 @@ import 'package:office_hr/features/home/domain/entities/clock_request.dart';
 import 'package:office_hr/features/home/presentation/utils/clock_request_formatters.dart';
 import 'package:office_hr/features/home/presentation/widgets/clock_request_status_chip.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Reviewer-facing list item for a remote clock in/out request: requester,
 /// punch type/time, location context, reason, and a status accent bar.
 class ClockRequestCard extends StatelessWidget {
@@ -23,7 +25,7 @@ class ClockRequestCard extends StatelessWidget {
     final theme = Theme.of(context);
     final statusColor = clockRequestStatusColor(request.status);
     final displayName = request.userName.trim().isEmpty
-        ? 'Employee'
+        ? 'Employee'.tr()
         : request.userName.trim();
 
     return Container(
@@ -120,7 +122,7 @@ class ClockRequestCard extends StatelessWidget {
                               ),
                               const SizedBox(width: 6),
                               Text(
-                                'Auto-flagged by system',
+                                'Auto-flagged by system'.tr(),
                                 style: theme.textTheme.bodySmall?.copyWith(
                                   color: theme.colorScheme.error,
                                   fontWeight: FontWeight.w600,
@@ -161,11 +163,13 @@ class ClockRequestCard extends StatelessWidget {
     final parts = <String>[
       if (label.isNotEmpty) label,
       if (distance != null)
-        '${distance.toStringAsFixed(1)} km from branch'
+        '{distance} km from branch'.tr(
+          namedArgs: {'distance': distance.toStringAsFixed(1)},
+        )
       else if (request.latitude != null && request.longitude != null)
         '${request.latitude!.toStringAsFixed(4)}, ${request.longitude!.toStringAsFixed(4)}',
     ];
-    return parts.isEmpty ? 'Location unavailable' : parts.join(' · ');
+    return parts.isEmpty ? 'Location unavailable'.tr() : parts.join(' · ');
   }
 }
 

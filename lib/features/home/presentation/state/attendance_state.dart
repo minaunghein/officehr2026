@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:office_hr/features/home/domain/entities/today_attendance.dart';
 
 class AttendanceState {
@@ -64,22 +65,23 @@ class AttendanceState {
   String get statusText {
     if (isClockedIn) {
       return (clockInTime != null && clockInTime!.isNotEmpty)
-          ? 'Currently Clocked In'
-          : 'Today Not Clocked In';
+          ? 'Currently Clocked In'.tr()
+          : 'Today Not Clocked In'.tr();
     }
 
     if (clockOutTime != null && clockOutTime!.isNotEmpty) {
-      return 'Clocked Out Today';
+      return 'Clocked Out Today'.tr();
     }
 
     if (clockInTime != null && clockInTime!.isNotEmpty) {
-      return 'Currently Clocked Out';
+      return 'Currently Clocked Out'.tr();
     }
 
-    return 'Today Not Clocked In';
+    return 'Today Not Clocked In'.tr();
   }
 
-  String get primaryClockButtonText => isClockedIn ? 'Clock Out' : 'Clock In';
+  String get primaryClockButtonText =>
+      isClockedIn ? 'Clock Out'.tr() : 'Clock In'.tr();
 
   bool get isPrimaryClockButtonLoading =>
       isClockedIn ? isClockOutLoading : isClockInLoading;
@@ -87,10 +89,14 @@ class AttendanceState {
   String get primaryClockTimeText {
     if (isClockedIn) {
       if (clockInTime != null && clockInTime!.isNotEmpty) {
-        return 'Clocked in at ${clockInTime ?? '--:--'}';
+        return 'Clocked in at {time}'.tr(
+          namedArgs: {'time': clockInTime ?? '--:--'},
+        );
       }
       if (clockOutTime != null && clockOutTime!.isNotEmpty) {
-        return 'Clocked out at ${clockOutTime ?? '--:--'}';
+        return 'Clocked out at {time}'.tr(
+          namedArgs: {'time': clockOutTime ?? '--:--'},
+        );
       }
     }
     return '--:--';

@@ -14,6 +14,8 @@ import 'package:office_hr/features/leave/domain/entities/uploaded_file.dart';
 import 'package:office_hr/features/leave/presentation/providers/leave_providers.dart';
 import 'package:office_hr/features/leave/presentation/utils/leave_formatters.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class CreateLeaveRequestScreen extends ConsumerStatefulWidget {
   const CreateLeaveRequestScreen({super.key});
 
@@ -136,7 +138,7 @@ class _CreateLeaveRequestScreenState
     } catch (error, stack) {
       AppLogger.e('Image pick failed: $error', error: error, stack: stack);
       if (mounted) {
-        _showError('Could not open the gallery. Please try again.');
+        _showError('Could not open the gallery. Please try again.'.tr());
       }
     }
   }
@@ -169,15 +171,15 @@ class _CreateLeaveRequestScreenState
 
     final type = _selectedType;
     if (type == null) {
-      _showError('Please select a leave type.');
+      _showError('Please select a leave type.'.tr());
       return;
     }
     if (_startDate == null || _endDate == null) {
-      _showError('Please select the leave date(s).');
+      _showError('Please select the leave date(s).'.tr());
       return;
     }
     if (_reasonController.text.trim().isEmpty) {
-      _showError('Please provide a reason for your leave.');
+      _showError('Please provide a reason for your leave.'.tr());
       return;
     }
     if (type.requiresAttachment && _attachment == null) {
@@ -223,7 +225,7 @@ class _CreateLeaveRequestScreenState
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(
-          const SnackBar(content: Text('Leave request submitted.')),
+          SnackBar(content: Text('Leave request submitted.'.tr())),
         );
       Navigator.of(context).pop();
     } catch (error) {
@@ -239,7 +241,10 @@ class _CreateLeaveRequestScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Request Leave', style: theme.textTheme.headlineMedium),
+        title: Text(
+          'Request Leave'.tr(),
+          style: theme.textTheme.headlineMedium,
+        ),
         centerTitle: true,
       ),
       body: _buildForm(context, theme),
@@ -260,7 +265,9 @@ class _CreateLeaveRequestScreenState
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 : const Icon(Icons.send_rounded),
-            label: Text(_submitting ? 'Submitting...' : 'Submit Request'),
+            label: Text(
+              _submitting ? 'Submitting...'.tr() : 'Submit Request'.tr(),
+            ),
             style: FilledButton.styleFrom(
               minimumSize: const Size.fromHeight(52),
               shape: RoundedRectangleBorder(
@@ -308,7 +315,7 @@ class _CreateLeaveRequestScreenState
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       children: [
         _SectionCard(
-          title: 'Leave Type',
+          title: 'Leave Type'.tr(),
           icon: Icons.category_rounded,
           child: typesState.when(
             data: (data) => _TypeSelector(
@@ -329,27 +336,27 @@ class _CreateLeaveRequestScreenState
         ),
         const SizedBox(height: 16),
         _SectionCard(
-          title: 'Duration',
+          title: 'Duration'.tr(),
           icon: Icons.date_range_rounded,
           child: Column(
             children: [
               _DateField(
-                label: 'Start date',
+                label: 'Start date'.tr(),
                 value: formatLeaveDate(_startDate),
                 onTap: _pickDate,
               ),
               if (!_isHalfDay) ...[
                 const SizedBox(height: 12),
                 _DateField(
-                  label: 'End date',
+                  label: 'End date'.tr(),
                   value: formatLeaveDate(_endDate),
                   onTap: _pickDate,
                 ),
               ],
               const SizedBox(height: 16),
               _ToggleRow(
-                title: 'Half day',
-                subtitle: 'Take only half of the day off',
+                title: 'Half day'.tr(),
+                subtitle: 'Take only half of the day off'.tr(),
                 value: _isHalfDay,
                 enabled: _selectedType?.allowHalfDay ?? true,
                 onChanged: _onHalfDayChanged,
@@ -357,15 +364,15 @@ class _CreateLeaveRequestScreenState
               if (_isHalfDay) ...[
                 const SizedBox(height: 12),
                 SegmentedButton<HalfDayPeriod>(
-                  segments: const [
+                  segments: [
                     ButtonSegment(
                       value: HalfDayPeriod.am,
-                      label: Text('Morning'),
+                      label: Text('Morning'.tr()),
                       icon: Icon(Icons.wb_sunny_outlined, size: 16),
                     ),
                     ButtonSegment(
                       value: HalfDayPeriod.pm,
-                      label: Text('Afternoon'),
+                      label: Text('Afternoon'.tr()),
                       icon: Icon(Icons.wb_twilight_rounded, size: 16),
                     ),
                   ],
@@ -384,7 +391,9 @@ class _CreateLeaveRequestScreenState
                   ),
                   const SizedBox(width: 6),
                   Text(
-                    'Total: ${formatDays(_totalDays)}',
+                    'Total: {days}'.tr(
+                      namedArgs: {'days': formatDays(_totalDays)},
+                    ),
                     style: theme.textTheme.titleSmall?.copyWith(
                       color: theme.colorScheme.primary,
                       fontWeight: FontWeight.w700,
@@ -397,32 +406,32 @@ class _CreateLeaveRequestScreenState
         ),
         const SizedBox(height: 16),
         _SectionCard(
-          title: 'Reason',
+          title: 'Reason'.tr(),
           icon: Icons.notes_rounded,
           child: TextFormField(
             controller: _reasonController,
             maxLines: 4,
             minLines: 3,
             textCapitalization: TextCapitalization.sentences,
-            decoration: const InputDecoration(
-              hintText: 'Describe the reason for your leave...',
+            decoration: InputDecoration(
+              hintText: 'Describe the reason for your leave...'.tr(),
             ),
           ),
         ),
         const SizedBox(height: 16),
         _SectionCard(
-          title: 'Attachment',
+          title: 'Attachment'.tr(),
           icon: Icons.attach_file_rounded,
           trailing: (_selectedType?.requiresAttachment ?? false)
               ? Text(
-                  'Required',
+                  'Required'.tr(),
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: theme.colorScheme.error,
                     fontWeight: FontWeight.w700,
                   ),
                 )
               : Text(
-                  'Optional',
+                  'Optional'.tr(),
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
@@ -550,7 +559,7 @@ class _TypeSelector extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    selected?.displayTitle ?? 'Select leave type',
+                    selected?.displayTitle ?? 'Select leave type'.tr(),
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w700,
                       color: selected == null
@@ -575,14 +584,25 @@ class _TypeSelector extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    '${balance!.available.toStringAsFixed(balance!.available == balance!.available.roundToDouble() ? 0 : 1)} left',
+                    '{count} left'.tr(
+                      namedArgs: {
+                        'count': balance!.available.toStringAsFixed(
+                          balance!.available ==
+                                  balance!.available.roundToDouble()
+                              ? 0
+                              : 1,
+                        ),
+                      },
+                    ),
                     style: theme.textTheme.labelLarge?.copyWith(
                       color: theme.colorScheme.primary,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                   Text(
-                    'of ${balance!.totalGranted.toInt()}',
+                    'of {total}'.tr(
+                      namedArgs: {'total': '${balance!.totalGranted.toInt()}'},
+                    ),
                     style: theme.textTheme.labelSmall?.copyWith(
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                     ),
@@ -701,7 +721,7 @@ class _ToggleRow extends StatelessWidget {
                 ),
               ),
               Text(
-                enabled ? subtitle : 'Not available for this leave type',
+                enabled ? subtitle : 'Not available for this leave type'.tr(),
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
                 ),
@@ -747,13 +767,13 @@ class _AttachmentPicker extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Upload a supporting image',
+                'Upload a supporting image'.tr(),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
               Text(
-                'PNG or JPG',
+                'PNG or JPG'.tr(),
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                 ),
@@ -836,15 +856,17 @@ class _InfoBanner extends StatelessWidget {
     final theme = Theme.of(context);
     final messages = <String>[];
     if (type.requiresApproval) {
-      messages.add('Requires manager approval');
+      messages.add('Requires manager approval'.tr());
     }
     if (type.advanceNoticeDays > 0) {
       messages.add(
-        'Apply at least ${type.advanceNoticeDays} day(s) in advance',
+        'Apply at least {days} day(s) in advance'.tr(
+          namedArgs: {'days': '${type.advanceNoticeDays}'},
+        ),
       );
     }
     if (type.requiresAttachment) {
-      messages.add('Supporting document is required');
+      messages.add('Supporting document is required'.tr());
     }
     if (messages.isEmpty) return const SizedBox.shrink();
 
@@ -908,7 +930,7 @@ class _LeaveTypeSheet extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    'Select Leave Type',
+                    'Select Leave Type'.tr(),
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
@@ -955,7 +977,11 @@ class _LeaveTypeSheet extends StatelessWidget {
                     subtitle: Text(
                       [
                         if (type.code.isNotEmpty) type.code,
-                        '${type.entitlementDays.toInt()} days/yr',
+                        '{days} days/yr'.tr(
+                          namedArgs: {
+                            'days': '${type.entitlementDays.toInt()}',
+                          },
+                        ),
                       ].join(' · '),
                     ),
                     trailing: isSelected

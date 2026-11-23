@@ -14,6 +14,8 @@ import 'package:office_hr/features/home/presentation/widgets/clock_request_card.
 import 'package:office_hr/features/home/presentation/widgets/clock_request_decision_dialog.dart';
 import 'package:office_hr/features/home/presentation/widgets/clock_request_status_filter_bar.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Approver-facing list of remote clock in/out requests with status filter
 /// chips and inline approve/reject actions for pending items.
 class ClockRequestsScreen extends HookConsumerWidget {
@@ -25,7 +27,7 @@ class ClockRequestsScreen extends HookConsumerWidget {
     final selectedStatus = useState<ClockRequestStatus?>(null);
 
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: const Text('Clock Requests')),
+      appBar: AppBar(centerTitle: true, title: Text('Clock Requests'.tr())),
       body: Column(
         children: [
           ClockRequestStatusFilterBar(
@@ -58,9 +60,10 @@ class ClockRequestsScreen extends HookConsumerWidget {
                 if (requests.isEmpty) {
                   return EmptyStateWidget(
                     icon: Icons.fact_check_outlined,
-                    title: 'No clock requests',
+                    title: 'No clock requests'.tr(),
                     message:
-                        'Remote clock in/out requests from your team will appear here.',
+                        'Remote clock in/out requests from your team will appear here.'
+                            .tr(),
                     onRefresh: () => ref
                         .read(clockRequestsReviewProvider.notifier)
                         .refresh(),
@@ -115,13 +118,13 @@ class _DecisionButtons extends HookConsumerWidget {
 
     Future<void> decide(ClockRequestDecision decision) async {
       final requesterLabel = request.userName.trim().isEmpty
-          ? 'this employee'
+          ? 'this employee'.tr()
           : request.userName.trim();
       final result = await showClockRequestDecisionDialog(
         context,
         decision: decision,
         requesterLabel: requesterLabel,
-        punchLabel: request.punchType.label.toLowerCase(),
+        punchLabel: request.punchType.label.tr().toLowerCase(),
       );
       if (result == null || !context.mounted) return;
 
@@ -132,8 +135,8 @@ class _DecisionButtons extends HookConsumerWidget {
             .decide(request.id, decision: result.decision, note: result.note);
         SnackbarUtils.showSuccess(
           result.decision == ClockRequestDecision.approved
-              ? 'Request approved'
-              : 'Request rejected',
+              ? 'Request approved'.tr()
+              : 'Request rejected'.tr(),
         );
       } catch (error) {
         if (context.mounted) {
@@ -159,58 +162,62 @@ class _DecisionButtons extends HookConsumerWidget {
       );
     }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        OutlinedButton.icon(
-          onPressed: isDeciding
-              ? null
-              : () => decide(ClockRequestDecision.rejected),
-          style: OutlinedButton.styleFrom(
-            foregroundColor: const Color(0xFFB91C1C),
-            disabledForegroundColor: const Color(
-              0xFFB91C1C,
-            ).withValues(alpha: 0.5),
-            side: BorderSide(
-              color: const Color(0xFFB91C1C).withValues(alpha: 0.4),
+    // IntrinsicWidth forces both buttons to the width of the wider label, so
+    // Reject and Approve always render at the same size.
+    return IntrinsicWidth(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          OutlinedButton.icon(
+            onPressed: isDeciding
+                ? null
+                : () => decide(ClockRequestDecision.rejected),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: const Color(0xFFB91C1C),
+              disabledForegroundColor: const Color(
+                0xFFB91C1C,
+              ).withValues(alpha: 0.5),
+              side: BorderSide(
+                color: const Color(0xFFB91C1C).withValues(alpha: 0.4),
+              ),
+              visualDensity: VisualDensity.compact,
+              minimumSize: const Size(108, 40),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
-            visualDensity: VisualDensity.compact,
-            minimumSize: const Size(108, 40),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+            icon: buttonIcon(
+              ClockRequestDecision.rejected,
+              Icons.close_rounded,
+              const Color(0xFFB91C1C).withValues(alpha: isDeciding ? 0.5 : 1),
             ),
+            label: Text('Reject'.tr()),
           ),
-          icon: buttonIcon(
-            ClockRequestDecision.rejected,
-            Icons.close_rounded,
-            const Color(0xFFB91C1C).withValues(alpha: isDeciding ? 0.5 : 1),
-          ),
-          label: const Text('Reject'),
-        ),
-        const SizedBox(width: 8),
-        FilledButton.icon(
-          onPressed: isDeciding
-              ? null
-              : () => decide(ClockRequestDecision.approved),
-          style: FilledButton.styleFrom(
-            backgroundColor: const Color(0xFF15803D),
-            disabledBackgroundColor: const Color(
-              0xFF15803D,
-            ).withValues(alpha: 0.6),
-            visualDensity: VisualDensity.compact,
-            minimumSize: const Size(108, 40),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+          const SizedBox(width: 8),
+          FilledButton.icon(
+            onPressed: isDeciding
+                ? null
+                : () => decide(ClockRequestDecision.approved),
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFF15803D),
+              disabledBackgroundColor: const Color(
+                0xFF15803D,
+              ).withValues(alpha: 0.6),
+              visualDensity: VisualDensity.compact,
+              minimumSize: const Size(108, 40),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
+            icon: buttonIcon(
+              ClockRequestDecision.approved,
+              Icons.check_rounded,
+              Colors.white,
+            ),
+            label: Text('Approve'.tr(), style: TextStyle(color: Colors.white)),
           ),
-          icon: buttonIcon(
-            ClockRequestDecision.approved,
-            Icons.check_rounded,
-            Colors.white,
-          ),
-          label: const Text('Approve', style: TextStyle(color: Colors.white)),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

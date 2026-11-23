@@ -7,6 +7,8 @@ import 'package:office_hr/features/home/presentation/providers/attendance_provid
 import 'package:office_hr/features/home/presentation/widgets/punch_photo_thumb.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class RecentActivity extends ConsumerWidget {
   const RecentActivity({super.key});
 
@@ -24,7 +26,7 @@ class RecentActivity extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'TODAY\'S ACTIVITY',
+              'TODAY\'S ACTIVITY'.tr(),
               style: theme.textTheme.labelMedium?.copyWith(
                 fontWeight: FontWeight.w800,
                 letterSpacing: 0.5,
@@ -33,7 +35,11 @@ class RecentActivity extends ConsumerWidget {
             ),
             if (attendances.isNotEmpty)
               Text(
-                '${attendances.length} record${attendances.length > 1 ? 's' : ''}',
+                attendances.length == 1
+                    ? '1 record'.tr()
+                    : '{count} records'.tr(
+                        namedArgs: {'count': '${attendances.length}'},
+                      ),
                 style: theme.textTheme.labelSmall?.copyWith(
                   color: theme.colorScheme.primary,
                   fontWeight: FontWeight.w600,
@@ -63,7 +69,7 @@ class RecentActivity extends ConsumerWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'No activity today',
+                    'No activity today'.tr(),
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.colorScheme.onSurface.withValues(
                         alpha: 0.45,
@@ -184,12 +190,12 @@ class _AttendanceActivityTile extends StatelessWidget {
         ? Icons.free_breakfast_rounded
         : Icons.done_rounded;
     final String label = isClockIn
-        ? 'Clock In'
+        ? 'Clock In'.tr()
         : isClockOut
-        ? 'Clock Out'
+        ? 'Clock Out'.tr()
         : isBreakStart
-        ? 'Break Start'
-        : 'Break End';
+        ? 'Break Start'.tr()
+        : 'Break End'.tr();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -245,7 +251,9 @@ class _AttendanceActivityTile extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  attendance.isManual ? 'Manual entry' : 'Recorded by device',
+                  attendance.isManual
+                      ? 'Manual entry'.tr()
+                      : 'Recorded by device'.tr(),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                   ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:office_hr/features/overtime/domain/entities/overtime_request.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Result of a manager's overtime decision.
 class OvertimeDecisionResult {
   const OvertimeDecisionResult({this.approvedHours, this.note});
@@ -79,7 +81,7 @@ class _OvertimeDecisionDialog extends HookWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            isReject ? 'Reject overtime' : 'Approve overtime',
+            isReject ? 'Reject overtime'.tr() : 'Approve overtime'.tr(),
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w800,
             ),
@@ -94,8 +96,11 @@ class _OvertimeDecisionDialog extends HookWidget {
           children: [
             Text(
               isReject
-                  ? 'Reject the overtime request from $requesterLabel? This cannot be undone.'
-                  : 'Approve the overtime request from $requesterLabel?',
+                  ? 'Reject the overtime request from {requester}? This cannot be undone.'
+                        .tr(namedArgs: {'requester': requesterLabel})
+                  : 'Approve the overtime request from {requester}?'.tr(
+                      namedArgs: {'requester': requesterLabel},
+                    ),
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.75),
               ),
@@ -108,17 +113,17 @@ class _OvertimeDecisionDialog extends HookWidget {
                   decimal: true,
                 ),
                 decoration: InputDecoration(
-                  labelText: 'Approved hours',
-                  hintText: 'e.g. 4',
+                  labelText: 'Approved hours'.tr(),
+                  hintText: 'e.g. 4'.tr(),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  suffixText: 'hrs',
+                  suffixText: 'hrs'.tr(),
                 ),
                 validator: (value) {
                   final hours = double.tryParse(value?.trim() ?? '');
                   if (hours == null || hours <= 0) {
-                    return 'Enter the approved hours';
+                    return 'Enter the approved hours'.tr();
                   }
                   return null;
                 },
@@ -128,8 +133,8 @@ class _OvertimeDecisionDialog extends HookWidget {
                 controller: noteController,
                 maxLines: 2,
                 decoration: InputDecoration(
-                  labelText: 'Note (optional)',
-                  hintText: 'Add a note for the employee',
+                  labelText: 'Note (optional)'.tr(),
+                  hintText: 'Add a note for the employee'.tr(),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -142,8 +147,8 @@ class _OvertimeDecisionDialog extends HookWidget {
                 minLines: 2,
                 autofocus: true,
                 decoration: InputDecoration(
-                  labelText: 'Reason for rejection',
-                  hintText: 'e.g. Overtime was not pre-approved',
+                  labelText: 'Reason for rejection'.tr(),
+                  hintText: 'e.g. Overtime was not pre-approved'.tr(),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -151,7 +156,7 @@ class _OvertimeDecisionDialog extends HookWidget {
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'A reason is required to reject';
+                    return 'A reason is required to reject'.tr();
                   }
                   return null;
                 },
@@ -162,13 +167,13 @@ class _OvertimeDecisionDialog extends HookWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text('Cancel'.tr()),
         ),
         FilledButton.icon(
           onPressed: submit,
           style: FilledButton.styleFrom(backgroundColor: accent),
           icon: Icon(isReject ? Icons.close_rounded : Icons.check_rounded),
-          label: Text(isReject ? 'Reject' : 'Approve'),
+          label: Text(isReject ? 'Reject'.tr() : 'Approve'.tr()),
         ),
       ],
     );

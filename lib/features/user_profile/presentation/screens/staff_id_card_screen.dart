@@ -7,6 +7,8 @@ import 'package:office_hr/features/auth/presentation/providers/auth_providers.da
 import 'package:office_hr/shared/date_formatter.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class StaffIdCardScreen extends ConsumerWidget {
   const StaffIdCardScreen({super.key});
 
@@ -18,10 +20,13 @@ class StaffIdCardScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Digital ID Card', style: theme.textTheme.headlineMedium),
+        title: Text(
+          'Digital ID Card'.tr(),
+          style: theme.textTheme.headlineMedium,
+        ),
         actions: [
           IconButton(
-            tooltip: 'How to verify',
+            tooltip: 'How to verify'.tr(),
             onPressed: () => _showVerificationInfo(context),
             icon: const Icon(Icons.info_outline_rounded),
           ),
@@ -31,30 +36,46 @@ class StaffIdCardScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, _) => _CardStateMessage(
           icon: Icons.error_outline_rounded,
-          title: 'Unable to load ID card',
-          message: 'Please try again later.',
+          title: 'Unable to load ID card'.tr(),
+          message: 'Please try again later.'.tr(),
           color: theme.colorScheme.error,
         ),
         data: (session) {
           if (session == null) {
             return _CardStateMessage(
               icon: Icons.badge_outlined,
-              title: 'No ID card available',
-              message: 'Sign in to view your digital staff ID card.',
+              title: 'No ID card available'.tr(),
+              message: 'Sign in to view your digital staff ID card.'.tr(),
               color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
             );
           }
-          return SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 420),
-                child: Column(
-                  children: [
-                    _StaffIdCard(session: session),
-                    const SizedBox(height: 18),
-                    _SecurityNote(onTap: () => _showVerificationInfo(context)),
-                  ],
+          return SafeArea(
+            top: false,
+            child: LayoutBuilder(
+              builder: (context, viewport) => SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: viewport.maxHeight),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 24,
+                      ),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 420),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _StaffIdCard(session: session),
+                            const SizedBox(height: 18),
+                            _SecurityNote(
+                              onTap: () => _showVerificationInfo(context),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -83,32 +104,32 @@ class _StaffIdCard extends StatelessWidget {
     final details = <_CardInfoData>[
       _CardInfoData(
         icon: Icons.apartment_rounded,
-        label: 'Department',
+        label: 'Department'.tr(),
         value: _text(workInfo?.department?.title),
       ),
       _CardInfoData(
         icon: Icons.location_city_rounded,
-        label: 'Branch',
+        label: 'Branch'.tr(),
         value: _text(workInfo?.branch?.title),
       ),
       _CardInfoData(
         icon: Icons.schedule_rounded,
-        label: 'Shift',
+        label: 'Shift'.tr(),
         value: _text(workInfo?.shift?.title),
       ),
       _CardInfoData(
         icon: Icons.bloodtype_rounded,
-        label: 'Blood Type',
+        label: 'Blood Type'.tr(),
         value: _text(basicInfo?.bloodType),
       ),
       _CardInfoData(
         icon: Icons.work_outline_rounded,
-        label: 'Employment',
+        label: 'Employment'.tr(),
         value: _text(workInfo?.employmentType),
       ),
       _CardInfoData(
         icon: Icons.event_available_rounded,
-        label: 'Joined',
+        label: 'Joined'.tr(),
         value: formatDateString(workInfo?.employmentDate),
       ),
     ].where((item) => item.value != '-').toList();
@@ -242,7 +263,7 @@ class _CardHeader extends StatelessWidget {
                 ),
               ),
               Text(
-                'EMPLOYEE ID',
+                'EMPLOYEE ID'.tr(),
                 style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.6),
                   fontSize: 10,
@@ -365,16 +386,16 @@ class _CardFooter extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _FooterField(label: 'EMPLOYEE CODE', value: _grouped(code)),
+              _FooterField(label: 'EMPLOYEE CODE'.tr(), value: _grouped(code)),
               const SizedBox(height: 12),
               _FooterField(
-                label: 'ISSUED',
+                label: 'ISSUED'.tr(),
                 value: formatDateString(employee?.createdAt),
               ),
               const SizedBox(height: 12),
               _FooterField(
-                label: 'STATUS',
-                value: status == '-' ? 'ACTIVE' : status.toUpperCase(),
+                label: 'STATUS'.tr(),
+                value: status == '-' ? 'ACTIVE'.tr() : status.toUpperCase(),
               ),
             ],
           ),
@@ -584,7 +605,8 @@ class _SecurityNote extends StatelessWidget {
             const SizedBox(width: 6),
             Flexible(
               child: Text(
-                'QR carries only your user ID - no personal data. Tap to learn how to verify.',
+                'QR carries only your user ID - no personal data. Tap to learn how to verify.'
+                    .tr(),
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
@@ -671,29 +693,32 @@ void _showVerificationInfo(BuildContext context) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Verify this ID card',
+                'Verify this ID card'.tr(),
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
               const SizedBox(height: 12),
-              const _VerifyStep(
+              _VerifyStep(
                 number: '1',
-                title: 'Scan the QR',
+                title: 'Scan the QR'.tr(),
                 body:
-                    'Use the company verifier app or camera to scan the code on the card.',
+                    'Use the company verifier app or camera to scan the code on the card.'
+                        .tr(),
               ),
-              const _VerifyStep(
+              _VerifyStep(
                 number: '2',
-                title: 'Verifier authenticates',
+                title: 'Verifier authenticates'.tr(),
                 body:
-                    'The verifier signs in and the backend resolves the card ID to the employee record.',
+                    'The verifier signs in and the backend resolves the card ID to the employee record.'
+                        .tr(),
               ),
-              const _VerifyStep(
+              _VerifyStep(
                 number: '3',
-                title: 'Confirm identity',
+                title: 'Confirm identity'.tr(),
                 body:
-                    'Match the on-screen photo and name, and confirm the employee is active.',
+                    'Match the on-screen photo and name, and confirm the employee is active.'
+                        .tr(),
               ),
               const SizedBox(height: 8),
               Container(
@@ -713,7 +738,8 @@ void _showVerificationInfo(BuildContext context) {
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        'The QR holds your public user ID only. Treat a screenshot as a copy of a physical card - for stronger security issue short-lived, server-signed tokens and verify them against a public key.',
+                        'The QR holds your public user ID only. Treat a screenshot as a copy of a physical card - for stronger security issue short-lived, server-signed tokens and verify them against a public key.'
+                            .tr(),
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.onSurface.withValues(
                             alpha: 0.75,

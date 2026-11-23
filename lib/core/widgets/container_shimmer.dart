@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:office_hr/core/theme/theme_notifier.dart';
 import 'package:shimmer/shimmer.dart';
 
-class ContainerShimmer extends ConsumerWidget {
+class ContainerShimmer extends StatelessWidget {
   final Color? baseColor;
   final Color? highlightColor;
   final double? height;
@@ -26,10 +24,9 @@ class ContainerShimmer extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final officeHrTheme = ref.watch(themeProvider);
-    final isDark = officeHrTheme.isDark;
+    final isDark = theme.brightness == Brightness.dark;
 
     final defaultBase = isDark ? const Color(0xFF2A3A55) : Colors.grey[300]!;
     final defaultHighlight = isDark

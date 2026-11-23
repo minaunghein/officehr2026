@@ -9,6 +9,8 @@ import 'package:office_hr/core/widgets/error_state_widget.dart';
 import 'package:office_hr/features/leave/presentation/providers/leave_providers.dart';
 import 'package:office_hr/features/leave/presentation/widgets/leave_request_card.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class LeaveRequestsTab extends ConsumerWidget {
   const LeaveRequestsTab({super.key, required this.onRefresh});
 
@@ -23,8 +25,8 @@ class LeaveRequestsTab extends ConsumerWidget {
         if (requests.isEmpty) {
           return EmptyStateWidget(
             icon: Icons.event_note_rounded,
-            title: 'No leave requests',
-            message: 'Tap the Request button to submit your first leave.',
+            title: 'No leave requests'.tr(),
+            message: 'Tap the Request button to submit your first leave.'.tr(),
             onRefresh: onRefresh,
           );
         }

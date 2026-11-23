@@ -12,6 +12,8 @@ import 'package:office_hr/features/home/presentation/screens/attendance.dart';
 import 'package:office_hr/features/home/presentation/screens/home.dart';
 import 'package:office_hr/features/home/presentation/screens/team.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class Dashboard extends ConsumerWidget {
   Dashboard({super.key});
 
@@ -39,21 +41,21 @@ class Dashboard extends ConsumerWidget {
         iconSize: 22,
         currentIndex: safeIndex,
         onTap: (i) => ref.read(dashboardIndexProvider.notifier).select(i),
-        items: const [
+        items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.dashboard_outlined),
             activeIcon: Icon(Icons.dashboard_rounded),
-            label: 'Home',
+            label: 'Home'.tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month_outlined),
             activeIcon: Icon(Icons.calendar_month),
-            label: 'Attendance',
+            label: 'Attendance'.tr(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.groups_2_outlined),
             activeIcon: Icon(Icons.groups_2_rounded),
-            label: 'Team',
+            label: 'Team'.tr(),
           ),
         ],
       ),
@@ -72,13 +74,13 @@ class _DashboardAppBar extends HookConsumerWidget
   String _getGreeting() {
     final hour = DateTime.now().hour;
     if (hour < 12) {
-      return 'GOOD MORNING';
+      return 'GOOD MORNING'.tr();
     } else if (hour < 17) {
-      return 'GOOD AFTERNOON';
+      return 'GOOD AFTERNOON'.tr();
     } else if (hour < 20) {
-      return 'GOOD EVENING';
+      return 'GOOD EVENING'.tr();
     } else {
-      return 'GOOD NIGHT';
+      return 'GOOD NIGHT'.tr();
     }
   }
 
@@ -158,12 +160,12 @@ class _DashboardAppBar extends HookConsumerWidget
               ),
               if (currentUser.hasError)
                 Text(
-                  'Error Getting User Info',
+                  'Error Getting User Info'.tr(),
                   style: theme.textTheme.bodySmall?.copyWith(color: Colors.red),
                 )
               else
                 Text(
-                  fullName ?? 'UNKNOWN',
+                  fullName ?? 'UNKNOWN'.tr(),
                   style: theme.textTheme.titleMedium?.copyWith(
                     color: theme.colorScheme.onSurface,
                     fontWeight: FontWeight.w800,
@@ -177,7 +179,7 @@ class _DashboardAppBar extends HookConsumerWidget
       actions: [
         if (isTeamTab && canScan)
           IconButton(
-            tooltip: 'Scan Staff ID Card',
+            tooltip: 'Scan Staff ID Card'.tr(),
             icon: Icon(
               Icons.qr_code_scanner_rounded,
               color: theme.colorScheme.primary,

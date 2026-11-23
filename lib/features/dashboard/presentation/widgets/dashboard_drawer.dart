@@ -5,11 +5,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/core/router/app_router.dart';
-import 'package:office_hr/core/theme/app_theme.dart';
-import 'package:office_hr/core/theme/theme_notifier.dart';
 import 'package:office_hr/core/widgets/container_shimmer.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/shared/global.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 
 class DashboardDrawer extends ConsumerWidget {
   const DashboardDrawer({super.key});
@@ -17,7 +17,6 @@ class DashboardDrawer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final themeStyle = ref.watch(themeProvider);
     final userDetails = ref.watch(currentUserProvider);
     final employee = userDetails.value?.employee;
     final role = userDetails.value?.role;
@@ -92,14 +91,14 @@ class DashboardDrawer extends ConsumerWidget {
                     children: [
                       if (userDetails.hasError)
                         Text(
-                          'Error Getting User Info',
+                          'Error Getting User Info'.tr(),
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: Colors.red,
                           ),
                         )
                       else
                         Text(
-                          fullName ?? 'Loading...',
+                          fullName ?? 'Loading...'.tr(),
                           style: theme.textTheme.titleMedium?.copyWith(
                             color: theme.colorScheme.onPrimaryContainer,
                             fontWeight: FontWeight.w800,
@@ -108,7 +107,7 @@ class DashboardDrawer extends ConsumerWidget {
                         ),
                       const SizedBox(height: 3),
                       Text(
-                        positionTitle ?? 'Unknown Position',
+                        positionTitle ?? 'Unknown Position'.tr(),
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.onPrimary.withValues(
                             alpha: 0.85,
@@ -132,7 +131,7 @@ class DashboardDrawer extends ConsumerWidget {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
-                                'ID: $empCode',
+                                'ID: {id}'.tr(namedArgs: {'id': empCode}),
                                 style: theme.textTheme.labelSmall?.copyWith(
                                   color: theme.colorScheme.onPrimary,
                                   fontWeight: FontWeight.w600,
@@ -168,119 +167,77 @@ class DashboardDrawer extends ConsumerWidget {
               ),
             ),
           ),
-          const _SectionLabel(label: 'Appearance'),
-          _SettingsGroup(
-            children: [_ThemeTile(themeStyle: themeStyle, ref: ref)],
-          ),
-          const _SectionLabel(label: 'Profile'),
+          _SectionLabel(label: 'Profile'.tr()),
           _SettingsGroup(
             children: [
               _NavTile(
                 icon: Icons.badge_rounded,
                 iconBg: const Color(0xFFEEF2FF),
-                title: 'Digital ID Card',
-                subtitle: 'Your staff identity card',
+                title: 'Digital ID Card'.tr(),
+                subtitle: 'Your staff identity card'.tr(),
                 onTap: () => context.push(AppRoutes.staffIdCard),
               ),
             ],
           ),
-          const _SectionLabel(label: 'HR Modules'),
+          _SectionLabel(label: 'HR Modules'.tr()),
           _SettingsGroup(
             children: [
               _NavTile(
                 icon: Icons.receipt_long_rounded,
                 iconBg: const Color(0xFFF5F3FF),
-                title: 'Payslips',
-                subtitle: 'View your salary slips',
+                title: 'Payslips'.tr(),
+                subtitle: 'View your salary slips'.tr(),
                 onTap: () => context.push(AppRoutes.payslip),
               ),
               const _Divider(),
               _NavTile(
                 icon: Icons.beach_access_rounded,
                 iconBg: const Color(0xFFECFEFF),
-                title: 'Leave',
-                subtitle: 'Manage your leave balance',
+                title: 'Leave'.tr(),
+                subtitle: 'Manage your leave balance'.tr(),
                 onTap: () => context.push(AppRoutes.leave),
               ),
               const _Divider(),
               _NavTile(
                 icon: Icons.timer_outlined,
                 iconBg: const Color(0xFFFFFBEB),
-                title: 'Overtime',
-                subtitle: 'Track your overtime requests',
+                title: 'Overtime'.tr(),
+                subtitle: 'Track your overtime requests'.tr(),
                 onTap: () => context.push(AppRoutes.overtime),
               ),
               const _Divider(),
               _NavTile(
                 icon: Icons.calendar_today_rounded,
                 iconBg: const Color(0xFFFFFBEB),
-                title: 'Public Holidays',
-                subtitle: 'National & company holidays',
+                title: 'Public Holidays'.tr(),
+                subtitle: 'National & company holidays'.tr(),
                 onTap: () => context.push(AppRoutes.publicHoliday),
               ),
               const _Divider(),
               _NavTile(
                 icon: Icons.business_rounded,
                 iconBg: const Color(0xFFECFDF5),
-                title: 'Company Information',
-                subtitle: 'About your organisation',
+                title: 'Company Information'.tr(),
+                subtitle: 'About your organisation'.tr(),
                 onTap: () => context.push(AppRoutes.company),
               ),
             ],
           ),
-          const _SectionLabel(label: 'ACCOUNT'),
+          _SectionLabel(label: 'ACCOUNT'.tr()),
           _SettingsGroup(
             children: [
               _NavTile(
-                icon: Icons.lock_outline_rounded,
+                icon: Icons.settings_outlined,
                 iconBg: const Color(0xFFF1F5F9),
-                title: 'Change Password',
-                onTap: () => context.push(AppRoutes.changePassword),
-              ),
-              const _Divider(),
-              _NavTile(
-                icon: Icons.logout_rounded,
-                iconBg: const Color(0xFFFEF2F2),
-                title: 'Logout',
-                titleColor: const Color(0xFFDC2626),
-                showChevron: false,
-                onTap: () => _confirmLogout(context, ref),
+                title: 'Settings'.tr(),
+                subtitle: 'Appearance, reminders and security'.tr(),
+                onTap: () => context.push(AppRoutes.settings),
               ),
             ],
           ),
         ],
       ),
     );
-  }
-
-  static Future<void> _confirmLogout(
-    BuildContext context,
-    WidgetRef ref,
-  ) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Are you sure you want to logout?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xFFDC2626),
-            ),
-            onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Logout'),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed == true) {
-      await ref.read(loginProvider.notifier).logout();
-    }
   }
 }
 
@@ -336,16 +293,12 @@ class _NavTile extends StatelessWidget {
     required this.title,
     required this.onTap,
     this.subtitle,
-    this.titleColor,
-    this.showChevron = true,
   });
 
   final IconData icon;
   final Color iconBg;
   final String title;
   final String? subtitle;
-  final Color? titleColor;
-  final bool showChevron;
   final VoidCallback onTap;
 
   @override
@@ -369,7 +322,6 @@ class _NavTile extends StatelessWidget {
                     title,
                     style: theme.textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: titleColor,
                     ),
                   ),
                   if (subtitle != null)
@@ -385,75 +337,13 @@ class _NavTile extends StatelessWidget {
               ),
             ),
 
-            if (showChevron)
-              Icon(
-                Icons.chevron_right_rounded,
-                size: 20,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.35),
-              ),
+            Icon(
+              Icons.chevron_right_rounded,
+              size: 20,
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.35),
+            ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _ThemeTile extends StatelessWidget {
-  const _ThemeTile({required this.themeStyle, required this.ref});
-
-  final OfficeHrTheme themeStyle;
-  final WidgetRef ref;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = themeStyle.isDark;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 36,
-            height: 36,
-
-            child: Icon(
-              isDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
-
-              size: 20,
-            ),
-          ),
-          const SizedBox(width: 14),
-
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Dark Mode',
-                  style: theme.textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  isDark ? 'Currently dark' : 'Currently light',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          Switch(
-            value: isDark,
-            onChanged: (_) {
-              ref
-                  .read(themeProvider.notifier)
-                  .setTheme(isDark ? OfficeHrTheme.light : OfficeHrTheme.dark);
-            },
-          ),
-        ],
       ),
     );
   }

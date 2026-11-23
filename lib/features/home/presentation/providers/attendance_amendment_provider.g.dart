@@ -334,7 +334,7 @@ final class AttendanceAmendmentsProvider
 }
 
 String _$attendanceAmendmentsHash() =>
-    r'7589865d58edd81473c3e73a5ca16cab6c813bf7';
+    r'64c4dcfc7192c1be445281a92787ef1f3d939450';
 
 abstract class _$AttendanceAmendments
     extends $AsyncNotifier<List<AttendanceAmendment>> {
@@ -442,7 +442,7 @@ final class AmendmentApprovalsProvider
 }
 
 String _$amendmentApprovalsHash() =>
-    r'b7c21ea4a27925379781b649d6be721cb358269f';
+    r'7d335ccfb518a79692f353c21120af80f7cc7861';
 
 /// Reviewer-facing amendment list. The current user's own requests are hidden
 /// (they can't approve/reject themselves) and pending items sort first so

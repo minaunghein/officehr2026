@@ -1,4 +1,5 @@
 import 'package:office_hr/features/home/domain/entities/clock_request.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 /// Formats a `YYYYMMDD` date id like `20261118` as `18 Nov 2026`.
 String formatDateId(String? dateId) {
@@ -44,7 +45,7 @@ String formatPunchTime(String? punchTime) {
   return '$hh:$mm $amPm';
 }
 
-String clockPunchTypeLabel(ClockPunchType type) => type.label;
+String clockPunchTypeLabel(ClockPunchType type) => type.label.tr();
 
 /// Builds the `YYYYMMDD` date id for a local date.
 String dateIdFor(DateTime date) {

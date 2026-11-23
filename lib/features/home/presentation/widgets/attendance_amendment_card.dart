@@ -5,6 +5,8 @@ import 'package:office_hr/features/home/presentation/widgets/attendance_amendmen
 import 'package:office_hr/features/home/presentation/widgets/attendance_status.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class AttendanceAmendmentCard extends StatelessWidget {
   const AttendanceAmendmentCard({
     super.key,
@@ -113,13 +115,13 @@ class AttendanceAmendmentCard extends StatelessWidget {
                     if (_hasValue(amendment.requestedClockIn))
                       _TimePill(
                         icon: Icons.login_rounded,
-                        label: 'In',
+                        label: 'In'.tr(),
                         value: formatAttendanceTime(amendment.requestedClockIn),
                       ),
                     if (_hasValue(amendment.requestedClockOut))
                       _TimePill(
                         icon: Icons.logout_rounded,
-                        label: 'Out',
+                        label: 'Out'.tr(),
                         value: formatAttendanceTime(
                           amendment.requestedClockOut,
                         ),
@@ -137,16 +139,15 @@ class AttendanceAmendmentCard extends StatelessWidget {
               if (amendment.createdAt != null) ...[
                 const SizedBox(height: 10),
                 Text(
-                  'Requested ${_relativeOrDate(amendment.createdAt!)}',
+                  'Requested {date}'.tr(
+                    namedArgs: {'date': _relativeOrDate(amendment.createdAt!)},
+                  ),
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.45),
                   ),
                 ),
               ],
-              if (trailing != null) ...[
-                const SizedBox(height: 12),
-                trailing!,
-              ],
+              if (trailing != null) ...[const SizedBox(height: 12), trailing!],
             ],
           ),
         ),
@@ -260,7 +261,7 @@ Color amendmentTypeColor(String type, ThemeData theme) {
 
 /// Formats a backend `date_id` (`20240615` or `2024-06-15`) as `15 Jun 2024`.
 String formatAmendmentDate(String dateId) {
-  if (dateId.trim().isEmpty) return 'No date';
+  if (dateId.trim().isEmpty) return 'No date'.tr();
   final digits = dateId.replaceAll(RegExp(r'[^0-9]'), '');
   if (digits.length != 8) return dateId;
 
@@ -289,9 +290,15 @@ String _relativeOrDate(DateTime value) {
   final local = value.toLocal();
   final now = DateTime.now();
   final difference = now.difference(local);
-  if (difference.inMinutes < 1) return 'just now';
-  if (difference.inHours < 1) return '${difference.inMinutes}m ago';
-  if (difference.inDays < 1) return '${difference.inHours}h ago';
-  if (difference.inDays < 7) return '${difference.inDays}d ago';
+  if (difference.inMinutes < 1) return 'just now'.tr();
+  if (difference.inHours < 1) {
+    return '{count}m ago'.tr(namedArgs: {'count': '${difference.inMinutes}'});
+  }
+  if (difference.inDays < 1) {
+    return '{count}h ago'.tr(namedArgs: {'count': '${difference.inHours}'});
+  }
+  if (difference.inDays < 7) {
+    return '{count}d ago'.tr(namedArgs: {'count': '${difference.inDays}'});
+  }
   return formatDateString(local.toIso8601String());
 }

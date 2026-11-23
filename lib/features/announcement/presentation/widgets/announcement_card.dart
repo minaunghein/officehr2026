@@ -4,6 +4,8 @@ import 'package:office_hr/core/widgets/image_widget.dart';
 import 'package:office_hr/features/announcement/domain/entities/announcement.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Feed card for a company announcement: title, publish date, body and an
 /// optional attached image.
 class AnnouncementCard extends StatelessWidget {
@@ -125,7 +127,7 @@ class _DraftChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
-        'Draft',
+        'Draft'.tr(),
         style: theme.textTheme.labelSmall?.copyWith(
           color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
           fontWeight: FontWeight.w700,

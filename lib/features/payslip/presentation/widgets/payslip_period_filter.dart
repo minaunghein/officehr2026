@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// A period selector for the payslip list. Tapping opens a date-range picker;
 /// [range] is `null` when no filter is applied (showing all payslips).
 class PayslipPeriodFilter extends StatelessWidget {
@@ -47,7 +49,7 @@ class PayslipPeriodFilter extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      filtered ? _formatRange(range!) : 'All periods',
+                      filtered ? _formatRange(range!) : 'All periods'.tr(),
                       style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
@@ -55,8 +57,8 @@ class PayslipPeriodFilter extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       filtered
-                          ? 'Filter by salary period'
-                          : 'Tap to choose a range',
+                          ? 'Filter by salary period'.tr()
+                          : 'Tap to choose a range'.tr(),
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurface.withValues(
                           alpha: 0.55,
@@ -69,7 +71,7 @@ class PayslipPeriodFilter extends StatelessWidget {
               if (filtered)
                 IconButton(
                   onPressed: onClear,
-                  tooltip: 'Clear filter',
+                  tooltip: 'Clear filter'.tr(),
                   icon: const Icon(Icons.close_rounded, size: 18),
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                 )

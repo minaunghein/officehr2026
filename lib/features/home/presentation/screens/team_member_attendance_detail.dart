@@ -6,6 +6,8 @@ import 'package:office_hr/features/home/presentation/widgets/attendance_status.d
 import 'package:office_hr/features/home/presentation/widgets/team_member_attendance_header.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class TeamMemberAttendanceDetailScreen extends StatelessWidget {
   const TeamMemberAttendanceDetailScreen({super.key, required this.attendance});
 
@@ -18,61 +20,64 @@ class TeamMemberAttendanceDetailScreen extends StatelessWidget {
     final hasLeaveType = attendance.leaveType?.trim().isNotEmpty ?? false;
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Attendance Details'),
-      ),
+      appBar: AppBar(centerTitle: true, title: Text('Attendance Details'.tr())),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
         children: [
           TeamMemberAttendanceHeader(attendance: attendance),
           const SizedBox(height: 16),
           DetailSectionCard(
-            title: 'Attendance',
+            title: 'Attendance'.tr(),
             icon: Icons.event_available_rounded,
             children: [
               DetailRow(
-                label: 'Status',
+                label: 'Status'.tr(),
                 value: attendanceStatusLabel(attendance.status),
               ),
               DetailRow(
-                label: 'Scheduled',
+                label: 'Scheduled'.tr(),
                 value: _range(scheduled?.clockIn, scheduled?.clockOut),
               ),
               DetailRow(
-                label: 'Actual',
+                label: 'Actual'.tr(),
                 value: _range(actual?.clockIn, actual?.clockOut),
               ),
               DetailRow(
-                label: 'Work duration',
+                label: 'Work duration'.tr(),
                 value: _duration(attendance.workDuration),
               ),
               DetailRow(
-                label: 'Break duration',
+                label: 'Break duration'.tr(),
                 value: _duration(attendance.breakDuration),
               ),
-              DetailRow(label: 'Late', value: _minutes(attendance.lateMinutes)),
               DetailRow(
-                label: 'Early leave',
+                label: 'Late'.tr(),
+                value: _minutes(attendance.lateMinutes),
+              ),
+              DetailRow(
+                label: 'Early leave'.tr(),
                 value: _minutes(attendance.earlyLeaveMinutes),
               ),
               DetailRow(
-                label: 'Overtime',
+                label: 'Overtime'.tr(),
                 value: _minutes(attendance.overtimeMinutes),
               ),
               DetailRow(
-                label: 'Half day',
-                value: attendance.isHalfDay ? 'Yes' : 'No',
+                label: 'Half day'.tr(),
+                value: attendance.isHalfDay ? 'Yes'.tr() : 'No'.tr(),
               ),
               if (hasLeaveType)
-                DetailRow(label: 'Leave type', value: attendance.leaveType!),
+                DetailRow(
+                  label: 'Leave type'.tr(),
+                  value: attendance.leaveType!,
+                ),
               DetailRow(
-                label: 'Holiday',
-                value: attendance.isHoliday ? 'Yes' : 'No',
+                label: 'Holiday'.tr(),
+                value: attendance.isHoliday ? 'Yes'.tr() : 'No'.tr(),
               ),
               if (attendance.notes.trim().isNotEmpty)
                 DetailRow(
-                  label: 'Notes',
+                  label: 'Notes'.tr(),
                   value: attendance.notes,
                   multiline: true,
                 ),

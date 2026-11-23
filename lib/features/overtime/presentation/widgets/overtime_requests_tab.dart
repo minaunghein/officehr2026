@@ -9,6 +9,8 @@ import 'package:office_hr/features/overtime/domain/entities/overtime_request.dar
 import 'package:office_hr/features/overtime/presentation/providers/overtime_providers.dart';
 import 'package:office_hr/features/overtime/presentation/widgets/overtime_request_card.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 enum _StatusFilter {
   all('All'),
   pending('Pending'),
@@ -66,7 +68,7 @@ class OvertimeRequestsTab extends HookConsumerWidget {
               itemBuilder: (context, index) {
                 final option = _StatusFilter.values[index];
                 return ChoiceChip(
-                  label: Text(option.label),
+                  label: Text(option.label.tr()),
                   selected: option == filter.value,
                   onSelected: (_) => filter.value = option,
                 );
@@ -80,10 +82,10 @@ class OvertimeRequestsTab extends HookConsumerWidget {
                 if (visible.isEmpty) {
                   return EmptyStateWidget(
                     icon: Icons.bolt_outlined,
-                    title: 'No overtime requests',
+                    title: 'No overtime requests'.tr(),
                     message:
-                        'Tap the Request button to submit your first overtime '
-                        'request.',
+                        'Tap the Request button to submit your first overtime request.'
+                            .tr(),
                     onRefresh: refresh,
                   );
                 }

@@ -5,6 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/features/splash/presentation/providers/splash_providers.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class SplashScreen extends HookConsumerWidget {
   const SplashScreen({super.key});
 
@@ -89,8 +91,8 @@ class SplashScreen extends HookConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 32),
-                const Text(
-                  'Office HR',
+                Text(
+                  'Office HR'.tr(),
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w800,
@@ -99,7 +101,7 @@ class SplashScreen extends HookConsumerWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Empowering your workspace',
+                  'Empowering your workspace'.tr(),
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,

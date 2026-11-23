@@ -198,7 +198,7 @@ final class UpdateProfileImageNotifierProvider
 }
 
 String _$updateProfileImageNotifierHash() =>
-    r'bac3be495951daff9fb453f0f47dd59a065467e6';
+    r'462d5dc4a335c96ee724d2b60195c27d208dfd39';
 
 abstract class _$UpdateProfileImageNotifier extends $AsyncNotifier<void> {
   FutureOr<void> build();

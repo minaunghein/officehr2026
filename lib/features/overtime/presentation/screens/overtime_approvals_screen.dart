@@ -13,6 +13,8 @@ import 'package:office_hr/features/overtime/presentation/utils/overtime_formatte
 import 'package:office_hr/features/overtime/presentation/widgets/overtime_decision_dialog.dart';
 import 'package:office_hr/features/overtime/presentation/widgets/overtime_request_card.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 enum _Filter {
   all('All'),
   pending('Pending'),
@@ -49,7 +51,7 @@ class OvertimeApprovalsScreen extends HookConsumerWidget {
         ref.read(allOvertimeRequestsProvider.notifier).refresh();
 
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: const Text('Overtime Requests')),
+      appBar: AppBar(centerTitle: true, title: Text('Overtime Requests'.tr())),
       body: Column(
         children: [
           SizedBox(
@@ -62,7 +64,7 @@ class OvertimeApprovalsScreen extends HookConsumerWidget {
               itemBuilder: (context, index) {
                 final option = _Filter.values[index];
                 return ChoiceChip(
-                  label: Text(option.label),
+                  label: Text(option.label.tr()),
                   selected: option == filter.value,
                   onSelected: (_) => filter.value = option,
                 );
@@ -97,10 +99,15 @@ class OvertimeApprovalsScreen extends HookConsumerWidget {
                 if (visible.isEmpty) {
                   return EmptyStateWidget(
                     icon: Icons.bolt_outlined,
-                    title: 'No ${filter.value.label.toLowerCase()} requests',
+                    title: 'No {filter} requests'.tr(
+                      namedArgs: {
+                        'filter': filter.value.label.tr().toLowerCase(),
+                      },
+                    ),
                     message: others.isNotEmpty
-                        ? 'Try a different filter.'
-                        : 'Overtime requests from your team will show up here.',
+                        ? 'Try a different filter.'.tr()
+                        : 'Overtime requests from your team will show up here.'
+                              .tr(),
                     onRefresh: onRefresh,
                     centered: true,
                     padding: const EdgeInsets.symmetric(
@@ -173,8 +180,8 @@ class _DecisionButtons extends HookConsumerWidget {
         await ref.read(allOvertimeRequestsProvider.notifier).refresh();
         SnackbarUtils.showSuccess(
           decision == OvertimeDecision.approved
-              ? 'Overtime approved'
-              : 'Overtime rejected',
+              ? 'Overtime approved'.tr()
+              : 'Overtime rejected'.tr(),
         );
       } catch (error) {
         if (context.mounted) {
@@ -196,52 +203,56 @@ class _DecisionButtons extends HookConsumerWidget {
       );
     }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        OutlinedButton.icon(
-          onPressed: isDeciding
-              ? null
-              : () => decide(OvertimeDecision.rejected),
-          style: OutlinedButton.styleFrom(
-            foregroundColor: const Color(0xFFB91C1C),
-            side: BorderSide(
-              color: const Color(0xFFB91C1C).withValues(alpha: 0.4),
+    // IntrinsicWidth forces both buttons to the width of the wider label, so
+    // Reject and Approve always render at the same size.
+    return IntrinsicWidth(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          OutlinedButton.icon(
+            onPressed: isDeciding
+                ? null
+                : () => decide(OvertimeDecision.rejected),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: const Color(0xFFB91C1C),
+              side: BorderSide(
+                color: const Color(0xFFB91C1C).withValues(alpha: 0.4),
+              ),
+              visualDensity: VisualDensity.compact,
+              minimumSize: const Size(108, 40),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
-            visualDensity: VisualDensity.compact,
-            minimumSize: const Size(108, 40),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+            icon: iconFor(
+              OvertimeDecision.rejected,
+              Icons.close_rounded,
+              const Color(0xFFB91C1C),
             ),
+            label: Text('Reject'.tr()),
           ),
-          icon: iconFor(
-            OvertimeDecision.rejected,
-            Icons.close_rounded,
-            const Color(0xFFB91C1C),
-          ),
-          label: const Text('Reject'),
-        ),
-        const SizedBox(width: 8),
-        FilledButton.icon(
-          onPressed: isDeciding
-              ? null
-              : () => decide(OvertimeDecision.approved),
-          style: FilledButton.styleFrom(
-            backgroundColor: const Color(0xFF15803D),
-            visualDensity: VisualDensity.compact,
-            minimumSize: const Size(108, 40),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+          const SizedBox(width: 8),
+          FilledButton.icon(
+            onPressed: isDeciding
+                ? null
+                : () => decide(OvertimeDecision.approved),
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFF15803D),
+              visualDensity: VisualDensity.compact,
+              minimumSize: const Size(108, 40),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
+            icon: iconFor(
+              OvertimeDecision.approved,
+              Icons.check_rounded,
+              Colors.white,
+            ),
+            label: Text('Approve'.tr(), style: TextStyle(color: Colors.white)),
           ),
-          icon: iconFor(
-            OvertimeDecision.approved,
-            Icons.check_rounded,
-            Colors.white,
-          ),
-          label: const Text('Approve', style: TextStyle(color: Colors.white)),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

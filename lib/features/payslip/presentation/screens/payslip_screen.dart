@@ -15,18 +15,21 @@ import 'package:office_hr/features/payslip/presentation/utils/payslip_formatters
 import 'package:office_hr/features/payslip/presentation/widgets/payslip_card.dart';
 import 'package:office_hr/features/payslip/presentation/widgets/payslip_period_filter.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class PayslipScreen extends StatelessWidget {
   const PayslipScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Payslips'), centerTitle: true),
-      body: const BiometricGate(
-        reason: 'Authenticate to view your payslips',
-        title: 'Payslips are protected',
+      appBar: AppBar(title: Text('Payslips'.tr()), centerTitle: true),
+      body: BiometricGate(
+        reason: 'Authenticate to view your payslips'.tr(),
+        title: 'Payslips are protected'.tr(),
         description:
-            'Unlock with your fingerprint, face, or device passcode to continue.',
+            'Unlock with your fingerprint, face, or device passcode to continue.'
+                .tr(),
         child: _PayslipContent(),
       ),
     );
@@ -62,7 +65,7 @@ class _PayslipContent extends HookConsumerWidget {
         firstDate: firstDate,
         lastDate: lastDate,
         initialDateRange: range.value,
-        helpText: 'Filter payslips',
+        helpText: 'Filter payslips'.tr(),
       );
       if (picked != null) range.value = picked;
     }
@@ -121,10 +124,10 @@ class _PayslipContent extends HookConsumerWidget {
               hasScrollBody: false,
               child: EmptyStateWidget(
                 icon: Icons.receipt_long_rounded,
-                title: 'No payslips yet',
+                title: 'No payslips yet'.tr(),
                 message:
-                    'Payslips appear here once payroll is processed for '
-                    'your salary period.',
+                    'Payslips appear here once payroll is processed for your salary period.'
+                        .tr(),
               ),
             ),
           ];
@@ -199,7 +202,7 @@ class _TotalBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Total net pay',
+                  'Total net pay'.tr(),
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                     fontWeight: FontWeight.w600,
@@ -223,7 +226,11 @@ class _TotalBanner extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              '${payslips.length} ${payslips.length == 1 ? 'month' : 'months'}',
+              payslips.length == 1
+                  ? '1 month'.tr()
+                  : '{count} months'.tr(
+                      namedArgs: {'count': '${payslips.length}'},
+                    ),
               style: theme.textTheme.labelLarge?.copyWith(
                 color: theme.colorScheme.primary,
                 fontWeight: FontWeight.w700,

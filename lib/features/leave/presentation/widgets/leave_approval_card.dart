@@ -4,6 +4,8 @@ import 'package:office_hr/features/leave/domain/entities/leave_request.dart';
 import 'package:office_hr/features/leave/presentation/utils/leave_formatters.dart';
 import 'package:office_hr/features/leave/presentation/widgets/leave_status_chip.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Approver-facing list item: leads with the requester, then the leave type,
 /// period and duration, with a status chip and a subtle "needs action" hint.
 class LeaveApprovalCard extends StatelessWidget {
@@ -16,7 +18,7 @@ class LeaveApprovalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final statusColor = leaveStatusColor(request.status);
-    final typeTitle = request.leaveType?.displayTitle ?? 'Leave';
+    final typeTitle = request.leaveType?.displayTitle ?? 'Leave'.tr();
     final dateRange = formatLeaveDateRange(request.startDate, request.endDate);
 
     return Container(
@@ -117,7 +119,7 @@ class LeaveApprovalCard extends StatelessWidget {
                               ),
                               const SizedBox(width: 6),
                               Text(
-                                'Tap to review and decide',
+                                'Tap to review and decide'.tr(),
                                 style: theme.textTheme.bodySmall?.copyWith(
                                   color: theme.colorScheme.onSurface.withValues(
                                     alpha: 0.5,

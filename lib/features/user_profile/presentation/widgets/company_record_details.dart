@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
+import 'package:office_hr/core/widgets/detail_page_style.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/company/company.dart';
 import 'package:office_hr/features/user_profile/presentation/widgets/backend_payload_view.dart';
-import 'package:office_hr/features/user_profile/presentation/widgets/user_profile_section.dart';
+import 'package:office_hr/features/user_profile/presentation/widgets/record_section.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 import 'package:office_hr/shared/global.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 
 class CompanyRecordFields extends StatelessWidget {
   const CompanyRecordFields({
@@ -21,49 +24,49 @@ class CompanyRecordFields extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        UserProfileInfoRow(label: 'Company ID', value: company.id),
-        UserProfileFieldGrid(
+        RecordField(label: 'Company ID'.tr(), value: company.id),
+        RecordFields(
           children: [
             if (includeOverview) ...[
               if (company.nameMm?.trim().isNotEmpty == true)
-                UserProfileInfoRow(label: 'Local name', value: company.nameMm),
-              UserProfileInfoRow(label: 'Short code', value: company.shortCode),
-              UserProfileInfoRow(label: 'Serial number', value: company.serial),
+                RecordField(label: 'Local name'.tr(), value: company.nameMm),
+              RecordField(label: 'Short code'.tr(), value: company.shortCode),
+              RecordField(label: 'Serial number'.tr(), value: company.serial),
               if (company.sequence != null)
-                UserProfileInfoRow(
-                  label: 'Sequence',
+                RecordField(
+                  label: 'Sequence'.tr(),
                   value: company.sequence.toString(),
                 ),
             ],
-            UserProfileInfoRow(
-              label: 'Organisation status',
+            RecordField(
+              label: 'Organisation status'.tr(),
               value: company.active == null
-                  ? 'Not provided'
+                  ? 'Not provided'.tr()
                   : company.active!
-                  ? 'Active'
-                  : 'Inactive',
+                  ? 'Active'.tr()
+                  : 'Inactive'.tr(),
             ),
             if (company.deleted != null)
-              UserProfileInfoRow(
-                label: 'Record status',
-                value: company.deleted! ? 'Deleted' : 'Current',
+              RecordField(
+                label: 'Record status'.tr(),
+                value: company.deleted! ? 'Deleted'.tr() : 'Current'.tr(),
               ),
-            UserProfileInfoRow(
-              label: 'Created date',
+            RecordField(
+              label: 'Created date'.tr(),
               value: formatDateString(company.createdAt),
             ),
-            UserProfileInfoRow(
-              label: 'Last updated',
+            RecordField(
+              label: 'Last updated'.tr(),
               value: formatDateString(company.updatedAt),
             ),
             if (company.deletedAt?.trim().isNotEmpty == true)
-              UserProfileInfoRow(
-                label: 'Deleted date',
+              RecordField(
+                label: 'Deleted date'.tr(),
                 value: formatDateString(company.deletedAt),
               ),
             if (company.version != null)
-              UserProfileInfoRow(
-                label: 'Record version',
+              RecordField(
+                label: 'Record version'.tr(),
                 value: company.version.toString(),
               ),
           ],
@@ -83,7 +86,8 @@ class LinkedCompanyTile extends StatelessWidget {
     final theme = Theme.of(context);
     final subtitle = [
       if (company.shortCode?.trim().isNotEmpty == true) company.shortCode!,
-      if (company.active != null) company.active! ? 'Active' : 'Inactive',
+      if (company.active != null)
+        company.active! ? 'Active'.tr() : 'Inactive'.tr(),
     ].join(' · ');
 
     return ExpansionTile(
@@ -91,28 +95,40 @@ class LinkedCompanyTile extends StatelessWidget {
       shape: const Border(),
       collapsedShape: const Border(),
       tilePadding: EdgeInsets.zero,
-      childrenPadding: const EdgeInsets.only(bottom: AppSizes.md),
-      leading: Icon(
-        Icons.business_outlined,
-        color: theme.colorScheme.onSurfaceVariant,
+      childrenPadding: const EdgeInsetsDirectional.only(
+        start: AppSizes.md,
+        bottom: AppSizes.md,
       ),
-      title: Text(valueOrDash(company.name)),
-      subtitle: subtitle.isEmpty ? null : Text(subtitle),
+      expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
+      iconColor: theme.detailMuted,
+      collapsedIconColor: theme.detailMuted,
+      title: Text(
+        valueOrDash(company.name),
+        style: theme.textTheme.bodyMedium?.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      subtitle: subtitle.isEmpty
+          ? null
+          : Text(
+              subtitle,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.detailMuted,
+              ),
+            ),
       children: [
         CompanyRecordFields(company: company, includeOverview: true),
         if (company.generalInfo?.isNotEmpty == true) ...[
           const SizedBox(height: AppSizes.md),
           CompanyPayloadView(
-            title: 'Company details',
-            icon: Icons.info_outline_rounded,
+            title: 'Company details'.tr(),
             payload: company.generalInfo!,
           ),
         ],
         if (company.socialMedia?.isNotEmpty == true) ...[
           const SizedBox(height: AppSizes.md),
           CompanyPayloadView(
-            title: 'Online presence',
-            icon: Icons.language_outlined,
+            title: 'Online presence'.tr(),
             payload: company.socialMedia!,
           ),
         ],

@@ -1,36 +1,95 @@
 import 'package:flutter/material.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
+import 'package:office_hr/core/widgets/detail_page_style.dart';
+
+class RecordSurface extends StatelessWidget {
+  const RecordSurface({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Material(
+      color: colors.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSizes.cardRadiusLg),
+        side: BorderSide(color: colors.outlineVariant),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: child,
+    );
+  }
+}
+
+/// Stacks related sections on phones and gives the main record more room on
+/// wider screens. At larger text sizes the sections keep their full width.
+class RecordColumns extends StatelessWidget {
+  const RecordColumns({
+    super.key,
+    required this.primary,
+    required this.secondary,
+    this.dividerOnStack = false,
+  });
+
+  final Widget primary;
+  final Widget secondary;
+  final bool dividerOnStack;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final scale = MediaQuery.textScalerOf(context).scale(16) / 16;
+        if (constraints.maxWidth < 640 * scale.clamp(1.0, double.infinity)) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              primary,
+              const SizedBox(height: AppSizes.xl),
+              if (dividerOnStack) ...[
+                Divider(height: 1, color: Theme.of(context).detailRule),
+                const SizedBox(height: AppSizes.md),
+              ],
+              secondary,
+            ],
+          );
+        }
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(flex: 3, child: primary),
+            const SizedBox(width: AppSizes.xxl),
+            Expanded(flex: 2, child: secondary),
+          ],
+        );
+      },
+    );
+  }
+}
 
 class UserProfileSection extends StatelessWidget {
   const UserProfileSection({
     super.key,
     required this.title,
     required this.icon,
+    this.description,
     required this.children,
   });
 
   final String title;
   final IconData icon;
+  final String? description;
   final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Card(
-      elevation: 0,
-      color: theme.colorScheme.surface,
-      margin: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizes.cardRadiusLg),
-        side: BorderSide(
-          color: theme.colorScheme.onSurface.withValues(alpha: 0.12),
-        ),
-      ),
-      clipBehavior: Clip.antiAlias,
+    return RecordSurface(
       child: Padding(
-        padding: const EdgeInsets.all(AppSizes.lg),
+        padding: const EdgeInsets.all(AppSizes.md),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               children: [
@@ -41,16 +100,30 @@ class UserProfileSection extends StatelessWidget {
                 ),
                 const SizedBox(width: AppSizes.sm),
                 Expanded(
-                  child: Text(
-                    title,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
+                  child: Semantics(
+                    header: true,
+                    child: Text(
+                      title,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-            const Divider(height: AppSizes.xxl),
+            if (description != null) ...[
+              const SizedBox(height: AppSizes.xxxs),
+              Text(
+                description!,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+            const SizedBox(height: AppSizes.xs),
+            Divider(height: 1, color: theme.colorScheme.outlineVariant),
+            const SizedBox(height: AppSizes.xs),
             ...children,
           ],
         ),
@@ -74,25 +147,27 @@ class UserProfileInfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final displayValue = value == null || value!.trim().isEmpty ? '-' : value!;
+    final displayValue = value?.trim() ?? '';
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: AppSizes.xxs),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
             style: theme.textTheme.bodySmall?.copyWith(
-              fontSize: 12,
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSizes.xxxs),
           valueWidget ??
               Text(
-                displayValue,
+                displayValue.isEmpty ? '—' : displayValue,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
+                  color: displayValue.isEmpty
+                      ? theme.colorScheme.onSurfaceVariant
+                      : null,
                 ),
               ),
         ],
@@ -110,10 +185,10 @@ class UserProfileFieldGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final largeText = MediaQuery.textScalerOf(context).scale(14) > 20;
-        final columns = constraints.maxWidth < 320 || largeText
+        final scale = MediaQuery.textScalerOf(context).scale(14) / 14;
+        final columns = constraints.maxWidth < 300 * scale
             ? 1
-            : constraints.maxWidth >= 680
+            : constraints.maxWidth >= 640 * scale
             ? 3
             : 2;
         const spacing = AppSizes.spaceBtwItems;

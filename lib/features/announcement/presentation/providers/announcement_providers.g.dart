@@ -223,7 +223,7 @@ final class AnnouncementsProvider
   Announcements create() => Announcements();
 }
 
-String _$announcementsHash() => r'1826c85d149471eb47da8af6e9ce3e4418fc573d';
+String _$announcementsHash() => r'914b79effe25bd9ccee38b3031b3e3f6589f9e10';
 
 abstract class _$Announcements extends $AsyncNotifier<List<Announcement>> {
   FutureOr<List<Announcement>> build();

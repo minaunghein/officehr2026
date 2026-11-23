@@ -1,4 +1,5 @@
 import 'package:office_hr/core/network/network_providers.dart';
+import 'package:office_hr/core/utils/async_reload.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/features/overtime/data/datasources/overtime_remote_datasource.dart';
 import 'package:office_hr/features/overtime/data/repositories/overtime_repository_impl.dart';
@@ -66,8 +67,11 @@ class OvertimeRequests extends _$OvertimeRequests {
   }
 
   Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(_fetch);
+    // Reload through `build` so Riverpod owns the request lifecycle: the
+    // previous list stays readable while the newest response loads, and a
+    // slow response from an earlier refresh can never overwrite a newer one.
+    ref.invalidateSelf();
+    await settleReload(future);
   }
 }
 
@@ -85,8 +89,11 @@ class AllOvertimeRequests extends _$AllOvertimeRequests {
   }
 
   Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(_fetch);
+    // Reload through `build` so Riverpod owns the request lifecycle: the
+    // previous list stays readable while the newest response loads, and a
+    // slow response from an earlier refresh can never overwrite a newer one.
+    ref.invalidateSelf();
+    await settleReload(future);
   }
 }
 

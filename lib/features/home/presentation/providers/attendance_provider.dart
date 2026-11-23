@@ -1,4 +1,5 @@
 import 'package:office_hr/core/network/api_error_message.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/features/home/data/datasources/attendance_remote_datasource.dart';
@@ -140,7 +141,7 @@ class AttendanceNotifier extends _$AttendanceNotifier {
     await refresh();
     final todayAttendance = state.value?.todayAttendance;
     if (todayAttendance == null) {
-      throw StateError('Today attendance is not available.');
+      throw StateError('Today attendance is not available.'.tr());
     }
     return todayAttendance;
   }

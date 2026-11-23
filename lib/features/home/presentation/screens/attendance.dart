@@ -15,6 +15,8 @@ import 'package:office_hr/features/home/presentation/widgets/attendance_day_deta
 import 'package:office_hr/features/home/presentation/widgets/attendance_range_list.dart';
 import 'package:office_hr/features/home/presentation/widgets/attendance_status.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 enum AttendanceViewMode { day, range }
 
 class AttendanceScreen extends HookConsumerWidget {
@@ -90,7 +92,7 @@ class AttendanceScreen extends HookConsumerWidget {
         ),
         firstDate: DateTime(today.year - 2),
         lastDate: DateTime(today.year + 1, 12, 31),
-        helpText: 'Select attendance range',
+        helpText: 'Select attendance range'.tr(),
       );
       if (picked == null) return;
       rangeStart.value = picked.start;
@@ -204,14 +206,14 @@ class _Header extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Attendance',
+                    'Attendance'.tr(),
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w800,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'Pick a date to view your records',
+                    'Pick a date to view your records'.tr(),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onSurface.withValues(
                         alpha: 0.55,
@@ -224,14 +226,14 @@ class _Header extends StatelessWidget {
             if (showTodayButton)
               IconButton(
                 onPressed: onTodayTap,
-                tooltip: 'Today',
+                tooltip: 'Today'.tr(),
                 icon: const Icon(Icons.today_rounded),
               ),
             const SizedBox(width: 4),
             FilledButton.tonalIcon(
               onPressed: onRequestTap,
               icon: const Icon(Icons.edit_calendar_rounded, size: 18),
-              label: const Text('Request'),
+              label: Text('Request'.tr()),
               style: FilledButton.styleFrom(
                 visualDensity: VisualDensity.compact,
               ),
@@ -240,16 +242,16 @@ class _Header extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         SegmentedButton<AttendanceViewMode>(
-          segments: const [
+          segments: [
             ButtonSegment(
               value: AttendanceViewMode.day,
               icon: Icon(Icons.calendar_today_rounded, size: 16),
-              label: Text('Day'),
+              label: Text('Day'.tr()),
             ),
             ButtonSegment(
               value: AttendanceViewMode.range,
               icon: Icon(Icons.date_range_rounded, size: 16),
-              label: Text('Range'),
+              label: Text('Range'.tr()),
             ),
           ],
           selected: {mode},
@@ -315,7 +317,7 @@ class _RangeSelector extends StatelessWidget {
                   ),
                   const SizedBox(height: 3),
                   Text(
-                    'Tap to change range',
+                    'Tap to change range'.tr(),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                     ),
@@ -344,10 +346,10 @@ class _CalendarLegend extends StatelessWidget {
       spacing: 16,
       runSpacing: 8,
       children: [
-        _legendItem(theme, 'Present', const Color(0xFF16A34A)),
-        _legendItem(theme, 'Late', const Color(0xFFD97706)),
-        _legendItem(theme, 'Absent', const Color(0xFFDC2626)),
-        _legendItem(theme, 'Leave', const Color(0xFF0284C7)),
+        _legendItem(theme, 'Present'.tr(), const Color(0xFF16A34A)),
+        _legendItem(theme, 'Late'.tr(), const Color(0xFFD97706)),
+        _legendItem(theme, 'Absent'.tr(), const Color(0xFFDC2626)),
+        _legendItem(theme, 'Leave'.tr(), const Color(0xFF0284C7)),
       ],
     );
   }
@@ -452,7 +454,7 @@ class _ErrorView extends StatelessWidget {
           ElevatedButton.icon(
             onPressed: onRetry,
             icon: const Icon(Icons.refresh_rounded),
-            label: const Text('Retry'),
+            label: Text('Retry'.tr()),
           ),
         ],
       ),

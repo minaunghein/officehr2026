@@ -5,6 +5,8 @@ import 'package:office_hr/features/home/domain/entities/attendance_stats.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_provider.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class MonthlyStatistics extends ConsumerWidget {
   const MonthlyStatistics({super.key});
 
@@ -21,7 +23,7 @@ class MonthlyStatistics extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              'MONTHLY STATISTICS',
+              'MONTHLY STATISTICS'.tr(),
               style: theme.textTheme.labelMedium?.copyWith(
                 fontWeight: FontWeight.w800,
                 letterSpacing: 0.5,
@@ -57,7 +59,7 @@ class MonthlyStatistics extends ConsumerWidget {
             decoration: _statsDecoration(theme),
             padding: const EdgeInsets.all(16),
             child: Text(
-              'Unable to load monthly statistics',
+              'Unable to load monthly statistics'.tr(),
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.error,
@@ -87,19 +89,19 @@ class _StatsCard extends StatelessWidget {
           IntrinsicHeight(
             child: Row(
               children: [
-                _buildStatItem(theme, 'PRESENT', '${stats.present} Days', null),
+                _buildStatItem(theme, 'PRESENT', _days(stats.present), null),
                 _divider(theme),
                 _buildStatItem(
                   theme,
                   'LATE',
-                  '${stats.late} Days',
+                  _days(stats.late),
                   const Color(0xFFD32F2F),
                 ),
                 _divider(theme),
                 _buildStatItem(
                   theme,
                   'ABSENT',
-                  '${stats.absent} Days',
+                  _days(stats.absent),
                   const Color(0xFFD32F2F),
                 ),
               ],
@@ -112,28 +114,13 @@ class _StatsCard extends StatelessWidget {
           IntrinsicHeight(
             child: Row(
               children: [
-                _buildStatItem(
-                  theme,
-                  'HALF DAY',
-                  '${stats.halfDay} Days',
-                  null,
-                ),
+                _buildStatItem(theme, 'HALF DAY', _days(stats.halfDay), null),
                 _divider(theme),
-                _buildStatItem(
-                  theme,
-                  'ON LEAVE',
-                  '${stats.onLeave} Days',
-                  null,
-                ),
+                _buildStatItem(theme, 'ON LEAVE', _days(stats.onLeave), null),
                 _divider(theme),
-                _buildStatItem(theme, 'HOLIDAY', '${stats.holiday} Days', null),
+                _buildStatItem(theme, 'HOLIDAY', _days(stats.holiday), null),
                 _divider(theme),
-                _buildStatItem(
-                  theme,
-                  'REST DAY',
-                  '${stats.restDay} Days',
-                  null,
-                ),
+                _buildStatItem(theme, 'REST DAY', _days(stats.restDay), null),
               ],
             ),
           ),
@@ -141,6 +128,8 @@ class _StatsCard extends StatelessWidget {
       ),
     );
   }
+
+  String _days(int count) => '{count} Days'.tr(namedArgs: {'count': '$count'});
 
   Widget _divider(ThemeData theme) {
     return VerticalDivider(
@@ -162,7 +151,7 @@ class _StatsCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              title,
+              title.tr(),
               style: theme.textTheme.labelSmall?.copyWith(
                 fontSize: 9,
                 fontWeight: FontWeight.w800,

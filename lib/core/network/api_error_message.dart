@@ -1,7 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:office_hr/core/network/api_exception.dart';
 
 String getUserFriendlyError(Object error) {
   if (error is ApiException) return error.message;
 
-  return 'Something went wrong. Please try again.';
+  return 'Something went wrong. Please try again.'.tr();
 }

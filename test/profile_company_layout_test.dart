@@ -16,7 +16,7 @@ void main() {
       expect(find.text('Employment details'), findsOneWidget);
       expect(find.text('Full Time'), findsOneWidget);
 
-      final personal = find.widgetWithText(ChoiceChip, 'Personal');
+      final personal = find.widgetWithText(Tab, 'Personal');
       await tester.ensureVisible(personal);
       await tester.tap(personal);
       await tester.pumpAndSettle();
@@ -24,7 +24,7 @@ void main() {
       expect(find.text('Family and background'), findsOneWidget);
       expect(tester.takeException(), isNull);
 
-      final account = find.widgetWithText(ChoiceChip, 'Account');
+      final account = find.widgetWithText(Tab, 'Account');
       await tester.ensureVisible(account);
       await tester.tap(account);
       await tester.pumpAndSettle();
@@ -55,6 +55,30 @@ void main() {
       },
     );
   }
+
+  testWidgets('company details and online presence align on wide screens', (
+    tester,
+  ) async {
+    await _pump(
+      tester,
+      CompanyContent(session: _session()),
+      Brightness.light,
+      size: const Size(900, 800),
+      textScale: 1,
+    );
+    final overview = tester.getTopLeft(find.text('Company details'));
+    final online = tester.getTopLeft(find.text('Online presence'));
+    expect(online.dx, greaterThan(overview.dx));
+    expect(online.dy, closeTo(overview.dy, 1));
+    expect(tester.takeException(), isNull);
+
+    expect(find.text('company-1'), findsNothing);
+    final record = find.text('Company record');
+    await tester.ensureVisible(record);
+    await tester.tap(record);
+    await tester.pumpAndSettle();
+    expect(find.text('company-1'), findsOneWidget);
+  });
 
   testWidgets(
     'profile image edit offers camera and gallery and can be dismissed',
@@ -99,7 +123,9 @@ void main() {
         findsOneWidget,
       );
       expect(find.text(session.email), findsOneWidget);
-      await tester.tap(find.widgetWithText(ChoiceChip, 'Account'));
+      final account = find.widgetWithText(Tab, 'Account');
+      await tester.ensureVisible(account);
+      await tester.tap(account);
       await tester.pumpAndSettle();
       expect(find.text('Account details'), findsOneWidget);
       expect(tester.takeException(), isNull);
@@ -110,9 +136,11 @@ void main() {
 Future<void> _pump(
   WidgetTester tester,
   Widget content,
-  Brightness brightness,
-) async {
-  tester.view.physicalSize = const Size(320, 800);
+  Brightness brightness, {
+  Size size = const Size(320, 800),
+  double textScale = 1.6,
+}) async {
+  tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
@@ -129,7 +157,7 @@ Future<void> _pump(
         builder: (context, child) => MediaQuery(
           data: MediaQuery.of(
             context,
-          ).copyWith(textScaler: const TextScaler.linear(1.6)),
+          ).copyWith(textScaler: TextScaler.linear(textScale)),
           child: child!,
         ),
         home: Scaffold(

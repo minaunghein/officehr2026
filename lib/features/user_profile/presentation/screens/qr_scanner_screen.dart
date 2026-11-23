@@ -7,6 +7,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:office_hr/core/router/app_router.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class QrScannerScreen extends ConsumerStatefulWidget {
   const QrScannerScreen({super.key});
 
@@ -51,7 +53,7 @@ class _QrScannerScreenState extends ConsumerState<QrScannerScreen> {
 
     if (userId == null) {
       HapticFeedback.heavyImpact();
-      setState(() => _message = 'This is not a valid Office HR ID code.');
+      setState(() => _message = 'This is not a valid Office HR ID code.'.tr());
       await Future<void>.delayed(const Duration(milliseconds: 1600));
       if (!mounted) return;
       setState(() => _message = null);
@@ -186,7 +188,7 @@ class _BottomPanel extends StatelessWidget {
                           color: Colors.black.withValues(alpha: 0.55),
                           borderRadius: BorderRadius.circular(14),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(
@@ -197,7 +199,8 @@ class _BottomPanel extends StatelessWidget {
                             SizedBox(width: 10),
                             Flexible(
                               child: Text(
-                                'Align the QR code within the frame to scan',
+                                'Align the QR code within the frame to scan'
+                                    .tr(),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 13,
@@ -402,8 +405,8 @@ class _ScannerError extends StatelessWidget {
               const SizedBox(height: 16),
               Text(
                 denied
-                    ? 'Camera permission is required to scan ID cards.'
-                    : 'Unable to start the camera.',
+                    ? 'Camera permission is required to scan ID cards.'.tr()
+                    : 'Unable to start the camera.'.tr(),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.white,
@@ -412,8 +415,9 @@ class _ScannerError extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              const Text(
-                'Enable camera access for Office HR in your device settings, then try again.',
+              Text(
+                'Enable camera access for Office HR in your device settings, then try again.'
+                    .tr(),
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white70, fontSize: 13),
               ),

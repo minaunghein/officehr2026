@@ -6,6 +6,8 @@ import 'package:office_hr/features/auth/presentation/providers/auth_providers.da
 import 'package:office_hr/features/home/domain/entities/clock_request.dart';
 import 'package:office_hr/features/home/presentation/widgets/map_app_bar/map_pin.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 /// Map showing where a clock request punch was taken. When the request
 /// belongs to the reviewer's own branch, the branch geofence circle is drawn
 /// for context.
@@ -49,7 +51,7 @@ class ClockRequestLocationMap extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'No location data',
+              'No location data'.tr(),
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
               ),
