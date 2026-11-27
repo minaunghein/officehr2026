@@ -10,8 +10,11 @@ import 'package:office_hr/features/auth/domain/entities/user_entities/employee/e
 import 'package:office_hr/features/auth/domain/entities/user_entities/work_experience/work_experience.dart';
 import 'package:office_hr/features/user_profile/domain/entities/user_details.dart';
 import 'package:office_hr/features/user_profile/presentation/providers/user_providers.dart';
+import 'package:office_hr/features/user_profile/presentation/utils/profile_value_label.dart';
 import 'package:office_hr/features/user_profile/presentation/widgets/user_profile_section.dart';
 import 'package:office_hr/shared/date_formatter.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 
 class UserDetailsScreen extends ConsumerWidget {
   const UserDetailsScreen({super.key, required this.userId});
@@ -28,7 +31,7 @@ class UserDetailsScreen extends ConsumerWidget {
         centerTitle: true,
         title: Text(
           details.value == null
-              ? 'Employee Details'
+              ? 'Employee Details'.tr()
               : _displayName(details.value!),
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w700,
@@ -46,9 +49,9 @@ class UserDetailsScreen extends ConsumerWidget {
         data: (value) {
           final employee = value.user.employee;
           if (employee == null) {
-            return const _MessageState(
+            return _MessageState(
               icon: Icons.person_off_outlined,
-              message: 'This user has no employee record.',
+              message: 'This user has no employee record.'.tr(),
             );
           }
           return RefreshIndicator(
@@ -67,7 +70,7 @@ class UserDetailsScreen extends ConsumerWidget {
                 if (employee.education.isNotEmpty) ...[
                   const SizedBox(height: 14),
                   UserProfileSection(
-                    title: 'Education',
+                    title: 'Education'.tr(),
                     icon: Icons.school_outlined,
                     children: employee.education
                         .map((item) => _EducationTile(education: item))
@@ -77,7 +80,7 @@ class UserDetailsScreen extends ConsumerWidget {
                 if (employee.workExperience.isNotEmpty) ...[
                   const SizedBox(height: 14),
                   UserProfileSection(
-                    title: 'Work Experience',
+                    title: 'Work Experience'.tr(),
                     icon: Icons.work_history_outlined,
                     children: employee.workExperience
                         .map((item) => _ExperienceTile(experience: item))
@@ -170,7 +173,7 @@ class _DetailsHeader extends StatelessWidget {
                           if (status.trim().isNotEmpty)
                             _Chip(
                               icon: Icons.circle,
-                              label: status,
+                              label: profileValueLabel(status),
                               color: status.toUpperCase() == 'ACTIVE'
                                   ? const Color(0xFF16A34A)
                                   : theme.colorScheme.error,
@@ -198,19 +201,19 @@ class _ContactSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final info = employee.contactInfo;
     return UserProfileSection(
-      title: 'Contact Information',
+      title: 'Contact Information'.tr(),
       icon: Icons.contact_phone_outlined,
       children: [
         UserProfileFieldGrid(
           children: [
-            UserProfileInfoRow(label: 'Email', value: info.email),
-            UserProfileInfoRow(label: 'Phone', value: info.phone),
+            UserProfileInfoRow(label: 'Email'.tr(), value: info.email),
+            UserProfileInfoRow(label: 'Phone'.tr(), value: info.phone),
             UserProfileInfoRow(
-              label: 'Current Address',
+              label: 'Current Address'.tr(),
               value: _address(info.currentAddress),
             ),
             UserProfileInfoRow(
-              label: 'Permanent Address',
+              label: 'Permanent Address'.tr(),
               value: _address(info.permanentAddress),
             ),
           ],
@@ -229,38 +232,47 @@ class _EmploymentSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final info = employee.workInfo;
     return UserProfileSection(
-      title: 'Employment',
+      title: 'Employment'.tr(),
       icon: Icons.work_outline_rounded,
       children: [
         UserProfileFieldGrid(
           children: [
-            UserProfileInfoRow(label: 'Employee Code', value: info.employeeCode),
             UserProfileInfoRow(
-              label: 'Employment Status',
-              value: info.employmentStatus,
+              label: 'Employee Code'.tr(),
+              value: info.employeeCode,
             ),
             UserProfileInfoRow(
-              label: 'Employment Type',
-              value: info.employmentType,
+              label: 'Employment Status'.tr(),
+              value: profileValueLabel(info.employmentStatus),
             ),
-            UserProfileInfoRow(label: 'Work Mode', value: info.workMode),
             UserProfileInfoRow(
-              label: 'Department',
+              label: 'Employment Type'.tr(),
+              value: profileValueLabel(info.employmentType),
+            ),
+            UserProfileInfoRow(
+              label: 'Work Mode'.tr(),
+              value: profileValueLabel(info.workMode),
+            ),
+            UserProfileInfoRow(
+              label: 'Department'.tr(),
               value: info.department?.title,
             ),
-            UserProfileInfoRow(label: 'Position', value: info.position?.title),
-            UserProfileInfoRow(label: 'Branch', value: info.branch?.title),
-            UserProfileInfoRow(label: 'Shift', value: info.shift?.title),
             UserProfileInfoRow(
-              label: 'Joined',
+              label: 'Position'.tr(),
+              value: info.position?.title,
+            ),
+            UserProfileInfoRow(label: 'Branch'.tr(), value: info.branch?.title),
+            UserProfileInfoRow(label: 'Shift'.tr(), value: info.shift?.title),
+            UserProfileInfoRow(
+              label: 'Joined'.tr(),
               value: formatDateString(info.employmentDate),
             ),
             UserProfileInfoRow(
-              label: 'Probation End',
+              label: 'Probation End'.tr(),
               value: formatDateString(info.probationEndDate),
             ),
-            UserProfileInfoRow(label: 'Grade', value: info.grade),
-            UserProfileInfoRow(label: 'Card ID', value: info.cardId),
+            UserProfileInfoRow(label: 'Grade'.tr(), value: info.grade),
+            UserProfileInfoRow(label: 'Card ID'.tr(), value: info.cardId),
           ],
         ),
       ],
@@ -278,32 +290,38 @@ class _PersonalSection extends StatelessWidget {
     final info = employee.basicInfo;
     final nrc = info.nrc;
     return UserProfileSection(
-      title: 'Personal Information',
+      title: 'Personal Information'.tr(),
       icon: Icons.person_outline_rounded,
       children: [
         UserProfileFieldGrid(
           children: [
-            UserProfileInfoRow(label: 'Gender', value: info.gender),
             UserProfileInfoRow(
-              label: 'Date of Birth',
+              label: 'Gender'.tr(),
+              value: profileValueLabel(info.gender),
+            ),
+            UserProfileInfoRow(
+              label: 'Date of Birth'.tr(),
               value: formatDateString(info.dateOfBirth),
             ),
             UserProfileInfoRow(
-              label: 'Marital Status',
-              value: info.maritalStatus,
+              label: 'Marital Status'.tr(),
+              value: profileValueLabel(info.maritalStatus),
             ),
-            UserProfileInfoRow(label: 'Blood Type', value: info.bloodType),
-            UserProfileInfoRow(label: 'Nationality', value: info.nationality),
-            UserProfileInfoRow(label: 'Religion', value: info.religion),
-            UserProfileInfoRow(label: 'Ethnicity', value: info.ethnicity),
+            UserProfileInfoRow(label: 'Blood Type'.tr(), value: info.bloodType),
             UserProfileInfoRow(
-              label: 'NRC',
+              label: 'Nationality'.tr(),
+              value: info.nationality,
+            ),
+            UserProfileInfoRow(label: 'Religion'.tr(), value: info.religion),
+            UserProfileInfoRow(label: 'Ethnicity'.tr(), value: info.ethnicity),
+            UserProfileInfoRow(
+              label: 'NRC'.tr(),
               value: nrc == null
                   ? '-'
                   : '${nrc.region}/${nrc.township}(${nrc.type})${nrc.numbers}',
             ),
-            UserProfileInfoRow(label: 'Height', value: _num(info.height)),
-            UserProfileInfoRow(label: 'Weight', value: _num(info.weight)),
+            UserProfileInfoRow(label: 'Height'.tr(), value: _num(info.height)),
+            UserProfileInfoRow(label: 'Weight'.tr(), value: _num(info.weight)),
           ],
         ),
       ],
@@ -468,10 +486,7 @@ class _DetailsSkeleton extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        ContainerShimmer(
-          height: 120,
-          borderRadius: BorderRadius.circular(16),
-        ),
+        ContainerShimmer(height: 120, borderRadius: BorderRadius.circular(16)),
         const SizedBox(height: 14),
         for (var i = 0; i < 3; i++) ...[
           ContainerShimmer(
@@ -507,7 +522,7 @@ class _ErrorState extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Unable to load employee details',
+              'Unable to load employee details'.tr(),
               textAlign: TextAlign.center,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w700,
@@ -525,7 +540,7 @@ class _ErrorState extends StatelessWidget {
             FilledButton.icon(
               onPressed: onRetry,
               icon: const Icon(Icons.refresh_rounded),
-              label: const Text('Try again'),
+              label: Text('Try again'.tr()),
             ),
           ],
         ),
@@ -572,22 +587,22 @@ class _MessageState extends StatelessWidget {
 String _displayName(UserDetails details) {
   final employee = details.user.employee;
   if (employee == null) {
-    return details.username.trim().isEmpty ? 'Employee' : details.username;
+    return details.username.trim().isEmpty ? 'Employee'.tr() : details.username;
   }
   return _fullName(employee.basicInfo);
 }
 
 String _fullName(BasicInfo info) {
-  final name = [info.firstName, info.lastName]
-      .map((part) => part.trim())
-      .where((part) => part.isNotEmpty)
-      .join(' ');
+  final name = [
+    info.firstName,
+    info.lastName,
+  ].map((part) => part.trim()).where((part) => part.isNotEmpty).join(' ');
   if (name.isNotEmpty) return name;
-  final mm = [info.firstNameMm, info.lastNameMm]
-      .map((part) => part.trim())
-      .where((part) => part.isNotEmpty)
-      .join(' ');
-  return mm.isEmpty ? 'Employee' : mm;
+  final mm = [
+    info.firstNameMm,
+    info.lastNameMm,
+  ].map((part) => part.trim()).where((part) => part.isNotEmpty).join(' ');
+  return mm.isEmpty ? 'Employee'.tr() : mm;
 }
 
 String _initials(String name) {

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$LeaveRequest {
 
- String get id; String get employeeId; String get leaveTypeId; String get companyId; String? get startDate; String? get endDate; bool get isHalfDay; HalfDayPeriod get halfDayPeriod; double get totalDays; String get reason; String get attachmentUrl; LeaveStatus get status; String? get approvedBy; String? get createdAt; String? get updatedAt; LeaveType? get leaveType;
+ String get id; String get employeeId; String get requesterId; String get requesterName; String get requesterEmail; String get leaveTypeId; String get companyId; String? get startDate; String? get endDate; bool get isHalfDay; HalfDayPeriod get halfDayPeriod; double get totalDays; String get reason; String get attachmentUrl; LeaveStatus get status; String? get approvedBy; String? get approvedAt; String? get rejectionReason; String? get createdAt; String? get updatedAt; LeaveType? get leaveType;
 /// Create a copy of LeaveRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $LeaveRequestCopyWith<LeaveRequest> get copyWith => _$LeaveRequestCopyWithImpl<L
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LeaveRequest&&(identical(other.id, id) || other.id == id)&&(identical(other.employeeId, employeeId) || other.employeeId == employeeId)&&(identical(other.leaveTypeId, leaveTypeId) || other.leaveTypeId == leaveTypeId)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.isHalfDay, isHalfDay) || other.isHalfDay == isHalfDay)&&(identical(other.halfDayPeriod, halfDayPeriod) || other.halfDayPeriod == halfDayPeriod)&&(identical(other.totalDays, totalDays) || other.totalDays == totalDays)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.attachmentUrl, attachmentUrl) || other.attachmentUrl == attachmentUrl)&&(identical(other.status, status) || other.status == status)&&(identical(other.approvedBy, approvedBy) || other.approvedBy == approvedBy)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.leaveType, leaveType) || other.leaveType == leaveType));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LeaveRequest&&(identical(other.id, id) || other.id == id)&&(identical(other.employeeId, employeeId) || other.employeeId == employeeId)&&(identical(other.requesterId, requesterId) || other.requesterId == requesterId)&&(identical(other.requesterName, requesterName) || other.requesterName == requesterName)&&(identical(other.requesterEmail, requesterEmail) || other.requesterEmail == requesterEmail)&&(identical(other.leaveTypeId, leaveTypeId) || other.leaveTypeId == leaveTypeId)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.isHalfDay, isHalfDay) || other.isHalfDay == isHalfDay)&&(identical(other.halfDayPeriod, halfDayPeriod) || other.halfDayPeriod == halfDayPeriod)&&(identical(other.totalDays, totalDays) || other.totalDays == totalDays)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.attachmentUrl, attachmentUrl) || other.attachmentUrl == attachmentUrl)&&(identical(other.status, status) || other.status == status)&&(identical(other.approvedBy, approvedBy) || other.approvedBy == approvedBy)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt)&&(identical(other.rejectionReason, rejectionReason) || other.rejectionReason == rejectionReason)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.leaveType, leaveType) || other.leaveType == leaveType));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,employeeId,leaveTypeId,companyId,startDate,endDate,isHalfDay,halfDayPeriod,totalDays,reason,attachmentUrl,status,approvedBy,createdAt,updatedAt,leaveType);
+int get hashCode => Object.hashAll([runtimeType,id,employeeId,requesterId,requesterName,requesterEmail,leaveTypeId,companyId,startDate,endDate,isHalfDay,halfDayPeriod,totalDays,reason,attachmentUrl,status,approvedBy,approvedAt,rejectionReason,createdAt,updatedAt,leaveType]);
 
 @override
 String toString() {
-  return 'LeaveRequest(id: $id, employeeId: $employeeId, leaveTypeId: $leaveTypeId, companyId: $companyId, startDate: $startDate, endDate: $endDate, isHalfDay: $isHalfDay, halfDayPeriod: $halfDayPeriod, totalDays: $totalDays, reason: $reason, attachmentUrl: $attachmentUrl, status: $status, approvedBy: $approvedBy, createdAt: $createdAt, updatedAt: $updatedAt, leaveType: $leaveType)';
+  return 'LeaveRequest(id: $id, employeeId: $employeeId, requesterId: $requesterId, requesterName: $requesterName, requesterEmail: $requesterEmail, leaveTypeId: $leaveTypeId, companyId: $companyId, startDate: $startDate, endDate: $endDate, isHalfDay: $isHalfDay, halfDayPeriod: $halfDayPeriod, totalDays: $totalDays, reason: $reason, attachmentUrl: $attachmentUrl, status: $status, approvedBy: $approvedBy, approvedAt: $approvedAt, rejectionReason: $rejectionReason, createdAt: $createdAt, updatedAt: $updatedAt, leaveType: $leaveType)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $LeaveRequestCopyWith<$Res>  {
   factory $LeaveRequestCopyWith(LeaveRequest value, $Res Function(LeaveRequest) _then) = _$LeaveRequestCopyWithImpl;
 @useResult
 $Res call({
- String id, String employeeId, String leaveTypeId, String companyId, String? startDate, String? endDate, bool isHalfDay, HalfDayPeriod halfDayPeriod, double totalDays, String reason, String attachmentUrl, LeaveStatus status, String? approvedBy, String? createdAt, String? updatedAt, LeaveType? leaveType
+ String id, String employeeId, String requesterId, String requesterName, String requesterEmail, String leaveTypeId, String companyId, String? startDate, String? endDate, bool isHalfDay, HalfDayPeriod halfDayPeriod, double totalDays, String reason, String attachmentUrl, LeaveStatus status, String? approvedBy, String? approvedAt, String? rejectionReason, String? createdAt, String? updatedAt, LeaveType? leaveType
 });
 
 
@@ -62,10 +62,13 @@ class _$LeaveRequestCopyWithImpl<$Res>
 
 /// Create a copy of LeaveRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? employeeId = null,Object? leaveTypeId = null,Object? companyId = null,Object? startDate = freezed,Object? endDate = freezed,Object? isHalfDay = null,Object? halfDayPeriod = null,Object? totalDays = null,Object? reason = null,Object? attachmentUrl = null,Object? status = null,Object? approvedBy = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? leaveType = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? employeeId = null,Object? requesterId = null,Object? requesterName = null,Object? requesterEmail = null,Object? leaveTypeId = null,Object? companyId = null,Object? startDate = freezed,Object? endDate = freezed,Object? isHalfDay = null,Object? halfDayPeriod = null,Object? totalDays = null,Object? reason = null,Object? attachmentUrl = null,Object? status = null,Object? approvedBy = freezed,Object? approvedAt = freezed,Object? rejectionReason = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? leaveType = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,employeeId: null == employeeId ? _self.employeeId : employeeId // ignore: cast_nullable_to_non_nullable
+as String,requesterId: null == requesterId ? _self.requesterId : requesterId // ignore: cast_nullable_to_non_nullable
+as String,requesterName: null == requesterName ? _self.requesterName : requesterName // ignore: cast_nullable_to_non_nullable
+as String,requesterEmail: null == requesterEmail ? _self.requesterEmail : requesterEmail // ignore: cast_nullable_to_non_nullable
 as String,leaveTypeId: null == leaveTypeId ? _self.leaveTypeId : leaveTypeId // ignore: cast_nullable_to_non_nullable
 as String,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
 as String,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
@@ -77,6 +80,8 @@ as double,reason: null == reason ? _self.reason : reason // ignore: cast_nullabl
 as String,attachmentUrl: null == attachmentUrl ? _self.attachmentUrl : attachmentUrl // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LeaveStatus,approvedBy: freezed == approvedBy ? _self.approvedBy : approvedBy // ignore: cast_nullable_to_non_nullable
+as String?,approvedAt: freezed == approvedAt ? _self.approvedAt : approvedAt // ignore: cast_nullable_to_non_nullable
+as String?,rejectionReason: freezed == rejectionReason ? _self.rejectionReason : rejectionReason // ignore: cast_nullable_to_non_nullable
 as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as String?,leaveType: freezed == leaveType ? _self.leaveType : leaveType // ignore: cast_nullable_to_non_nullable
@@ -177,10 +182,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String employeeId,  String leaveTypeId,  String companyId,  String? startDate,  String? endDate,  bool isHalfDay,  HalfDayPeriod halfDayPeriod,  double totalDays,  String reason,  String attachmentUrl,  LeaveStatus status,  String? approvedBy,  String? createdAt,  String? updatedAt,  LeaveType? leaveType)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String employeeId,  String requesterId,  String requesterName,  String requesterEmail,  String leaveTypeId,  String companyId,  String? startDate,  String? endDate,  bool isHalfDay,  HalfDayPeriod halfDayPeriod,  double totalDays,  String reason,  String attachmentUrl,  LeaveStatus status,  String? approvedBy,  String? approvedAt,  String? rejectionReason,  String? createdAt,  String? updatedAt,  LeaveType? leaveType)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LeaveRequest() when $default != null:
-return $default(_that.id,_that.employeeId,_that.leaveTypeId,_that.companyId,_that.startDate,_that.endDate,_that.isHalfDay,_that.halfDayPeriod,_that.totalDays,_that.reason,_that.attachmentUrl,_that.status,_that.approvedBy,_that.createdAt,_that.updatedAt,_that.leaveType);case _:
+return $default(_that.id,_that.employeeId,_that.requesterId,_that.requesterName,_that.requesterEmail,_that.leaveTypeId,_that.companyId,_that.startDate,_that.endDate,_that.isHalfDay,_that.halfDayPeriod,_that.totalDays,_that.reason,_that.attachmentUrl,_that.status,_that.approvedBy,_that.approvedAt,_that.rejectionReason,_that.createdAt,_that.updatedAt,_that.leaveType);case _:
   return orElse();
 
 }
@@ -198,10 +203,10 @@ return $default(_that.id,_that.employeeId,_that.leaveTypeId,_that.companyId,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String employeeId,  String leaveTypeId,  String companyId,  String? startDate,  String? endDate,  bool isHalfDay,  HalfDayPeriod halfDayPeriod,  double totalDays,  String reason,  String attachmentUrl,  LeaveStatus status,  String? approvedBy,  String? createdAt,  String? updatedAt,  LeaveType? leaveType)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String employeeId,  String requesterId,  String requesterName,  String requesterEmail,  String leaveTypeId,  String companyId,  String? startDate,  String? endDate,  bool isHalfDay,  HalfDayPeriod halfDayPeriod,  double totalDays,  String reason,  String attachmentUrl,  LeaveStatus status,  String? approvedBy,  String? approvedAt,  String? rejectionReason,  String? createdAt,  String? updatedAt,  LeaveType? leaveType)  $default,) {final _that = this;
 switch (_that) {
 case _LeaveRequest():
-return $default(_that.id,_that.employeeId,_that.leaveTypeId,_that.companyId,_that.startDate,_that.endDate,_that.isHalfDay,_that.halfDayPeriod,_that.totalDays,_that.reason,_that.attachmentUrl,_that.status,_that.approvedBy,_that.createdAt,_that.updatedAt,_that.leaveType);case _:
+return $default(_that.id,_that.employeeId,_that.requesterId,_that.requesterName,_that.requesterEmail,_that.leaveTypeId,_that.companyId,_that.startDate,_that.endDate,_that.isHalfDay,_that.halfDayPeriod,_that.totalDays,_that.reason,_that.attachmentUrl,_that.status,_that.approvedBy,_that.approvedAt,_that.rejectionReason,_that.createdAt,_that.updatedAt,_that.leaveType);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -218,10 +223,10 @@ return $default(_that.id,_that.employeeId,_that.leaveTypeId,_that.companyId,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String employeeId,  String leaveTypeId,  String companyId,  String? startDate,  String? endDate,  bool isHalfDay,  HalfDayPeriod halfDayPeriod,  double totalDays,  String reason,  String attachmentUrl,  LeaveStatus status,  String? approvedBy,  String? createdAt,  String? updatedAt,  LeaveType? leaveType)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String employeeId,  String requesterId,  String requesterName,  String requesterEmail,  String leaveTypeId,  String companyId,  String? startDate,  String? endDate,  bool isHalfDay,  HalfDayPeriod halfDayPeriod,  double totalDays,  String reason,  String attachmentUrl,  LeaveStatus status,  String? approvedBy,  String? approvedAt,  String? rejectionReason,  String? createdAt,  String? updatedAt,  LeaveType? leaveType)?  $default,) {final _that = this;
 switch (_that) {
 case _LeaveRequest() when $default != null:
-return $default(_that.id,_that.employeeId,_that.leaveTypeId,_that.companyId,_that.startDate,_that.endDate,_that.isHalfDay,_that.halfDayPeriod,_that.totalDays,_that.reason,_that.attachmentUrl,_that.status,_that.approvedBy,_that.createdAt,_that.updatedAt,_that.leaveType);case _:
+return $default(_that.id,_that.employeeId,_that.requesterId,_that.requesterName,_that.requesterEmail,_that.leaveTypeId,_that.companyId,_that.startDate,_that.endDate,_that.isHalfDay,_that.halfDayPeriod,_that.totalDays,_that.reason,_that.attachmentUrl,_that.status,_that.approvedBy,_that.approvedAt,_that.rejectionReason,_that.createdAt,_that.updatedAt,_that.leaveType);case _:
   return null;
 
 }
@@ -233,11 +238,14 @@ return $default(_that.id,_that.employeeId,_that.leaveTypeId,_that.companyId,_tha
 
 
 class _LeaveRequest extends LeaveRequest {
-  const _LeaveRequest({required this.id, this.employeeId = '', this.leaveTypeId = '', this.companyId = '', this.startDate, this.endDate, this.isHalfDay = false, this.halfDayPeriod = HalfDayPeriod.am, this.totalDays = 0, this.reason = '', this.attachmentUrl = '', this.status = LeaveStatus.unknown, this.approvedBy, this.createdAt, this.updatedAt, this.leaveType}): super._();
+  const _LeaveRequest({required this.id, this.employeeId = '', this.requesterId = '', this.requesterName = '', this.requesterEmail = '', this.leaveTypeId = '', this.companyId = '', this.startDate, this.endDate, this.isHalfDay = false, this.halfDayPeriod = HalfDayPeriod.am, this.totalDays = 0, this.reason = '', this.attachmentUrl = '', this.status = LeaveStatus.unknown, this.approvedBy, this.approvedAt, this.rejectionReason, this.createdAt, this.updatedAt, this.leaveType}): super._();
   
 
 @override final  String id;
 @override@JsonKey() final  String employeeId;
+@override@JsonKey() final  String requesterId;
+@override@JsonKey() final  String requesterName;
+@override@JsonKey() final  String requesterEmail;
 @override@JsonKey() final  String leaveTypeId;
 @override@JsonKey() final  String companyId;
 @override final  String? startDate;
@@ -249,6 +257,8 @@ class _LeaveRequest extends LeaveRequest {
 @override@JsonKey() final  String attachmentUrl;
 @override@JsonKey() final  LeaveStatus status;
 @override final  String? approvedBy;
+@override final  String? approvedAt;
+@override final  String? rejectionReason;
 @override final  String? createdAt;
 @override final  String? updatedAt;
 @override final  LeaveType? leaveType;
@@ -263,16 +273,16 @@ _$LeaveRequestCopyWith<_LeaveRequest> get copyWith => __$LeaveRequestCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LeaveRequest&&(identical(other.id, id) || other.id == id)&&(identical(other.employeeId, employeeId) || other.employeeId == employeeId)&&(identical(other.leaveTypeId, leaveTypeId) || other.leaveTypeId == leaveTypeId)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.isHalfDay, isHalfDay) || other.isHalfDay == isHalfDay)&&(identical(other.halfDayPeriod, halfDayPeriod) || other.halfDayPeriod == halfDayPeriod)&&(identical(other.totalDays, totalDays) || other.totalDays == totalDays)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.attachmentUrl, attachmentUrl) || other.attachmentUrl == attachmentUrl)&&(identical(other.status, status) || other.status == status)&&(identical(other.approvedBy, approvedBy) || other.approvedBy == approvedBy)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.leaveType, leaveType) || other.leaveType == leaveType));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LeaveRequest&&(identical(other.id, id) || other.id == id)&&(identical(other.employeeId, employeeId) || other.employeeId == employeeId)&&(identical(other.requesterId, requesterId) || other.requesterId == requesterId)&&(identical(other.requesterName, requesterName) || other.requesterName == requesterName)&&(identical(other.requesterEmail, requesterEmail) || other.requesterEmail == requesterEmail)&&(identical(other.leaveTypeId, leaveTypeId) || other.leaveTypeId == leaveTypeId)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.isHalfDay, isHalfDay) || other.isHalfDay == isHalfDay)&&(identical(other.halfDayPeriod, halfDayPeriod) || other.halfDayPeriod == halfDayPeriod)&&(identical(other.totalDays, totalDays) || other.totalDays == totalDays)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.attachmentUrl, attachmentUrl) || other.attachmentUrl == attachmentUrl)&&(identical(other.status, status) || other.status == status)&&(identical(other.approvedBy, approvedBy) || other.approvedBy == approvedBy)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt)&&(identical(other.rejectionReason, rejectionReason) || other.rejectionReason == rejectionReason)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.leaveType, leaveType) || other.leaveType == leaveType));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,employeeId,leaveTypeId,companyId,startDate,endDate,isHalfDay,halfDayPeriod,totalDays,reason,attachmentUrl,status,approvedBy,createdAt,updatedAt,leaveType);
+int get hashCode => Object.hashAll([runtimeType,id,employeeId,requesterId,requesterName,requesterEmail,leaveTypeId,companyId,startDate,endDate,isHalfDay,halfDayPeriod,totalDays,reason,attachmentUrl,status,approvedBy,approvedAt,rejectionReason,createdAt,updatedAt,leaveType]);
 
 @override
 String toString() {
-  return 'LeaveRequest(id: $id, employeeId: $employeeId, leaveTypeId: $leaveTypeId, companyId: $companyId, startDate: $startDate, endDate: $endDate, isHalfDay: $isHalfDay, halfDayPeriod: $halfDayPeriod, totalDays: $totalDays, reason: $reason, attachmentUrl: $attachmentUrl, status: $status, approvedBy: $approvedBy, createdAt: $createdAt, updatedAt: $updatedAt, leaveType: $leaveType)';
+  return 'LeaveRequest(id: $id, employeeId: $employeeId, requesterId: $requesterId, requesterName: $requesterName, requesterEmail: $requesterEmail, leaveTypeId: $leaveTypeId, companyId: $companyId, startDate: $startDate, endDate: $endDate, isHalfDay: $isHalfDay, halfDayPeriod: $halfDayPeriod, totalDays: $totalDays, reason: $reason, attachmentUrl: $attachmentUrl, status: $status, approvedBy: $approvedBy, approvedAt: $approvedAt, rejectionReason: $rejectionReason, createdAt: $createdAt, updatedAt: $updatedAt, leaveType: $leaveType)';
 }
 
 
@@ -283,7 +293,7 @@ abstract mixin class _$LeaveRequestCopyWith<$Res> implements $LeaveRequestCopyWi
   factory _$LeaveRequestCopyWith(_LeaveRequest value, $Res Function(_LeaveRequest) _then) = __$LeaveRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String employeeId, String leaveTypeId, String companyId, String? startDate, String? endDate, bool isHalfDay, HalfDayPeriod halfDayPeriod, double totalDays, String reason, String attachmentUrl, LeaveStatus status, String? approvedBy, String? createdAt, String? updatedAt, LeaveType? leaveType
+ String id, String employeeId, String requesterId, String requesterName, String requesterEmail, String leaveTypeId, String companyId, String? startDate, String? endDate, bool isHalfDay, HalfDayPeriod halfDayPeriod, double totalDays, String reason, String attachmentUrl, LeaveStatus status, String? approvedBy, String? approvedAt, String? rejectionReason, String? createdAt, String? updatedAt, LeaveType? leaveType
 });
 
 
@@ -300,10 +310,13 @@ class __$LeaveRequestCopyWithImpl<$Res>
 
 /// Create a copy of LeaveRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? employeeId = null,Object? leaveTypeId = null,Object? companyId = null,Object? startDate = freezed,Object? endDate = freezed,Object? isHalfDay = null,Object? halfDayPeriod = null,Object? totalDays = null,Object? reason = null,Object? attachmentUrl = null,Object? status = null,Object? approvedBy = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? leaveType = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? employeeId = null,Object? requesterId = null,Object? requesterName = null,Object? requesterEmail = null,Object? leaveTypeId = null,Object? companyId = null,Object? startDate = freezed,Object? endDate = freezed,Object? isHalfDay = null,Object? halfDayPeriod = null,Object? totalDays = null,Object? reason = null,Object? attachmentUrl = null,Object? status = null,Object? approvedBy = freezed,Object? approvedAt = freezed,Object? rejectionReason = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? leaveType = freezed,}) {
   return _then(_LeaveRequest(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,employeeId: null == employeeId ? _self.employeeId : employeeId // ignore: cast_nullable_to_non_nullable
+as String,requesterId: null == requesterId ? _self.requesterId : requesterId // ignore: cast_nullable_to_non_nullable
+as String,requesterName: null == requesterName ? _self.requesterName : requesterName // ignore: cast_nullable_to_non_nullable
+as String,requesterEmail: null == requesterEmail ? _self.requesterEmail : requesterEmail // ignore: cast_nullable_to_non_nullable
 as String,leaveTypeId: null == leaveTypeId ? _self.leaveTypeId : leaveTypeId // ignore: cast_nullable_to_non_nullable
 as String,companyId: null == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
 as String,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
@@ -315,6 +328,8 @@ as double,reason: null == reason ? _self.reason : reason // ignore: cast_nullabl
 as String,attachmentUrl: null == attachmentUrl ? _self.attachmentUrl : attachmentUrl // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LeaveStatus,approvedBy: freezed == approvedBy ? _self.approvedBy : approvedBy // ignore: cast_nullable_to_non_nullable
+as String?,approvedAt: freezed == approvedAt ? _self.approvedAt : approvedAt // ignore: cast_nullable_to_non_nullable
+as String?,rejectionReason: freezed == rejectionReason ? _self.rejectionReason : rejectionReason // ignore: cast_nullable_to_non_nullable
 as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as String?,leaveType: freezed == leaveType ? _self.leaveType : leaveType // ignore: cast_nullable_to_non_nullable

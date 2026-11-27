@@ -41,4 +41,4 @@ final class CurrentLocationProvider
   }
 }
 
-String _$currentLocationHash() => r'af1e2d1e7118cc7bd06cc91209843a30f9edea6a';
+String _$currentLocationHash() => r'98b5aa1c71dbfda4855f9db04cdb6823a9899d9f';

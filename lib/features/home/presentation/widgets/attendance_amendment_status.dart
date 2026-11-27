@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 /// Colors used consistently for attendance amendment request statuses.
@@ -15,12 +16,21 @@ Color amendmentStatusColor(String? status, ThemeData theme) {
 }
 
 String amendmentStatusLabel(String? status) {
-  if (status == null || status.trim().isEmpty) return 'Unknown';
-  return status
+  final normalized = status?.trim().toUpperCase() ?? '';
+  final known = switch (normalized) {
+    'PENDING' => 'Pending',
+    'APPROVED' => 'Approved',
+    'REJECTED' => 'Rejected',
+    _ => null,
+  };
+  if (known != null) return known.tr();
+  if (normalized.isEmpty) return 'Unknown'.tr();
+  return normalized
       .split('_')
       .where((word) => word.isNotEmpty)
       .map((word) => '${word[0]}${word.substring(1).toLowerCase()}')
-      .join(' ');
+      .join(' ')
+      .tr();
 }
 
 class AmendmentStatusChip extends StatelessWidget {

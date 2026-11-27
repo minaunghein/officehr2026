@@ -49,7 +49,7 @@ class AppConfig {
     } catch (e) {
       throw Exception(
         'Failed to load configuration file: $configFile\n'
-        'Expected config/development.json and config/production.json to be '
+        'Expected config/dev.json and config/prod.json to be '
         'present in the Flutter assets.\n'
         'Make sure config/ is listed under the assets section in pubspec.yaml.\n'
         'Error: $e',
@@ -57,8 +57,16 @@ class AppConfig {
     }
   }
 
+  /// Resolves the config JSON from the build `--flavor` (Flutter injects the
+  /// `FLAVOR` dart-define automatically). Falls back to [kReleaseMode] when
+  /// no flavor was passed (e.g. plain `flutter run` or `flutter test`).
   static String _getConfigFileName() {
-    return kReleaseMode ? 'production.json' : 'development.json';
+    const flavor = String.fromEnvironment('FLAVOR');
+    return switch (flavor) {
+      'dev' => 'dev.json',
+      'prod' => 'prod.json',
+      _ => kReleaseMode ? 'prod.json' : 'dev.json',
+    };
   }
 
   static Map<String, dynamic> _asMap(Object? value) {

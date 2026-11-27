@@ -10,6 +10,7 @@ abstract class User with _$User {
     required String username,
     required String email,
     String? profileImgId,
+    @Default(false) bool optionalLocation,
     Employee? employee,
   }) = _User;
 }

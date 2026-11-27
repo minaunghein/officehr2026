@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$GeofenceModel {
 
- double get latitude; double get longitude;
+ double get latitude; double get longitude;@JsonKey(name: 'radius_km') double get radiusKm;
 /// Create a copy of GeofenceModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $GeofenceModelCopyWith<GeofenceModel> get copyWith => _$GeofenceModelCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GeofenceModel&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GeofenceModel&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.radiusKm, radiusKm) || other.radiusKm == radiusKm));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,latitude,longitude);
+int get hashCode => Object.hash(runtimeType,latitude,longitude,radiusKm);
 
 @override
 String toString() {
-  return 'GeofenceModel(latitude: $latitude, longitude: $longitude)';
+  return 'GeofenceModel(latitude: $latitude, longitude: $longitude, radiusKm: $radiusKm)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $GeofenceModelCopyWith<$Res>  {
   factory $GeofenceModelCopyWith(GeofenceModel value, $Res Function(GeofenceModel) _then) = _$GeofenceModelCopyWithImpl;
 @useResult
 $Res call({
- double latitude, double longitude
+ double latitude, double longitude,@JsonKey(name: 'radius_km') double radiusKm
 });
 
 
@@ -65,10 +65,11 @@ class _$GeofenceModelCopyWithImpl<$Res>
 
 /// Create a copy of GeofenceModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? latitude = null,Object? longitude = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? latitude = null,Object? longitude = null,Object? radiusKm = null,}) {
   return _then(_self.copyWith(
 latitude: null == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
 as double,longitude: null == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
+as double,radiusKm: null == radiusKm ? _self.radiusKm : radiusKm // ignore: cast_nullable_to_non_nullable
 as double,
   ));
 }
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double latitude,  double longitude)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double latitude,  double longitude, @JsonKey(name: 'radius_km')  double radiusKm)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _GeofenceModel() when $default != null:
-return $default(_that.latitude,_that.longitude);case _:
+return $default(_that.latitude,_that.longitude,_that.radiusKm);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.latitude,_that.longitude);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double latitude,  double longitude)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double latitude,  double longitude, @JsonKey(name: 'radius_km')  double radiusKm)  $default,) {final _that = this;
 switch (_that) {
 case _GeofenceModel():
-return $default(_that.latitude,_that.longitude);case _:
+return $default(_that.latitude,_that.longitude,_that.radiusKm);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +196,10 @@ return $default(_that.latitude,_that.longitude);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double latitude,  double longitude)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double latitude,  double longitude, @JsonKey(name: 'radius_km')  double radiusKm)?  $default,) {final _that = this;
 switch (_that) {
 case _GeofenceModel() when $default != null:
-return $default(_that.latitude,_that.longitude);case _:
+return $default(_that.latitude,_that.longitude,_that.radiusKm);case _:
   return null;
 
 }
@@ -210,11 +211,12 @@ return $default(_that.latitude,_that.longitude);case _:
 @JsonSerializable()
 
 class _GeofenceModel extends GeofenceModel {
-  const _GeofenceModel({this.latitude = 0.0, this.longitude = 0.0}): super._();
+  const _GeofenceModel({this.latitude = 0.0, this.longitude = 0.0, @JsonKey(name: 'radius_km') this.radiusKm = 0.0}): super._();
   factory _GeofenceModel.fromJson(Map<String, dynamic> json) => _$GeofenceModelFromJson(json);
 
 @override@JsonKey() final  double latitude;
 @override@JsonKey() final  double longitude;
+@override@JsonKey(name: 'radius_km') final  double radiusKm;
 
 /// Create a copy of GeofenceModel
 /// with the given fields replaced by the non-null parameter values.
@@ -229,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GeofenceModel&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GeofenceModel&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.radiusKm, radiusKm) || other.radiusKm == radiusKm));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,latitude,longitude);
+int get hashCode => Object.hash(runtimeType,latitude,longitude,radiusKm);
 
 @override
 String toString() {
-  return 'GeofenceModel(latitude: $latitude, longitude: $longitude)';
+  return 'GeofenceModel(latitude: $latitude, longitude: $longitude, radiusKm: $radiusKm)';
 }
 
 
@@ -249,7 +251,7 @@ abstract mixin class _$GeofenceModelCopyWith<$Res> implements $GeofenceModelCopy
   factory _$GeofenceModelCopyWith(_GeofenceModel value, $Res Function(_GeofenceModel) _then) = __$GeofenceModelCopyWithImpl;
 @override @useResult
 $Res call({
- double latitude, double longitude
+ double latitude, double longitude,@JsonKey(name: 'radius_km') double radiusKm
 });
 
 
@@ -266,10 +268,11 @@ class __$GeofenceModelCopyWithImpl<$Res>
 
 /// Create a copy of GeofenceModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? latitude = null,Object? longitude = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? latitude = null,Object? longitude = null,Object? radiusKm = null,}) {
   return _then(_GeofenceModel(
 latitude: null == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
 as double,longitude: null == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
+as double,radiusKm: null == radiusKm ? _self.radiusKm : radiusKm // ignore: cast_nullable_to_non_nullable
 as double,
   ));
 }

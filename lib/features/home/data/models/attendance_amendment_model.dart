@@ -25,6 +25,7 @@ abstract class AttendanceAmendmentModel with _$AttendanceAmendmentModel {
     @JsonKey(fromJson: parseLocalDateTime) DateTime? updatedAt,
     @JsonKey(name: 'approved_at', fromJson: parseLocalDateTime)
     DateTime? approvedAt,
+    AmendmentUserModel? user,
   }) = _AttendanceAmendmentModel;
 
   factory AttendanceAmendmentModel.fromJson(Map<String, dynamic> json) =>
@@ -33,6 +34,7 @@ abstract class AttendanceAmendmentModel with _$AttendanceAmendmentModel {
   AttendanceAmendment toEntity() => AttendanceAmendment(
     id: id,
     userId: userId,
+    requesterName: user?.username ?? '',
     companyId: companyId,
     dateId: dateId,
     amendmentType: amendmentType,
@@ -50,3 +52,15 @@ abstract class AttendanceAmendmentModel with _$AttendanceAmendmentModel {
 
 Object? _readId(Map<dynamic, dynamic> json, String key) =>
     json['_id'] ?? json[key];
+
+@freezed
+abstract class AmendmentUserModel with _$AmendmentUserModel {
+  const factory AmendmentUserModel({
+    @JsonKey(readValue: _readId) @Default('') String id,
+    @Default('') String username,
+    @Default('') String email,
+  }) = _AmendmentUserModel;
+
+  factory AmendmentUserModel.fromJson(Map<String, dynamic> json) =>
+      _$AmendmentUserModelFromJson(json);
+}

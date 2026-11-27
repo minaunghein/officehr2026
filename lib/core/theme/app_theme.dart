@@ -10,6 +10,33 @@ enum OfficeHrTheme {
   bool get isDark => this == dark;
 }
 
+/// What the user picked in Settings: follow the device or force a brightness.
+enum OfficeHrThemeMode {
+  system('system'),
+  light('light'),
+  dark('dark');
+
+  const OfficeHrThemeMode(this.key);
+
+  final String key;
+
+  ThemeMode get themeMode => switch (this) {
+    OfficeHrThemeMode.system => ThemeMode.system,
+    OfficeHrThemeMode.light => ThemeMode.light,
+    OfficeHrThemeMode.dark => ThemeMode.dark,
+  };
+
+  /// Untranslated label; callers apply `.tr()`.
+  String get displayName => switch (this) {
+    OfficeHrThemeMode.system => 'System default',
+    OfficeHrThemeMode.light => 'Light',
+    OfficeHrThemeMode.dark => 'Dark',
+  };
+
+  static OfficeHrThemeMode fromKey(String key) => OfficeHrThemeMode.values
+      .firstWhere((e) => e.key == key, orElse: () => system);
+}
+
 extension OfficeHrThemeExt on OfficeHrTheme {
   String get displayName {
     switch (this) {
@@ -40,12 +67,16 @@ extension OfficeHrThemeExt on OfficeHrTheme {
 class AppTheme {
   AppTheme._();
 
+  /// Built once so Flutter can keep the same ThemeData instance across rebuilds.
+  static final ThemeData light = _lightTheme();
+  static final ThemeData dark = _darkTheme();
+
   static ThemeData getTheme(OfficeHrTheme officeHrTheme) {
     switch (officeHrTheme) {
       case OfficeHrTheme.light:
-        return _lightTheme();
+        return light;
       case OfficeHrTheme.dark:
-        return _darkTheme();
+        return dark;
     }
   }
 
@@ -315,21 +346,28 @@ class AppTheme {
           vertical: 16,
         ),
       ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: surface,
-        selectedItemColor: primary,
-        unselectedItemColor: onBackground.withValues(alpha: 0.4),
-        type: BottomNavigationBarType.fixed,
-        elevation: 0,
-        selectedLabelStyle: GoogleFonts.inter(
-          fontSize: 11,
-          fontWeight: FontWeight.w500,
-          height: 14 / 11,
-        ),
-        unselectedLabelStyle: GoogleFonts.inter(
-          fontSize: 11,
-          fontWeight: FontWeight.w500,
-          height: 14 / 11,
+      navigationBarTheme: NavigationBarThemeData(
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          final color = states.contains(WidgetState.selected)
+              ? const Color(0xFF0052CC)
+              : states.contains(WidgetState.disabled)
+              ? onBackground.withValues(alpha: 0.38)
+              : onBackground.withValues(alpha: 0.6);
+          return IconThemeData(color: color, size: 22);
+        }),
+        labelTextStyle: WidgetStateProperty.resolveWith(
+          (states) => GoogleFonts.inter(
+            color: states.contains(WidgetState.selected)
+                ? const Color(0xFF0052CC)
+                : states.contains(WidgetState.disabled)
+                ? onBackground.withValues(alpha: 0.38)
+                : onBackground.withValues(alpha: 0.6),
+            fontSize: 11,
+            fontWeight: states.contains(WidgetState.selected)
+                ? FontWeight.w700
+                : FontWeight.w500,
+            height: 14 / 11,
+          ),
         ),
       ),
       snackBarTheme: SnackBarThemeData(
@@ -413,7 +451,7 @@ class AppTheme {
         dividerThickness: 1,
       ),
       listTileTheme: ListTileThemeData(
-        tileColor: surface,
+        // tileColor: surface,
         selectedTileColor: primary.withValues(alpha: 0.1),
         iconColor: onBackground.withValues(alpha: 0.7),
         textColor: onBackground,

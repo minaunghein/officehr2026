@@ -1,4 +1,6 @@
 import 'package:office_hr/core/network/network_providers.dart';
+import 'package:office_hr/core/utils/async_reload.dart';
+import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/features/home/data/datasources/attendance_amendment_remote_datasource.dart';
 import 'package:office_hr/features/home/data/repositories/attendance_amendment_repository_impl.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_amendment.dart';
@@ -73,20 +75,20 @@ class AttendanceAmendments extends _$AttendanceAmendments {
 
   Future<void> setStatusFilter(List<String> statuses) async {
     _statuses = statuses;
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(_fetch);
+    await _reload(filterChanged: true);
   }
 
   Future<void> setDateFilter({DateTime? start, DateTime? end}) async {
     _start = start;
     _end = end;
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(_fetch);
+    await _reload(filterChanged: true);
   }
 
-  Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(_fetch);
+  Future<void> refresh() => _reload();
+
+  Future<void> _reload({bool filterChanged = false}) async {
+    ref.invalidateSelf(asReload: filterChanged);
+    await settleReload(future);
   }
 
   Future<AttendanceAmendment> create(CreateAmendmentParams params) async {
@@ -96,6 +98,83 @@ class AttendanceAmendments extends _$AttendanceAmendments {
   }
 
   Future<AttendanceAmendment> updateStatus(
+    String id, {
+    required String status,
+    String? rejectionReason,
+  }) async {
+    final updated = await ref.read(updateAmendmentStatusUsecaseProvider)(
+      id,
+      status: status,
+      rejectionReason: rejectionReason,
+    );
+    await refresh();
+    return updated;
+  }
+}
+
+/// Pending amendment count awaiting a decision, excluding the current user's
+/// own requests. Used for the team screen badge.
+@riverpod
+Future<int> pendingAmendmentsBadgeCount(Ref ref) async {
+  final currentUserId = ref.watch(currentUserIdProvider) ?? '';
+  final amendments = await ref
+      .watch(getAmendmentsUsecaseProvider)
+      .call(statuses: const ['PENDING']);
+  return amendments
+      .where((amendment) => amendment.userId != currentUserId)
+      .length;
+}
+
+/// Reviewer-facing amendment list. The current user's own requests are hidden
+/// (they can't approve/reject themselves) and pending items sort first so
+/// they surface at the top of the list.
+@riverpod
+class AmendmentApprovals extends _$AmendmentApprovals {
+  List<String> _statuses = const ['PENDING'];
+
+  @override
+  Future<List<AttendanceAmendment>> build() {
+    // Rebuild when the signed-in user changes so own-request filtering and
+    // per-user cache scoping stay correct.
+    ref.watch(currentUserIdProvider);
+    return _fetch();
+  }
+
+  Future<List<AttendanceAmendment>> _fetch() async {
+    final currentUserId = ref.read(currentUserIdProvider) ?? '';
+    final amendments = await ref.read(getAmendmentsUsecaseProvider)(
+      statuses: _statuses,
+    );
+    final others = amendments
+        .where((amendment) => amendment.userId != currentUserId)
+        .toList();
+    final sorted = [...others]
+      ..sort((a, b) {
+        final aPending = a.status.toUpperCase() == 'PENDING';
+        final bPending = b.status.toUpperCase() == 'PENDING';
+        if (aPending != bPending) return aPending ? -1 : 1;
+        final aDate = a.createdAt;
+        final bDate = b.createdAt;
+        if (aDate == null || bDate == null) return 0;
+        return bDate.compareTo(aDate);
+      });
+    return sorted;
+  }
+
+  Future<void> setStatusFilter(List<String> statuses) async {
+    _statuses = statuses;
+    await _reload(filterChanged: true);
+  }
+
+  Future<void> refresh() => _reload();
+
+  Future<void> _reload({bool filterChanged = false}) async {
+    ref.invalidateSelf(asReload: filterChanged);
+    await settleReload(future);
+    if (ref.mounted) ref.invalidate(pendingAmendmentsBadgeCountProvider);
+  }
+
+  Future<AttendanceAmendment> decide(
     String id, {
     required String status,
     String? rejectionReason,

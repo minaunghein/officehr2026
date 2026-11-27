@@ -13,6 +13,7 @@ abstract class AttendancePunch with _$AttendancePunch {
     DateTime? date,
     required String punchTime,
     required String punchType,
+    String? imgId,
     AttendanceLocation? location,
     AttendanceDevice? device,
     required bool isManual,

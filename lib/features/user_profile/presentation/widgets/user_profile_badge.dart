@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class UserProfileBadge extends StatelessWidget {
   const UserProfileBadge({super.key, required this.icon, required this.label});
 
@@ -52,7 +54,10 @@ class UserProfileActiveStatus extends StatelessWidget {
       children: [
         Icon(Icons.circle, size: 10, color: color),
         const SizedBox(width: 6),
-        Text(isActive ? 'Active' : 'Inactive', style: TextStyle(color: color)),
+        Text(
+          isActive ? 'Active'.tr() : 'Inactive'.tr(),
+          style: TextStyle(color: color),
+        ),
       ],
     );
   }

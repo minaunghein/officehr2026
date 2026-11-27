@@ -8,6 +8,7 @@ This Flutter project uses feature-first clean architecture. Keep changes small, 
 - Use `freezed` and `json_serializable` for data models/entities that need immutable copy/equality or JSON parsing.
 - Always include generated part files when needed: `.freezed.dart`, `.g.dart`.
 - Run `dart run build_runner build --delete-conflicting-outputs` after changing annotated providers, Freezed classes, or JSON models.
+- **Per-user cache scoping**: Any `@Riverpod(keepAlive: true)` provider (or any provider that stays alive across screens) whose data belongs to the logged-in user MUST call `ref.watch(currentUserIdProvider)` as the first line of its `build()` (e.g. leave balances/requests, monthly attendance stats). This makes the cache rebuild and refetch whenever the account changes, so logging out and logging in as another user never shows the previous user's data. Providers that only dispose when unlistened (default autoDispose `@riverpod`, including family providers keyed by an argument) reset naturally and do not need this, but do not convert them to `keepAlive` without also adding the watch.
 - Keep widgets separated. Do not grow long screen files with many private widgets; move reusable UI into `presentation/widgets/`.
 - For stateful widgets, always use `HookConsumerWidget` with hooks (`useState`, `useTextEditingController`, `useEffect`, `useMemoized`, etc.) instead of `StatefulWidget`/`ConsumerStatefulWidget`. Do not create `ConsumerStatefulWidget` or manual `State` classes.
 - Prefer global/shared services and utilities from `lib/core` and `lib/shared` before creating feature-local duplicates.
@@ -84,3 +85,4 @@ Scaffold(
 - Format touched Dart files with `dart format`.
 - Run `flutter analyze` before finishing.
 - If generated code changes are expected, verify generated files are updated and included.
+- **Stale-account data check**: After logout + login as a different account, no screen may show the previous user's data without a manual refresh. When adding/editing a `keepAlive` provider that fetches user-specific data, confirm its `build()` watches `currentUserIdProvider` (see the per-user cache scoping rule). Grep for `@Riverpod(keepAlive: true)` to audit providers that must be user-scoped.

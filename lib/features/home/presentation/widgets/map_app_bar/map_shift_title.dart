@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/shift/shift.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class MapShiftTitle extends StatelessWidget {
   const MapShiftTitle({required this.shift, super.key});
 
@@ -47,7 +49,7 @@ class MapShiftTitle extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Text(
-              shift?.title ?? 'Shift',
+              shift?.title ?? 'Shift'.tr(),
               style: theme.textTheme.labelSmall?.copyWith(
                 fontWeight: FontWeight.w800,
                 color: theme.colorScheme.primary,

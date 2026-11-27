@@ -491,3 +491,67 @@ final class IsAuthenticatedProvider
 }
 
 String _$isAuthenticatedHash() => r'83a1451973b29d9ff37548f4c8838b1f926ebb0b';
+
+/// The signed-in user's id, or `null` when logged out.
+///
+/// Per-user data providers (keepAlive caches such as leave balances/requests
+/// or monthly attendance stats) MUST `ref.watch` this inside their `build()`
+/// so their cache is discarded and refetched when a different account logs in.
+/// Without it, a keepAlive provider returns the previous user's data after a
+/// logout/login until the user manually refreshes.
+
+@ProviderFor(currentUserId)
+final currentUserIdProvider = CurrentUserIdProvider._();
+
+/// The signed-in user's id, or `null` when logged out.
+///
+/// Per-user data providers (keepAlive caches such as leave balances/requests
+/// or monthly attendance stats) MUST `ref.watch` this inside their `build()`
+/// so their cache is discarded and refetched when a different account logs in.
+/// Without it, a keepAlive provider returns the previous user's data after a
+/// logout/login until the user manually refreshes.
+
+final class CurrentUserIdProvider
+    extends $FunctionalProvider<String?, String?, String?>
+    with $Provider<String?> {
+  /// The signed-in user's id, or `null` when logged out.
+  ///
+  /// Per-user data providers (keepAlive caches such as leave balances/requests
+  /// or monthly attendance stats) MUST `ref.watch` this inside their `build()`
+  /// so their cache is discarded and refetched when a different account logs in.
+  /// Without it, a keepAlive provider returns the previous user's data after a
+  /// logout/login until the user manually refreshes.
+  CurrentUserIdProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'currentUserIdProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$currentUserIdHash();
+
+  @$internal
+  @override
+  $ProviderElement<String?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  String? create(Ref ref) {
+    return currentUserId(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String?>(value),
+    );
+  }
+}
+
+String _$currentUserIdHash() => r'3b00e3e426090e9c87437f27337699204bdc706a';

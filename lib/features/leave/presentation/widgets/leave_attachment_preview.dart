@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
+import 'package:office_hr/core/network/network_providers.dart';
 
-class LeaveAttachmentPreview extends StatelessWidget {
+class LeaveAttachmentPreview extends ConsumerWidget {
   const LeaveAttachmentPreview({
     super.key,
     required this.imageUrl,
@@ -17,7 +19,7 @@ class LeaveAttachmentPreview extends StatelessWidget {
   final BorderRadius? borderRadius;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     return ClipRRect(
       borderRadius:
@@ -27,6 +29,7 @@ class LeaveAttachmentPreview extends StatelessWidget {
         height: height,
         child: CachedNetworkImage(
           imageUrl: imageUrl,
+          httpHeaders: ref.watch(authImageHeadersProvider),
           fit: BoxFit.cover,
           placeholder: (_, _) => Container(
             color: theme.colorScheme.surfaceContainerHighest,

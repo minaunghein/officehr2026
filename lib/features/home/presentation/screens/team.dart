@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/router/app_router.dart';
-import 'package:office_hr/core/utils/snackbar_utils.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
+import 'package:office_hr/features/home/presentation/providers/attendance_amendment_provider.dart';
+import 'package:office_hr/features/home/presentation/providers/clock_request_provider.dart';
 import 'package:office_hr/features/home/presentation/widgets/team_body.dart';
 import 'package:office_hr/features/home/presentation/widgets/team_quick_action.dart';
-import 'package:office_hr/features/home/presentation/widgets/team_quick_actions.dart';
+import 'package:office_hr/features/leave/presentation/providers/leave_providers.dart';
+import 'package:office_hr/features/overtime/presentation/providers/overtime_providers.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 
 class TeamScreen extends ConsumerWidget {
   const TeamScreen({super.key});
@@ -17,63 +21,53 @@ class TeamScreen extends ConsumerWidget {
     final departmentId = session?.workInfo?.departmentId ?? '';
     final departmentTitle = session?.departmentTitle.trim() ?? '';
     final currentUserId = session?.userId ?? '';
-    final roleName = session?.role.name.trim().toLowerCase() ?? '';
-    final canScan = roleName.isNotEmpty && roleName != 'employee';
-    final canViewDetails = canScan;
+    final access = ref.watch(sessionAccessProvider);
 
     final quickActions = <TeamQuickAction>[
       TeamQuickAction(
         icon: Icons.beach_access_outlined,
-        label: 'Leave Requests',
-        onTap: () => SnackbarUtils.showInfo('Leave requests are coming soon.'),
+        label: 'Leave Requests'.tr(),
+        badgeCount: access.reviewLeave
+            ? ref.watch(pendingLeaveRequestsCountProvider)
+            : 0,
+        onTap: appRouteTap(context, access, AppRoutes.leaveRequests),
       ),
       TeamQuickAction(
         icon: Icons.edit_calendar_outlined,
-        label: 'Attendance Requests',
-        onTap: () =>
-            SnackbarUtils.showInfo('Attendance requests are coming soon.'),
+        label: 'Attendance Requests'.tr(),
+        badgeCount: access.reviewAmendments
+            ? ref.watch(pendingAmendmentsBadgeCountProvider).value ?? 0
+            : 0,
+        onTap: appRouteTap(context, access, AppRoutes.amendmentRequests),
       ),
       TeamQuickAction(
-        icon: Icons.more_time_rounded,
-        label: 'Overtime Requests',
-        onTap: () =>
-            SnackbarUtils.showInfo('Overtime requests are coming soon.'),
+        icon: Icons.gps_fixed_rounded,
+        label: 'Clock Requests'.tr(),
+        badgeCount: access.reviewClock
+            ? ref.watch(pendingClockRequestsBadgeCountProvider).value ?? 0
+            : 0,
+        onTap: appRouteTap(context, access, AppRoutes.clockRequests),
+      ),
+      TeamQuickAction(
+        icon: Icons.timer_outlined,
+        label: 'Overtime Requests'.tr(),
+        badgeCount: access.reviewOvertime
+            ? ref.watch(pendingOvertimeRequestsCountProvider)
+            : 0,
+        onTap: appRouteTap(context, access, AppRoutes.overtimeRequests),
       ),
     ];
 
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: TeamBody(
-                  departmentId: departmentId,
-                  departmentTitle: departmentTitle,
-                  currentUserId: currentUserId,
-                  canViewDetails: canViewDetails,
-                ),
-              ),
-              if (canScan) ...[
-                Padding(
-                  padding: const EdgeInsets.only(top: 12),
-                  child: TeamQuickActions(actions: quickActions),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 12),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: FilledButton.icon(
-                      onPressed: () => context.push(AppRoutes.qrScanner),
-                      icon: const Icon(Icons.qr_code_scanner_rounded),
-                      label: const Text('Scan Staff ID Card'),
-                    ),
-                  ),
-                ),
-              ],
-            ],
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+          child: TeamBody(
+            departmentId: departmentId,
+            departmentTitle: departmentTitle,
+            currentUserId: currentUserId,
+            canViewDetails: access.viewTeamAttendance,
+            quickActions: quickActions,
           ),
         ),
       ),

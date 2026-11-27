@@ -15,6 +15,7 @@ _AttendancePunchModel _$AttendancePunchModelFromJson(
   date: parseLocalDateTime(json['date'] as String?),
   punchTime: json['punch_time'] as String? ?? '',
   punchType: json['punch_type'] as String? ?? '',
+  imgId: json['img_id'] as String?,
   location: json['location'] == null
       ? null
       : AttendanceLocationModel.fromJson(
@@ -39,6 +40,7 @@ Map<String, dynamic> _$AttendancePunchModelToJson(
   'date': instance.date?.toIso8601String(),
   'punch_time': instance.punchTime,
   'punch_type': instance.punchType,
+  'img_id': instance.imgId,
   'location': instance.location,
   'device': instance.device,
   'is_manual': instance.isManual,

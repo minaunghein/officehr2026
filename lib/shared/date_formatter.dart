@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/shift/shift.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/shift_day/shift_day.dart';
@@ -14,51 +15,48 @@ String formatDateString(String? value) {
   return '$day-$month-$year';
 }
 
-String formatDateTime(DateTime dt) {
-  final local = dt.toLocal();
-  final months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-  final weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  final month = months[local.month - 1];
-  final weekday = weekdays[local.weekday - 1];
-  final hour = local.hour > 12
-      ? local.hour - 12
-      : (local.hour == 0 ? 12 : local.hour);
-  final amPm = local.hour >= 12 ? 'PM' : 'AM';
-  final minute = local.minute.toString().padLeft(2, '0');
-  return '$weekday, $month ${local.day} | $hour:$minute $amPm';
-}
+const _shortMonths = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+const _fullMonths = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+const _shortWeekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+/// Month name for display only. API dates and identifiers stay numeric.
+String monthLabel(int month, {bool abbreviated = true}) =>
+    (abbreviated ? _shortMonths : _fullMonths)[month - 1].tr();
+
+String displayDate(DateTime date, {bool abbreviated = true}) =>
+    '${date.day} ${monthLabel(date.month, abbreviated: abbreviated)} ${date.year}';
+
+String formatDateTime(DateTime dt) => _formatDateTime(dt);
 
 String formatMonthYear(DateTime dt) {
   final local = dt.toLocal();
-  final months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-  final month = months[local.month - 1];
-  return '$month ${local.year}';
+  return '${monthLabel(local.month, abbreviated: false)} ${local.year}';
 }
 
 String formatTime(DateTime dt) {
@@ -71,32 +69,27 @@ String formatTime(DateTime dt) {
   return '$hour:$minute $amPm';
 }
 
-String formatDateTimeWithSeconds(DateTime dt) {
+String formatDateTimeWithSeconds(DateTime dt) =>
+    _formatDateTime(dt, withSeconds: true);
+
+String _formatDateTime(DateTime dt, {bool withSeconds = false}) {
   final local = dt.toLocal();
-  final months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-  final weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  final month = months[local.month - 1];
-  final weekday = weekdays[local.weekday - 1];
+  final date = '{weekday}, {month} {day}'.tr(
+    namedArgs: {
+      'weekday': _shortWeekdays[local.weekday - 1].tr(),
+      'month': monthLabel(local.month),
+      'day': '${local.day}',
+    },
+  );
   final hour = local.hour > 12
       ? local.hour - 12
       : (local.hour == 0 ? 12 : local.hour);
   final amPm = local.hour >= 12 ? 'PM' : 'AM';
   final minute = local.minute.toString().padLeft(2, '0');
-  final second = local.second.toString().padLeft(2, '0');
-  return '$weekday, $month ${local.day} | $hour:$minute:$second $amPm';
+  final seconds = withSeconds
+      ? ':${local.second.toString().padLeft(2, '0')}'
+      : '';
+  return '$date | $hour:$minute$seconds $amPm';
 }
 
 String formatShiftWorkHours(Shift? shift) {
@@ -110,11 +103,11 @@ String formatShiftWorkHours(Shift? shift) {
 
   if (todayWorkingDay != null) {
     if (todayWorkingDay.isHalfDay) {
-      return 'Half Day';
+      return 'Half Day'.tr();
     }
 
     if (todayWorkingDay.isOffDay || !todayWorkingDay.isWorkingDay) {
-      return 'Off Day';
+      return 'Off Day'.tr();
     }
 
     final start = todayWorkingDay.workStart ?? shift.defaultStart;
@@ -180,9 +173,13 @@ String formatDurationText(Duration duration) {
   final hours = duration.inHours;
   final minutes = duration.inMinutes.remainder(60);
 
-  if (hours > 0 && minutes > 0) return '${hours}h ${minutes}m';
-  if (hours > 0) return '${hours}h';
-  return '${minutes}m';
+  if (hours > 0 && minutes > 0) {
+    return '{hours}h {minutes}m'.tr(
+      namedArgs: {'hours': '$hours', 'minutes': '$minutes'},
+    );
+  }
+  if (hours > 0) return '{hours}h'.tr(namedArgs: {'hours': '$hours'});
+  return '{minutes}m'.tr(namedArgs: {'minutes': '$minutes'});
 }
 
 ShiftDay? getShiftDayForDate(Shift shift, DateTime date) {

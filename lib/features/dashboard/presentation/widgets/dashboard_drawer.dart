@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
+import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/core/router/app_router.dart';
-import 'package:office_hr/core/theme/app_theme.dart';
-import 'package:office_hr/core/theme/theme_notifier.dart';
 import 'package:office_hr/core/widgets/container_shimmer.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/shared/global.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 
 class DashboardDrawer extends ConsumerWidget {
   const DashboardDrawer({super.key});
@@ -16,7 +18,7 @@ class DashboardDrawer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final themeStyle = ref.watch(themeProvider);
+    final access = ref.watch(sessionAccessProvider);
     final userDetails = ref.watch(currentUserProvider);
     final employee = userDetails.value?.employee;
     final role = userDetails.value?.role;
@@ -36,7 +38,9 @@ class DashboardDrawer extends ConsumerWidget {
               color: theme.colorScheme.primaryContainer,
             ),
             child: GestureDetector(
-              onTap: () => context.push(AppRoutes.profile),
+              onTap: access.viewProfile
+                  ? () => context.push(AppRoutes.profile)
+                  : null,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,6 +55,7 @@ class DashboardDrawer extends ConsumerWidget {
                             height: 80,
                             child: CachedNetworkImage(
                               imageUrl: userDetails.value!.profileUrl,
+                              httpHeaders: ref.watch(authImageHeadersProvider),
                               fit: BoxFit.cover,
                               placeholder: (context, url) => ContainerShimmer(),
                               errorWidget: (context, url, error) => Container(
@@ -83,194 +88,177 @@ class DashboardDrawer extends ConsumerWidget {
                         ),
                   const SizedBox(width: 12),
 
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (userDetails.hasError)
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (userDetails.hasError)
+                          Text(
+                            'Error Getting User Info'.tr(),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: Colors.red,
+                            ),
+                          )
+                        else
+                          Text(
+                            fullName ?? 'Loading...'.tr(),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              color: theme.colorScheme.onPrimaryContainer,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        const SizedBox(height: 3),
                         Text(
-                          'Error Getting User Info',
+                          positionTitle ?? 'Unknown Position'.tr(),
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: Colors.red,
+                            color: theme.colorScheme.onPrimary.withValues(
+                              alpha: 0.85,
+                            ),
                           ),
-                        )
-                      else
-                        Text(
-                          fullName ?? 'Loading...',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: theme.colorScheme.onPrimaryContainer,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 0.5,
-                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      const SizedBox(height: 3),
-                      Text(
-                        positionTitle ?? 'Unknown Position',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onPrimary.withValues(
-                            alpha: 0.85,
-                          ),
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 6),
-                      Flex(
-                        direction: Axis.horizontal,
-                        children: [
-                          if (empCode != null) ...[
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 3,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.18),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                'ID: $empCode',
-                                style: theme.textTheme.labelSmall?.copyWith(
-                                  color: theme.colorScheme.onPrimary,
-                                  fontWeight: FontWeight.w600,
+                        const SizedBox(height: 6),
+                        Wrap(
+                          spacing: 6,
+                          runSpacing: 4,
+                          children: [
+                            if (empCode != null) ...[
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 3,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: 0.18),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  'ID: {id}'.tr(namedArgs: {'id': empCode}),
+                                  style: theme.textTheme.labelSmall?.copyWith(
+                                    color: theme.colorScheme.onPrimary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 6),
-                          ],
-                          if (role != null) ...[
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 3,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.18),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                role.name,
-                                style: theme.textTheme.labelSmall?.copyWith(
-                                  color: theme.colorScheme.onPrimary,
-                                  fontWeight: FontWeight.w600,
+                            ],
+                            if (role != null) ...[
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 3,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: 0.18),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  role.name,
+                                  style: theme.textTheme.labelSmall?.copyWith(
+                                    color: theme.colorScheme.onPrimary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ],
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
           ),
-          const _SectionLabel(label: 'Appearance'),
-          _SettingsGroup(
-            children: [_ThemeTile(themeStyle: themeStyle, ref: ref)],
-          ),
-          const _SectionLabel(label: 'Profile'),
+          _SectionLabel(label: 'Profile'.tr()),
           _SettingsGroup(
             children: [
               _NavTile(
                 icon: Icons.badge_rounded,
                 iconBg: const Color(0xFFEEF2FF),
-                title: 'Digital ID Card',
-                subtitle: 'Your staff identity card',
-                onTap: () => context.push(AppRoutes.staffIdCard),
+                title: 'Digital ID Card'.tr(),
+                subtitle: 'Your staff identity card'.tr(),
+                onTap: appRouteTap(context, access, AppRoutes.staffIdCard),
               ),
             ],
           ),
-          const _SectionLabel(label: 'HR Modules'),
+          _SectionLabel(label: 'HR Modules'.tr()),
           _SettingsGroup(
             children: [
               _NavTile(
                 icon: Icons.receipt_long_rounded,
                 iconBg: const Color(0xFFF5F3FF),
-                title: 'Payslips',
-                subtitle: 'View your salary slips',
-                onTap: () => context.push(AppRoutes.payslip),
+                title: 'Payslips'.tr(),
+                subtitle: 'View your salary slips'.tr(),
+                onTap: appRouteTap(context, access, AppRoutes.payslip),
               ),
               const _Divider(),
               _NavTile(
                 icon: Icons.beach_access_rounded,
                 iconBg: const Color(0xFFECFEFF),
-                title: 'Leave',
-                subtitle: 'Manage your leave balance',
-                onTap: () => context.push(AppRoutes.leave),
+                title: 'Leave'.tr(),
+                subtitle: 'Manage your leave balance'.tr(),
+                onTap: appRouteTap(context, access, AppRoutes.leave),
               ),
               const _Divider(),
               _NavTile(
+                icon: Icons.timer_outlined,
+                iconBg: const Color(0xFFFFFBEB),
+                title: 'Overtime'.tr(),
+                subtitle: 'Track your overtime requests'.tr(),
+                onTap: appRouteTap(context, access, AppRoutes.overtime),
+              ),
+              const _Divider(),
+              if (!access.viewPunches) ...[
+                _NavTile(
+                  icon: Icons.edit_calendar_outlined,
+                  iconBg: const Color(0xFFF1F5F9),
+                  title: 'Attendance Requests'.tr(),
+                  onTap: appRouteTap(
+                    context,
+                    access,
+                    AppRoutes.attendanceRequests,
+                  ),
+                ),
+                const _Divider(),
+              ],
+              _NavTile(
                 icon: Icons.calendar_today_rounded,
                 iconBg: const Color(0xFFFFFBEB),
-                title: 'Public Holidays',
-                subtitle: 'National & company holidays',
+                title: 'Public Holidays'.tr(),
+                subtitle: 'National & company holidays'.tr(),
                 onTap: () => context.push(AppRoutes.publicHoliday),
               ),
               const _Divider(),
               _NavTile(
                 icon: Icons.business_rounded,
                 iconBg: const Color(0xFFECFDF5),
-                title: 'Company Information',
-                subtitle: 'About your organisation',
-                onTap: () => context.push(AppRoutes.company),
+                title: 'Company Information'.tr(),
+                subtitle: 'About your organisation'.tr(),
+                onTap: appRouteTap(context, access, AppRoutes.company),
               ),
             ],
           ),
-          const _SectionLabel(label: 'ACCOUNT'),
+          _SectionLabel(label: 'ACCOUNT'.tr()),
           _SettingsGroup(
             children: [
               _NavTile(
-                icon: Icons.lock_outline_rounded,
+                icon: Icons.settings_outlined,
                 iconBg: const Color(0xFFF1F5F9),
-                title: 'Change Password',
-                onTap: () => context.push(AppRoutes.changePassword),
-              ),
-              const _Divider(),
-              _NavTile(
-                icon: Icons.logout_rounded,
-                iconBg: const Color(0xFFFEF2F2),
-                title: 'Logout',
-                titleColor: const Color(0xFFDC2626),
-                showChevron: false,
-                onTap: () => _confirmLogout(context, ref),
+                title: 'Settings'.tr(),
+                subtitle: 'Appearance, reminders and security'.tr(),
+                onTap: () => context.push(AppRoutes.settings),
               ),
             ],
           ),
         ],
       ),
     );
-  }
-
-  static Future<void> _confirmLogout(
-    BuildContext context,
-    WidgetRef ref,
-  ) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Are you sure you want to logout?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xFFDC2626),
-            ),
-            onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Logout'),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed == true) {
-      await ref.read(loginProvider.notifier).logout();
-    }
   }
 }
 
@@ -326,124 +314,74 @@ class _NavTile extends StatelessWidget {
     required this.title,
     required this.onTap,
     this.subtitle,
-    this.titleColor,
-    this.showChevron = true,
   });
 
   final IconData icon;
   final Color iconBg;
   final String title;
   final String? subtitle;
-  final Color? titleColor;
-  final bool showChevron;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppSizes.borderRadiusSm),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
-        child: Row(
-          children: [
-            SizedBox(width: 36, height: 36, child: Icon(icon, size: 20)),
-            const SizedBox(width: 14),
+    final enabled = onTap != null;
+    return Semantics(
+      button: true,
+      enabled: enabled,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppSizes.borderRadiusSm),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 36,
+                height: 36,
+                child: Icon(
+                  icon,
+                  size: 20,
+                  color: enabled ? null : theme.disabledColor,
+                ),
+              ),
+              const SizedBox(width: 14),
 
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: titleColor,
-                    ),
-                  ),
-                  if (subtitle != null)
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text(
-                      subtitle!,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(
-                          alpha: 0.5,
-                        ),
+                      title,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: enabled ? null : theme.disabledColor,
                       ),
                     ),
-                ],
+                    if (subtitle != null)
+                      Text(
+                        subtitle!,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: !enabled
+                              ? theme.disabledColor
+                              : theme.colorScheme.onSurface.withValues(
+                                  alpha: 0.5,
+                                ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
-            ),
 
-            if (showChevron)
-              Icon(
-                Icons.chevron_right_rounded,
-                size: 20,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.35),
-              ),
-          ],
+              if (enabled)
+                Icon(
+                  Icons.chevron_right_rounded,
+                  size: 20,
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.35),
+                ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
-}
-
-class _ThemeTile extends StatelessWidget {
-  const _ThemeTile({required this.themeStyle, required this.ref});
-
-  final OfficeHrTheme themeStyle;
-  final WidgetRef ref;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = themeStyle.isDark;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 36,
-            height: 36,
-
-            child: Icon(
-              isDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
-
-              size: 20,
-            ),
-          ),
-          const SizedBox(width: 14),
-
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Dark Mode',
-                  style: theme.textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  isDark ? 'Currently dark' : 'Currently light',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          Switch(
-            value: isDark,
-            onChanged: (_) {
-              ref
-                  .read(themeProvider.notifier)
-                  .setTheme(isDark ? OfficeHrTheme.light : OfficeHrTheme.dark);
-            },
-          ),
-        ],
       ),
     );
   }

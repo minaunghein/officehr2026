@@ -10,6 +10,7 @@ _LeaveRequestModel _$LeaveRequestModelFromJson(Map<String, dynamic> json) =>
     _LeaveRequestModel(
       id: readMongoId(json, 'id') as String? ?? '',
       employeeId: json['employee_id'] as String? ?? '',
+      userId: json['user_id'] as String? ?? '',
       leaveTypeId: json['leave_type_id'] as String? ?? '',
       companyId: json['company_id'] as String? ?? '',
       startDate: json['start_date'] as String?,
@@ -18,20 +19,28 @@ _LeaveRequestModel _$LeaveRequestModelFromJson(Map<String, dynamic> json) =>
       halfDayPeriod: json['half_day_period'] as String? ?? 'AM',
       totalDays: (json['total_days'] as num?)?.toDouble() ?? 0,
       reason: json['reason'] as String? ?? '',
-      attachmentUrl: json['attachment_url'] as String? ?? '',
+      attachmentUrl: _readAttachment(json, 'attachment_url') as String? ?? '',
       status: json['status'] as String? ?? 'PENDING',
       approvedBy: json['approved_by'] as String?,
+      approvedAt: json['approved_at'] as String?,
+      rejectionReason: json['rejection_reason'] as String?,
       createdAt: json['createdAt'] as String?,
       updatedAt: json['updatedAt'] as String?,
       leaveType: json['leave_type'] == null
           ? null
           : LeaveTypeModel.fromJson(json['leave_type'] as Map<String, dynamic>),
+      user: json['user'] == null
+          ? null
+          : LeaveRequestUserModel.fromJson(
+              json['user'] as Map<String, dynamic>,
+            ),
     );
 
 Map<String, dynamic> _$LeaveRequestModelToJson(_LeaveRequestModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'employee_id': instance.employeeId,
+      'user_id': instance.userId,
       'leave_type_id': instance.leaveTypeId,
       'company_id': instance.companyId,
       'start_date': instance.startDate,
@@ -43,7 +52,10 @@ Map<String, dynamic> _$LeaveRequestModelToJson(_LeaveRequestModel instance) =>
       'attachment_url': instance.attachmentUrl,
       'status': instance.status,
       'approved_by': instance.approvedBy,
+      'approved_at': instance.approvedAt,
+      'rejection_reason': instance.rejectionReason,
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
       'leave_type': instance.leaveType,
+      'user': instance.user,
     };

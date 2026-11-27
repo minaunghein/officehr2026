@@ -48,18 +48,27 @@ ChangePasswordUsecase changePasswordUsecase(Ref ref) {
 
 @Riverpod(keepAlive: true)
 class CurrentUser extends _$CurrentUser {
+  int _sessionRevision = 0;
+
   @override
   Future<AuthSession?> build() async => null;
 
   Future<AuthSession> loadSession() async {
-    state = const AsyncValue.loading();
+    final revision = ++_sessionRevision;
+    // Keep the active session usable during refresh so permissions don't
+    // briefly disappear from open routes and tabs.
+    if (state.value == null) state = const AsyncValue.loading();
     final getSessionUseCase = ref.read(getSessionUseCaseProvider);
     try {
       final session = await getSessionUseCase();
-      state = AsyncData(session);
+      if (ref.mounted && revision == _sessionRevision) {
+        state = AsyncData(session);
+      }
       return session;
     } catch (error, stackTrace) {
-      state = AsyncError(error, stackTrace);
+      if (ref.mounted && revision == _sessionRevision) {
+        state = AsyncError(error, stackTrace);
+      }
       rethrow;
     }
   }
@@ -69,10 +78,12 @@ class CurrentUser extends _$CurrentUser {
   }
 
   Future<void> setSession(AuthSession session) async {
+    _sessionRevision++;
     state = AsyncData(session);
   }
 
   Future<void> clear() async {
+    _sessionRevision++;
     state = const AsyncData(null);
   }
 
@@ -229,4 +240,16 @@ class CompanySetupNotifier extends _$CompanySetupNotifier {
 bool isAuthenticated(Ref ref) {
   final token = ref.watch(authTokenProvider).value;
   return token != null && token.isNotEmpty;
+}
+
+/// The signed-in user's id, or `null` when logged out.
+///
+/// Per-user data providers (keepAlive caches such as leave balances/requests
+/// or monthly attendance stats) MUST `ref.watch` this inside their `build()`
+/// so their cache is discarded and refetched when a different account logs in.
+/// Without it, a keepAlive provider returns the previous user's data after a
+/// logout/login until the user manually refreshes.
+@riverpod
+String? currentUserId(Ref ref) {
+  return ref.watch(currentUserProvider).value?.userId;
 }

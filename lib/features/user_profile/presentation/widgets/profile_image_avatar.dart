@@ -8,10 +8,15 @@ import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/services/app_logger.dart';
 import 'package:office_hr/core/utils/snackbar_utils.dart';
+import 'package:office_hr/core/widgets/detail_page_style.dart';
 import 'package:office_hr/core/widgets/image_widget.dart';
 import 'package:office_hr/features/auth/domain/entities/auth_session.dart';
+import 'package:office_hr/features/auth/domain/session_access.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/user_profile/presentation/providers/user_providers.dart';
 import 'package:office_hr/shared/global.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 
 class ProfileImageAvatar extends HookConsumerWidget {
   const ProfileImageAvatar({super.key, required this.session});
@@ -26,9 +31,12 @@ class ProfileImageAvatar extends HookConsumerWidget {
     final choosing = useState(false);
     final uploading = ref.watch(updateProfileImageProvider).isLoading;
     final busy = choosing.value || uploading;
+    final canEdit = SessionAccess(session).editProfile;
 
     Future<void> changeImage() async {
-      if (choosing.value || ref.read(updateProfileImageProvider).isLoading) {
+      if (!canEdit ||
+          choosing.value ||
+          ref.read(updateProfileImageProvider).isLoading) {
         return;
       }
       choosing.value = true;
@@ -51,7 +59,7 @@ class ProfileImageAvatar extends HookConsumerWidget {
                         horizontal: AppSizes.lg,
                       ),
                       child: Text(
-                        'Change profile image',
+                        'Change profile image'.tr(),
                         style: Theme.of(context).textTheme.titleLarge,
                         textAlign: TextAlign.center,
                       ),
@@ -59,14 +67,14 @@ class ProfileImageAvatar extends HookConsumerWidget {
                     const SizedBox(height: AppSizes.sm),
                     ListTile(
                       leading: const Icon(Icons.camera_alt_outlined),
-                      title: const Text('Camera'),
-                      subtitle: const Text('Take a new photo'),
+                      title: Text('Camera'.tr()),
+                      subtitle: Text('Take a new photo'.tr()),
                       onTap: () => Navigator.pop(context, ImageSource.camera),
                     ),
                     ListTile(
                       leading: const Icon(Icons.photo_library_outlined),
-                      title: const Text('Gallery'),
-                      subtitle: const Text('Choose an existing photo'),
+                      title: Text('Gallery'.tr()),
+                      subtitle: Text('Choose an existing photo'.tr()),
                       onTap: () => Navigator.pop(context, ImageSource.gallery),
                     ),
                   ],
@@ -94,7 +102,7 @@ class ProfileImageAvatar extends HookConsumerWidget {
           compressFormat: ImageCompressFormat.png,
           uiSettings: [
             AndroidUiSettings(
-              toolbarTitle: 'Crop profile image',
+              toolbarTitle: 'Crop profile image'.tr(),
               toolbarColor: colors.primary,
               toolbarWidgetColor: colors.onPrimary,
               activeControlsWidgetColor: colors.primary,
@@ -105,8 +113,8 @@ class ProfileImageAvatar extends HookConsumerWidget {
               aspectRatioPresets: [CropAspectRatioPreset.square],
             ),
             IOSUiSettings(
-              title: 'Crop profile image',
-              doneButtonTitle: 'Save',
+              title: 'Crop profile image'.tr(),
+              doneButtonTitle: 'Save'.tr(),
               cropStyle: CropStyle.circle,
               aspectRatioLockEnabled: true,
               resetAspectRatioEnabled: false,
@@ -115,27 +123,34 @@ class ProfileImageAvatar extends HookConsumerWidget {
             ),
           ],
         );
-        if (cropped == null || !context.mounted) return;
+        if (cropped == null ||
+            !context.mounted ||
+            !ref.read(sessionAccessProvider).editProfile) {
+          return;
+        }
 
         saving = true;
         await ref
             .read(updateProfileImageProvider.notifier)
             .submit(filePath: cropped.path, fileName: 'profile.png');
         if (context.mounted) {
-          SnackbarUtils.showSuccess('Profile image updated.');
+          SnackbarUtils.showSuccess('Profile image updated.'.tr());
         }
       } catch (error, stack) {
         AppLogger.e('Profile image change failed', error: error, stack: stack);
         if (!context.mounted) return;
         final message = switch (error) {
           PlatformException(code: 'camera_access_denied') =>
-            'Please allow camera access in Settings to take a profile photo.',
+            'Please allow camera access in Settings to take a profile photo.'
+                .tr(),
           PlatformException(code: 'photo_access_denied') =>
-            'Please allow photo access in Settings to choose a profile image.',
+            'Please allow photo access in Settings to choose a profile image.'
+                .tr(),
           _ =>
             saving
                 ? getUserFriendlyError(error)
-                : 'Could not open the image picker or cropper. Please try again.',
+                : 'Could not open the image picker or cropper. Please try again.'
+                      .tr(),
         };
         SnackbarUtils.showError(message);
       } finally {
@@ -143,28 +158,32 @@ class ProfileImageAvatar extends HookConsumerWidget {
       }
     }
 
-    const avatarSize = 88.0;
-    const editButtonSize = 34.0;
+    const avatarSize = 80.0;
+    final colors = theme.colorScheme;
 
-    return SizedBox.square(
-      dimension: avatarSize,
+    return SizedBox(
+      width: 94,
+      height: 90,
       child: Stack(
-        clipBehavior: Clip.none,
         children: [
-          Positioned.fill(
+          PositionedDirectional(
+            start: 0,
+            top: 0,
+            width: avatarSize,
+            height: avatarSize,
             child: ClipOval(
               child: ImageWidget(
                 imageUrl: session.profileUrl,
                 width: avatarSize,
                 height: avatarSize,
                 placeholder: ColoredBox(
-                  color: theme.colorScheme.onPrimary.withValues(alpha: 0.2),
+                  color: theme.detailInk(0.08),
                   child: Center(
                     child: Text(
                       initials(session.displayName) ?? '?',
                       style: theme.textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.w700,
-                        color: theme.colorScheme.onPrimary,
+                        color: theme.detailMuted,
                       ),
                     ),
                   ),
@@ -173,38 +192,44 @@ class ProfileImageAvatar extends HookConsumerWidget {
             ),
           ),
           if (uploading)
-            Positioned.fill(
+            PositionedDirectional(
+              start: 0,
+              top: 0,
+              width: avatarSize,
+              height: avatarSize,
               child: ClipOval(
                 child: ColoredBox(
                   color: Colors.black.withValues(alpha: 0.4),
-                  child: const Center(
+                  child: Center(
                     child: SizedBox.square(
                       dimension: 24,
                       child: CircularProgressIndicator(
                         color: Colors.white,
                         strokeWidth: 2,
-                        semanticsLabel: 'Updating profile image',
+                        semanticsLabel: 'Updating profile image'.tr(),
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-          Positioned(
-            right: -8,
-            bottom: -10,
+          PositionedDirectional(
+            end: 0,
+            bottom: 0,
             child: IconButton.filled(
-              tooltip: 'Change profile image',
-              onPressed: busy ? null : changeImage,
+              tooltip: 'Change profile image'.tr(),
+              onPressed: busy || !canEdit ? null : changeImage,
               style: IconButton.styleFrom(
-                backgroundColor: theme.colorScheme.surface,
-                foregroundColor: theme.colorScheme.primary,
-                disabledBackgroundColor: theme.colorScheme.surface,
+                backgroundColor: colors.surface,
+                foregroundColor: colors.primary,
+                disabledBackgroundColor: colors.surface,
                 disabledForegroundColor: theme.disabledColor,
-                minimumSize: const Size.square(editButtonSize),
-                maximumSize: const Size.square(editButtonSize),
+                fixedSize: const Size.square(36),
+                minimumSize: const Size.square(36),
+                tapTargetSize: MaterialTapTargetSize.padded,
+                visualDensity: VisualDensity.standard,
                 padding: EdgeInsets.zero,
-                side: BorderSide(color: theme.colorScheme.primary, width: 2),
+                side: BorderSide(color: theme.detailRule),
               ),
               icon: const Icon(Icons.edit_outlined, size: AppSizes.iconSm),
             ),

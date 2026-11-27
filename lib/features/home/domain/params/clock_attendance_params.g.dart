@@ -11,7 +11,7 @@ _ClockAttendanceParams _$ClockAttendanceParamsFromJson(
 ) => _ClockAttendanceParams(
   location: _locationFromJson(json['location'] as Map<String, dynamic>?),
   device: _deviceFromJson(json['device'] as Map<String, dynamic>?),
-  qrCode: json['qr_code'] as String?,
+  imgId: json['img_id'] as String?,
   notes: json['notes'] as String?,
 );
 
@@ -20,6 +20,6 @@ Map<String, dynamic> _$ClockAttendanceParamsToJson(
 ) => <String, dynamic>{
   'location': _locationToJson(instance.location),
   'device': _deviceToJson(instance.device),
-  'qr_code': instance.qrCode,
+  'img_id': instance.imgId,
   'notes': instance.notes,
 };

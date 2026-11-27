@@ -8,6 +8,14 @@ abstract class LeaveRepository {
 
   Future<List<LeaveRequest>> getLeaveRequests();
 
+  Future<List<LeaveRequest>> getAllLeaveRequests();
+
+  Future<LeaveRequest> updateLeaveRequestStatus(
+    String id, {
+    required LeaveDecision decision,
+    String? reason,
+  });
+
   Future<List<LeaveType>> getLeaveTypes();
 
   Future<LeaveRequest> createLeaveRequest({

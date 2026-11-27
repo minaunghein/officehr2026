@@ -3,9 +3,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/widgets/container_shimmer.dart';
+import 'package:office_hr/core/widgets/detail_page_style.dart';
 import 'package:office_hr/features/auth/domain/entities/auth_session.dart';
 import 'package:office_hr/features/user_profile/presentation/providers/user_providers.dart';
 import 'package:office_hr/features/user_profile/presentation/widgets/user_profile_state.dart';
+
+const _recordMaxWidth = 900.0;
 
 class RecordPage extends ConsumerWidget {
   const RecordPage({
@@ -22,29 +25,20 @@ class RecordPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final session = ref.watch(userDetailsProvider);
-    // final theme = Theme.of(context);
+    final theme = Theme.of(context);
     Future<void> refresh() => ref.read(userDetailsProvider.notifier).fetch();
 
     return Scaffold(
+      backgroundColor: theme.detailCanvas,
       appBar: AppBar(
-        title: Text(
-          title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          // style: theme.textTheme.titleLarge?.copyWith(
-          //   fontWeight: FontWeight.w700,
-          // ),
+        title: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
+        titleSpacing: 2,
+        titleTextStyle: theme.textTheme.bodyLarge?.copyWith(
+          fontWeight: FontWeight.w600,
         ),
-        centerTitle: true,
+        backgroundColor: theme.detailCanvas,
         scrolledUnderElevation: 0,
-        // actions: [
-        //   IconButton(
-        //     tooltip: 'Refresh $title',
-        //     onPressed: session.isLoading ? null : refresh,
-        //     icon: const Icon(Icons.refresh_rounded),
-        //   ),
-        //   const SizedBox(width: AppSizes.xs),
-        // ],
+        centerTitle: false,
       ),
       body: SafeArea(
         top: false,
@@ -63,15 +57,17 @@ class RecordPage extends ConsumerWidget {
               child: ListView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.fromLTRB(
+                  AppSizes.xl,
                   AppSizes.lg,
-                  AppSizes.sm,
-                  AppSizes.lg,
+                  AppSizes.xl,
                   AppSizes.xxl,
                 ),
                 children: [
                   Center(
                     child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 800),
+                      constraints: const BoxConstraints(
+                        maxWidth: _recordMaxWidth,
+                      ),
                       child: SelectionArea(child: contentBuilder(value)),
                     ),
                   ),
@@ -91,24 +87,36 @@ class _RecordSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.all(AppSizes.lg),
+      padding: const EdgeInsets.all(AppSizes.xl),
       children: [
         Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 800),
+            constraints: const BoxConstraints(maxWidth: _recordMaxWidth),
             child: Column(
               children: [
-                ContainerShimmer(
-                  height: 180,
-                  width: double.infinity,
-                  borderRadius: BorderRadius.circular(AppSizes.cardRadiusLg),
+                Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: ContainerShimmer(
+                    height: 28,
+                    width: 200,
+                    borderRadius: BorderRadius.circular(
+                      AppSizes.borderRadiusSm,
+                    ),
+                  ),
                 ),
-                const SizedBox(height: AppSizes.lg),
-                for (var i = 0; i < 2; i++) ...[
-                  ContainerShimmer(
-                    height: 240,
-                    width: double.infinity,
-                    borderRadius: BorderRadius.circular(AppSizes.cardRadiusLg),
+                const SizedBox(height: AppSizes.xxl),
+                for (final width in [128.0, 200.0, 164.0]) ...[
+                  Divider(height: 1, color: Theme.of(context).detailRule),
+                  const SizedBox(height: AppSizes.lg),
+                  Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: ContainerShimmer(
+                      height: 20,
+                      width: width,
+                      borderRadius: BorderRadius.circular(
+                        AppSizes.borderRadiusSm,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: AppSizes.lg),
                 ],

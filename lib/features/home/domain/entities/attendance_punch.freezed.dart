@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AttendancePunch {
 
- String get id; String get employeeId; String get companyId; DateTime? get date; String get punchTime; String get punchType; AttendanceLocation? get location; AttendanceDevice? get device; bool get isManual; bool get deleted; DateTime? get createdAt; DateTime? get updatedAt;
+ String get id; String get employeeId; String get companyId; DateTime? get date; String get punchTime; String get punchType; String? get imgId; AttendanceLocation? get location; AttendanceDevice? get device; bool get isManual; bool get deleted; DateTime? get createdAt; DateTime? get updatedAt;
 /// Create a copy of AttendancePunch
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $AttendancePunchCopyWith<AttendancePunch> get copyWith => _$AttendancePunchCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AttendancePunch&&(identical(other.id, id) || other.id == id)&&(identical(other.employeeId, employeeId) || other.employeeId == employeeId)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.date, date) || other.date == date)&&(identical(other.punchTime, punchTime) || other.punchTime == punchTime)&&(identical(other.punchType, punchType) || other.punchType == punchType)&&(identical(other.location, location) || other.location == location)&&(identical(other.device, device) || other.device == device)&&(identical(other.isManual, isManual) || other.isManual == isManual)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AttendancePunch&&(identical(other.id, id) || other.id == id)&&(identical(other.employeeId, employeeId) || other.employeeId == employeeId)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.date, date) || other.date == date)&&(identical(other.punchTime, punchTime) || other.punchTime == punchTime)&&(identical(other.punchType, punchType) || other.punchType == punchType)&&(identical(other.imgId, imgId) || other.imgId == imgId)&&(identical(other.location, location) || other.location == location)&&(identical(other.device, device) || other.device == device)&&(identical(other.isManual, isManual) || other.isManual == isManual)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,employeeId,companyId,date,punchTime,punchType,location,device,isManual,deleted,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,employeeId,companyId,date,punchTime,punchType,imgId,location,device,isManual,deleted,createdAt,updatedAt);
 
 @override
 String toString() {
-  return 'AttendancePunch(id: $id, employeeId: $employeeId, companyId: $companyId, date: $date, punchTime: $punchTime, punchType: $punchType, location: $location, device: $device, isManual: $isManual, deleted: $deleted, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'AttendancePunch(id: $id, employeeId: $employeeId, companyId: $companyId, date: $date, punchTime: $punchTime, punchType: $punchType, imgId: $imgId, location: $location, device: $device, isManual: $isManual, deleted: $deleted, createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $AttendancePunchCopyWith<$Res>  {
   factory $AttendancePunchCopyWith(AttendancePunch value, $Res Function(AttendancePunch) _then) = _$AttendancePunchCopyWithImpl;
 @useResult
 $Res call({
- String id, String employeeId, String companyId, DateTime? date, String punchTime, String punchType, AttendanceLocation? location, AttendanceDevice? device, bool isManual, bool deleted, DateTime? createdAt, DateTime? updatedAt
+ String id, String employeeId, String companyId, DateTime? date, String punchTime, String punchType, String? imgId, AttendanceLocation? location, AttendanceDevice? device, bool isManual, bool deleted, DateTime? createdAt, DateTime? updatedAt
 });
 
 
@@ -62,7 +62,7 @@ class _$AttendancePunchCopyWithImpl<$Res>
 
 /// Create a copy of AttendancePunch
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? employeeId = null,Object? companyId = null,Object? date = freezed,Object? punchTime = null,Object? punchType = null,Object? location = freezed,Object? device = freezed,Object? isManual = null,Object? deleted = null,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? employeeId = null,Object? companyId = null,Object? date = freezed,Object? punchTime = null,Object? punchType = null,Object? imgId = freezed,Object? location = freezed,Object? device = freezed,Object? isManual = null,Object? deleted = null,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,employeeId: null == employeeId ? _self.employeeId : employeeId // ignore: cast_nullable_to_non_nullable
@@ -70,7 +70,8 @@ as String,companyId: null == companyId ? _self.companyId : companyId // ignore: 
 as String,date: freezed == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
 as DateTime?,punchTime: null == punchTime ? _self.punchTime : punchTime // ignore: cast_nullable_to_non_nullable
 as String,punchType: null == punchType ? _self.punchType : punchType // ignore: cast_nullable_to_non_nullable
-as String,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
+as String,imgId: freezed == imgId ? _self.imgId : imgId // ignore: cast_nullable_to_non_nullable
+as String?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as AttendanceLocation?,device: freezed == device ? _self.device : device // ignore: cast_nullable_to_non_nullable
 as AttendanceDevice?,isManual: null == isManual ? _self.isManual : isManual // ignore: cast_nullable_to_non_nullable
 as bool,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
@@ -185,10 +186,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String employeeId,  String companyId,  DateTime? date,  String punchTime,  String punchType,  AttendanceLocation? location,  AttendanceDevice? device,  bool isManual,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String employeeId,  String companyId,  DateTime? date,  String punchTime,  String punchType,  String? imgId,  AttendanceLocation? location,  AttendanceDevice? device,  bool isManual,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AttendancePunch() when $default != null:
-return $default(_that.id,_that.employeeId,_that.companyId,_that.date,_that.punchTime,_that.punchType,_that.location,_that.device,_that.isManual,_that.deleted,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.employeeId,_that.companyId,_that.date,_that.punchTime,_that.punchType,_that.imgId,_that.location,_that.device,_that.isManual,_that.deleted,_that.createdAt,_that.updatedAt);case _:
   return orElse();
 
 }
@@ -206,10 +207,10 @@ return $default(_that.id,_that.employeeId,_that.companyId,_that.date,_that.punch
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String employeeId,  String companyId,  DateTime? date,  String punchTime,  String punchType,  AttendanceLocation? location,  AttendanceDevice? device,  bool isManual,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String employeeId,  String companyId,  DateTime? date,  String punchTime,  String punchType,  String? imgId,  AttendanceLocation? location,  AttendanceDevice? device,  bool isManual,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _AttendancePunch():
-return $default(_that.id,_that.employeeId,_that.companyId,_that.date,_that.punchTime,_that.punchType,_that.location,_that.device,_that.isManual,_that.deleted,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.employeeId,_that.companyId,_that.date,_that.punchTime,_that.punchType,_that.imgId,_that.location,_that.device,_that.isManual,_that.deleted,_that.createdAt,_that.updatedAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -226,10 +227,10 @@ return $default(_that.id,_that.employeeId,_that.companyId,_that.date,_that.punch
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String employeeId,  String companyId,  DateTime? date,  String punchTime,  String punchType,  AttendanceLocation? location,  AttendanceDevice? device,  bool isManual,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String employeeId,  String companyId,  DateTime? date,  String punchTime,  String punchType,  String? imgId,  AttendanceLocation? location,  AttendanceDevice? device,  bool isManual,  bool deleted,  DateTime? createdAt,  DateTime? updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _AttendancePunch() when $default != null:
-return $default(_that.id,_that.employeeId,_that.companyId,_that.date,_that.punchTime,_that.punchType,_that.location,_that.device,_that.isManual,_that.deleted,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.employeeId,_that.companyId,_that.date,_that.punchTime,_that.punchType,_that.imgId,_that.location,_that.device,_that.isManual,_that.deleted,_that.createdAt,_that.updatedAt);case _:
   return null;
 
 }
@@ -241,7 +242,7 @@ return $default(_that.id,_that.employeeId,_that.companyId,_that.date,_that.punch
 
 
 class _AttendancePunch implements AttendancePunch {
-  const _AttendancePunch({required this.id, required this.employeeId, required this.companyId, this.date, required this.punchTime, required this.punchType, this.location, this.device, required this.isManual, required this.deleted, this.createdAt, this.updatedAt});
+  const _AttendancePunch({required this.id, required this.employeeId, required this.companyId, this.date, required this.punchTime, required this.punchType, this.imgId, this.location, this.device, required this.isManual, required this.deleted, this.createdAt, this.updatedAt});
   
 
 @override final  String id;
@@ -250,6 +251,7 @@ class _AttendancePunch implements AttendancePunch {
 @override final  DateTime? date;
 @override final  String punchTime;
 @override final  String punchType;
+@override final  String? imgId;
 @override final  AttendanceLocation? location;
 @override final  AttendanceDevice? device;
 @override final  bool isManual;
@@ -267,16 +269,16 @@ _$AttendancePunchCopyWith<_AttendancePunch> get copyWith => __$AttendancePunchCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AttendancePunch&&(identical(other.id, id) || other.id == id)&&(identical(other.employeeId, employeeId) || other.employeeId == employeeId)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.date, date) || other.date == date)&&(identical(other.punchTime, punchTime) || other.punchTime == punchTime)&&(identical(other.punchType, punchType) || other.punchType == punchType)&&(identical(other.location, location) || other.location == location)&&(identical(other.device, device) || other.device == device)&&(identical(other.isManual, isManual) || other.isManual == isManual)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AttendancePunch&&(identical(other.id, id) || other.id == id)&&(identical(other.employeeId, employeeId) || other.employeeId == employeeId)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.date, date) || other.date == date)&&(identical(other.punchTime, punchTime) || other.punchTime == punchTime)&&(identical(other.punchType, punchType) || other.punchType == punchType)&&(identical(other.imgId, imgId) || other.imgId == imgId)&&(identical(other.location, location) || other.location == location)&&(identical(other.device, device) || other.device == device)&&(identical(other.isManual, isManual) || other.isManual == isManual)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,employeeId,companyId,date,punchTime,punchType,location,device,isManual,deleted,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,employeeId,companyId,date,punchTime,punchType,imgId,location,device,isManual,deleted,createdAt,updatedAt);
 
 @override
 String toString() {
-  return 'AttendancePunch(id: $id, employeeId: $employeeId, companyId: $companyId, date: $date, punchTime: $punchTime, punchType: $punchType, location: $location, device: $device, isManual: $isManual, deleted: $deleted, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'AttendancePunch(id: $id, employeeId: $employeeId, companyId: $companyId, date: $date, punchTime: $punchTime, punchType: $punchType, imgId: $imgId, location: $location, device: $device, isManual: $isManual, deleted: $deleted, createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 
@@ -287,7 +289,7 @@ abstract mixin class _$AttendancePunchCopyWith<$Res> implements $AttendancePunch
   factory _$AttendancePunchCopyWith(_AttendancePunch value, $Res Function(_AttendancePunch) _then) = __$AttendancePunchCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String employeeId, String companyId, DateTime? date, String punchTime, String punchType, AttendanceLocation? location, AttendanceDevice? device, bool isManual, bool deleted, DateTime? createdAt, DateTime? updatedAt
+ String id, String employeeId, String companyId, DateTime? date, String punchTime, String punchType, String? imgId, AttendanceLocation? location, AttendanceDevice? device, bool isManual, bool deleted, DateTime? createdAt, DateTime? updatedAt
 });
 
 
@@ -304,7 +306,7 @@ class __$AttendancePunchCopyWithImpl<$Res>
 
 /// Create a copy of AttendancePunch
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? employeeId = null,Object? companyId = null,Object? date = freezed,Object? punchTime = null,Object? punchType = null,Object? location = freezed,Object? device = freezed,Object? isManual = null,Object? deleted = null,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? employeeId = null,Object? companyId = null,Object? date = freezed,Object? punchTime = null,Object? punchType = null,Object? imgId = freezed,Object? location = freezed,Object? device = freezed,Object? isManual = null,Object? deleted = null,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
   return _then(_AttendancePunch(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,employeeId: null == employeeId ? _self.employeeId : employeeId // ignore: cast_nullable_to_non_nullable
@@ -312,7 +314,8 @@ as String,companyId: null == companyId ? _self.companyId : companyId // ignore: 
 as String,date: freezed == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
 as DateTime?,punchTime: null == punchTime ? _self.punchTime : punchTime // ignore: cast_nullable_to_non_nullable
 as String,punchType: null == punchType ? _self.punchType : punchType // ignore: cast_nullable_to_non_nullable
-as String,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
+as String,imgId: freezed == imgId ? _self.imgId : imgId // ignore: cast_nullable_to_non_nullable
+as String?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as AttendanceLocation?,device: freezed == device ? _self.device : device // ignore: cast_nullable_to_non_nullable
 as AttendanceDevice?,isManual: null == isManual ? _self.isManual : isManual // ignore: cast_nullable_to_non_nullable
 as bool,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable

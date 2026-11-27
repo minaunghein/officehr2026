@@ -3,6 +3,8 @@ import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/theme/app_theme.dart';
 import 'package:office_hr/features/leave/domain/entities/leave_balance.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class LeaveSummaryHeader extends StatelessWidget {
   const LeaveSummaryHeader({super.key, required this.balances});
 
@@ -50,7 +52,7 @@ class LeaveSummaryHeader extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                'Leave Balance',
+                'Leave Balance'.tr(),
                 style: theme.textTheme.labelLarge?.copyWith(
                   color: theme.colorScheme.onPrimary.withValues(alpha: 0.9),
                   fontWeight: FontWeight.w700,
@@ -75,7 +77,7 @@ class LeaveSummaryHeader extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
-                  available == 1 ? 'day available' : 'days available',
+                  available == 1 ? 'day available'.tr() : 'days available'.tr(),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onPrimary.withValues(alpha: 0.85),
                     fontWeight: FontWeight.w600,
@@ -88,17 +90,17 @@ class LeaveSummaryHeader extends StatelessWidget {
           Row(
             children: [
               _Stat(
-                label: 'Allocated',
+                label: 'Allocated'.tr(),
                 value: _formatNumber(granted),
                 color: theme.colorScheme.onPrimary,
               ),
               _Stat(
-                label: 'Used',
+                label: 'Used'.tr(),
                 value: _formatNumber(used),
                 color: theme.colorScheme.onPrimary,
               ),
               _Stat(
-                label: 'Pending',
+                label: 'Pending'.tr(),
                 value: _formatNumber(pending),
                 color: theme.colorScheme.onPrimary,
               ),

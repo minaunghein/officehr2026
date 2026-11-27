@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_provider.dart';
 import 'package:office_hr/features/home/presentation/providers/location_provider.dart';
 import 'package:office_hr/features/home/presentation/widgets/current_status_card.dart';
@@ -14,22 +15,27 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final access = ref.watch(sessionAccessProvider);
     return Scaffold(
       body: RefreshIndicator(
-        onRefresh: () => _onRefresh(ref),
+        onRefresh: () => _onRefresh(context, ref),
         child: CustomScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
-            MapSliverAppBar(),
+            if (access.createPunch || access.requestClock)
+              const MapSliverAppBar(),
             SliverPadding(
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
               sliver: SliverList(
                 delegate: SliverChildListDelegate.fixed([
-                  CurrentStatusCard(),
-                  SizedBox(height: 24),
-                  RecentActivity(),
-                  SizedBox(height: 24),
-                  MonthlyStatistics(),
-                  SizedBox(height: 24),
+                  const CurrentStatusCard(),
+                  const SizedBox(height: 24),
+                  if (access.viewPunches) ...[
+                    const RecentActivity(),
+                    const SizedBox(height: 24),
+                    const MonthlyStatistics(),
+                    const SizedBox(height: 24),
+                  ],
                 ]),
               ),
             ),
@@ -39,10 +45,16 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _onRefresh(WidgetRef ref) async {
-    ref.read(attendanceProvider.notifier).refresh();
-    ref.invalidate(monthlyAttendanceStatsProvider);
-    ref.invalidate(currentLocationProvider);
+  Future<void> _onRefresh(BuildContext context, WidgetRef ref) async {
     await ref.read(currentUserProvider.notifier).loadSession();
+    if (!context.mounted) return;
+    final access = ref.read(sessionAccessProvider);
+    if (access.createPunch || access.requestClock) {
+      ref.invalidate(currentLocationProvider);
+    }
+    if (access.viewPunches) {
+      ref.invalidate(monthlyAttendanceStatsProvider);
+      await ref.read(attendanceProvider.notifier).refresh();
+    }
   }
 }

@@ -6,6 +6,8 @@ import 'package:office_hr/core/network/api_exception.dart';
 import 'package:office_hr/core/utils/snackbar_utils.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class ChangePasswordScreen extends HookConsumerWidget {
   const ChangePasswordScreen({super.key});
 
@@ -40,7 +42,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
             );
 
         if (!context.mounted) return;
-        SnackbarUtils.showSuccess(result.message);
+        SnackbarUtils.showSuccess(result.message.tr());
         oldPasswordController.clear();
         newPasswordController.clear();
         confirmPasswordController.clear();
@@ -56,7 +58,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Change Password'), centerTitle: true),
+        appBar: AppBar(title: Text('Change Password'.tr()), centerTitle: true),
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
@@ -83,14 +85,15 @@ class ChangePasswordScreen extends HookConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Update Account Password',
+                            'Update Account Password'.tr(),
                             style: theme.textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            'Enter your current password and choose a new password for your account.',
+                            'Enter your current password and choose a new password for your account.'
+                                .tr(),
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant,
                             ),
@@ -98,19 +101,21 @@ class ChangePasswordScreen extends HookConsumerWidget {
                           const SizedBox(height: 24),
                           _PasswordField(
                             controller: oldPasswordController,
-                            label: 'Old Password',
+                            label: 'Old Password'.tr(),
                             visible: showOldPassword.value,
                             enabled: !isBusy,
                             textInputAction: TextInputAction.next,
                             onToggleVisibility: () =>
                                 showOldPassword.value = !showOldPassword.value,
-                            validator: (value) =>
-                                _requiredPassword(value, label: 'old password'),
+                            validator: (value) => _requiredPassword(
+                              value,
+                              label: 'old password'.tr(),
+                            ),
                           ),
                           const SizedBox(height: 16),
                           _PasswordField(
                             controller: newPasswordController,
-                            label: 'New Password',
+                            label: 'New Password'.tr(),
                             visible: showNewPassword.value,
                             enabled: !isBusy,
                             textInputAction: TextInputAction.next,
@@ -119,11 +124,12 @@ class ChangePasswordScreen extends HookConsumerWidget {
                             validator: (value) {
                               final required = _requiredPassword(
                                 value,
-                                label: 'new password',
+                                label: 'new password'.tr(),
                               );
                               if (required != null) return required;
                               if (value == oldPasswordController.text) {
-                                return 'New password must be different from old password';
+                                return 'New password must be different from old password'
+                                    .tr();
                               }
                               return null;
                             },
@@ -131,7 +137,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
                           const SizedBox(height: 16),
                           _PasswordField(
                             controller: confirmPasswordController,
-                            label: 'Confirm Password',
+                            label: 'Confirm Password'.tr(),
                             visible: showConfirmPassword.value,
                             enabled: !isBusy,
                             textInputAction: TextInputAction.done,
@@ -142,11 +148,11 @@ class ChangePasswordScreen extends HookConsumerWidget {
                             validator: (value) {
                               final required = _requiredPassword(
                                 value,
-                                label: 'confirm password',
+                                label: 'confirm password'.tr(),
                               );
                               if (required != null) return required;
                               if (value != newPasswordController.text) {
-                                return 'Confirm password does not match';
+                                return 'Confirm password does not match'.tr();
                               }
                               return null;
                             },
@@ -165,7 +171,9 @@ class ChangePasswordScreen extends HookConsumerWidget {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : const Icon(Icons.lock_reset_rounded),
-                    label: Text(isBusy ? 'Updating...' : 'Update Password'),
+                    label: Text(
+                      isBusy ? 'Updating...'.tr() : 'Update Password'.tr(),
+                    ),
                   ),
                 ],
               ),
@@ -226,7 +234,7 @@ class _PasswordField extends StatelessWidget {
 
 String? _requiredPassword(String? value, {required String label}) {
   if (value == null || value.trim().isEmpty) {
-    return 'Please enter your $label';
+    return 'Please enter your {field}'.tr(namedArgs: {'field': label});
   }
   return null;
 }
@@ -240,5 +248,5 @@ String _friendlyErrorMessage(Object error) {
   final message = error.toString().trim();
   if (message.isNotEmpty && message != 'Exception') return message;
 
-  return 'Unable to change password. Please try again.';
+  return 'Unable to change password. Please try again.'.tr();
 }

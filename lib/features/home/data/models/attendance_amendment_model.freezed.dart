@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AttendanceAmendmentModel {
 
-@JsonKey(readValue: _readId) String get id;@JsonKey(name: 'user_id') String get userId;@JsonKey(name: 'company_id') String get companyId;@JsonKey(name: 'date_id') String get dateId;@JsonKey(name: 'amendment_type') String get amendmentType;@JsonKey(name: 'requested_clock_in') String? get requestedClockIn;@JsonKey(name: 'requested_clock_out') String? get requestedClockOut; String get reason; String get status;@JsonKey(name: 'approved_by') String? get approvedBy; bool get deleted;@JsonKey(fromJson: parseLocalDateTime) DateTime? get createdAt;@JsonKey(fromJson: parseLocalDateTime) DateTime? get updatedAt;@JsonKey(name: 'approved_at', fromJson: parseLocalDateTime) DateTime? get approvedAt;
+@JsonKey(readValue: _readId) String get id;@JsonKey(name: 'user_id') String get userId;@JsonKey(name: 'company_id') String get companyId;@JsonKey(name: 'date_id') String get dateId;@JsonKey(name: 'amendment_type') String get amendmentType;@JsonKey(name: 'requested_clock_in') String? get requestedClockIn;@JsonKey(name: 'requested_clock_out') String? get requestedClockOut; String get reason; String get status;@JsonKey(name: 'approved_by') String? get approvedBy; bool get deleted;@JsonKey(fromJson: parseLocalDateTime) DateTime? get createdAt;@JsonKey(fromJson: parseLocalDateTime) DateTime? get updatedAt;@JsonKey(name: 'approved_at', fromJson: parseLocalDateTime) DateTime? get approvedAt; AmendmentUserModel? get user;
 /// Create a copy of AttendanceAmendmentModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $AttendanceAmendmentModelCopyWith<AttendanceAmendmentModel> get copyWith => _$At
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AttendanceAmendmentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.dateId, dateId) || other.dateId == dateId)&&(identical(other.amendmentType, amendmentType) || other.amendmentType == amendmentType)&&(identical(other.requestedClockIn, requestedClockIn) || other.requestedClockIn == requestedClockIn)&&(identical(other.requestedClockOut, requestedClockOut) || other.requestedClockOut == requestedClockOut)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.status, status) || other.status == status)&&(identical(other.approvedBy, approvedBy) || other.approvedBy == approvedBy)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AttendanceAmendmentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.dateId, dateId) || other.dateId == dateId)&&(identical(other.amendmentType, amendmentType) || other.amendmentType == amendmentType)&&(identical(other.requestedClockIn, requestedClockIn) || other.requestedClockIn == requestedClockIn)&&(identical(other.requestedClockOut, requestedClockOut) || other.requestedClockOut == requestedClockOut)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.status, status) || other.status == status)&&(identical(other.approvedBy, approvedBy) || other.approvedBy == approvedBy)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt)&&(identical(other.user, user) || other.user == user));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,companyId,dateId,amendmentType,requestedClockIn,requestedClockOut,reason,status,approvedBy,deleted,createdAt,updatedAt,approvedAt);
+int get hashCode => Object.hash(runtimeType,id,userId,companyId,dateId,amendmentType,requestedClockIn,requestedClockOut,reason,status,approvedBy,deleted,createdAt,updatedAt,approvedAt,user);
 
 @override
 String toString() {
-  return 'AttendanceAmendmentModel(id: $id, userId: $userId, companyId: $companyId, dateId: $dateId, amendmentType: $amendmentType, requestedClockIn: $requestedClockIn, requestedClockOut: $requestedClockOut, reason: $reason, status: $status, approvedBy: $approvedBy, deleted: $deleted, createdAt: $createdAt, updatedAt: $updatedAt, approvedAt: $approvedAt)';
+  return 'AttendanceAmendmentModel(id: $id, userId: $userId, companyId: $companyId, dateId: $dateId, amendmentType: $amendmentType, requestedClockIn: $requestedClockIn, requestedClockOut: $requestedClockOut, reason: $reason, status: $status, approvedBy: $approvedBy, deleted: $deleted, createdAt: $createdAt, updatedAt: $updatedAt, approvedAt: $approvedAt, user: $user)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $AttendanceAmendmentModelCopyWith<$Res>  {
   factory $AttendanceAmendmentModelCopyWith(AttendanceAmendmentModel value, $Res Function(AttendanceAmendmentModel) _then) = _$AttendanceAmendmentModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(readValue: _readId) String id,@JsonKey(name: 'user_id') String userId,@JsonKey(name: 'company_id') String companyId,@JsonKey(name: 'date_id') String dateId,@JsonKey(name: 'amendment_type') String amendmentType,@JsonKey(name: 'requested_clock_in') String? requestedClockIn,@JsonKey(name: 'requested_clock_out') String? requestedClockOut, String reason, String status,@JsonKey(name: 'approved_by') String? approvedBy, bool deleted,@JsonKey(fromJson: parseLocalDateTime) DateTime? createdAt,@JsonKey(fromJson: parseLocalDateTime) DateTime? updatedAt,@JsonKey(name: 'approved_at', fromJson: parseLocalDateTime) DateTime? approvedAt
+@JsonKey(readValue: _readId) String id,@JsonKey(name: 'user_id') String userId,@JsonKey(name: 'company_id') String companyId,@JsonKey(name: 'date_id') String dateId,@JsonKey(name: 'amendment_type') String amendmentType,@JsonKey(name: 'requested_clock_in') String? requestedClockIn,@JsonKey(name: 'requested_clock_out') String? requestedClockOut, String reason, String status,@JsonKey(name: 'approved_by') String? approvedBy, bool deleted,@JsonKey(fromJson: parseLocalDateTime) DateTime? createdAt,@JsonKey(fromJson: parseLocalDateTime) DateTime? updatedAt,@JsonKey(name: 'approved_at', fromJson: parseLocalDateTime) DateTime? approvedAt, AmendmentUserModel? user
 });
 
 
-
+$AmendmentUserModelCopyWith<$Res>? get user;
 
 }
 /// @nodoc
@@ -65,7 +65,7 @@ class _$AttendanceAmendmentModelCopyWithImpl<$Res>
 
 /// Create a copy of AttendanceAmendmentModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? companyId = null,Object? dateId = null,Object? amendmentType = null,Object? requestedClockIn = freezed,Object? requestedClockOut = freezed,Object? reason = null,Object? status = null,Object? approvedBy = freezed,Object? deleted = null,Object? createdAt = freezed,Object? updatedAt = freezed,Object? approvedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? companyId = null,Object? dateId = null,Object? amendmentType = null,Object? requestedClockIn = freezed,Object? requestedClockOut = freezed,Object? reason = null,Object? status = null,Object? approvedBy = freezed,Object? deleted = null,Object? createdAt = freezed,Object? updatedAt = freezed,Object? approvedAt = freezed,Object? user = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -81,10 +81,23 @@ as String?,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nu
 as bool,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,approvedAt: freezed == approvedAt ? _self.approvedAt : approvedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as AmendmentUserModel?,
   ));
 }
+/// Create a copy of AttendanceAmendmentModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AmendmentUserModelCopyWith<$Res>? get user {
+    if (_self.user == null) {
+    return null;
+  }
 
+  return $AmendmentUserModelCopyWith<$Res>(_self.user!, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}
 }
 
 
@@ -166,10 +179,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'user_id')  String userId, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'date_id')  String dateId, @JsonKey(name: 'amendment_type')  String amendmentType, @JsonKey(name: 'requested_clock_in')  String? requestedClockIn, @JsonKey(name: 'requested_clock_out')  String? requestedClockOut,  String reason,  String status, @JsonKey(name: 'approved_by')  String? approvedBy,  bool deleted, @JsonKey(fromJson: parseLocalDateTime)  DateTime? createdAt, @JsonKey(fromJson: parseLocalDateTime)  DateTime? updatedAt, @JsonKey(name: 'approved_at', fromJson: parseLocalDateTime)  DateTime? approvedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'user_id')  String userId, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'date_id')  String dateId, @JsonKey(name: 'amendment_type')  String amendmentType, @JsonKey(name: 'requested_clock_in')  String? requestedClockIn, @JsonKey(name: 'requested_clock_out')  String? requestedClockOut,  String reason,  String status, @JsonKey(name: 'approved_by')  String? approvedBy,  bool deleted, @JsonKey(fromJson: parseLocalDateTime)  DateTime? createdAt, @JsonKey(fromJson: parseLocalDateTime)  DateTime? updatedAt, @JsonKey(name: 'approved_at', fromJson: parseLocalDateTime)  DateTime? approvedAt,  AmendmentUserModel? user)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AttendanceAmendmentModel() when $default != null:
-return $default(_that.id,_that.userId,_that.companyId,_that.dateId,_that.amendmentType,_that.requestedClockIn,_that.requestedClockOut,_that.reason,_that.status,_that.approvedBy,_that.deleted,_that.createdAt,_that.updatedAt,_that.approvedAt);case _:
+return $default(_that.id,_that.userId,_that.companyId,_that.dateId,_that.amendmentType,_that.requestedClockIn,_that.requestedClockOut,_that.reason,_that.status,_that.approvedBy,_that.deleted,_that.createdAt,_that.updatedAt,_that.approvedAt,_that.user);case _:
   return orElse();
 
 }
@@ -187,10 +200,10 @@ return $default(_that.id,_that.userId,_that.companyId,_that.dateId,_that.amendme
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'user_id')  String userId, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'date_id')  String dateId, @JsonKey(name: 'amendment_type')  String amendmentType, @JsonKey(name: 'requested_clock_in')  String? requestedClockIn, @JsonKey(name: 'requested_clock_out')  String? requestedClockOut,  String reason,  String status, @JsonKey(name: 'approved_by')  String? approvedBy,  bool deleted, @JsonKey(fromJson: parseLocalDateTime)  DateTime? createdAt, @JsonKey(fromJson: parseLocalDateTime)  DateTime? updatedAt, @JsonKey(name: 'approved_at', fromJson: parseLocalDateTime)  DateTime? approvedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'user_id')  String userId, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'date_id')  String dateId, @JsonKey(name: 'amendment_type')  String amendmentType, @JsonKey(name: 'requested_clock_in')  String? requestedClockIn, @JsonKey(name: 'requested_clock_out')  String? requestedClockOut,  String reason,  String status, @JsonKey(name: 'approved_by')  String? approvedBy,  bool deleted, @JsonKey(fromJson: parseLocalDateTime)  DateTime? createdAt, @JsonKey(fromJson: parseLocalDateTime)  DateTime? updatedAt, @JsonKey(name: 'approved_at', fromJson: parseLocalDateTime)  DateTime? approvedAt,  AmendmentUserModel? user)  $default,) {final _that = this;
 switch (_that) {
 case _AttendanceAmendmentModel():
-return $default(_that.id,_that.userId,_that.companyId,_that.dateId,_that.amendmentType,_that.requestedClockIn,_that.requestedClockOut,_that.reason,_that.status,_that.approvedBy,_that.deleted,_that.createdAt,_that.updatedAt,_that.approvedAt);case _:
+return $default(_that.id,_that.userId,_that.companyId,_that.dateId,_that.amendmentType,_that.requestedClockIn,_that.requestedClockOut,_that.reason,_that.status,_that.approvedBy,_that.deleted,_that.createdAt,_that.updatedAt,_that.approvedAt,_that.user);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -207,10 +220,10 @@ return $default(_that.id,_that.userId,_that.companyId,_that.dateId,_that.amendme
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'user_id')  String userId, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'date_id')  String dateId, @JsonKey(name: 'amendment_type')  String amendmentType, @JsonKey(name: 'requested_clock_in')  String? requestedClockIn, @JsonKey(name: 'requested_clock_out')  String? requestedClockOut,  String reason,  String status, @JsonKey(name: 'approved_by')  String? approvedBy,  bool deleted, @JsonKey(fromJson: parseLocalDateTime)  DateTime? createdAt, @JsonKey(fromJson: parseLocalDateTime)  DateTime? updatedAt, @JsonKey(name: 'approved_at', fromJson: parseLocalDateTime)  DateTime? approvedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(readValue: _readId)  String id, @JsonKey(name: 'user_id')  String userId, @JsonKey(name: 'company_id')  String companyId, @JsonKey(name: 'date_id')  String dateId, @JsonKey(name: 'amendment_type')  String amendmentType, @JsonKey(name: 'requested_clock_in')  String? requestedClockIn, @JsonKey(name: 'requested_clock_out')  String? requestedClockOut,  String reason,  String status, @JsonKey(name: 'approved_by')  String? approvedBy,  bool deleted, @JsonKey(fromJson: parseLocalDateTime)  DateTime? createdAt, @JsonKey(fromJson: parseLocalDateTime)  DateTime? updatedAt, @JsonKey(name: 'approved_at', fromJson: parseLocalDateTime)  DateTime? approvedAt,  AmendmentUserModel? user)?  $default,) {final _that = this;
 switch (_that) {
 case _AttendanceAmendmentModel() when $default != null:
-return $default(_that.id,_that.userId,_that.companyId,_that.dateId,_that.amendmentType,_that.requestedClockIn,_that.requestedClockOut,_that.reason,_that.status,_that.approvedBy,_that.deleted,_that.createdAt,_that.updatedAt,_that.approvedAt);case _:
+return $default(_that.id,_that.userId,_that.companyId,_that.dateId,_that.amendmentType,_that.requestedClockIn,_that.requestedClockOut,_that.reason,_that.status,_that.approvedBy,_that.deleted,_that.createdAt,_that.updatedAt,_that.approvedAt,_that.user);case _:
   return null;
 
 }
@@ -222,7 +235,7 @@ return $default(_that.id,_that.userId,_that.companyId,_that.dateId,_that.amendme
 @JsonSerializable()
 
 class _AttendanceAmendmentModel extends AttendanceAmendmentModel {
-  const _AttendanceAmendmentModel({@JsonKey(readValue: _readId) this.id = '', @JsonKey(name: 'user_id') this.userId = '', @JsonKey(name: 'company_id') this.companyId = '', @JsonKey(name: 'date_id') this.dateId = '', @JsonKey(name: 'amendment_type') this.amendmentType = '', @JsonKey(name: 'requested_clock_in') this.requestedClockIn, @JsonKey(name: 'requested_clock_out') this.requestedClockOut, this.reason = '', this.status = '', @JsonKey(name: 'approved_by') this.approvedBy, this.deleted = false, @JsonKey(fromJson: parseLocalDateTime) this.createdAt, @JsonKey(fromJson: parseLocalDateTime) this.updatedAt, @JsonKey(name: 'approved_at', fromJson: parseLocalDateTime) this.approvedAt}): super._();
+  const _AttendanceAmendmentModel({@JsonKey(readValue: _readId) this.id = '', @JsonKey(name: 'user_id') this.userId = '', @JsonKey(name: 'company_id') this.companyId = '', @JsonKey(name: 'date_id') this.dateId = '', @JsonKey(name: 'amendment_type') this.amendmentType = '', @JsonKey(name: 'requested_clock_in') this.requestedClockIn, @JsonKey(name: 'requested_clock_out') this.requestedClockOut, this.reason = '', this.status = '', @JsonKey(name: 'approved_by') this.approvedBy, this.deleted = false, @JsonKey(fromJson: parseLocalDateTime) this.createdAt, @JsonKey(fromJson: parseLocalDateTime) this.updatedAt, @JsonKey(name: 'approved_at', fromJson: parseLocalDateTime) this.approvedAt, this.user}): super._();
   factory _AttendanceAmendmentModel.fromJson(Map<String, dynamic> json) => _$AttendanceAmendmentModelFromJson(json);
 
 @override@JsonKey(readValue: _readId) final  String id;
@@ -239,6 +252,7 @@ class _AttendanceAmendmentModel extends AttendanceAmendmentModel {
 @override@JsonKey(fromJson: parseLocalDateTime) final  DateTime? createdAt;
 @override@JsonKey(fromJson: parseLocalDateTime) final  DateTime? updatedAt;
 @override@JsonKey(name: 'approved_at', fromJson: parseLocalDateTime) final  DateTime? approvedAt;
+@override final  AmendmentUserModel? user;
 
 /// Create a copy of AttendanceAmendmentModel
 /// with the given fields replaced by the non-null parameter values.
@@ -253,16 +267,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AttendanceAmendmentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.dateId, dateId) || other.dateId == dateId)&&(identical(other.amendmentType, amendmentType) || other.amendmentType == amendmentType)&&(identical(other.requestedClockIn, requestedClockIn) || other.requestedClockIn == requestedClockIn)&&(identical(other.requestedClockOut, requestedClockOut) || other.requestedClockOut == requestedClockOut)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.status, status) || other.status == status)&&(identical(other.approvedBy, approvedBy) || other.approvedBy == approvedBy)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AttendanceAmendmentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.dateId, dateId) || other.dateId == dateId)&&(identical(other.amendmentType, amendmentType) || other.amendmentType == amendmentType)&&(identical(other.requestedClockIn, requestedClockIn) || other.requestedClockIn == requestedClockIn)&&(identical(other.requestedClockOut, requestedClockOut) || other.requestedClockOut == requestedClockOut)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.status, status) || other.status == status)&&(identical(other.approvedBy, approvedBy) || other.approvedBy == approvedBy)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.approvedAt, approvedAt) || other.approvedAt == approvedAt)&&(identical(other.user, user) || other.user == user));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,companyId,dateId,amendmentType,requestedClockIn,requestedClockOut,reason,status,approvedBy,deleted,createdAt,updatedAt,approvedAt);
+int get hashCode => Object.hash(runtimeType,id,userId,companyId,dateId,amendmentType,requestedClockIn,requestedClockOut,reason,status,approvedBy,deleted,createdAt,updatedAt,approvedAt,user);
 
 @override
 String toString() {
-  return 'AttendanceAmendmentModel(id: $id, userId: $userId, companyId: $companyId, dateId: $dateId, amendmentType: $amendmentType, requestedClockIn: $requestedClockIn, requestedClockOut: $requestedClockOut, reason: $reason, status: $status, approvedBy: $approvedBy, deleted: $deleted, createdAt: $createdAt, updatedAt: $updatedAt, approvedAt: $approvedAt)';
+  return 'AttendanceAmendmentModel(id: $id, userId: $userId, companyId: $companyId, dateId: $dateId, amendmentType: $amendmentType, requestedClockIn: $requestedClockIn, requestedClockOut: $requestedClockOut, reason: $reason, status: $status, approvedBy: $approvedBy, deleted: $deleted, createdAt: $createdAt, updatedAt: $updatedAt, approvedAt: $approvedAt, user: $user)';
 }
 
 
@@ -273,11 +287,11 @@ abstract mixin class _$AttendanceAmendmentModelCopyWith<$Res> implements $Attend
   factory _$AttendanceAmendmentModelCopyWith(_AttendanceAmendmentModel value, $Res Function(_AttendanceAmendmentModel) _then) = __$AttendanceAmendmentModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(readValue: _readId) String id,@JsonKey(name: 'user_id') String userId,@JsonKey(name: 'company_id') String companyId,@JsonKey(name: 'date_id') String dateId,@JsonKey(name: 'amendment_type') String amendmentType,@JsonKey(name: 'requested_clock_in') String? requestedClockIn,@JsonKey(name: 'requested_clock_out') String? requestedClockOut, String reason, String status,@JsonKey(name: 'approved_by') String? approvedBy, bool deleted,@JsonKey(fromJson: parseLocalDateTime) DateTime? createdAt,@JsonKey(fromJson: parseLocalDateTime) DateTime? updatedAt,@JsonKey(name: 'approved_at', fromJson: parseLocalDateTime) DateTime? approvedAt
+@JsonKey(readValue: _readId) String id,@JsonKey(name: 'user_id') String userId,@JsonKey(name: 'company_id') String companyId,@JsonKey(name: 'date_id') String dateId,@JsonKey(name: 'amendment_type') String amendmentType,@JsonKey(name: 'requested_clock_in') String? requestedClockIn,@JsonKey(name: 'requested_clock_out') String? requestedClockOut, String reason, String status,@JsonKey(name: 'approved_by') String? approvedBy, bool deleted,@JsonKey(fromJson: parseLocalDateTime) DateTime? createdAt,@JsonKey(fromJson: parseLocalDateTime) DateTime? updatedAt,@JsonKey(name: 'approved_at', fromJson: parseLocalDateTime) DateTime? approvedAt, AmendmentUserModel? user
 });
 
 
-
+@override $AmendmentUserModelCopyWith<$Res>? get user;
 
 }
 /// @nodoc
@@ -290,7 +304,7 @@ class __$AttendanceAmendmentModelCopyWithImpl<$Res>
 
 /// Create a copy of AttendanceAmendmentModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? companyId = null,Object? dateId = null,Object? amendmentType = null,Object? requestedClockIn = freezed,Object? requestedClockOut = freezed,Object? reason = null,Object? status = null,Object? approvedBy = freezed,Object? deleted = null,Object? createdAt = freezed,Object? updatedAt = freezed,Object? approvedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? companyId = null,Object? dateId = null,Object? amendmentType = null,Object? requestedClockIn = freezed,Object? requestedClockOut = freezed,Object? reason = null,Object? status = null,Object? approvedBy = freezed,Object? deleted = null,Object? createdAt = freezed,Object? updatedAt = freezed,Object? approvedAt = freezed,Object? user = freezed,}) {
   return _then(_AttendanceAmendmentModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -306,7 +320,289 @@ as String?,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nu
 as bool,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,approvedAt: freezed == approvedAt ? _self.approvedAt : approvedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as AmendmentUserModel?,
+  ));
+}
+
+/// Create a copy of AttendanceAmendmentModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AmendmentUserModelCopyWith<$Res>? get user {
+    if (_self.user == null) {
+    return null;
+  }
+
+  return $AmendmentUserModelCopyWith<$Res>(_self.user!, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}
+}
+
+
+/// @nodoc
+mixin _$AmendmentUserModel {
+
+@JsonKey(readValue: _readId) String get id; String get username; String get email;
+/// Create a copy of AmendmentUserModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AmendmentUserModelCopyWith<AmendmentUserModel> get copyWith => _$AmendmentUserModelCopyWithImpl<AmendmentUserModel>(this as AmendmentUserModel, _$identity);
+
+  /// Serializes this AmendmentUserModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AmendmentUserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.email, email) || other.email == email));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,username,email);
+
+@override
+String toString() {
+  return 'AmendmentUserModel(id: $id, username: $username, email: $email)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AmendmentUserModelCopyWith<$Res>  {
+  factory $AmendmentUserModelCopyWith(AmendmentUserModel value, $Res Function(AmendmentUserModel) _then) = _$AmendmentUserModelCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(readValue: _readId) String id, String username, String email
+});
+
+
+
+
+}
+/// @nodoc
+class _$AmendmentUserModelCopyWithImpl<$Res>
+    implements $AmendmentUserModelCopyWith<$Res> {
+  _$AmendmentUserModelCopyWithImpl(this._self, this._then);
+
+  final AmendmentUserModel _self;
+  final $Res Function(AmendmentUserModel) _then;
+
+/// Create a copy of AmendmentUserModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? username = null,Object? email = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
+as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [AmendmentUserModel].
+extension AmendmentUserModelPatterns on AmendmentUserModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AmendmentUserModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _AmendmentUserModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AmendmentUserModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _AmendmentUserModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AmendmentUserModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _AmendmentUserModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id,  String username,  String email)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _AmendmentUserModel() when $default != null:
+return $default(_that.id,_that.username,_that.email);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readId)  String id,  String username,  String email)  $default,) {final _that = this;
+switch (_that) {
+case _AmendmentUserModel():
+return $default(_that.id,_that.username,_that.email);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(readValue: _readId)  String id,  String username,  String email)?  $default,) {final _that = this;
+switch (_that) {
+case _AmendmentUserModel() when $default != null:
+return $default(_that.id,_that.username,_that.email);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _AmendmentUserModel implements AmendmentUserModel {
+  const _AmendmentUserModel({@JsonKey(readValue: _readId) this.id = '', this.username = '', this.email = ''});
+  factory _AmendmentUserModel.fromJson(Map<String, dynamic> json) => _$AmendmentUserModelFromJson(json);
+
+@override@JsonKey(readValue: _readId) final  String id;
+@override@JsonKey() final  String username;
+@override@JsonKey() final  String email;
+
+/// Create a copy of AmendmentUserModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AmendmentUserModelCopyWith<_AmendmentUserModel> get copyWith => __$AmendmentUserModelCopyWithImpl<_AmendmentUserModel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$AmendmentUserModelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AmendmentUserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.email, email) || other.email == email));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,username,email);
+
+@override
+String toString() {
+  return 'AmendmentUserModel(id: $id, username: $username, email: $email)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AmendmentUserModelCopyWith<$Res> implements $AmendmentUserModelCopyWith<$Res> {
+  factory _$AmendmentUserModelCopyWith(_AmendmentUserModel value, $Res Function(_AmendmentUserModel) _then) = __$AmendmentUserModelCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(readValue: _readId) String id, String username, String email
+});
+
+
+
+
+}
+/// @nodoc
+class __$AmendmentUserModelCopyWithImpl<$Res>
+    implements _$AmendmentUserModelCopyWith<$Res> {
+  __$AmendmentUserModelCopyWithImpl(this._self, this._then);
+
+  final _AmendmentUserModel _self;
+  final $Res Function(_AmendmentUserModel) _then;
+
+/// Create a copy of AmendmentUserModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? username = null,Object? email = null,}) {
+  return _then(_AmendmentUserModel(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
+as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

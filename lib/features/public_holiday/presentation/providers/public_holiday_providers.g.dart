@@ -181,7 +181,7 @@ final class PublicHolidayNotifierProvider
 }
 
 String _$publicHolidayNotifierHash() =>
-    r'27abf6a680d61066b0b2a0686ae8a9f100ddd8a0';
+    r'adef6ab70e2e0195b60edaea2a28d9fc51d2409c';
 
 abstract class _$PublicHolidayNotifier
     extends $AsyncNotifier<List<PublicHoliday>> {

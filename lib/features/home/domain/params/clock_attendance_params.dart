@@ -12,7 +12,8 @@ abstract class ClockAttendanceParams with _$ClockAttendanceParams {
     AttendanceLocation? location,
     @JsonKey(fromJson: _deviceFromJson, toJson: _deviceToJson)
     AttendanceDevice? device,
-    @JsonKey(name: 'qr_code') String? qrCode,
+    // @JsonKey(name: 'qr_code') String? qrCode,
+    @JsonKey(name: 'img_id') String? imgId,
     String? notes,
   }) = _ClockAttendanceParams;
 

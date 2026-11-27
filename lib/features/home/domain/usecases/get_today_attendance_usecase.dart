@@ -5,7 +5,7 @@ class GetTodayAttendanceUsecase {
   GetTodayAttendanceUsecase({required this.attendanceRepository});
   final AttendanceRepository attendanceRepository;
 
-  Future<TodayAttendance> call() async {
-    return await attendanceRepository.getTodayAttendance();
+  Future<TodayAttendance> call({DateTime? date}) async {
+    return await attendanceRepository.getTodayAttendance(date: date);
   }
 }

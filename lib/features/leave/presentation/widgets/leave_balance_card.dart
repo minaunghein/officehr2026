@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/features/leave/domain/entities/leave_balance.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class LeaveBalanceCard extends StatelessWidget {
   const LeaveBalanceCard({super.key, required this.balance});
 
@@ -84,12 +86,15 @@ class LeaveBalanceCard extends StatelessWidget {
                 Row(
                   children: [
                     _Metric(
-                      label: 'Allocated',
+                      label: 'Allocated'.tr(),
                       value: _formatNumber(balance.totalGranted),
                     ),
-                    _Metric(label: 'Used', value: _formatNumber(balance.used)),
                     _Metric(
-                      label: 'Pending',
+                      label: 'Used'.tr(),
+                      value: _formatNumber(balance.used),
+                    ),
+                    _Metric(
+                      label: 'Pending'.tr(),
                       value: _formatNumber(balance.pending),
                     ),
                   ],

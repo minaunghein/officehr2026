@@ -1,26 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/features/leave/domain/entities/leave_request.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
-const _shortMonths = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];
-
 String formatLeaveDate(DateTime? date) {
   if (date == null) return '-';
-  return '${date.day} ${_shortMonths[date.month - 1]} ${date.year}';
+  return displayDate(date);
 }
 
 String formatLeaveDateFromIso(String? iso) {
@@ -42,7 +28,7 @@ String formatLeaveDateRange(String? startIso, String? endIso) {
 
   final sameMonth = start.month == end.month && start.year == end.year;
   if (sameMonth) {
-    return '${start.day} - ${end.day} ${_shortMonths[start.month - 1]} '
+    return '${start.day} - ${end.day} ${monthLabel(start.month)} '
         '${start.year}';
   }
   return '${formatLeaveDate(start)} - ${formatLeaveDate(end)}';
@@ -54,23 +40,25 @@ bool _isSameDay(DateTime a, DateTime b) =>
 String formatDays(double days) {
   if (days == days.roundToDouble()) {
     final whole = days.toInt();
-    return '$whole ${whole == 1 ? 'day' : 'days'}';
+    return whole == 1
+        ? '1 day'.tr()
+        : '{count} days'.tr(namedArgs: {'count': '$whole'});
   }
-  return '${days.toStringAsFixed(1)} days';
+  return '{count} days'.tr(namedArgs: {'count': days.toStringAsFixed(1)});
 }
 
 String leaveStatusLabel(LeaveStatus status) {
   switch (status) {
     case LeaveStatus.pending:
-      return 'Pending';
+      return 'Pending'.tr();
     case LeaveStatus.approved:
-      return 'Approved';
+      return 'Approved'.tr();
     case LeaveStatus.rejected:
-      return 'Rejected';
+      return 'Rejected'.tr();
     case LeaveStatus.cancelled:
-      return 'Cancelled';
+      return 'Cancelled'.tr();
     case LeaveStatus.unknown:
-      return 'Unknown';
+      return 'Unknown'.tr();
   }
 }
 

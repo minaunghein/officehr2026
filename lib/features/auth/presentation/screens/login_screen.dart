@@ -7,6 +7,8 @@ import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/core/utils/snackbar_utils.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
@@ -22,10 +24,10 @@ class LoginScreen extends ConsumerWidget {
           context.go(AppRoutes.dashboard);
         },
         error: (error, stackTrace) {
-          String errorMessage = 'Login failed. Please try again.';
+          String errorMessage = 'Login failed. Please try again.'.tr();
           if (error is ApiException) {
             if (error.isUnauthorized || error.statusCode == 404) {
-              errorMessage = 'Invalid username or password';
+              errorMessage = 'Invalid username or password'.tr();
             } else {
               errorMessage = error.message;
             }
@@ -113,7 +115,7 @@ class LoginScreenContent extends HookConsumerWidget {
                         ),
                         const SizedBox(height: 24),
                         Text(
-                          'Office HR',
+                          'Office HR'.tr(),
                           style: textTheme.headlineLarge?.copyWith(
                             color: colorScheme.primary,
                             fontWeight: FontWeight.w700,
@@ -132,9 +134,9 @@ class LoginScreenContent extends HookConsumerWidget {
                                   ),
                                 ),
                                 children: [
-                                  const TextSpan(text: 'for '),
+                                  TextSpan(text: 'for '.tr()),
                                   TextSpan(
-                                    text: 'Acme Global Corp',
+                                    text: 'Acme Global Corp'.tr(),
                                     style: TextStyle(
                                       color: colorScheme.onSurface,
                                       fontWeight: FontWeight.w600,
@@ -156,7 +158,7 @@ class LoginScreenContent extends HookConsumerWidget {
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
                               child: Text(
-                                'Change Company',
+                                'Change Company'.tr(),
                                 style: textTheme.bodySmall?.copyWith(
                                   color: colorScheme.primary,
                                   fontWeight: FontWeight.w600,
@@ -179,7 +181,7 @@ class LoginScreenContent extends HookConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   Text(
-                                    'Username',
+                                    'Username'.tr(),
                                     style: textTheme.labelLarge?.copyWith(
                                       color: colorScheme.onSurface.withValues(
                                         alpha: 0.8,
@@ -190,15 +192,16 @@ class LoginScreenContent extends HookConsumerWidget {
                                   TextFormField(
                                     controller: usernameController,
                                     enabled: !isLoading,
-                                    decoration: const InputDecoration(
-                                      hintText: 'Enter your corporate ID',
+                                    decoration: InputDecoration(
+                                      hintText: 'Enter your corporate ID'.tr(),
                                       prefixIcon: Icon(Icons.person_outline),
                                       filled: false,
                                     ),
                                     validator: (value) {
                                       if (value == null ||
                                           value.trim().isEmpty) {
-                                        return 'Please enter your username';
+                                        return 'Please enter your username'
+                                            .tr();
                                       }
                                       return null;
                                     },
@@ -209,7 +212,7 @@ class LoginScreenContent extends HookConsumerWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        'Password',
+                                        'Password'.tr(),
                                         style: textTheme.labelLarge?.copyWith(
                                           color: colorScheme.onSurface
                                               .withValues(alpha: 0.8),
@@ -224,7 +227,7 @@ class LoginScreenContent extends HookConsumerWidget {
                                               MaterialTapTargetSize.shrinkWrap,
                                         ),
                                         child: Text(
-                                          'Forgot Password?',
+                                          'Forgot Password?'.tr(),
                                           style: textTheme.labelLarge?.copyWith(
                                             color: colorScheme.primary,
                                           ),
@@ -257,7 +260,8 @@ class LoginScreenContent extends HookConsumerWidget {
                                     ),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'Please enter your password';
+                                        return 'Please enter your password'
+                                            .tr();
                                       }
                                       return null;
                                     },
@@ -294,7 +298,7 @@ class LoginScreenContent extends HookConsumerWidget {
                                       ),
                                       const SizedBox(width: 8),
                                       Text(
-                                        'Remember this device',
+                                        'Remember this device'.tr(),
                                         style: textTheme.bodyMedium?.copyWith(
                                           color: colorScheme.onSurface
                                               .withValues(alpha: 0.7),
@@ -345,7 +349,7 @@ class LoginScreenContent extends HookConsumerWidget {
                                             ),
                                           )
                                         else
-                                          const Text('LOGIN'),
+                                          Text('LOGIN'.tr()),
                                       ],
                                     ),
                                   ),
@@ -359,7 +363,7 @@ class LoginScreenContent extends HookConsumerWidget {
                           alignment: WrapAlignment.center,
                           children: [
                             Text(
-                              'Need help?',
+                              'Need help?'.tr(),
                               style: textTheme.bodyMedium?.copyWith(
                                 color: colorScheme.onSurface.withValues(
                                   alpha: 0.7,
@@ -375,7 +379,7 @@ class LoginScreenContent extends HookConsumerWidget {
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
                               child: Text(
-                                'Contact Support',
+                                'Contact Support'.tr(),
                                 style: textTheme.bodyMedium?.copyWith(
                                   color: colorScheme.primary,
                                   fontWeight: FontWeight.w600,
@@ -389,7 +393,7 @@ class LoginScreenContent extends HookConsumerWidget {
                           alignment: WrapAlignment.center,
                           children: [
                             Text(
-                              'Privacy Policy',
+                              'Privacy Policy'.tr(),
                               style: textTheme.bodySmall?.copyWith(
                                 color: colorScheme.onSurface.withValues(
                                   alpha: 0.6,
@@ -410,7 +414,7 @@ class LoginScreenContent extends HookConsumerWidget {
                               ),
                             ),
                             Text(
-                              'Security Standards',
+                              'Security Standards'.tr(),
                               style: textTheme.bodySmall?.copyWith(
                                 color: colorScheme.onSurface.withValues(
                                   alpha: 0.6,
@@ -421,7 +425,7 @@ class LoginScreenContent extends HookConsumerWidget {
                         ),
                         const SizedBox(height: 32),
                         Text(
-                          '© 2026 Office HR System. All rights reserved.',
+                          '© 2026 Office HR System. All rights reserved.'.tr(),
                           style: textTheme.bodySmall?.copyWith(
                             color: colorScheme.onSurface.withValues(alpha: 0.4),
                           ),

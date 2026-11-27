@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class MapLocationStatus extends StatelessWidget {
   const MapLocationStatus({required this.locationAsync, super.key});
 
@@ -50,7 +52,7 @@ class MapLocationStatus extends StatelessWidget {
                 ),
               const SizedBox(width: 8),
               Text(
-                isError ? 'Location Error' : 'Getting location...',
+                isError ? 'Location Error'.tr() : 'Getting location...'.tr(),
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                   color: isError ? Colors.white : theme.colorScheme.onSurface,

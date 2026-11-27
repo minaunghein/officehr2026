@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:office_hr/core/security/biometric_preferences.dart';
 import 'package:office_hr/core/security/biometric_service.dart';
 import 'package:office_hr/core/security/security_providers.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 
 /// Wraps [child] behind a biometric / device-credential check.
 ///
@@ -22,8 +25,8 @@ class BiometricGate extends HookConsumerWidget {
   const BiometricGate({
     super.key,
     required this.child,
-    this.reason = 'Authenticate to continue',
-    this.title = 'Authentication required',
+    this.reason,
+    this.title,
     this.description,
     this.biometricOnly = false,
     this.lockOnResume = true,
@@ -35,10 +38,10 @@ class BiometricGate extends HookConsumerWidget {
   final Widget child;
 
   /// Message shown by the OS prompt.
-  final String reason;
+  final String? reason;
 
   /// Heading for the in-app unlock screen.
-  final String title;
+  final String? title;
 
   /// Supporting text for the in-app unlock screen.
   final String? description;
@@ -58,6 +61,11 @@ class BiometricGate extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final service = ref.read(biometricServiceProvider);
+    final preferences = ref.watch(biometricPreferencesProvider);
+    // The user can switch local authentication off (or the resume lock off)
+    // from Settings, so the widget flag alone does not decide.
+    final gateEnabled = enabled && preferences.screensEnabled;
+    final resumeLockEnabled = lockOnResume && preferences.lockOnResume;
     final unlocked = useState(false);
     final authenticating = useState(false);
     final availability = useState<BiometricAvailability?>(null);
@@ -70,8 +78,8 @@ class BiometricGate extends HookConsumerWidget {
       message.value = null;
 
       final result = await service.authenticate(
-        reason: reason,
-        biometricOnly: biometricOnly,
+        reason: reason ?? 'Authenticate to continue'.tr(),
+        biometricOnly: biometricOnly || !preferences.allowDeviceCredential,
       );
       if (!context.mounted) return;
       authenticating.value = false;
@@ -82,20 +90,21 @@ class BiometricGate extends HookConsumerWidget {
         case BiometricResult.canceled:
           break;
         case BiometricResult.failed:
-          message.value = 'Authentication failed. Please try again.';
+          message.value = 'Authentication failed. Please try again.'.tr();
         case BiometricResult.lockedOut:
           message.value =
-              'Biometrics are temporarily locked. Unlock your device and try again.';
+              'Biometrics are temporarily locked. Unlock your device and try again.'
+                  .tr();
         case BiometricResult.unavailable:
           availability.value = BiometricAvailability.unavailable;
           message.value = _unavailableMessage;
         case BiometricResult.error:
-          message.value = 'Something went wrong. Please try again.';
+          message.value = 'Something went wrong. Please try again.'.tr();
       }
     }
 
     useEffect(() {
-      if (!enabled) return null;
+      if (!gateEnabled) return null;
       Future<void> prepare() async {
         final status = await service.checkAvailability();
         if (!context.mounted) return;
@@ -107,10 +116,10 @@ class BiometricGate extends HookConsumerWidget {
 
       prepare();
       return null;
-    }, [enabled]);
+    }, [gateEnabled]);
 
     useEffect(() {
-      if (!enabled || !lockOnResume) return null;
+      if (!gateEnabled || !resumeLockEnabled) return null;
       final listener = AppLifecycleListener(
         onHide: () => leftApp.value = true,
         onPause: () => leftApp.value = true,
@@ -124,14 +133,15 @@ class BiometricGate extends HookConsumerWidget {
         },
       );
       return listener.dispose;
-    }, [enabled, lockOnResume]);
+    }, [gateEnabled, resumeLockEnabled]);
 
-    if (!enabled || unlocked.value) return child;
+    if (!gateEnabled || unlocked.value) return child;
 
     return _LockedView(
-      title: title,
+      title: title ?? 'Authentication required'.tr(),
       description:
-          description ?? 'Verify your identity to view this protected content.',
+          description ??
+          'Verify your identity to view this protected content.'.tr(),
       message: message.value,
       availability: availability.value,
       authenticating: authenticating.value,
@@ -141,7 +151,9 @@ class BiometricGate extends HookConsumerWidget {
 
   String get _unavailableMessage => biometricOnly
       ? 'No biometrics are enrolled. Add a fingerprint or face in your device settings and try again.'
-      : 'No biometrics or device passcode is set up. Add a screen lock in your device settings and try again.';
+            .tr()
+      : 'No biometrics or device passcode is set up. Add a screen lock in your device settings and try again.'
+            .tr();
 }
 
 class _LockedView extends StatelessWidget {
@@ -233,7 +245,9 @@ class _LockedView extends StatelessWidget {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Icon(Icons.lock_open_rounded),
-                label: Text(authenticating ? 'Verifying...' : 'Unlock'),
+                label: Text(
+                  authenticating ? 'Verifying...'.tr() : 'Unlock'.tr(),
+                ),
                 style: FilledButton.styleFrom(
                   minimumSize: const Size.fromHeight(52),
                 ),

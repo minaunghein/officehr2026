@@ -195,6 +195,106 @@ final class GetLeaveRequestsUsecaseProvider
 String _$getLeaveRequestsUsecaseHash() =>
     r'8f56cbcdc7ddad6f8972775cf9791bd470698e72';
 
+@ProviderFor(getAllLeaveRequestsUsecase)
+final getAllLeaveRequestsUsecaseProvider =
+    GetAllLeaveRequestsUsecaseProvider._();
+
+final class GetAllLeaveRequestsUsecaseProvider
+    extends
+        $FunctionalProvider<
+          GetAllLeaveRequestsUsecase,
+          GetAllLeaveRequestsUsecase,
+          GetAllLeaveRequestsUsecase
+        >
+    with $Provider<GetAllLeaveRequestsUsecase> {
+  GetAllLeaveRequestsUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getAllLeaveRequestsUsecaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getAllLeaveRequestsUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetAllLeaveRequestsUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetAllLeaveRequestsUsecase create(Ref ref) {
+    return getAllLeaveRequestsUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetAllLeaveRequestsUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetAllLeaveRequestsUsecase>(value),
+    );
+  }
+}
+
+String _$getAllLeaveRequestsUsecaseHash() =>
+    r'7d1605c07a12d1ec4a6096a7cf5daf8a51aed93a';
+
+@ProviderFor(updateLeaveRequestStatusUsecase)
+final updateLeaveRequestStatusUsecaseProvider =
+    UpdateLeaveRequestStatusUsecaseProvider._();
+
+final class UpdateLeaveRequestStatusUsecaseProvider
+    extends
+        $FunctionalProvider<
+          UpdateLeaveRequestStatusUsecase,
+          UpdateLeaveRequestStatusUsecase,
+          UpdateLeaveRequestStatusUsecase
+        >
+    with $Provider<UpdateLeaveRequestStatusUsecase> {
+  UpdateLeaveRequestStatusUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'updateLeaveRequestStatusUsecaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$updateLeaveRequestStatusUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<UpdateLeaveRequestStatusUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  UpdateLeaveRequestStatusUsecase create(Ref ref) {
+    return updateLeaveRequestStatusUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UpdateLeaveRequestStatusUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UpdateLeaveRequestStatusUsecase>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$updateLeaveRequestStatusUsecaseHash() =>
+    r'f1999f55bcfcc60709c406e55319c4d6fafa1863';
+
 @ProviderFor(getLeaveTypesUsecase)
 final getLeaveTypesUsecaseProvider = GetLeaveTypesUsecaseProvider._();
 
@@ -363,7 +463,7 @@ final class LeaveBalancesNotifierProvider
 }
 
 String _$leaveBalancesNotifierHash() =>
-    r'72a96642ae07a788a75aca401138bb56c7f8c5c4';
+    r'e13efedd96ff67885e90b31ebfcd9e48f72a9dd5';
 
 abstract class _$LeaveBalancesNotifier
     extends $AsyncNotifier<List<LeaveBalance>> {
@@ -410,7 +510,7 @@ final class LeaveRequestsNotifierProvider
 }
 
 String _$leaveRequestsNotifierHash() =>
-    r'c4e9de9d22abd53a8d22147b2365d7f769c609ec';
+    r'c83a8d03e786f901a462dfe3424d4c841f48e7e3';
 
 abstract class _$LeaveRequestsNotifier
     extends $AsyncNotifier<List<LeaveRequest>> {
@@ -425,6 +525,101 @@ abstract class _$LeaveRequestsNotifier
             as $ClassProviderElement<
               AnyNotifier<AsyncValue<List<LeaveRequest>>, List<LeaveRequest>>,
               AsyncValue<List<LeaveRequest>>,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
+
+@ProviderFor(AllLeaveRequestsNotifier)
+final allLeaveRequestsProvider = AllLeaveRequestsNotifierProvider._();
+
+final class AllLeaveRequestsNotifierProvider
+    extends
+        $AsyncNotifierProvider<AllLeaveRequestsNotifier, List<LeaveRequest>> {
+  AllLeaveRequestsNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'allLeaveRequestsProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$allLeaveRequestsNotifierHash();
+
+  @$internal
+  @override
+  AllLeaveRequestsNotifier create() => AllLeaveRequestsNotifier();
+}
+
+String _$allLeaveRequestsNotifierHash() =>
+    r'c31af565a93050a1a1c0d934304ebbc6284102df';
+
+abstract class _$AllLeaveRequestsNotifier
+    extends $AsyncNotifier<List<LeaveRequest>> {
+  FutureOr<List<LeaveRequest>> build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref =
+        this.ref as $Ref<AsyncValue<List<LeaveRequest>>, List<LeaveRequest>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<LeaveRequest>>, List<LeaveRequest>>,
+              AsyncValue<List<LeaveRequest>>,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
+
+@ProviderFor(UpdateLeaveRequestStatusNotifier)
+final updateLeaveRequestStatusProvider =
+    UpdateLeaveRequestStatusNotifierProvider._();
+
+final class UpdateLeaveRequestStatusNotifierProvider
+    extends $AsyncNotifierProvider<UpdateLeaveRequestStatusNotifier, void> {
+  UpdateLeaveRequestStatusNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'updateLeaveRequestStatusProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$updateLeaveRequestStatusNotifierHash();
+
+  @$internal
+  @override
+  UpdateLeaveRequestStatusNotifier create() =>
+      UpdateLeaveRequestStatusNotifier();
+}
+
+String _$updateLeaveRequestStatusNotifierHash() =>
+    r'ee06c260e4ed0e2cce14c5bec636f9a50e3069f3';
+
+abstract class _$UpdateLeaveRequestStatusNotifier extends $AsyncNotifier<void> {
+  FutureOr<void> build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<AsyncValue<void>, void>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<void>, void>,
+              AsyncValue<void>,
               Object?,
               Object?
             >;
@@ -470,6 +665,65 @@ final class LeaveTypesProvider
 }
 
 String _$leaveTypesHash() => r'c25e9fe724b339cca8a0a6524c2bc31e1fafa140';
+
+/// Number of pending leave requests awaiting the current user's approval,
+/// for badges. Own requests are excluded because they can't be approved or
+/// rejected by the requester. Derived from the keep-alive approvals list so
+/// it stays in sync after decisions and refreshes without an extra endpoint
+/// call.
+
+@ProviderFor(pendingLeaveRequestsCount)
+final pendingLeaveRequestsCountProvider = PendingLeaveRequestsCountProvider._();
+
+/// Number of pending leave requests awaiting the current user's approval,
+/// for badges. Own requests are excluded because they can't be approved or
+/// rejected by the requester. Derived from the keep-alive approvals list so
+/// it stays in sync after decisions and refreshes without an extra endpoint
+/// call.
+
+final class PendingLeaveRequestsCountProvider
+    extends $FunctionalProvider<int, int, int>
+    with $Provider<int> {
+  /// Number of pending leave requests awaiting the current user's approval,
+  /// for badges. Own requests are excluded because they can't be approved or
+  /// rejected by the requester. Derived from the keep-alive approvals list so
+  /// it stays in sync after decisions and refreshes without an extra endpoint
+  /// call.
+  PendingLeaveRequestsCountProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pendingLeaveRequestsCountProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$pendingLeaveRequestsCountHash();
+
+  @$internal
+  @override
+  $ProviderElement<int> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  int create(Ref ref) {
+    return pendingLeaveRequestsCount(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(int value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<int>(value),
+    );
+  }
+}
+
+String _$pendingLeaveRequestsCountHash() =>
+    r'cfa8cb6f8c87c8879dafcb53e9b9e857038916dc';
 
 @ProviderFor(CreateLeaveRequestNotifier)
 final createLeaveRequestProvider = CreateLeaveRequestNotifierProvider._();

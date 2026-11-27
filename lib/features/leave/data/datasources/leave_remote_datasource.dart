@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:office_hr/core/network/api_service.dart';
 import 'package:office_hr/core/services/app_logger.dart';
 import 'package:office_hr/features/leave/data/models/leave_balance_model.dart';
@@ -12,6 +13,14 @@ abstract class LeaveRemoteDataSource {
   Future<List<LeaveBalanceModel>> getLeaveBalances();
 
   Future<List<LeaveRequestModel>> getLeaveRequests();
+
+  Future<List<LeaveRequestModel>> getAllLeaveRequests();
+
+  Future<LeaveRequestModel> updateLeaveRequestStatus(
+    String id, {
+    required LeaveDecision decision,
+    String? reason,
+  });
 
   Future<List<LeaveTypeModel>> getLeaveTypes();
 
@@ -58,6 +67,32 @@ class LeaveRemoteDataSourceImpl implements LeaveRemoteDataSource {
           .map((e) => LeaveRequestModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
+  }
+
+  @override
+  Future<List<LeaveRequestModel>> getAllLeaveRequests() async {
+    return _apiService.get<List<LeaveRequestModel>>(
+      '/api/v1/leave-requests/all',
+      parser: (data) => readListEnvelope(data)
+          .map((e) => LeaveRequestModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+
+  @override
+  Future<LeaveRequestModel> updateLeaveRequestStatus(
+    String id, {
+    required LeaveDecision decision,
+    String? reason,
+  }) async {
+    final trimmedReason = reason?.trim();
+    final response = await _apiService.patch<Map<String, dynamic>>(
+      '/api/v1/leave-requests/$id/status',
+      data: {'action': decision.value, 'reason': trimmedReason ?? ''},
+      parser: (data) => readEnvelope(data),
+    );
+
+    return LeaveRequestModel.fromJson(response);
   }
 
   @override
@@ -119,7 +154,7 @@ class LeaveRemoteDataSourceImpl implements LeaveRemoteDataSource {
 
       final model = UploadedFileModel.fromJson(response);
       if (model.id.isEmpty) {
-        throw StateError('Upload response did not contain a file id.');
+        throw StateError('Upload response did not contain a file id.'.tr());
       }
       return model;
     } catch (error, stack) {

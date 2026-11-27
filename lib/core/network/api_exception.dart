@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 enum ApiErrorType {
   badRequest,
@@ -43,7 +44,7 @@ class ApiException implements Exception {
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
         return ApiException(
-          message: 'Request timed out. Please try again.',
+          message: 'Request timed out. Please try again.'.tr(),
           type: ApiErrorType.timeout,
           statusCode: statusCode,
           endpoint: error.requestOptions.path,
@@ -51,7 +52,7 @@ class ApiException implements Exception {
         );
       case DioExceptionType.cancel:
         return ApiException(
-          message: 'Request was cancelled.',
+          message: 'Request was cancelled.'.tr(),
           type: ApiErrorType.cancelled,
           statusCode: statusCode,
           endpoint: error.requestOptions.path,
@@ -60,7 +61,8 @@ class ApiException implements Exception {
       case DioExceptionType.connectionError:
         return ApiException(
           message:
-              'No internet connection. Please check your network and try again.',
+              'No internet connection. Please check your network and try again.'
+                  .tr(),
           type: ApiErrorType.networkError,
           statusCode: statusCode,
           endpoint: error.requestOptions.path,
@@ -83,7 +85,7 @@ class ApiException implements Exception {
       message:
           responseMessage ??
           error.message ??
-          'Something went wrong. Please try again.',
+          'Something went wrong. Please try again.'.tr(),
       type: ApiErrorType.unknown,
       statusCode: statusCode,
       endpoint: error.requestOptions.path,
@@ -116,24 +118,24 @@ class ApiException implements Exception {
   static String _messageForStatusCode(int? statusCode) {
     switch (statusCode) {
       case 400:
-        return 'The request could not be processed.';
+        return 'The request could not be processed.'.tr();
       case 401:
-        return 'Your session has expired. Please sign in again.';
+        return 'Your session has expired. Please sign in again.'.tr();
       case 403:
-        return 'You do not have permission to perform this action.';
+        return 'You do not have permission to perform this action.'.tr();
       case 404:
-        return 'The requested resource was not found.';
+        return 'The requested resource was not found.'.tr();
       case 409:
-        return 'A conflict occurred while processing the request.';
+        return 'A conflict occurred while processing the request.'.tr();
       case 422:
-        return 'Some fields are invalid. Please check your input.';
+        return 'Some fields are invalid. Please check your input.'.tr();
       case 429:
-        return 'Too many requests. Please try again later.';
+        return 'Too many requests. Please try again later.'.tr();
       default:
         if (statusCode != null && statusCode >= 500) {
-          return 'Server error. Please try again later.';
+          return 'Server error. Please try again later.'.tr();
         }
-        return 'Unexpected response from the server.';
+        return 'Unexpected response from the server.'.tr();
     }
   }
 

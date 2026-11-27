@@ -5,15 +5,21 @@ import 'package:office_hr/features/home/presentation/widgets/attendance_amendmen
 import 'package:office_hr/features/home/presentation/widgets/attendance_status.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class AttendanceAmendmentCard extends StatelessWidget {
   const AttendanceAmendmentCard({
     super.key,
     required this.amendment,
+    this.showRequester = false,
     this.onTap,
+    this.trailing,
   });
 
   final AttendanceAmendment amendment;
+  final bool showRequester;
   final VoidCallback? onTap;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +45,25 @@ class AttendanceAmendmentCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (showRequester && _hasValue(amendment.requesterName)) ...[
+                Row(
+                  children: [
+                    _RequesterAvatar(label: amendment.requesterName),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        amendment.requesterName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+              ],
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -90,13 +115,13 @@ class AttendanceAmendmentCard extends StatelessWidget {
                     if (_hasValue(amendment.requestedClockIn))
                       _TimePill(
                         icon: Icons.login_rounded,
-                        label: 'In',
+                        label: 'In'.tr(),
                         value: formatAttendanceTime(amendment.requestedClockIn),
                       ),
                     if (_hasValue(amendment.requestedClockOut))
                       _TimePill(
                         icon: Icons.logout_rounded,
-                        label: 'Out',
+                        label: 'Out'.tr(),
                         value: formatAttendanceTime(
                           amendment.requestedClockOut,
                         ),
@@ -114,12 +139,15 @@ class AttendanceAmendmentCard extends StatelessWidget {
               if (amendment.createdAt != null) ...[
                 const SizedBox(height: 10),
                 Text(
-                  'Requested ${_relativeOrDate(amendment.createdAt!)}',
+                  'Requested {date}'.tr(
+                    namedArgs: {'date': _relativeOrDate(amendment.createdAt!)},
+                  ),
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.45),
                   ),
                 ),
               ],
+              if (trailing != null) ...[const SizedBox(height: 12), trailing!],
             ],
           ),
         ),
@@ -171,6 +199,28 @@ class _TimePill extends StatelessWidget {
 
 bool _hasValue(String? value) => value != null && value.trim().isNotEmpty;
 
+class _RequesterAvatar extends StatelessWidget {
+  const _RequesterAvatar({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return CircleAvatar(
+      radius: 16,
+      backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.12),
+      child: Text(
+        label.trim().isEmpty ? '?' : label.trim()[0].toUpperCase(),
+        style: theme.textTheme.titleSmall?.copyWith(
+          color: theme.colorScheme.primary,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+    );
+  }
+}
+
 IconData amendmentTypeIcon(String type) {
   switch (type.toUpperCase()) {
     case 'MISSED_IN':
@@ -211,38 +261,30 @@ Color amendmentTypeColor(String type, ThemeData theme) {
 
 /// Formats a backend `date_id` (`20240615` or `2024-06-15`) as `15 Jun 2024`.
 String formatAmendmentDate(String dateId) {
-  if (dateId.trim().isEmpty) return 'No date';
+  if (dateId.trim().isEmpty) return 'No date'.tr();
   final digits = dateId.replaceAll(RegExp(r'[^0-9]'), '');
   if (digits.length != 8) return dateId;
 
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
   final year = digits.substring(0, 4);
   final month = int.parse(digits.substring(4, 6));
   final day = int.parse(digits.substring(6, 8));
   if (month < 1 || month > 12) return dateId;
-  return '$day ${months[month - 1]} $year';
+  return '$day ${monthLabel(month)} $year';
 }
 
 String _relativeOrDate(DateTime value) {
   final local = value.toLocal();
   final now = DateTime.now();
   final difference = now.difference(local);
-  if (difference.inMinutes < 1) return 'just now';
-  if (difference.inHours < 1) return '${difference.inMinutes}m ago';
-  if (difference.inDays < 1) return '${difference.inHours}h ago';
-  if (difference.inDays < 7) return '${difference.inDays}d ago';
+  if (difference.inMinutes < 1) return 'just now'.tr();
+  if (difference.inHours < 1) {
+    return '{count}m ago'.tr(namedArgs: {'count': '${difference.inMinutes}'});
+  }
+  if (difference.inDays < 1) {
+    return '{count}h ago'.tr(namedArgs: {'count': '${difference.inHours}'});
+  }
+  if (difference.inDays < 7) {
+    return '{count}d ago'.tr(namedArgs: {'count': '${difference.inDays}'});
+  }
   return formatDateString(local.toIso8601String());
 }

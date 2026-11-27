@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/core/widgets/container_shimmer.dart';
 import 'package:office_hr/core/widgets/empty_state_widget.dart';
 import 'package:office_hr/core/widgets/error_state_widget.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/leave/presentation/providers/leave_providers.dart';
 import 'package:office_hr/features/leave/presentation/widgets/leave_request_card.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 
 class LeaveRequestsTab extends ConsumerWidget {
   const LeaveRequestsTab({super.key, required this.onRefresh});
@@ -17,14 +19,17 @@ class LeaveRequestsTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final requestsState = ref.watch(leaveRequestsProvider);
+    final access = ref.watch(sessionAccessProvider);
 
     return requestsState.when(
       data: (requests) {
         if (requests.isEmpty) {
           return EmptyStateWidget(
             icon: Icons.event_note_rounded,
-            title: 'No leave requests',
-            message: 'Tap the Request button to submit your first leave.',
+            title: 'No leave requests'.tr(),
+            message: access.createLeave
+                ? 'Tap the Request button to submit your first leave.'.tr()
+                : '',
             onRefresh: onRefresh,
           );
         }
@@ -37,8 +42,12 @@ class LeaveRequestsTab extends ConsumerWidget {
               final request = requests[index];
               return LeaveRequestCard(
                 request: request,
-                onTap: () =>
-                    context.push(AppRoutes.leaveDetail, extra: request),
+                onTap: appRouteTap(
+                  context,
+                  access,
+                  AppRoutes.leaveDetail,
+                  extra: request,
+                ),
               );
             },
           ),

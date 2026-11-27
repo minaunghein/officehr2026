@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/features/leave/domain/entities/leave_request.dart';
@@ -15,7 +16,7 @@ class LeaveRequestCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final statusColor = leaveStatusColor(request.status);
-    final typeTitle = request.leaveType?.displayTitle ?? 'Leave';
+    final typeTitle = request.leaveType?.displayTitle ?? 'Leave'.tr();
     final dateRange = formatLeaveDateRange(request.startDate, request.endDate);
 
     return Container(
@@ -113,7 +114,11 @@ class LeaveRequestCard extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Text(
-                                  'Half day · ${request.halfDayPeriod.value}',
+                                  'Half day · {period}'.tr(
+                                    namedArgs: {
+                                      'period': request.halfDayPeriod.value,
+                                    },
+                                  ),
                                   style: theme.textTheme.labelSmall?.copyWith(
                                     color: theme.colorScheme.primary,
                                     fontWeight: FontWeight.w700,

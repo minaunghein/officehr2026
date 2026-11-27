@@ -10,10 +10,12 @@ _GeofenceModel _$GeofenceModelFromJson(Map<String, dynamic> json) =>
     _GeofenceModel(
       latitude: (json['latitude'] as num?)?.toDouble() ?? 0.0,
       longitude: (json['longitude'] as num?)?.toDouble() ?? 0.0,
+      radiusKm: (json['radius_km'] as num?)?.toDouble() ?? 0.0,
     );
 
 Map<String, dynamic> _$GeofenceModelToJson(_GeofenceModel instance) =>
     <String, dynamic>{
       'latitude': instance.latitude,
       'longitude': instance.longitude,
+      'radius_km': instance.radiusKm,
     };
