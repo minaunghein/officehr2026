@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
+import 'package:office_hr/shared/date_formatter.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
@@ -128,24 +129,9 @@ class DateRangeFilterBar extends StatelessWidget {
     );
   }
 
-  static const _months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-
   String _formatRange(DateTime start, DateTime end) {
-    final startLabel = '${start.day} ${_months[start.month - 1]}';
-    final endLabel = '${end.day} ${_months[end.month - 1]}';
+    final startLabel = '${start.day} ${monthLabel(start.month)}';
+    final endLabel = '${end.day} ${monthLabel(end.month)}';
     if (start.year == end.year) {
       return '$startLabel – $endLabel ${end.year}';
     }

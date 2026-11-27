@@ -1,5 +1,6 @@
 import 'package:office_hr/features/home/domain/entities/clock_request.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:office_hr/shared/date_formatter.dart';
 
 /// Formats a `YYYYMMDD` date id like `20261118` as `18 Nov 2026`.
 String formatDateId(String? dateId) {
@@ -11,21 +12,7 @@ String formatDateId(String? dateId) {
   final day = value.substring(6, 8);
   if (month == null || month < 1 || month > 12) return value;
 
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-  return '$day ${months[month - 1]} $year';
+  return '$day ${monthLabel(month)} $year';
 }
 
 /// Formats a `HH:mm` punch time as `09:07 AM`.

@@ -45,7 +45,7 @@ class SettingsTile extends StatelessWidget {
         trailing == null;
 
     return ListTile(
-      onTap: onTap,
+      onTap: enabled ? onTap : null,
       enabled: enabled,
       minTileHeight: kMinInteractiveDimension,
       minVerticalPadding: AppSizes.xxs,

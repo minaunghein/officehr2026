@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
@@ -39,6 +38,7 @@ class AmendmentApprovalsScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final access = ref.watch(sessionAccessProvider);
     final filter = useState(_Filter.pending);
     final amendmentsAsync = ref.watch(amendmentApprovalsProvider);
 
@@ -123,7 +123,9 @@ class AmendmentApprovalsScreen extends HookConsumerWidget {
                       return AttendanceAmendmentCard(
                         amendment: amendment,
                         showRequester: true,
-                        onTap: () => context.push(
+                        onTap: appRouteTap(
+                          context,
+                          access,
                           AppRoutes.attendanceAmendmentDetail,
                           extra: AttendanceAmendmentRouteArgs(
                             amendment: amendment,
@@ -154,7 +156,11 @@ class _DecisionButtons extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pendingStatus = useState<String?>(null);
-    final isDeciding = pendingStatus.value != null;
+    final access = ref.watch(sessionAccessProvider);
+    final disabled =
+        pendingStatus.value != null ||
+        !access.reviewAmendments ||
+        access.isOwnUser(amendment.userId);
 
     Future<void> decide(bool approve) async {
       final requesterLabel = amendment.requesterName.trim().isEmpty
@@ -211,7 +217,7 @@ class _DecisionButtons extends HookConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           OutlinedButton.icon(
-            onPressed: isDeciding ? null : () => decide(false),
+            onPressed: disabled ? null : () => decide(false),
             style: OutlinedButton.styleFrom(
               foregroundColor: const Color(0xFFB91C1C),
               disabledForegroundColor: const Color(
@@ -229,13 +235,13 @@ class _DecisionButtons extends HookConsumerWidget {
             icon: buttonIcon(
               'REJECTED',
               Icons.close_rounded,
-              const Color(0xFFB91C1C).withValues(alpha: isDeciding ? 0.5 : 1),
+              const Color(0xFFB91C1C).withValues(alpha: disabled ? 0.5 : 1),
             ),
             label: Text('Reject'.tr()),
           ),
           const SizedBox(width: 8),
           FilledButton.icon(
-            onPressed: isDeciding ? null : () => decide(true),
+            onPressed: disabled ? null : () => decide(true),
             style: FilledButton.styleFrom(
               backgroundColor: const Color(0xFF15803D),
               disabledBackgroundColor: const Color(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
@@ -20,6 +19,7 @@ class AboutScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final access = ref.watch(sessionAccessProvider);
     final theme = Theme.of(context);
     final info = ref.watch(appInfoProvider);
 
@@ -104,13 +104,13 @@ class AboutScreen extends ConsumerWidget {
             SettingsGroup(
               title: 'Support'.tr(),
               children: [
-                if (ref.watch(sessionAccessProvider).viewCompany)
-                  SettingsTile(
-                    icon: Icons.business_rounded,
-                    title: 'Company Information'.tr(),
-                    subtitle: 'Organisation details and contacts.'.tr(),
-                    onTap: () => context.push(AppRoutes.company),
-                  ),
+                SettingsTile(
+                  icon: Icons.business_rounded,
+                  title: 'Company Information'.tr(),
+                  subtitle: 'Organisation details and contacts.'.tr(),
+                  enabled: access.viewCompany,
+                  onTap: appRouteTap(context, access, AppRoutes.company),
+                ),
                 SettingsTile(
                   icon: Icons.help_outline_rounded,
                   title: 'Frequently asked questions'.tr(),

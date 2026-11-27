@@ -213,28 +213,27 @@ class ProfileImageAvatar extends HookConsumerWidget {
                 ),
               ),
             ),
-          if (canEdit)
-            PositionedDirectional(
-              end: 0,
-              bottom: 0,
-              child: IconButton.filled(
-                tooltip: 'Change profile image'.tr(),
-                onPressed: busy ? null : changeImage,
-                style: IconButton.styleFrom(
-                  backgroundColor: colors.surface,
-                  foregroundColor: colors.primary,
-                  disabledBackgroundColor: colors.surface,
-                  disabledForegroundColor: theme.disabledColor,
-                  fixedSize: const Size.square(36),
-                  minimumSize: const Size.square(36),
-                  tapTargetSize: MaterialTapTargetSize.padded,
-                  visualDensity: VisualDensity.standard,
-                  padding: EdgeInsets.zero,
-                  side: BorderSide(color: theme.detailRule),
-                ),
-                icon: const Icon(Icons.edit_outlined, size: AppSizes.iconSm),
+          PositionedDirectional(
+            end: 0,
+            bottom: 0,
+            child: IconButton.filled(
+              tooltip: 'Change profile image'.tr(),
+              onPressed: busy || !canEdit ? null : changeImage,
+              style: IconButton.styleFrom(
+                backgroundColor: colors.surface,
+                foregroundColor: colors.primary,
+                disabledBackgroundColor: colors.surface,
+                disabledForegroundColor: theme.disabledColor,
+                fixedSize: const Size.square(36),
+                minimumSize: const Size.square(36),
+                tapTargetSize: MaterialTapTargetSize.padded,
+                visualDensity: VisualDensity.standard,
+                padding: EdgeInsets.zero,
+                side: BorderSide(color: theme.detailRule),
               ),
+              icon: const Icon(Icons.edit_outlined, size: AppSizes.iconSm),
             ),
+          ),
         ],
       ),
     );

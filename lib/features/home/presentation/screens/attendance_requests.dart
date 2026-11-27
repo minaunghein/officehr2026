@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:office_hr/core/widgets/request_action_button.dart';
 import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/home/presentation/widgets/attendance_amendment_form_sheet.dart';
 import 'package:office_hr/features/home/presentation/widgets/attendance_amendments_tab.dart';
@@ -27,8 +28,11 @@ class AttendanceRequestsScreen extends HookConsumerWidget {
       return () => tabController.removeListener(listener);
     }, [tabController]);
 
-    final canSubmitAmendment =
-        access.amendPunch && (!showTabs || tabIndex.value == 0);
+    final isAmendments = showTabs
+        ? tabIndex.value == 0
+        : access.viewPunches ||
+              !access.viewOwnClockRequests ||
+              access.amendPunch;
 
     return Scaffold(
       appBar: AppBar(
@@ -58,11 +62,12 @@ class AttendanceRequestsScreen extends HookConsumerWidget {
                 ],
               ),
       ),
-      floatingActionButton: canSubmitAmendment
-          ? FloatingActionButton.extended(
-              onPressed: () => showAttendanceAmendmentForm(context),
-              icon: const Icon(Icons.add_rounded),
-              label: Text('New Request'.tr()),
+      floatingActionButton: isAmendments
+          ? RequestActionButton(
+              onPressed: access.amendPunch
+                  ? () => showAttendanceAmendmentForm(context)
+                  : null,
+              label: 'New Request'.tr(),
             )
           : null,
       body: showTabs

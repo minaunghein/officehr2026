@@ -213,17 +213,15 @@ class CurrentStatusCard extends ConsumerWidget {
                     ),
                   ),
               ],
-              if (access.createPunch || access.requestClock) ...[
+              const SizedBox(height: AppSizes.spaceBtwItems),
+              if (access.viewPunches)
+                const ClockButton()
+              else ...[
+                const ClockButton(clockOut: false),
                 const SizedBox(height: AppSizes.spaceBtwItems),
-                if (access.viewPunches)
-                  const ClockButton()
-                else ...[
-                  const ClockButton(clockOut: false),
-                  const SizedBox(height: AppSizes.spaceBtwItems),
-                  const ClockButton(clockOut: true),
-                ],
+                const ClockButton(clockOut: true),
               ],
-              if (access.createPunch && access.viewPunches) ...[
+              if (access.viewPunches) ...[
                 const SizedBox(height: AppSizes.spaceBtwItems),
                 BreakActions(shift: shift),
               ],

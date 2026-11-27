@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/shift/shift.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_location.dart';
 import 'package:office_hr/features/home/domain/params/clock_attendance_params.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_provider.dart';
@@ -20,6 +21,7 @@ class BreakActions extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final canPunch = ref.watch(sessionAccessProvider).createPunch;
     final attendanceState =
         ref.watch(attendanceProvider).value ?? const AttendanceState();
     final breakLateDurationText = _getBreakLateDurationText(attendanceState);
@@ -65,7 +67,7 @@ class BreakActions extends ConsumerWidget {
           children: [
             Expanded(
               child: OutlinedButton.icon(
-                onPressed: attendanceState.canBreakStart
+                onPressed: canPunch && attendanceState.canBreakStart
                     ? () => _runBreakAction(
                         context,
                         ref,
@@ -93,7 +95,7 @@ class BreakActions extends ConsumerWidget {
             const SizedBox(width: 12),
             Expanded(
               child: OutlinedButton.icon(
-                onPressed: attendanceState.canBreakEnd
+                onPressed: canPunch && attendanceState.canBreakEnd
                     ? () => _runBreakAction(
                         context,
                         ref,
@@ -178,6 +180,7 @@ class BreakActions extends ConsumerWidget {
     WidgetRef ref,
     Future<void> Function(ClockAttendanceParams? params) action,
   ) async {
+    if (!ref.read(sessionAccessProvider).createPunch) return;
     final location = ref.read(currentLocationProvider).value;
     if (location == null) {
       ScaffoldMessenger.of(context).showSnackBar(

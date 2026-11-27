@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
@@ -99,17 +98,16 @@ class MyClockRequestsTab extends HookConsumerWidget {
                     final request = requests[index];
                     return ClockRequestCard(
                       request: request,
-                      onTap: () => context.push(
+                      onTap: appRouteTap(
+                        context,
+                        access,
                         AppRoutes.clockRequestDetail,
                         extra: ClockRequestRouteArgs(
                           request: request,
                           canDecide: false,
                         ),
                       ),
-                      trailing:
-                          request.isPending &&
-                              access.requestClock &&
-                              access.isOwnUser(request.userId)
+                      trailing: request.isPending
                           ? _CancelButton(request: request)
                           : null,
                     );
@@ -132,6 +130,8 @@ class _CancelButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isCancelling = useState(false);
+    final access = ref.watch(sessionAccessProvider);
+    final canCancel = access.requestClock && access.isOwnUser(request.userId);
 
     Future<void> cancel() async {
       final result = await showClockRequestCancelDialog(
@@ -160,12 +160,14 @@ class _CancelButton extends HookConsumerWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: OutlinedButton.icon(
-        onPressed: isCancelling.value ? null : cancel,
+        onPressed: isCancelling.value || !canCancel ? null : cancel,
         style: OutlinedButton.styleFrom(
           foregroundColor: const Color(0xFFB91C1C),
-          side: BorderSide(
-            color: const Color(0xFFB91C1C).withValues(alpha: 0.4),
-          ),
+          side: canCancel
+              ? BorderSide(
+                  color: const Color(0xFFB91C1C).withValues(alpha: 0.4),
+                )
+              : null,
           visualDensity: VisualDensity.compact,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),

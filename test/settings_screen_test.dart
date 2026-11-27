@@ -271,4 +271,29 @@ void main() {
     await tester.pumpAndSettle();
     expect(login.logoutCalls, 1);
   });
+
+  testWidgets('Myanmar reminders show distinct full day names on a phone', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(320, 720);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await pumpSettings(tester);
+    await tester.tap(find.widgetWithText(ListTile, 'Language'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(ListTile, 'Myanmar'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('သတ်မှတ်ချက်များ'), findsOneWidget);
+    final reminder = find.widgetWithText(ListTile, 'အလုပ်ဝင်ချိန် သတိပေးချက်');
+    await scrollTo(tester, reminder);
+    await tester.tap(reminder);
+    await tester.pumpAndSettle();
+
+    expect(find.widgetWithText(FilterChip, 'တနင်္လာမှ သောကြာ'), findsOneWidget);
+    expect(find.text('တနင်္လာ'), findsOneWidget);
+    expect(find.text('တနင်္ဂနွေ'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
 }

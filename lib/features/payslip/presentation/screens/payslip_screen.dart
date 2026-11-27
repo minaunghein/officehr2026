@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/router/app_router.dart';
@@ -8,6 +7,7 @@ import 'package:office_hr/core/security/widgets/biometric_gate.dart';
 import 'package:office_hr/core/widgets/container_shimmer.dart';
 import 'package:office_hr/core/widgets/empty_state_widget.dart';
 import 'package:office_hr/core/widgets/error_state_widget.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/payslip/domain/entities/payslip.dart';
 import 'package:office_hr/features/payslip/domain/params/payslip_query.dart';
 import 'package:office_hr/features/payslip/presentation/providers/payslip_providers.dart';
@@ -116,6 +116,7 @@ class _PayslipContent extends HookConsumerWidget {
     Future<void> Function() refresh,
     PayslipQuery query,
   ) {
+    final access = ref.watch(sessionAccessProvider);
     return async.when(
       data: (payslips) {
         if (payslips.isEmpty) {
@@ -142,8 +143,12 @@ class _PayslipContent extends HookConsumerWidget {
                   padding: const EdgeInsets.only(bottom: 12),
                   child: PayslipCard(
                     payslip: payslip,
-                    onTap: () =>
-                        context.push(AppRoutes.payslipDetail, extra: payslip),
+                    onTap: appRouteTap(
+                      context,
+                      access,
+                      AppRoutes.payslipDetail,
+                      extra: payslip,
+                    ),
                   ),
                 );
               }, childCount: payslips.length),

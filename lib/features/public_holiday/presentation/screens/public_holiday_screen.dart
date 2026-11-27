@@ -6,6 +6,7 @@ import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/core/widgets/container_shimmer.dart';
 import 'package:office_hr/features/public_holiday/domain/entities/public_holiday.dart';
 import 'package:office_hr/features/public_holiday/presentation/providers/public_holiday_providers.dart';
+import 'package:office_hr/shared/date_formatter.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
@@ -230,20 +231,5 @@ String _formatHolidayDate(String? value) {
   final date = parseLocalDateTime(value);
   if (date == null) return value;
 
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-
-  return '${date.day} ${months[date.month - 1]} ${date.year}';
+  return displayDate(date);
 }

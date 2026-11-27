@@ -11,6 +11,7 @@ import 'package:office_hr/features/home/domain/entities/attendance_amendment.dar
 import 'package:office_hr/features/home/domain/params/create_amendment_params.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_amendment_provider.dart';
 import 'package:office_hr/features/home/presentation/widgets/attendance_status.dart';
+import 'package:office_hr/shared/date_formatter.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
@@ -161,7 +162,7 @@ class AttendanceAmendmentFormSheet extends HookConsumerWidget {
               const SizedBox(height: 8),
               _TapField(
                 icon: Icons.calendar_month_rounded,
-                label: _formatDisplayDate(date.value),
+                label: displayDate(date.value, abbreviated: false),
                 onTap: submitting.value
                     ? null
                     : () async {
@@ -221,7 +222,11 @@ class AttendanceAmendmentFormSheet extends HookConsumerWidget {
               ],
               const SizedBox(height: 24),
               FilledButton.icon(
-                onPressed: submitting.value ? null : submit,
+                onPressed:
+                    submitting.value ||
+                        !ref.watch(sessionAccessProvider).amendPunch
+                    ? null
+                    : submit,
                 icon: submitting.value
                     ? const SizedBox(
                         width: 18,
@@ -445,22 +450,4 @@ String _formatTimeOfDay(TimeOfDay time) {
   final hour = time.hour.toString().padLeft(2, '0');
   final minute = time.minute.toString().padLeft(2, '0');
   return '$hour:$minute';
-}
-
-String _formatDisplayDate(DateTime date) {
-  const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-  return '${date.day} ${months[date.month - 1]} ${date.year}';
 }

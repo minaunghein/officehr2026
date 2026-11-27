@@ -64,18 +64,18 @@ class SettingsScreen extends ConsumerWidget {
                     title: 'Change Password'.tr(),
                     onTap: () => context.push(AppRoutes.changePassword),
                   ),
-                  if (access.viewProfile)
-                    SettingsTile(
-                      icon: Icons.badge_outlined,
-                      title: 'Digital ID Card'.tr(),
-                      onTap: () => context.push(AppRoutes.staffIdCard),
-                    ),
-                  if (access.viewCompany)
-                    SettingsTile(
-                      icon: Icons.business_outlined,
-                      title: 'Company Information'.tr(),
-                      onTap: () => context.push(AppRoutes.company),
-                    ),
+                  SettingsTile(
+                    icon: Icons.badge_outlined,
+                    title: 'Digital ID Card'.tr(),
+                    enabled: access.viewProfile,
+                    onTap: appRouteTap(context, access, AppRoutes.staffIdCard),
+                  ),
+                  SettingsTile(
+                    icon: Icons.business_outlined,
+                    title: 'Company Information'.tr(),
+                    enabled: access.viewCompany,
+                    onTap: appRouteTap(context, access, AppRoutes.company),
+                  ),
                 ],
               ),
               const SizedBox(height: AppSizes.lg),

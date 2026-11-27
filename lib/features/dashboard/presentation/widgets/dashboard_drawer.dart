@@ -175,59 +175,55 @@ class DashboardDrawer extends ConsumerWidget {
               ),
             ),
           ),
-          if (access.viewProfile) ...[
-            _SectionLabel(label: 'Profile'.tr()),
-            _SettingsGroup(
-              children: [
-                _NavTile(
-                  icon: Icons.badge_rounded,
-                  iconBg: const Color(0xFFEEF2FF),
-                  title: 'Digital ID Card'.tr(),
-                  subtitle: 'Your staff identity card'.tr(),
-                  onTap: () => context.push(AppRoutes.staffIdCard),
-                ),
-              ],
-            ),
-          ],
+          _SectionLabel(label: 'Profile'.tr()),
+          _SettingsGroup(
+            children: [
+              _NavTile(
+                icon: Icons.badge_rounded,
+                iconBg: const Color(0xFFEEF2FF),
+                title: 'Digital ID Card'.tr(),
+                subtitle: 'Your staff identity card'.tr(),
+                onTap: appRouteTap(context, access, AppRoutes.staffIdCard),
+              ),
+            ],
+          ),
           _SectionLabel(label: 'HR Modules'.tr()),
           _SettingsGroup(
             children: [
-              if (access.viewPayslips) ...[
-                _NavTile(
-                  icon: Icons.receipt_long_rounded,
-                  iconBg: const Color(0xFFF5F3FF),
-                  title: 'Payslips'.tr(),
-                  subtitle: 'View your salary slips'.tr(),
-                  onTap: () => context.push(AppRoutes.payslip),
-                ),
-                const _Divider(),
-              ],
-              if (access.viewLeave || access.createLeave) ...[
-                _NavTile(
-                  icon: Icons.beach_access_rounded,
-                  iconBg: const Color(0xFFECFEFF),
-                  title: 'Leave'.tr(),
-                  subtitle: 'Manage your leave balance'.tr(),
-                  onTap: () => context.push(AppRoutes.leave),
-                ),
-                const _Divider(),
-              ],
-              if (access.viewOvertime || access.createOvertime) ...[
-                _NavTile(
-                  icon: Icons.timer_outlined,
-                  iconBg: const Color(0xFFFFFBEB),
-                  title: 'Overtime'.tr(),
-                  subtitle: 'Track your overtime requests'.tr(),
-                  onTap: () => context.push(AppRoutes.overtime),
-                ),
-                const _Divider(),
-              ],
-              if (access.attendanceRequests && !access.viewPunches) ...[
+              _NavTile(
+                icon: Icons.receipt_long_rounded,
+                iconBg: const Color(0xFFF5F3FF),
+                title: 'Payslips'.tr(),
+                subtitle: 'View your salary slips'.tr(),
+                onTap: appRouteTap(context, access, AppRoutes.payslip),
+              ),
+              const _Divider(),
+              _NavTile(
+                icon: Icons.beach_access_rounded,
+                iconBg: const Color(0xFFECFEFF),
+                title: 'Leave'.tr(),
+                subtitle: 'Manage your leave balance'.tr(),
+                onTap: appRouteTap(context, access, AppRoutes.leave),
+              ),
+              const _Divider(),
+              _NavTile(
+                icon: Icons.timer_outlined,
+                iconBg: const Color(0xFFFFFBEB),
+                title: 'Overtime'.tr(),
+                subtitle: 'Track your overtime requests'.tr(),
+                onTap: appRouteTap(context, access, AppRoutes.overtime),
+              ),
+              const _Divider(),
+              if (!access.viewPunches) ...[
                 _NavTile(
                   icon: Icons.edit_calendar_outlined,
                   iconBg: const Color(0xFFF1F5F9),
                   title: 'Attendance Requests'.tr(),
-                  onTap: () => context.push(AppRoutes.attendanceRequests),
+                  onTap: appRouteTap(
+                    context,
+                    access,
+                    AppRoutes.attendanceRequests,
+                  ),
                 ),
                 const _Divider(),
               ],
@@ -238,16 +234,14 @@ class DashboardDrawer extends ConsumerWidget {
                 subtitle: 'National & company holidays'.tr(),
                 onTap: () => context.push(AppRoutes.publicHoliday),
               ),
-              if (access.viewCompany) ...[
-                const _Divider(),
-                _NavTile(
-                  icon: Icons.business_rounded,
-                  iconBg: const Color(0xFFECFDF5),
-                  title: 'Company Information'.tr(),
-                  subtitle: 'About your organisation'.tr(),
-                  onTap: () => context.push(AppRoutes.company),
-                ),
-              ],
+              const _Divider(),
+              _NavTile(
+                icon: Icons.business_rounded,
+                iconBg: const Color(0xFFECFDF5),
+                title: 'Company Information'.tr(),
+                subtitle: 'About your organisation'.tr(),
+                onTap: appRouteTap(context, access, AppRoutes.company),
+              ),
             ],
           ),
           _SectionLabel(label: 'ACCOUNT'.tr()),
@@ -326,50 +320,67 @@ class _NavTile extends StatelessWidget {
   final Color iconBg;
   final String title;
   final String? subtitle;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppSizes.borderRadiusSm),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
-        child: Row(
-          children: [
-            SizedBox(width: 36, height: 36, child: Icon(icon, size: 20)),
-            const SizedBox(width: 14),
+    final enabled = onTap != null;
+    return Semantics(
+      button: true,
+      enabled: enabled,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppSizes.borderRadiusSm),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 36,
+                height: 36,
+                child: Icon(
+                  icon,
+                  size: 20,
+                  color: enabled ? null : theme.disabledColor,
+                ),
+              ),
+              const SizedBox(width: 14),
 
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  if (subtitle != null)
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text(
-                      subtitle!,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(
-                          alpha: 0.5,
-                        ),
+                      title,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: enabled ? null : theme.disabledColor,
                       ),
                     ),
-                ],
+                    if (subtitle != null)
+                      Text(
+                        subtitle!,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: !enabled
+                              ? theme.disabledColor
+                              : theme.colorScheme.onSurface.withValues(
+                                  alpha: 0.5,
+                                ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
-            ),
 
-            Icon(
-              Icons.chevron_right_rounded,
-              size: 20,
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.35),
-            ),
-          ],
+              if (enabled)
+                Icon(
+                  Icons.chevron_right_rounded,
+                  size: 20,
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.35),
+                ),
+            ],
+          ),
         ),
       ),
     );

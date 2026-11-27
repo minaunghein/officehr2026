@@ -197,7 +197,11 @@ class CreateOvertimeRequestScreen extends HookConsumerWidget {
             AppSizes.md,
           ),
           child: FilledButton.icon(
-            onPressed: submitting.value ? null : submit,
+            onPressed:
+                submitting.value ||
+                    !ref.watch(sessionAccessProvider).createOvertime
+                ? null
+                : submit,
             icon: submitting.value
                 ? const SizedBox(
                     width: 18,

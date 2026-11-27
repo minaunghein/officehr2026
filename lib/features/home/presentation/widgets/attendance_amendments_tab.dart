@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/router/app_router.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/core/widgets/container_shimmer.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_amendment.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_amendment_provider.dart';
@@ -128,14 +128,15 @@ class _FilterBar extends StatelessWidget {
   }
 }
 
-class _AmendmentList extends StatelessWidget {
+class _AmendmentList extends ConsumerWidget {
   const _AmendmentList({required this.amendments});
 
   final List<AttendanceAmendment> amendments;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final access = ref.watch(sessionAccessProvider);
 
     if (amendments.isEmpty) {
       return ListView(
@@ -160,12 +161,13 @@ class _AmendmentList extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 6),
-                Text(
-                  'Tap "New Request" to submit a correction.'.tr(),
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+                if (access.amendPunch)
+                  Text(
+                    'Tap "New Request" to submit a correction.'.tr(),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+                    ),
                   ),
-                ),
               ],
             ),
           ),
@@ -182,7 +184,9 @@ class _AmendmentList extends StatelessWidget {
         final amendment = amendments[index];
         return AttendanceAmendmentCard(
           amendment: amendment,
-          onTap: () => context.push(
+          onTap: appRouteTap(
+            context,
+            access,
             AppRoutes.attendanceAmendmentDetail,
             extra: amendment,
           ),

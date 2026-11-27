@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
+import 'package:office_hr/shared/date_formatter.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
@@ -88,24 +89,6 @@ class PayslipPeriodFilter extends StatelessWidget {
   }
 
   String _formatRange(DateTimeRange range) {
-    return '${_shortDate(range.start)} – ${_shortDate(range.end)}';
-  }
-
-  String _shortDate(DateTime date) {
-    const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    return '${date.day} ${months[date.month - 1]} ${date.year}';
+    return '${displayDate(range.start)} – ${displayDate(range.end)}';
   }
 }

@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/core/router/app_router.dart';
@@ -22,53 +21,56 @@ class Dashboard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(dashboardIndexProvider);
     final access = ref.watch(sessionAccessProvider);
-    final destinations = [0, if (access.viewPunches) 1, if (access.team) 2];
-    final selected = destinations.contains(currentIndex) ? currentIndex : 0;
+    final enabled = [true, access.viewPunches, access.team];
+    final selected =
+        currentIndex >= 0 &&
+            currentIndex < enabled.length &&
+            enabled[currentIndex]
+        ? currentIndex
+        : 0;
 
     return Scaffold(
       appBar: _DashboardAppBar(isTeamTab: selected == 2),
       drawer: const DashboardDrawer(),
       body: IndexedStack(
-        index: destinations.indexOf(selected),
+        index: selected,
         children: [
           const HomeScreen(),
-          if (access.viewPunches) const AttendanceScreen(),
-          if (access.team) const TeamScreen(),
+          access.viewPunches
+              ? const AttendanceScreen()
+              : const SizedBox.shrink(),
+          access.team ? const TeamScreen() : const SizedBox.shrink(),
         ],
       ),
-      bottomNavigationBar: destinations.length < 2
-          ? null
-          : BottomNavigationBar(
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-              type: BottomNavigationBarType.fixed,
-              selectedFontSize: 11,
-              unselectedFontSize: 11,
-              iconSize: 22,
-              currentIndex: destinations.indexOf(selected),
-              onTap: (i) => ref
-                  .read(dashboardIndexProvider.notifier)
-                  .select(destinations[i]),
-              items: [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.dashboard_outlined),
-                  activeIcon: Icon(Icons.dashboard_rounded),
-                  label: 'Home'.tr(),
-                ),
-                if (access.viewPunches)
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.calendar_month_outlined),
-                    activeIcon: Icon(Icons.calendar_month),
-                    label: 'Attendance'.tr(),
-                  ),
-                if (access.team)
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.groups_2_outlined),
-                    activeIcon: Icon(Icons.groups_2_rounded),
-                    label: 'Team'.tr(),
-                  ),
-              ],
-            ),
+      bottomNavigationBar: NavigationBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        height: 56,
+        indicatorColor: Colors.transparent,
+        selectedIndex: selected,
+        onDestinationSelected: (i) {
+          if (enabled[i]) ref.read(dashboardIndexProvider.notifier).select(i);
+        },
+        destinations: [
+          NavigationDestination(
+            icon: Icon(Icons.dashboard_outlined),
+            selectedIcon: Icon(Icons.dashboard_rounded),
+            label: 'Home'.tr(),
+          ),
+          NavigationDestination(
+            enabled: access.viewPunches,
+            icon: Icon(Icons.calendar_month_outlined),
+            selectedIcon: Icon(Icons.calendar_month),
+            label: 'Attendance'.tr(),
+          ),
+          NavigationDestination(
+            enabled: access.team,
+            icon: Icon(Icons.groups_2_outlined),
+            selectedIcon: Icon(Icons.groups_2_rounded),
+            label: 'Team'.tr(),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -184,27 +186,23 @@ class _DashboardAppBar extends HookConsumerWidget
         ],
       ),
       actions: [
-        if (isTeamTab && access.viewOtherEmployees)
+        if (isTeamTab)
           IconButton(
             tooltip: 'Scan Staff ID Card'.tr(),
-            icon: Icon(
-              Icons.qr_code_scanner_rounded,
-              color: theme.colorScheme.primary,
-            ),
-            onPressed: () => context.push(AppRoutes.qrScanner),
+            color: theme.colorScheme.primary,
+            icon: const Icon(Icons.qr_code_scanner_rounded),
+            onPressed: appRouteTap(context, access, AppRoutes.qrScanner),
           ),
-        if (access.viewAnnouncements)
-          IconButton(
-            icon: Badge.count(
-              count: totalBadgeCount,
-              isLabelVisible: totalBadgeCount > 0,
-              child: Icon(
-                Icons.notifications_none_rounded,
-                color: theme.colorScheme.primary,
-              ),
-            ),
-            onPressed: () => context.push(AppRoutes.announcements),
+        IconButton(
+          tooltip: 'Announcements'.tr(),
+          color: theme.colorScheme.primary,
+          icon: Badge.count(
+            count: totalBadgeCount,
+            isLabelVisible: totalBadgeCount > 0,
+            child: const Icon(Icons.notifications_none_rounded),
           ),
+          onPressed: appRouteTap(context, access, AppRoutes.announcements),
+        ),
         // IconButton(
         //   icon: Icon(
         //     themeStyle == OfficeHrTheme.dark

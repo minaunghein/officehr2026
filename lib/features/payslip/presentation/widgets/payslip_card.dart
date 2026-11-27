@@ -130,12 +130,13 @@ class PayslipCard extends StatelessWidget {
                         //   ],
                         // ),
                         // const SizedBox(width: 4),
-                        Icon(
-                          Icons.chevron_right_rounded,
-                          color: theme.colorScheme.onSurface.withValues(
-                            alpha: 0.3,
+                        if (onTap != null)
+                          Icon(
+                            Icons.chevron_right_rounded,
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.3,
+                            ),
                           ),
-                        ),
                       ],
                     ),
                   ),

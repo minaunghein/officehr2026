@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/core/widgets/container_shimmer.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/home/domain/entities/today_attendance.dart';
 import 'package:office_hr/features/home/domain/params/attendance_history_query.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_provider.dart';
@@ -14,6 +14,7 @@ import 'package:office_hr/features/home/presentation/widgets/attendance_calendar
 import 'package:office_hr/features/home/presentation/widgets/attendance_day_detail.dart';
 import 'package:office_hr/features/home/presentation/widgets/attendance_range_list.dart';
 import 'package:office_hr/features/home/presentation/widgets/attendance_status.dart';
+import 'package:office_hr/shared/date_formatter.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
@@ -25,6 +26,7 @@ class AttendanceScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final access = ref.watch(sessionAccessProvider);
     final today = useMemoized(() {
       final now = DateTime.now();
       return DateTime(now.year, now.month, now.day);
@@ -112,7 +114,11 @@ class AttendanceScreen extends HookConsumerWidget {
               selectedDate.value = today;
               focusedMonth.value = DateTime(today.year, today.month);
             },
-            onRequestTap: () => context.push(AppRoutes.attendanceRequests),
+            onRequestTap: appRouteTap(
+              context,
+              access,
+              AppRoutes.attendanceRequests,
+            ),
             showTodayButton:
                 mode.value == AttendanceViewMode.day &&
                 formatApiDate(selectedDate.value) != formatApiDate(today),
@@ -189,7 +195,7 @@ class _Header extends StatelessWidget {
   final AttendanceViewMode mode;
   final ValueChanged<AttendanceViewMode> onModeChanged;
   final VoidCallback onTodayTap;
-  final VoidCallback onRequestTap;
+  final VoidCallback? onRequestTap;
   final bool showTodayButton;
 
   @override
@@ -462,20 +468,4 @@ class _ErrorView extends StatelessWidget {
   }
 }
 
-String _shortDate(DateTime date) {
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-  return '${date.day} ${months[date.month - 1]} ${date.year}';
-}
+String _shortDate(DateTime date) => displayDate(date);

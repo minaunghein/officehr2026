@@ -118,11 +118,11 @@ class LeaveRequestDetailScreen extends HookConsumerWidget {
               )
             : Text('Leave Details'.tr()),
       ),
-      bottomNavigationBar: canAct
+      bottomNavigationBar: canApprove && request.isPending
           ? _ApprovalBar(
               pendingDecision: pendingDecision.value,
-              onReject: () => decide(LeaveDecision.rejected),
-              onApprove: () => decide(LeaveDecision.approved),
+              onReject: canAct ? () => decide(LeaveDecision.rejected) : null,
+              onApprove: canAct ? () => decide(LeaveDecision.approved) : null,
             )
           : null,
       body: ListView(
@@ -241,8 +241,8 @@ class _ApprovalBar extends StatelessWidget {
   });
 
   final LeaveDecision? pendingDecision;
-  final VoidCallback onReject;
-  final VoidCallback onApprove;
+  final VoidCallback? onReject;
+  final VoidCallback? onApprove;
 
   bool get _anyBusy => pendingDecision != null;
 

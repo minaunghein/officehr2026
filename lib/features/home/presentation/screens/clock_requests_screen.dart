@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
@@ -24,6 +23,7 @@ class ClockRequestsScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final access = ref.watch(sessionAccessProvider);
     final requestsAsync = ref.watch(clockRequestsReviewProvider);
     final selectedStatus = useState<ClockRequestStatus?>(null);
 
@@ -87,7 +87,9 @@ class ClockRequestsScreen extends HookConsumerWidget {
                       final request = requests[index];
                       return ClockRequestCard(
                         request: request,
-                        onTap: () => context.push(
+                        onTap: appRouteTap(
+                          context,
+                          access,
                           AppRoutes.clockRequestDetail,
                           extra: ClockRequestRouteArgs(request: request),
                         ),
@@ -115,7 +117,11 @@ class _DecisionButtons extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pendingDecision = useState<ClockRequestDecision?>(null);
-    final isDeciding = pendingDecision.value != null;
+    final access = ref.watch(sessionAccessProvider);
+    final disabled =
+        pendingDecision.value != null ||
+        !access.reviewClock ||
+        access.isOwnUser(request.userId);
 
     Future<void> decide(ClockRequestDecision decision) async {
       final requesterLabel = request.userName.trim().isEmpty
@@ -174,7 +180,7 @@ class _DecisionButtons extends HookConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           OutlinedButton.icon(
-            onPressed: isDeciding
+            onPressed: disabled
                 ? null
                 : () => decide(ClockRequestDecision.rejected),
             style: OutlinedButton.styleFrom(
@@ -194,13 +200,13 @@ class _DecisionButtons extends HookConsumerWidget {
             icon: buttonIcon(
               ClockRequestDecision.rejected,
               Icons.close_rounded,
-              const Color(0xFFB91C1C).withValues(alpha: isDeciding ? 0.5 : 1),
+              const Color(0xFFB91C1C).withValues(alpha: disabled ? 0.5 : 1),
             ),
             label: Text('Reject'.tr()),
           ),
           const SizedBox(width: 8),
           FilledButton.icon(
-            onPressed: isDeciding
+            onPressed: disabled
                 ? null
                 : () => decide(ClockRequestDecision.approved),
             style: FilledButton.styleFrom(

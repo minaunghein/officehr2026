@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
+import 'package:office_hr/core/localization/app_locale.dart';
 import 'package:office_hr/core/widgets/detail_page_style.dart';
 import 'package:office_hr/features/settings/data/reminder_service.dart';
 
@@ -27,6 +28,23 @@ class WeekdaySelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final showFullDayNames = AppLocale.isMyanmar(
+      Localizations.localeOf(context),
+    );
+
+    Widget dayChip(int weekday) => _DayChip(
+      label: kWeekdayShortNames[weekday - 1].tr(),
+      showFullLabel: showFullDayNames,
+      selected: selected.contains(weekday),
+      onTap: enabled
+          ? () {
+              final next = {...selected};
+              if (!next.remove(weekday)) next.add(weekday);
+              onChanged(next);
+            }
+          : null,
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -62,31 +80,28 @@ class WeekdaySelector extends StatelessWidget {
           ],
         ),
         const SizedBox(height: AppSizes.md),
-        Row(
-          children: [
-            for (int weekday = 1; weekday <= 7; weekday++)
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSizes.xs),
-                  child: _DayChip(
-                    label: kWeekdayShortNames[weekday - 1].tr(),
-                    selected: selected.contains(weekday),
-                    onTap: enabled
-                        ? () {
-                            final next = {...selected};
-                            if (next.contains(weekday)) {
-                              next.remove(weekday);
-                            } else {
-                              next.add(weekday);
-                            }
-                            onChanged(next);
-                          }
-                        : null,
+        if (showFullDayNames)
+          Wrap(
+            spacing: AppSizes.xs,
+            runSpacing: AppSizes.xs,
+            children: [
+              for (var weekday = 1; weekday <= 7; weekday++) dayChip(weekday),
+            ],
+          )
+        else
+          Row(
+            children: [
+              for (var weekday = 1; weekday <= 7; weekday++)
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSizes.xs,
+                    ),
+                    child: dayChip(weekday),
                   ),
                 ),
-              ),
-          ],
-        ),
+            ],
+          ),
       ],
     );
   }
@@ -96,9 +111,15 @@ class WeekdaySelector extends StatelessWidget {
 }
 
 class _DayChip extends StatelessWidget {
-  const _DayChip({required this.label, required this.selected, this.onTap});
+  const _DayChip({
+    required this.label,
+    required this.showFullLabel,
+    required this.selected,
+    this.onTap,
+  });
 
   final String label;
+  final bool showFullLabel;
   final bool selected;
   final VoidCallback? onTap;
 
@@ -120,12 +141,27 @@ class _DayChip extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppSizes.borderRadiusMd),
           child: Container(
             constraints: const BoxConstraints(minHeight: 38),
-            alignment: Alignment.center,
-            child: ExcludeSemantics(
-              child: Text(
-                // Single letter keeps the row readable on narrow screens.
-                label.isEmpty ? '?' : label.substring(0, 1).toUpperCase(),
-                style: _chipLabel(theme, selected: selected, enabled: enabled),
+            padding: showFullLabel
+                ? const EdgeInsets.symmetric(
+                    horizontal: AppSizes.sm,
+                    vertical: AppSizes.xxxs,
+                  )
+                : EdgeInsets.zero,
+            child: Center(
+              widthFactor: 1,
+              heightFactor: 1,
+              child: ExcludeSemantics(
+                child: Text(
+                  showFullLabel
+                      ? label
+                      : (label.characters.firstOrNull ?? '?').toUpperCase(),
+                  textAlign: TextAlign.center,
+                  style: _chipLabel(
+                    theme,
+                    selected: selected,
+                    enabled: enabled,
+                  ),
+                ),
               ),
             ),
           ),

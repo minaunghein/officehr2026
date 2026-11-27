@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
@@ -25,35 +24,38 @@ class TeamScreen extends ConsumerWidget {
     final access = ref.watch(sessionAccessProvider);
 
     final quickActions = <TeamQuickAction>[
-      if (access.reviewLeave)
-        TeamQuickAction(
-          icon: Icons.beach_access_outlined,
-          label: 'Leave Requests'.tr(),
-          badgeCount: ref.watch(pendingLeaveRequestsCountProvider),
-          onTap: () => context.push(AppRoutes.leaveRequests),
-        ),
-      if (access.reviewAmendments)
-        TeamQuickAction(
-          icon: Icons.edit_calendar_outlined,
-          label: 'Attendance Requests'.tr(),
-          badgeCount: ref.watch(pendingAmendmentsBadgeCountProvider).value ?? 0,
-          onTap: () => context.push(AppRoutes.amendmentRequests),
-        ),
-      if (access.reviewClock)
-        TeamQuickAction(
-          icon: Icons.gps_fixed_rounded,
-          label: 'Clock Requests'.tr(),
-          badgeCount:
-              ref.watch(pendingClockRequestsBadgeCountProvider).value ?? 0,
-          onTap: () => context.push(AppRoutes.clockRequests),
-        ),
-      if (access.reviewOvertime)
-        TeamQuickAction(
-          icon: Icons.timer_outlined,
-          label: 'Overtime Requests'.tr(),
-          badgeCount: ref.watch(pendingOvertimeRequestsCountProvider),
-          onTap: () => context.push(AppRoutes.overtimeRequests),
-        ),
+      TeamQuickAction(
+        icon: Icons.beach_access_outlined,
+        label: 'Leave Requests'.tr(),
+        badgeCount: access.reviewLeave
+            ? ref.watch(pendingLeaveRequestsCountProvider)
+            : 0,
+        onTap: appRouteTap(context, access, AppRoutes.leaveRequests),
+      ),
+      TeamQuickAction(
+        icon: Icons.edit_calendar_outlined,
+        label: 'Attendance Requests'.tr(),
+        badgeCount: access.reviewAmendments
+            ? ref.watch(pendingAmendmentsBadgeCountProvider).value ?? 0
+            : 0,
+        onTap: appRouteTap(context, access, AppRoutes.amendmentRequests),
+      ),
+      TeamQuickAction(
+        icon: Icons.gps_fixed_rounded,
+        label: 'Clock Requests'.tr(),
+        badgeCount: access.reviewClock
+            ? ref.watch(pendingClockRequestsBadgeCountProvider).value ?? 0
+            : 0,
+        onTap: appRouteTap(context, access, AppRoutes.clockRequests),
+      ),
+      TeamQuickAction(
+        icon: Icons.timer_outlined,
+        label: 'Overtime Requests'.tr(),
+        badgeCount: access.reviewOvertime
+            ? ref.watch(pendingOvertimeRequestsCountProvider)
+            : 0,
+        onTap: appRouteTap(context, access, AppRoutes.overtimeRequests),
+      ),
     ];
 
     return Scaffold(

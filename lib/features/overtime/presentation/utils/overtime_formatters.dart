@@ -1,21 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:office_hr/features/overtime/domain/entities/overtime_request.dart';
-
-const _shortMonths = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];
+import 'package:office_hr/shared/date_formatter.dart';
 
 String overtimeStatusLabel(OvertimeStatus status) => status.label.tr();
 
@@ -41,7 +27,7 @@ Color overtimeStatusBackground(OvertimeStatus status) {
 
 String formatOvertimeDate(DateTime? date) {
   if (date == null) return '-';
-  return '${date.day} ${_shortMonths[date.month - 1]} ${date.year}';
+  return displayDate(date);
 }
 
 /// Formats an API `HH:mm` value as `06:00 PM`.

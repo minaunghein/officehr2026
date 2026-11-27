@@ -258,7 +258,10 @@ class _CreateLeaveRequestScreenState
             0,
           ),
           child: FilledButton.icon(
-            onPressed: _submitting ? null : _submit,
+            onPressed:
+                _submitting || !ref.watch(sessionAccessProvider).createLeave
+                ? null
+                : _submit,
             icon: _submitting
                 ? const SizedBox(
                     width: 18,

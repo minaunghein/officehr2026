@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/router/app_router.dart';
+import 'package:office_hr/core/widgets/request_action_button.dart';
 import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/overtime/presentation/widgets/overtime_requests_tab.dart';
 
@@ -17,13 +17,10 @@ class OvertimeScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(centerTitle: true, title: Text('Overtime'.tr())),
       body: access.viewOvertime ? const OvertimeRequestsTab() : null,
-      floatingActionButton: !access.createOvertime
-          ? null
-          : FloatingActionButton.extended(
-              onPressed: () => context.push(AppRoutes.createOvertime),
-              icon: const Icon(Icons.add_rounded),
-              label: Text('Request'.tr()),
-            ),
+      floatingActionButton: RequestActionButton(
+        label: 'Request'.tr(),
+        onPressed: appRouteTap(context, access, AppRoutes.createOvertime),
+      ),
     );
   }
 }

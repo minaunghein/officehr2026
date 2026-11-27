@@ -38,7 +38,9 @@ class ClockButton extends HookConsumerWidget {
     final user = currentUser.value;
     final branch = user?.employee?.workInfo.branch;
     final optionalLocation = user?.optionalLocation ?? false;
-    final currentLocation = ref.watch(currentLocationProvider).value;
+    final currentLocation = access.createPunch || access.requestClock
+        ? ref.watch(currentLocationProvider).value
+        : null;
 
     final distanceToBranch = _distanceToBranch(currentLocation, branch);
     final inRange =
@@ -46,12 +48,13 @@ class ClockButton extends HookConsumerWidget {
         branch != null &&
         distanceToBranch <= branch.geofence.radiusKm * 1000;
     final directPunch = access.createPunch && (inRange || optionalLocation);
+    final enabled = directPunch || access.requestClock;
 
     return SizedBox(
       width: double.infinity,
       height: 48,
       child: ElevatedButton.icon(
-        onPressed: isLoading
+        onPressed: isLoading || !enabled
             ? null
             : () async {
                 final location = ref.read(currentLocationProvider).value;
@@ -118,17 +121,14 @@ class ClockButton extends HookConsumerWidget {
               )
             : Icon(
                 isClockedIn ? Icons.exit_to_app_rounded : Icons.login_rounded,
-                color: Colors.white,
               ),
         label: Text(
           isClockedIn ? 'Clock Out Now'.tr() : 'Clock In Now'.tr(),
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.w600),
         ),
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 12),
+          foregroundColor: Colors.white,
           backgroundColor: isClockedIn
               ? const Color(0xFFC62828)
               : const Color(0xFF2E7D32),

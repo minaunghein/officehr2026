@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/features/auth/data/models/auth_session_model.dart';
@@ -10,6 +11,10 @@ import 'package:office_hr/features/dashboard/presentation/views/dashboard.dart';
 import 'package:office_hr/features/home/domain/entities/clock_request.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_provider.dart';
 import 'package:office_hr/features/home/presentation/providers/clock_request_provider.dart';
+import 'package:office_hr/features/leave/domain/entities/leave_request.dart';
+import 'package:office_hr/features/leave/presentation/providers/leave_providers.dart';
+import 'package:office_hr/features/leave/presentation/widgets/leave_request_card.dart';
+import 'package:office_hr/features/leave/presentation/widgets/leave_requests_tab.dart';
 import 'package:office_hr/features/user_profile/presentation/screens/company_screen.dart';
 
 AuthSession _session(
@@ -25,6 +30,14 @@ AuthSession _session(
       {'resource': resource, 'action': action, 'scope': scope},
   ],
 }).toEntity();
+
+class _LeaveRequests extends LeaveRequestsNotifier {
+  @override
+  Future<List<LeaveRequest>> build() async => const [
+    LeaveRequest(id: 'own', requesterId: 'me', reason: 'Own record'),
+    LeaveRequest(id: 'restricted', requesterId: 'other', reason: 'Other record'),
+  ];
+}
 
 void main() {
   test('wildcards and duplicates resolve to the strongest matching grant', () {
@@ -107,42 +120,117 @@ void main() {
     );
   });
 
-  testWidgets('dashboard hides ungranted features before loading their data', (
+  testWidgets(
+    'dashboard disables ungranted controls without loading their data',
+    (tester) async {
+      final container = ProviderContainer(
+        overrides: [
+          getTodayAttendanceUsecaseProvider.overrideWith(
+            (_) => throw StateError('Unexpected attendance query'),
+          ),
+          pendingClockRequestsBadgeCountProvider.overrideWith(
+            (_) => throw StateError('Unexpected review query'),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+      await container.read(currentUserProvider.future);
+      await container
+          .read(currentUserProvider.notifier)
+          .setSession(
+            _session([('leave', 'create', 'own')], role: 'Top Admin'),
+          );
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const MaterialApp(home: Dashboard()),
+        ),
+      );
+      await tester.pumpAndSettle();
+      final nav = find.byType(NavigationBar);
+      final bar = tester.widget<NavigationBar>(nav);
+      expect((bar.destinations[1] as NavigationDestination).enabled, isFalse);
+      expect((bar.destinations[2] as NavigationDestination).enabled, isFalse);
+      await tester.tap(find.descendant(of: nav, matching: find.text('Team')));
+      await tester.pumpAndSettle();
+      expect(tester.widget<NavigationBar>(nav).selectedIndex, 0);
+      final bell = find.widgetWithIcon(
+        IconButton,
+        Icons.notifications_none_rounded,
+      );
+      expect(tester.widget<IconButton>(bell).onPressed, isNull);
+      expect(
+        tester
+            .widget<ElevatedButton>(
+              find.widgetWithText(ElevatedButton, 'Clock In Now'),
+            )
+            .onPressed,
+        isNull,
+      );
+      expect(container.exists(getTodayAttendanceUsecaseProvider), isFalse);
+      expect(container.exists(pendingClockRequestsBadgeCountProvider), isFalse);
+
+      await tester.tap(find.byIcon(Icons.menu));
+      await tester.pumpAndSettle();
+      expect(find.text('Leave'), findsOneWidget);
+      final payslips = find
+          .ancestor(of: find.text('Payslips'), matching: find.byType(InkWell))
+          .first;
+      expect(tester.widget<InkWell>(payslips).onTap, isNull);
+      await tester.tap(find.text('Payslips'));
+      await tester.pumpAndSettle();
+      expect(find.text('HR Modules'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets('own-scope rows only open detail for the signed-in employee', (
     tester,
   ) async {
     final container = ProviderContainer(
-      overrides: [
-        getTodayAttendanceUsecaseProvider.overrideWith(
-          (_) => throw StateError('Unexpected attendance query'),
-        ),
-        pendingClockRequestsBadgeCountProvider.overrideWith(
-          (_) => throw StateError('Unexpected review query'),
-        ),
-      ],
+      overrides: [leaveRequestsProvider.overrideWith(_LeaveRequests.new)],
     );
     addTearDown(container.dispose);
     await container.read(currentUserProvider.future);
     await container
         .read(currentUserProvider.notifier)
-        .setSession(_session([('leave', 'create', 'own')], role: 'Top Admin'));
+        .setSession(_session([('leave', 'view', 'own')]));
+    final router = GoRouter(
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (_, _) =>
+              Scaffold(body: LeaveRequestsTab(onRefresh: () async {})),
+        ),
+        GoRoute(
+          path: AppRoutes.leaveDetail,
+          builder: (_, state) => Scaffold(
+            body: Text('Details: ${(state.extra! as LeaveRequest).reason}'),
+          ),
+        ),
+      ],
+    );
+    addTearDown(router.dispose);
     await tester.pumpWidget(
       UncontrolledProviderScope(
         container: container,
-        child: const MaterialApp(home: Dashboard()),
+        child: MaterialApp.router(routerConfig: router),
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.byType(BottomNavigationBar), findsNothing);
-    expect(find.byIcon(Icons.notifications_none_rounded), findsNothing);
-    expect(container.exists(getTodayAttendanceUsecaseProvider), isFalse);
-    expect(container.exists(pendingClockRequestsBadgeCountProvider), isFalse);
-
-    await tester.tap(find.byIcon(Icons.menu));
+    final restrictedCard = find.widgetWithText(
+      LeaveRequestCard,
+      'Other record',
+    );
+    expect(tester.widget<LeaveRequestCard>(restrictedCard).onTap, isNull);
+    await tester.tap(restrictedCard);
     await tester.pumpAndSettle();
-    expect(find.text('Leave'), findsOneWidget);
-    expect(find.text('Payslips'), findsNothing);
-    expect(find.text('Company Information'), findsNothing);
-    expect(tester.takeException(), isNull);
+    expect(find.byType(LeaveRequestsTab), findsOneWidget);
+
+    await tester.tap(find.widgetWithText(LeaveRequestCard, 'Own record'));
+    await tester.pumpAndSettle();
+    expect(find.text('Details: Own record'), findsOneWidget);
+    await tester.pumpWidget(const SizedBox.shrink());
   });
 
   testWidgets(

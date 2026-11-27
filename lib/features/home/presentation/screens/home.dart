@@ -28,12 +28,8 @@ class HomeScreen extends ConsumerWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
               sliver: SliverList(
                 delegate: SliverChildListDelegate.fixed([
-                  if (access.viewPunches ||
-                      access.createPunch ||
-                      access.requestClock) ...[
-                    const CurrentStatusCard(),
-                    const SizedBox(height: 24),
-                  ],
+                  const CurrentStatusCard(),
+                  const SizedBox(height: 24),
                   if (access.viewPunches) ...[
                     const RecentActivity(),
                     const SizedBox(height: 24),

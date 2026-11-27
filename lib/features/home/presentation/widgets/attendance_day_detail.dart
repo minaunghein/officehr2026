@@ -346,23 +346,7 @@ String _duration(int? minutes) {
   return formatDurationText(Duration(minutes: minutes));
 }
 
-String _fullDate(DateTime date) {
-  const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-  return '${date.day} ${months[date.month - 1]} ${date.year}';
-}
+String _fullDate(DateTime date) => displayDate(date, abbreviated: false);
 
 String _weekday(DateTime date) {
   const weekdays = [
@@ -374,5 +358,5 @@ String _weekday(DateTime date) {
     'Saturday',
     'Sunday',
   ];
-  return weekdays[date.weekday - 1];
+  return weekdays[date.weekday - 1].tr();
 }

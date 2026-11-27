@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/core/utils/date_time_utils.dart';
+import 'package:office_hr/shared/date_formatter.dart';
 
 /// A large, enterprise-styled month calendar used to pick an attendance date.
 ///
@@ -24,11 +25,10 @@ class AttendanceCalendar extends StatelessWidget {
   final VoidCallback onNextMonth;
   final Map<String, Color> markers;
 
-  static const _weekdayLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final weekdayLabels = MaterialLocalizations.of(context).narrowWeekdays;
     final firstOfMonth = DateTime(focusedMonth.year, focusedMonth.month, 1);
     final daysInMonth = DateTime(
       focusedMonth.year,
@@ -54,11 +54,15 @@ class AttendanceCalendar extends StatelessWidget {
           const SizedBox(height: 16),
           Row(
             children: [
-              for (final label in _weekdayLabels)
+              for (
+                var weekday = DateTime.monday;
+                weekday <= DateTime.sunday;
+                weekday++
+              )
                 Expanded(
                   child: Center(
                     child: Text(
-                      label,
+                      weekdayLabels[weekday % 7],
                       style: theme.textTheme.labelSmall?.copyWith(
                         fontWeight: FontWeight.w700,
                         color: theme.colorScheme.onSurface.withValues(
@@ -96,7 +100,7 @@ class AttendanceCalendar extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            _monthLabel(focusedMonth),
+            formatMonthYear(focusedMonth),
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w800,
             ),
@@ -185,24 +189,6 @@ class AttendanceCalendar extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _monthLabel(DateTime date) {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-    return '${months[date.month - 1]} ${date.year}';
   }
 }
 

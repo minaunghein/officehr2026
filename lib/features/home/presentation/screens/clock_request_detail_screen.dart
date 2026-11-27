@@ -269,7 +269,7 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
           ],
         ],
       ),
-      bottomNavigationBar: !current.isPending || !(canReview || canCancel)
+      bottomNavigationBar: !current.isPending
           ? null
           : Container(
               decoration: BoxDecoration(
@@ -283,12 +283,12 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
               child: SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.all(16),
-                  child: canReview
+                  child: canDecide
                       ? Row(
                           children: [
                             Expanded(
                               child: OutlinedButton.icon(
-                                onPressed: isSubmitting.value
+                                onPressed: isSubmitting.value || !canReview
                                     ? null
                                     : () =>
                                           decide(ClockRequestDecision.rejected),
@@ -313,7 +313,7 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
                             const SizedBox(width: 12),
                             Expanded(
                               child: FilledButton.icon(
-                                onPressed: isSubmitting.value
+                                onPressed: isSubmitting.value || !canReview
                                     ? null
                                     : () =>
                                           decide(ClockRequestDecision.approved),
@@ -344,7 +344,9 @@ class ClockRequestDetailScreen extends HookConsumerWidget {
                       : SizedBox(
                           width: double.infinity,
                           child: OutlinedButton.icon(
-                            onPressed: isSubmitting.value ? null : cancel,
+                            onPressed: isSubmitting.value || !canCancel
+                                ? null
+                                : cancel,
                             style: OutlinedButton.styleFrom(
                               foregroundColor: const Color(0xFFB91C1C),
                               side: BorderSide(

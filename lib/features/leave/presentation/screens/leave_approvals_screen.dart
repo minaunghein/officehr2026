@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/router/app_router.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/core/widgets/container_shimmer.dart';
 import 'package:office_hr/core/widgets/error_state_widget.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
@@ -45,6 +45,7 @@ class LeaveApprovalsScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final access = ref.watch(sessionAccessProvider);
     final filter = useState(_Filter.pending);
     final requestsAsync = ref.watch(allLeaveRequestsProvider);
     final currentUserId = ref.watch(currentUserProvider).value?.userId ?? '';
@@ -98,7 +99,9 @@ class LeaveApprovalsScreen extends HookConsumerWidget {
                       final request = visible[index];
                       return LeaveApprovalCard(
                         request: request,
-                        onTap: () => context.push(
+                        onTap: appRouteTap(
+                          context,
+                          access,
                           AppRoutes.leaveDetail,
                           extra: LeaveRequestRouteArgs(
                             request: request,

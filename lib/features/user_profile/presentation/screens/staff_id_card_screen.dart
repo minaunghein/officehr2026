@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/features/auth/domain/entities/auth_session.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
+import 'package:office_hr/features/user_profile/presentation/utils/profile_value_label.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -125,7 +126,7 @@ class _StaffIdCard extends StatelessWidget {
       _CardInfoData(
         icon: Icons.work_outline_rounded,
         label: 'Employment'.tr(),
-        value: _text(workInfo?.employmentType),
+        value: _text(profileValueLabel(workInfo?.employmentType)),
       ),
       _CardInfoData(
         icon: Icons.event_available_rounded,
@@ -395,7 +396,9 @@ class _CardFooter extends StatelessWidget {
               const SizedBox(height: 12),
               _FooterField(
                 label: 'STATUS'.tr(),
-                value: status == '-' ? 'ACTIVE'.tr() : status.toUpperCase(),
+                value: status == '-'
+                    ? 'ACTIVE'.tr()
+                    : profileValueLabel(status),
               ),
             ],
           ),

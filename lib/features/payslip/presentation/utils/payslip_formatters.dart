@@ -1,19 +1,5 @@
 import 'package:office_hr/core/utils/date_time_utils.dart';
-
-const _shortMonths = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];
+import 'package:office_hr/shared/date_formatter.dart';
 
 /// Formats an amount with thousands separators, e.g. `1250000` -> `1,250,000`.
 /// Keeps up to two decimals only when the value is fractional.
@@ -42,14 +28,14 @@ String formatMoney(num amount) {
 String formatPayslipDate(String? iso) {
   final date = parseLocalDateTime(iso);
   if (date == null) return '-';
-  return '${date.day} ${_shortMonths[date.month - 1]} ${date.year}';
+  return displayDate(date);
 }
 
 /// Short month label `Jan`, derived from a date string.
 String formatPayslipMonthShort(String? iso) {
   final date = parseLocalDateTime(iso);
   if (date == null) return '--';
-  return _shortMonths[date.month - 1];
+  return monthLabel(date.month);
 }
 
 /// Four-digit year label derived from a date string.
@@ -68,11 +54,11 @@ String formatPayslipPeriod(String? startIso, String? endIso) {
   if (end == null) return formatPayslipDate(startIso);
 
   if (start.year == end.year && start.month == end.month) {
-    return '${start.day}-${end.day} ${_shortMonths[start.month - 1]} ${start.year}';
+    return '${start.day}-${end.day} ${monthLabel(start.month)} ${start.year}';
   }
   if (start.year == end.year) {
-    return '${start.day} ${_shortMonths[start.month - 1]} - '
-        '${end.day} ${_shortMonths[end.month - 1]} ${start.year}';
+    return '${start.day} ${monthLabel(start.month)} - '
+        '${end.day} ${monthLabel(end.month)} ${start.year}';
   }
   return '${formatPayslipDate(startIso)} - ${formatPayslipDate(endIso)}';
 }
@@ -81,19 +67,5 @@ String formatPayslipPeriod(String? startIso, String? endIso) {
 String formatPayslipMonth(String? startIso) {
   final date = parseLocalDateTime(startIso);
   if (date == null) return '-';
-  const fullMonths = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-  return '${fullMonths[date.month - 1]} ${date.year}';
+  return formatMonthYear(date);
 }

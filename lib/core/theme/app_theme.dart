@@ -346,21 +346,28 @@ class AppTheme {
           vertical: 16,
         ),
       ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: surface,
-        selectedItemColor: primary,
-        unselectedItemColor: onBackground.withValues(alpha: 0.4),
-        type: BottomNavigationBarType.fixed,
-        elevation: 0,
-        selectedLabelStyle: GoogleFonts.inter(
-          fontSize: 11,
-          fontWeight: FontWeight.w500,
-          height: 14 / 11,
-        ),
-        unselectedLabelStyle: GoogleFonts.inter(
-          fontSize: 11,
-          fontWeight: FontWeight.w500,
-          height: 14 / 11,
+      navigationBarTheme: NavigationBarThemeData(
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          final color = states.contains(WidgetState.selected)
+              ? const Color(0xFF0052CC)
+              : states.contains(WidgetState.disabled)
+              ? onBackground.withValues(alpha: 0.38)
+              : onBackground.withValues(alpha: 0.6);
+          return IconThemeData(color: color, size: 22);
+        }),
+        labelTextStyle: WidgetStateProperty.resolveWith(
+          (states) => GoogleFonts.inter(
+            color: states.contains(WidgetState.selected)
+                ? const Color(0xFF0052CC)
+                : states.contains(WidgetState.disabled)
+                ? onBackground.withValues(alpha: 0.38)
+                : onBackground.withValues(alpha: 0.6),
+            fontSize: 11,
+            fontWeight: states.contains(WidgetState.selected)
+                ? FontWeight.w700
+                : FontWeight.w500,
+            height: 14 / 11,
+          ),
         ),
       ),
       snackBarTheme: SnackBarThemeData(
@@ -444,7 +451,7 @@ class AppTheme {
         dividerThickness: 1,
       ),
       listTileTheme: ListTileThemeData(
-        tileColor: surface,
+        // tileColor: surface,
         selectedTileColor: primary.withValues(alpha: 0.1),
         iconColor: onBackground.withValues(alpha: 0.7),
         textColor: onBackground,

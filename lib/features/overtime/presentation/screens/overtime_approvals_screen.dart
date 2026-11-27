@@ -154,7 +154,9 @@ class _DecisionButtons extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pendingDecision = useState<OvertimeDecision?>(null);
-    final isDeciding = pendingDecision.value != null;
+    final disabled =
+        pendingDecision.value != null ||
+        !ref.watch(sessionAccessProvider).reviewOvertime;
 
     Future<void> decide(OvertimeDecision decision) async {
       final result = await showOvertimeDecisionDialog(
@@ -215,7 +217,7 @@ class _DecisionButtons extends HookConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           OutlinedButton.icon(
-            onPressed: isDeciding
+            onPressed: disabled
                 ? null
                 : () => decide(OvertimeDecision.rejected),
             style: OutlinedButton.styleFrom(
@@ -238,7 +240,7 @@ class _DecisionButtons extends HookConsumerWidget {
           ),
           const SizedBox(width: 8),
           FilledButton.icon(
-            onPressed: isDeciding
+            onPressed: disabled
                 ? null
                 : () => decide(OvertimeDecision.approved),
             style: FilledButton.styleFrom(

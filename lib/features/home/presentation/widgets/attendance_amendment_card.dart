@@ -265,25 +265,11 @@ String formatAmendmentDate(String dateId) {
   final digits = dateId.replaceAll(RegExp(r'[^0-9]'), '');
   if (digits.length != 8) return dateId;
 
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
   final year = digits.substring(0, 4);
   final month = int.parse(digits.substring(4, 6));
   final day = int.parse(digits.substring(6, 8));
   if (month < 1 || month > 12) return dateId;
-  return '$day ${months[month - 1]} $year';
+  return '$day ${monthLabel(month)} $year';
 }
 
 String _relativeOrDate(DateTime value) {

@@ -106,7 +106,7 @@ class LeaveApprovalCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ],
-                        if (request.isPending) ...[
+                        if (request.isPending && onTap != null) ...[
                           const SizedBox(height: 12),
                           Row(
                             children: [

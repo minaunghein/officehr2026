@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/core/widgets/container_shimmer.dart';
 import 'package:office_hr/core/widgets/empty_state_widget.dart';
 import 'package:office_hr/core/widgets/error_state_widget.dart';
+import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/home/presentation/providers/attendance_provider.dart';
 import 'package:office_hr/features/home/presentation/widgets/team_attendance_summary.dart';
 import 'package:office_hr/features/home/presentation/widgets/team_member_card.dart';
@@ -32,7 +32,8 @@ class TeamBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (!canViewDetails || departmentId.isEmpty && quickActions.isNotEmpty) {
+    final access = ref.watch(sessionAccessProvider);
+    if (!canViewDetails) {
       return ListView(
         children: [
           if (quickActions.isNotEmpty) TeamQuickActions(actions: quickActions),
@@ -40,12 +41,19 @@ class TeamBody extends ConsumerWidget {
       );
     }
     if (departmentId.isEmpty) {
-      return EmptyStateWidget(
-        icon: Icons.groups_2_outlined,
-        title: 'No department assigned'.tr(),
-        message: 'Your department information is not available yet.'.tr(),
-        centered: true,
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+      return Column(
+        children: [
+          if (quickActions.isNotEmpty) TeamQuickActions(actions: quickActions),
+          Expanded(
+            child: EmptyStateWidget(
+              icon: Icons.groups_2_outlined,
+              title: 'No department assigned'.tr(),
+              message: 'Your department information is not available yet.'.tr(),
+              centered: true,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+            ),
+          ),
+        ],
       );
     }
 
@@ -113,8 +121,10 @@ class TeamBody extends ConsumerWidget {
               for (final record in visibleRecords)
                 TeamMemberCard(
                   attendance: record,
-                  onTap: canViewDetails && record.id.isNotEmpty
-                      ? () => context.push(
+                  onTap: record.id.isNotEmpty
+                      ? appRouteTap(
+                          context,
+                          access,
                           AppRoutes.teamMemberAttendance,
                           extra: record,
                         )

@@ -128,11 +128,12 @@ class AttendanceAmendmentDetailScreen extends HookConsumerWidget {
             ? Text(requesterName, maxLines: 1, overflow: TextOverflow.ellipsis)
             : Text('Request Details'.tr()),
       ),
-      bottomNavigationBar: canAct
+      bottomNavigationBar:
+          canApprove && current.status.toUpperCase() == 'PENDING'
           ? _ApprovalBar(
               pendingDecision: pendingDecision.value,
-              onReject: () => decide(false),
-              onApprove: () => decide(true),
+              onReject: canAct ? () => decide(false) : null,
+              onApprove: canAct ? () => decide(true) : null,
             )
           : null,
       body: RefreshIndicator(
@@ -167,8 +168,8 @@ class _ApprovalBar extends StatelessWidget {
   });
 
   final String? pendingDecision;
-  final VoidCallback onReject;
-  final VoidCallback onApprove;
+  final VoidCallback? onReject;
+  final VoidCallback? onApprove;
 
   bool get _anyBusy => pendingDecision != null;
 

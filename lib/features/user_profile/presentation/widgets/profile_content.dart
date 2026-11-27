@@ -7,6 +7,7 @@ import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/core/widgets/detail_page_style.dart';
 import 'package:office_hr/features/auth/domain/entities/auth_session.dart';
 import 'package:office_hr/features/auth/domain/entities/user_entities/address/address.dart';
+import 'package:office_hr/features/user_profile/presentation/utils/profile_value_label.dart';
 import 'package:office_hr/features/user_profile/presentation/widgets/profile_image_avatar.dart';
 import 'package:office_hr/features/user_profile/presentation/widgets/record_header.dart';
 import 'package:office_hr/features/user_profile/presentation/widgets/record_section.dart';
@@ -65,15 +66,15 @@ class ProfileContent extends HookConsumerWidget {
                           ),
                           RecordField(
                             label: 'Employment status'.tr(),
-                            value: _readable(work.employmentStatus),
+                            value: profileValueLabel(work.employmentStatus),
                           ),
                           RecordField(
                             label: 'Employment type'.tr(),
-                            value: _readable(work.employmentType),
+                            value: profileValueLabel(work.employmentType),
                           ),
                           RecordField(
                             label: 'Work mode'.tr(),
-                            value: _readable(work.workMode),
+                            value: profileValueLabel(work.workMode),
                           ),
                           RecordField(
                             label: 'Start date'.tr(),
@@ -147,7 +148,7 @@ class ProfileContent extends HookConsumerWidget {
                         ),
                         RecordField(
                           label: 'Gender'.tr(),
-                          value: _readable(personal.gender),
+                          value: profileValueLabel(personal.gender),
                         ),
                         RecordField(
                           label: 'Date of birth'.tr(),
@@ -155,7 +156,7 @@ class ProfileContent extends HookConsumerWidget {
                         ),
                         RecordField(
                           label: 'Marital status'.tr(),
-                          value: _readable(personal.maritalStatus),
+                          value: profileValueLabel(personal.maritalStatus),
                         ),
                         RecordField(
                           label: 'Nationality'.tr(),
@@ -384,13 +385,6 @@ class _ProfileTabs extends StatelessWidget {
     );
   }
 }
-
-String _readable(String value) => value
-    .trim()
-    .split(RegExp(r'[_\s]+'))
-    .where((part) => part.isNotEmpty)
-    .map((part) => '${part[0].toUpperCase()}${part.substring(1).toLowerCase()}')
-    .join(' ');
 
 String? _address(Address? address) {
   if (address == null) return null;

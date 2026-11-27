@@ -32,62 +32,65 @@ class _QuickActionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: action.onTap,
-        borderRadius: BorderRadius.circular(AppSizes.cardRadiusMd),
-        child: Container(
-          height: 92,
-          decoration: BoxDecoration(
-            color: theme.cardColor,
-            borderRadius: BorderRadius.circular(AppSizes.cardRadiusMd),
-            border: Border.all(
-              color: theme.colorScheme.outline.withValues(alpha: 0.18),
+    final enabled = action.onTap != null;
+    final accent = enabled ? theme.colorScheme.primary : theme.disabledColor;
+    return Semantics(
+      button: true,
+      enabled: enabled,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: action.onTap,
+          borderRadius: BorderRadius.circular(AppSizes.cardRadiusMd),
+          child: Container(
+            height: 92,
+            decoration: BoxDecoration(
+              color: theme.cardColor,
+              borderRadius: BorderRadius.circular(AppSizes.cardRadiusMd),
+              border: Border.all(
+                color: theme.colorScheme.outline.withValues(alpha: 0.18),
+              ),
             ),
-          ),
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(10),
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          color: accent.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(action.icon, size: 18, color: accent),
                       ),
-                      child: Icon(
-                        action.icon,
-                        size: 18,
-                        color: theme.colorScheme.primary,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 6),
-                      child: Text(
-                        action.label,
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 6),
+                        child: Text(
+                          action.label,
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: enabled ? null : theme.disabledColor,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              if (action.badgeCount > 0)
-                Positioned(
-                  top: 6,
-                  right: 6,
-                  child: CountBadge(count: action.badgeCount),
-                ),
-            ],
+                if (action.badgeCount > 0)
+                  Positioned(
+                    top: 6,
+                    right: 6,
+                    child: CountBadge(count: action.badgeCount),
+                  ),
+              ],
+            ),
           ),
         ),
       ),

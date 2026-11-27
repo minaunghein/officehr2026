@@ -4,24 +4,9 @@ import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/features/leave/domain/entities/leave_request.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
-const _shortMonths = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];
-
 String formatLeaveDate(DateTime? date) {
   if (date == null) return '-';
-  return '${date.day} ${_shortMonths[date.month - 1]} ${date.year}';
+  return displayDate(date);
 }
 
 String formatLeaveDateFromIso(String? iso) {
@@ -43,7 +28,7 @@ String formatLeaveDateRange(String? startIso, String? endIso) {
 
   final sameMonth = start.month == end.month && start.year == end.year;
   if (sameMonth) {
-    return '${start.day} - ${end.day} ${_shortMonths[start.month - 1]} '
+    return '${start.day} - ${end.day} ${monthLabel(start.month)} '
         '${start.year}';
   }
   return '${formatLeaveDate(start)} - ${formatLeaveDate(end)}';

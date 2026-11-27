@@ -10,6 +10,7 @@ import 'package:office_hr/features/auth/domain/entities/user_entities/employee/e
 import 'package:office_hr/features/auth/domain/entities/user_entities/work_experience/work_experience.dart';
 import 'package:office_hr/features/user_profile/domain/entities/user_details.dart';
 import 'package:office_hr/features/user_profile/presentation/providers/user_providers.dart';
+import 'package:office_hr/features/user_profile/presentation/utils/profile_value_label.dart';
 import 'package:office_hr/features/user_profile/presentation/widgets/user_profile_section.dart';
 import 'package:office_hr/shared/date_formatter.dart';
 
@@ -172,7 +173,7 @@ class _DetailsHeader extends StatelessWidget {
                           if (status.trim().isNotEmpty)
                             _Chip(
                               icon: Icons.circle,
-                              label: status.tr(),
+                              label: profileValueLabel(status),
                               color: status.toUpperCase() == 'ACTIVE'
                                   ? const Color(0xFF16A34A)
                                   : theme.colorScheme.error,
@@ -242,13 +243,16 @@ class _EmploymentSection extends StatelessWidget {
             ),
             UserProfileInfoRow(
               label: 'Employment Status'.tr(),
-              value: info.employmentStatus,
+              value: profileValueLabel(info.employmentStatus),
             ),
             UserProfileInfoRow(
               label: 'Employment Type'.tr(),
-              value: info.employmentType,
+              value: profileValueLabel(info.employmentType),
             ),
-            UserProfileInfoRow(label: 'Work Mode'.tr(), value: info.workMode),
+            UserProfileInfoRow(
+              label: 'Work Mode'.tr(),
+              value: profileValueLabel(info.workMode),
+            ),
             UserProfileInfoRow(
               label: 'Department'.tr(),
               value: info.department?.title,
@@ -291,14 +295,17 @@ class _PersonalSection extends StatelessWidget {
       children: [
         UserProfileFieldGrid(
           children: [
-            UserProfileInfoRow(label: 'Gender'.tr(), value: info.gender),
+            UserProfileInfoRow(
+              label: 'Gender'.tr(),
+              value: profileValueLabel(info.gender),
+            ),
             UserProfileInfoRow(
               label: 'Date of Birth'.tr(),
               value: formatDateString(info.dateOfBirth),
             ),
             UserProfileInfoRow(
               label: 'Marital Status'.tr(),
-              value: info.maritalStatus,
+              value: profileValueLabel(info.maritalStatus),
             ),
             UserProfileInfoRow(label: 'Blood Type'.tr(), value: info.bloodType),
             UserProfileInfoRow(

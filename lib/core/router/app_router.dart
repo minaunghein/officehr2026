@@ -129,6 +129,16 @@ bool _canViewOwnLeave(SessionAccess access, LeaveRequest request) =>
     (access.isOwnUser(request.requesterId) ||
         access.isOwnEmployee(request.employeeId));
 
+/// Use the same rules for interactive links as for direct navigation.
+VoidCallback? appRouteTap(
+  BuildContext context,
+  SessionAccess access,
+  String path, {
+  Object? extra,
+}) => canOpenAppRoute(access, path, extra: extra)
+    ? () => context.push(path, extra: extra)
+    : null;
+
 final appRouterProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
     navigatorKey: DialogService.navigatorKey,
