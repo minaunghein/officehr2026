@@ -48,7 +48,65 @@ final class ApiConfigProvider
   }
 }
 
-String _$apiConfigHash() => r'56f1568ca3cc9d84c69c0dd2bd68fa65204fad6f';
+String _$apiConfigHash() => r'b443ed3b7aebb5d94b8f22200f9dc547e853ce98';
+
+/// The API base URL entered on the company setup screen, persisted in secure
+/// storage (`ApiConfig.fallbackBaseUrl` while unset). This is the single
+/// source of truth the whole app resolves its API host from.
+
+@ProviderFor(ApiBaseUrl)
+final apiBaseUrlProvider = ApiBaseUrlProvider._();
+
+/// The API base URL entered on the company setup screen, persisted in secure
+/// storage (`ApiConfig.fallbackBaseUrl` while unset). This is the single
+/// source of truth the whole app resolves its API host from.
+final class ApiBaseUrlProvider
+    extends $AsyncNotifierProvider<ApiBaseUrl, String?> {
+  /// The API base URL entered on the company setup screen, persisted in secure
+  /// storage (`ApiConfig.fallbackBaseUrl` while unset). This is the single
+  /// source of truth the whole app resolves its API host from.
+  ApiBaseUrlProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'apiBaseUrlProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$apiBaseUrlHash();
+
+  @$internal
+  @override
+  ApiBaseUrl create() => ApiBaseUrl();
+}
+
+String _$apiBaseUrlHash() => r'7c223814f0b1d9c050114eb5fe773c7aa0f44c72';
+
+/// The API base URL entered on the company setup screen, persisted in secure
+/// storage (`ApiConfig.fallbackBaseUrl` while unset). This is the single
+/// source of truth the whole app resolves its API host from.
+
+abstract class _$ApiBaseUrl extends $AsyncNotifier<String?> {
+  FutureOr<String?> build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<AsyncValue<String?>, String?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<String?>, String?>,
+              AsyncValue<String?>,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
 
 @ProviderFor(secureStorage)
 final secureStorageProvider = SecureStorageProvider._();

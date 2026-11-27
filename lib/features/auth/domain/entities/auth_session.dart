@@ -31,7 +31,7 @@ abstract class AuthSession with _$AuthSession {
   String get profileUrl {
     final imageId = user.profileImgId?.trim() ?? '';
     if (imageId.isEmpty) return '';
-    return '${const ApiConfig().baseUrl}/api/v1/files/${Uri.encodeComponent(imageId)}';
+    return '${ApiConfig().baseUrl}/api/v1/files/${Uri.encodeComponent(imageId)}';
   }
 
   String get companyId => activeCompany.id;

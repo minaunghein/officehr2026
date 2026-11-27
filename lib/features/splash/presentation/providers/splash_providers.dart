@@ -12,10 +12,10 @@ class SplashInitialization extends _$SplashInitialization {
   Future<SplashState> build() async {
     await ref.read(authTokenProvider.future);
 
-    // final hasCompletedSetup = await ref.read(companySetupProvider.future);
-    // if (!hasCompletedSetup) {
-    //   return SplashState.needsCompanySetup;
-    // }
+    final hasCompletedSetup = await ref.read(companySetupProvider.future);
+    if (!hasCompletedSetup) {
+      return SplashState.needsCompanySetup;
+    }
 
     final isAuthenticated = ref.read(isAuthenticatedProvider);
     if (!isAuthenticated) {

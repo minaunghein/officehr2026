@@ -561,7 +561,7 @@ final class AttendanceNotifierProvider
 }
 
 String _$attendanceNotifierHash() =>
-    r'3111db9bcb887e080e068c49b1875e7b337f462c';
+    r'22fa495af2d483a23526af20ef5e77c7ba5ea916';
 
 abstract class _$AttendanceNotifier extends $AsyncNotifier<AttendanceState> {
   FutureOr<AttendanceState> build();

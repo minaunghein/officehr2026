@@ -756,5 +756,13 @@
   "Single": "Single",
   "Married": "Married",
   "Divorced": "Divorced",
-  "Widowed": "Widowed"
+  "Widowed": "Widowed",
+  "API Base URL": "API Base URL",
+  "e.g. api.officehr.com": "e.g. api.officehr.com",
+  "For now, enter the full API URL provided by your HR department (e.g. api.officehr.com). Later this will become your organization's subdomain.": "For now, enter the full API URL provided by your HR department (e.g. api.officehr.com). Later this will become your organization's subdomain.",
+  "Checking API...": "Checking API...",
+  "Enter a valid API base URL, e.g. api.officehr.com.": "Enter a valid API base URL, e.g. api.officehr.com.",
+  "The server responded with an unexpected status.": "The server responded with an unexpected status.",
+  "The API health check failed.": "The API health check failed.",
+  "Could not reach the API. Check the URL and your internet connection, then try again.": "Could not reach the API. Check the URL and your internet connection, then try again."
 }

@@ -24,7 +24,38 @@ const String companyIdStorageKey = 'company_id';
 
 @Riverpod(keepAlive: true)
 ApiConfig apiConfig(Ref ref) {
-  return const ApiConfig();
+  // Rebuilds when the persisted API base URL changes (company setup).
+  ref.watch(apiBaseUrlProvider);
+  return ApiConfig();
+}
+
+/// The API base URL entered on the company setup screen, persisted in secure
+/// storage (`ApiConfig.fallbackBaseUrl` while unset). This is the single
+/// source of truth the whole app resolves its API host from.
+@Riverpod(keepAlive: true)
+class ApiBaseUrl extends _$ApiBaseUrl {
+  static const storageKey = 'api_base_url';
+
+  @override
+  FutureOr<String?> build() async {
+    final storage = ref.read(secureStorageProvider);
+    final stored = ApiConfig.normalizeBaseUrl(
+      await readStoredValue(storage, storageKey),
+    );
+    ApiConfig.currentBaseUrl = stored ?? ApiConfig.fallbackBaseUrl;
+    return stored;
+  }
+
+  Future<void> setBaseUrl(String url) async {
+    final normalized = ApiConfig.normalizeBaseUrl(url);
+    if (normalized == null) {
+      throw ArgumentError.value(url, 'url', 'Invalid API base URL');
+    }
+    final storage = ref.read(secureStorageProvider);
+    await writeStoredValue(storage, storageKey, normalized);
+    ApiConfig.currentBaseUrl = normalized;
+    state = AsyncData(normalized);
+  }
 }
 
 @Riverpod(keepAlive: true)

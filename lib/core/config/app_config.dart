@@ -3,14 +3,17 @@ import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:office_hr/core/config/api_config.dart';
 
 class AppConfig {
   final String environment;
+  final String fallbackBaseUrl;
   final FeatureFlags features;
   final FirebaseConfig firebase;
 
   const AppConfig._({
     required this.environment,
+    required this.fallbackBaseUrl,
     required this.features,
     required this.firebase,
   });
@@ -37,9 +40,19 @@ class AppConfig {
         environment:
             configJson['environment']?.toString() ??
             (kReleaseMode ? 'production' : 'development'),
+        fallbackBaseUrl:
+            ApiConfig.normalizeBaseUrl(
+              configJson['fallbackBaseUrl']?.toString(),
+            ) ??
+            '',
         features: FeatureFlags.fromJson(_asMap(configJson['features'])),
         firebase: FirebaseConfig.fromJson(_asMap(configJson['firebase'])),
       );
+
+      // ApiConfig resolves its fallback base URL from the active flavor's
+      // config JSON (e.g. http://193.180.208.196:3001 in dev.json) instead
+      // of a hardcoded constant.
+      ApiConfig.fallbackBaseUrl = _instance!.fallbackBaseUrl;
 
       if (kDebugMode) {
         print('Loaded config: $configFile (${_instance!.environment})');
@@ -88,6 +101,7 @@ class AppConfig {
   @override
   String toString() {
     return 'AppConfig(environment: $environment, '
+        'fallbackBaseUrl: $fallbackBaseUrl, '
         'firebaseProjectId: ${firebase.projectId})';
   }
 }

@@ -277,35 +277,35 @@ class LoginScreenContent extends HookConsumerWidget {
                                           );
                                     },
                                   ),
-                                  const SizedBox(height: 16),
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 24,
-                                        height: 24,
-                                        child: Checkbox(
-                                          value: rememberDevice.value,
-                                          onChanged: isLoading
-                                              ? null
-                                              : (value) {
-                                                  rememberDevice.value =
-                                                      value ?? false;
-                                                },
-                                          side: BorderSide(
-                                            color: colorScheme.outline,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Text(
-                                        'Remember this device'.tr(),
-                                        style: textTheme.bodyMedium?.copyWith(
-                                          color: colorScheme.onSurface
-                                              .withValues(alpha: 0.7),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                  // const SizedBox(height: 16),
+                                  // Row(
+                                  //   children: [
+                                  //     SizedBox(
+                                  //       width: 24,
+                                  //       height: 24,
+                                  //       child: Checkbox(
+                                  //         value: rememberDevice.value,
+                                  //         onChanged: isLoading
+                                  //             ? null
+                                  //             : (value) {
+                                  //                 rememberDevice.value =
+                                  //                     value ?? false;
+                                  //               },
+                                  //         side: BorderSide(
+                                  //           color: colorScheme.outline,
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //     const SizedBox(width: 8),
+                                  //     Text(
+                                  //       'Remember this device'.tr(),
+                                  //       style: textTheme.bodyMedium?.copyWith(
+                                  //         color: colorScheme.onSurface
+                                  //             .withValues(alpha: 0.7),
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // ),
                                   const SizedBox(height: 24),
                                   ElevatedButton(
                                     onPressed: isLoading

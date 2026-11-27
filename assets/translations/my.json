@@ -756,5 +756,13 @@
   "Single": "အိမ်ထောင်မရှိ",
   "Married": "အိမ်ထောင်ရှိ",
   "Divorced": "ကွာရှင်းပြီး",
-  "Widowed": "အိမ်ထောင်ဖက် ကွယ်လွန်ပြီး"
+  "Widowed": "အိမ်ထောင်ဖက် ကွယ်လွန်ပြီး",
+  "API Base URL": "API Base URL",
+  "e.g. api.officehr.com": "e.g. api.officehr.com",
+  "For now, enter the full API URL provided by your HR department (e.g. api.officehr.com). Later this will become your organization's subdomain.": "ယခုအချိန်တွင် HR ဌာနပေးထားသော API လိပ်စာအပြည့် (ဥပမာ api.officehr.com) ကို ထည့်သွင်းပါ။ နောက်ပိုင်းတွင် ၎င်းသည် သင့်အဖွဲ့အစည်း၏ subdomain ဖြစ်လာမည်။",
+  "Checking API...": "API စစ်ဆေးနေသည်...",
+  "Enter a valid API base URL, e.g. api.officehr.com.": "မှန်ကန်သော API base URL ထည့်သွင်းပါ၊ ဥပမာ api.officehr.com။",
+  "The server responded with an unexpected status.": "ဆာဗာမှ မမျှော်လင့်သော status ဖြင့် တုံ့ပြန်သည်။",
+  "The API health check failed.": "API စစ်ဆေးမှု မအောင်မြင်ပါ။",
+  "Could not reach the API. Check the URL and your internet connection, then try again.": "API သို့ မဆက်သွယ်နိုင်ပါ။ URL နှင့် အင်တာနက်ချိတ်ဆက်မှုကို စစ်ဆေးပြီး ပြန်ကြိုးစားပါ။"
 }

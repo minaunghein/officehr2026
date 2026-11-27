@@ -1,5 +1,6 @@
 {
   "environment": "dev",
+  "fallbackBaseUrl": "http://193.180.208.196:3001",
   "firebase": {
     "apiKey": "YOUR_DEV_FIREBASE_API_KEY",
     "appId": "YOUR_DEV_FIREBASE_APP_ID",

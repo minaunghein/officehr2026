@@ -48,7 +48,7 @@ final class NotificationPreferencesProvider
 }
 
 String _$notificationPreferencesHash() =>
-    r'312c85e267a414749367123f54d2dc04ed7bc456';
+    r'6770ab1185dbef00241ed11ba8de4a896ed0ee8c';
 
 /// Sound and vibration switches. Updating them re-applies the saved
 /// schedules so the next reminder honours the new delivery options.

@@ -329,5 +329,5 @@ LeaveRequest _resolveLatest(
 /// Turns a stored attachment (full URL or bare file id) into a loadable URL.
 String _resolveAttachmentUrl(String value) {
   if (value.startsWith('http')) return value;
-  return '${const ApiConfig().baseUrl}/api/v1/files/${Uri.encodeComponent(value)}';
+  return '${ApiConfig().baseUrl}/api/v1/files/${Uri.encodeComponent(value)}';
 }

@@ -1,3 +1,6 @@
+import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:office_hr/core/config/api_config.dart';
 import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:office_hr/features/auth/data/repositories/auth_repository_impl.dart';
@@ -220,19 +223,81 @@ class ChangePasswordNotifier extends _$ChangePasswordNotifier {
 
 @riverpod
 class CompanySetupNotifier extends _$CompanySetupNotifier {
-  static const _key = 'company_setup_completed';
+  static const healthPath = '/api/v1/health';
 
   @override
   Future<bool> build() async {
-    final storage = ref.read(secureStorageProvider);
-    final val = await readStoredValue(storage, _key);
-    return val == 'true';
+    final storedBaseUrl = await ref.watch(apiBaseUrlProvider.future);
+    return storedBaseUrl != null && storedBaseUrl.isNotEmpty;
   }
 
-  Future<void> completeSetup() async {
-    final storage = ref.read(secureStorageProvider);
-    await writeStoredValue(storage, _key, 'true');
-    state = const AsyncData(true);
+  /// Normalizes the typed value, verifies it with `GET /api/v1/health`, and
+  /// only then persists it as the app-wide API base URL. Returns `null` on
+  /// success or a localized error message when the URL is invalid/unreachable.
+  Future<String?> submitBaseUrl(String rawInput) async {
+    final candidates = _candidateBaseUrls(rawInput);
+    if (candidates.isEmpty) {
+      return 'Enter a valid API base URL, e.g. api.officehr.com.'.tr();
+    }
+
+    final previousState = state;
+    state = const AsyncValue.loading();
+
+    String? healthError;
+    for (final baseUrl in candidates) {
+      healthError = await _checkHealth(baseUrl);
+      if (healthError == null) {
+        await ref.read(apiBaseUrlProvider.notifier).setBaseUrl(baseUrl);
+        state = const AsyncValue.data(true);
+        return null;
+      }
+    }
+
+    state = previousState;
+    return healthError;
+  }
+
+  /// Scheme-less input (e.g. `api.officehr.com` or `193.180.208.196:3001`)
+  /// is probed as `https://` first, then `http://`, so the working scheme is
+  /// picked automatically. Explicitly typed schemes are used as-is.
+  static List<String> _candidateBaseUrls(String rawInput) {
+    final value = rawInput.trim().replaceAll(RegExp(r'\s+'), '');
+    if (value.isEmpty) return const [];
+
+    final hasScheme =
+        value.startsWith('http://') || value.startsWith('https://');
+    final variants = hasScheme ? [value] : ['https://$value', 'http://$value'];
+
+    return variants
+        .map(ApiConfig.normalizeBaseUrl)
+        .whereType<String>()
+        .toList();
+  }
+
+  Future<String?> _checkHealth(String baseUrl) async {
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: baseUrl,
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 10),
+        headers: const {'Accept': 'application/json'},
+      ),
+    );
+
+    try {
+      final response = await dio.get<dynamic>(healthPath);
+      if (response.statusCode == 200) return null;
+      return '${'The server responded with an unexpected status.'.tr()} (HTTP ${response.statusCode})';
+    } on DioException catch (error) {
+      final status = error.response?.statusCode;
+      if (status != null) {
+        return '${'The API health check failed.'.tr()} (HTTP $status)';
+      }
+      return 'Could not reach the API. Check the URL and your internet connection, then try again.'
+          .tr();
+    } finally {
+      dio.close(force: true);
+    }
   }
 }
 

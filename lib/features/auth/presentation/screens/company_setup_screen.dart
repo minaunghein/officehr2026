@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:office_hr/core/network/network_providers.dart';
 import 'package:office_hr/core/router/app_router.dart';
+import 'package:office_hr/core/utils/snackbar_utils.dart';
 import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -14,6 +17,30 @@ class CompanySetupScreen extends HookConsumerWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
+
+    final urlController = useTextEditingController();
+    final storedBaseUrl = ref.watch(apiBaseUrlProvider).value;
+    final isChecking = ref.watch(companySetupProvider).isLoading;
+
+    useEffect(() {
+      if (storedBaseUrl != null && urlController.text.isEmpty) {
+        urlController.text = storedBaseUrl;
+      }
+      return null;
+    }, [storedBaseUrl]);
+
+    Future<void> submit() async {
+      final error = await ref
+          .read(companySetupProvider.notifier)
+          .submitBaseUrl(urlController.text);
+      if (error != null) {
+        SnackbarUtils.showError(error);
+        return;
+      }
+      if (context.mounted) {
+        context.go(AppRoutes.login);
+      }
+    }
 
     return Scaffold(
       body: SafeArea(
@@ -98,9 +125,18 @@ class CompanySetupScreen extends HookConsumerWidget {
                           ),
                           const SizedBox(height: 8),
                           TextField(
+                            controller: urlController,
+                            keyboardType: TextInputType.url,
+                            autocorrect: false,
+                            enableSuggestions: false,
+                            textCapitalization: TextCapitalization.none,
+                            textInputAction: TextInputAction.done,
+                            onSubmitted: (_) {
+                              if (!isChecking) submit();
+                            },
                             decoration: InputDecoration(
-                              hintText: 'e.g. AcmeCorp or ACME-123'.tr(),
-                              prefixIcon: const Icon(Icons.business),
+                              hintText: 'e.g. api.officehr.com'.tr(),
+                              prefixIcon: const Icon(Icons.cloud_outlined),
                               filled: false,
                             ),
                           ),
@@ -116,23 +152,28 @@ class CompanySetupScreen extends HookConsumerWidget {
                           ),
                           const SizedBox(height: 24),
                           ElevatedButton(
-                            onPressed: () async {
-                              await ref
-                                  .read(companySetupProvider.notifier)
-                                  .completeSetup();
-                              if (context.mounted) {
-                                context.go(AppRoutes.login);
-                              }
-                            },
+                            onPressed: isChecking ? null : submit,
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 16),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text('Continue'.tr()),
-                                SizedBox(width: 8),
-                                Icon(Icons.arrow_forward, size: 18),
+                                if (isChecking) ...[
+                                  const SizedBox(
+                                    width: 18,
+                                    height: 18,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Text('Checking API...'.tr()),
+                                ] else ...[
+                                  Text('Continue'.tr()),
+                                  const SizedBox(width: 8),
+                                  const Icon(Icons.arrow_forward, size: 18),
+                                ],
                               ],
                             ),
                           ),
@@ -163,18 +204,6 @@ class CompanySetupScreen extends HookConsumerWidget {
                   ),
                   const SizedBox(height: 32),
 
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     _buildPlaceholderBox(colorScheme),
-                  //     const SizedBox(width: 16),
-                  //     _buildPlaceholderBox(colorScheme),
-                  //     const SizedBox(width: 16),
-                  //     _buildPlaceholderBox(colorScheme),
-                  //   ],
-                  // ),
-                  // const SizedBox(height: 24),
-
                   // Help Text
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -201,15 +230,4 @@ class CompanySetupScreen extends HookConsumerWidget {
       ),
     );
   }
-
-  // Widget _buildPlaceholderBox(ColorScheme colorScheme) {
-  //   return Container(
-  //     width: 80,
-  //     height: 80,
-  //     decoration: BoxDecoration(
-  //       color: colorScheme.primary.withValues(alpha: 0.1),
-  //       borderRadius: BorderRadius.circular(8),
-  //     ),
-  //   );
-  // }
 }

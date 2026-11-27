@@ -45,7 +45,7 @@ final class BiometricPreferencesProvider
 }
 
 String _$biometricPreferencesHash() =>
-    r'dc798c4cae13f39a019ad63eef65bd41a32ce048';
+    r'fe4111b1b4e80b21083326f7c7f397427db741b5';
 
 /// Persisted biometric preferences, shared by every gate and the settings UI.
 
