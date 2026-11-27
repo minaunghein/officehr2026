@@ -6,6 +6,7 @@ import 'package:office_hr/core/router/app_router.dart';
 import 'package:office_hr/core/network/api_error_message.dart';
 import 'package:office_hr/core/utils/date_time_utils.dart';
 import 'package:office_hr/core/widgets/container_shimmer.dart';
+import 'package:office_hr/features/auth/presentation/providers/auth_providers.dart';
 import 'package:office_hr/features/auth/presentation/providers/session_access_provider.dart';
 import 'package:office_hr/features/home/domain/entities/today_attendance.dart';
 import 'package:office_hr/features/home/domain/params/attendance_history_query.dart';
@@ -65,6 +66,20 @@ class AttendanceScreen extends HookConsumerWidget {
         : ref.watch(attendanceHistoryProvider(rangeQuery));
 
     final markers = <String, Color>{};
+
+    // Shift-based off days get a grey dot first, so any recorded day's
+    // status color below still overrides it (e.g. worked on an off day).
+    final shift = ref.watch(currentUserProvider).value?.workInfo?.shift;
+    if (shift != null) {
+      for (int day = 1; day <= monthEnd.day; day++) {
+        final date = DateTime(monthStart.year, monthStart.month, day);
+        final shiftDay = getShiftDayForDate(shift, date);
+        if (shiftDay != null && (shiftDay.isOffDay || !shiftDay.isWorkingDay)) {
+          markers[formatApiDate(date)] = attendanceOffDayColor;
+        }
+      }
+    }
+
     for (final record in monthAsync.value ?? const <TodayAttendance>[]) {
       final date = record.date;
       if (date == null) continue;
@@ -356,6 +371,7 @@ class _CalendarLegend extends StatelessWidget {
         _legendItem(theme, 'Late'.tr(), const Color(0xFFD97706)),
         _legendItem(theme, 'Absent'.tr(), const Color(0xFFDC2626)),
         _legendItem(theme, 'Leave'.tr(), const Color(0xFF0284C7)),
+        _legendItem(theme, 'Off Day'.tr(), attendanceOffDayColor),
       ],
     );
   }

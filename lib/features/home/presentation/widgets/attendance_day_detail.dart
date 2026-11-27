@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:office_hr/core/constants/app_colors.dart';
 import 'package:office_hr/core/constants/app_sizes.dart';
 import 'package:office_hr/features/home/domain/entities/attendance_record.dart';
 import 'package:office_hr/features/home/domain/entities/today_attendance.dart';
@@ -172,7 +173,7 @@ class _InfoTile extends StatelessWidget {
               width: 38,
               height: 38,
               decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.12),
+                color: AppColors.grey600.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(icon, color: color, size: 20),

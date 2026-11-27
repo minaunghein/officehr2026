@@ -2,6 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:office_hr/features/home/domain/entities/today_attendance.dart';
 
+/// Gray dot used for shift-based off days in the attendance calendar.
+const Color attendanceOffDayColor = Color(0xFF64748B);
+
 /// Colors used consistently across the attendance calendar and detail views.
 Color attendanceStatusColor(String? status, ThemeData theme) {
   switch (status?.toUpperCase()) {
@@ -18,7 +21,7 @@ Color attendanceStatusColor(String? status, ThemeData theme) {
     case 'HOLIDAY':
       return const Color(0xFFDB2777);
     case 'REST_DAY':
-      return const Color(0xFF64748B);
+      return attendanceOffDayColor;
     default:
       return theme.colorScheme.onSurface.withValues(alpha: 0.45);
   }
